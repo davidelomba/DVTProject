@@ -1,15 +1,15 @@
 """
-Output finale della pipeline: il JSON con tutte le crocette compilate.
+Final output of the pipeline: the JSON with all checkboxes filled in.
 
-Nota: non viene calcolato il Level of Certainty (LOC) complessivo -- l'obiettivo
-del progetto e' solo la compilazione del questionario a partire dalla cartella
-clinica, non la classificazione diagnostica finale. Questo modulo si limita quindi
-a serializzare il DVT_CriteriaForm popolato dalla pipeline.
+Note: the overall Level of Certainty (LOC) is NOT computed -- the project's
+goal is only to fill in the questionnaire from the clinical record, not to
+produce the final diagnostic classification. This module therefore just
+serializes the DVT_CriteriaForm populated by the pipeline.
 """
 
 from models import DVT_CriteriaForm
 
 
 def form_to_json_summary(form: DVT_CriteriaForm) -> dict:
-    """Serializza il form compilato (solo i campi effettivamente popolati)."""
+    """Serializes the filled-in form (only the fields that were actually populated)."""
     return form.model_dump(exclude_none=True)

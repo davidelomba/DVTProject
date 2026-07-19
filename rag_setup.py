@@ -1,7 +1,7 @@
 """
-Costruzione dei due vector store richiesti dal piano:
-1. KB statica: paper Brighton (sinonimi DVT) -> non cambia mai tra i pazienti.
-2. KB dinamica: cartella clinica (EHR) del singolo paziente -> ricreata ad ogni run.
+Builds the two vector stores required by the plan:
+1. Static KB: Brighton paper (DVT synonyms) -- never changes between patients.
+2. Dynamic KB: the single patient's clinical record (EHR) -- rebuilt each run.
 """
 
 import os
@@ -14,15 +14,16 @@ import config
 
 
 def get_embeddings():
-    """Modello di embedding leggero, locale, non impatta il budget RAM del LLM."""
+    """Lightweight, local embedding model; does not impact the LLM's RAM budget."""
     return HuggingFaceEmbeddings(model_name=config.EMBEDDING_MODEL_NAME)
 
 
 def build_brighton_kb(brighton_pdf_text: str, embeddings=None, force_rebuild: bool = False) -> Chroma:
     """
-    KB statica dei sinonimi DVT (Brighton Collaboration paper).
-    Va costruita una sola volta e riusata per tutti i pazienti: se esiste gia'
-    su disco e force_rebuild=False, la ricarica invece di ricalcolare gli embedding.
+    Static KB of DVT synonyms (Brighton Collaboration paper).
+    Should be built once and reused for all patients: if it already exists
+    on disk and force_rebuild=False, it is reloaded instead of recomputing
+    embeddings.
     """
     embeddings = embeddings or get_embeddings()
 
@@ -45,9 +46,9 @@ def build_brighton_kb(brighton_pdf_text: str, embeddings=None, force_rebuild: bo
 
 def build_ehr_kb(patient_record_text: str, patient_id: str, embeddings=None) -> Chroma:
     """
-    KB dinamica: cartella clinica del singolo paziente.
-    Persistita in una sottocartella dedicata per paziente, cosi' run diversi
-    non si sovrascrivono a vicenda.
+    Dynamic KB: the single patient's clinical record.
+    Persisted in a dedicated per-patient subfolder, so different runs
+    don't overwrite one another.
     """
     embeddings = embeddings or get_embeddings()
 
@@ -69,24 +70,24 @@ def build_ehr_kb(patient_record_text: str, patient_id: str, embeddings=None) -> 
 
 def make_ehr_retriever_tool(ehr_vectorstore: Chroma):
     """
-    Espone il retriever EHR come Tool LangChain, per l'eventuale Agente 1 agentico
-    (vedi agents.py — USE_AGENTIC_EXTRACTOR in config.py).
-    Se si usa il retrieval diretto (default), questo tool non e' necessario:
-    si chiama direttamente ehr_vectorstore.as_retriever().invoke(query).
+    Exposes the EHR retriever as a LangChain Tool, for the optional agentic
+    Agent 1 (see agents.py -- USE_AGENTIC_EXTRACTOR in config.py).
+    If direct retrieval is used instead (default), this tool is not needed:
+    call ehr_vectorstore.as_retriever().invoke(query) directly.
     """
     ehr_retriever = ehr_vectorstore.as_retriever(search_kwargs={"k": config.EHR_RETRIEVER_K})
     return create_retriever_tool(
         ehr_retriever,
         "search_patient_record",
-        "Usa questo tool per cercare sintomi, referti chirurgici, date ed esami di "
-        "laboratorio nella cartella clinica del paziente.",
+        "Use this tool to search for symptoms, surgical reports, dates, and lab "
+        "results in the patient's clinical record.",
     )
 
 
 def load_brighton_pdf_text(pdf_path: str) -> str:
     """
-    Estrae il testo dal PDF del paper Brighton. Usa pypdf (libreria standard,
-    non richiede setup aggiuntivo oltre pip install pypdf).
+    Extracts text from the Brighton paper PDF. Uses pypdf (standard library,
+    no extra setup needed beyond pip install pypdf).
     """
     from pypdf import PdfReader
 

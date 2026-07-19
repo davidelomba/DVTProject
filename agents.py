@@ -1,18 +1,19 @@
 """
-Agente 1 (Estrattore) e Agente 2 (Valutatore).
+Agent 1 (Extractor) and Agent 2 (Evaluator).
 
-Agente 1: di default fa retrieval diretto (similarity search + prompt), non un
-vero agente con tool-loop -- vedi PIANO_CORRETTO.md punto 4 sul perche'. La versione
-agentica e' comunque disponibile e attivabile da config.USE_AGENTIC_EXTRACTOR dopo
-aver verificato con test_structured_output_support() che il modello la regge.
+Agent 1: by default does direct retrieval (similarity search + prompt), not a
+real agent with a tool-calling loop -- see ACTION_PLAN.md point 4 for why. The
+agentic version is still available and can be enabled via
+config.USE_AGENTIC_EXTRACTOR after verifying with
+test_structured_output_support() that the model handles it reliably.
 
-Agente 2: usa .with_structured_output() per forzare la risposta nel modello Pydantic
-della sezione corrente. Prompt include few-shot per la gestione delle negazioni
-cliniche, che era la criticita' esplicitamente segnalata (ma non risolta) nel piano
-originale.
+Agent 2: uses .with_structured_output() to force the response into the
+Pydantic model for the current section. The prompt includes few-shot examples
+for handling clinical negations, which was flagged as a concern (but not
+resolved) in the original plan.
 """
 
-from langchain_community.chat_models import ChatOllama
+from langchain_ollama import ChatOllama
 from pydantic import BaseModel
 
 import config
@@ -27,48 +28,49 @@ def build_llm(temperature: float = None) -> ChatOllama:
 
 def test_structured_output_support(llm: ChatOllama, sample_model: type[BaseModel]) -> bool:
     """
-    Step 0 del piano corretto: verifica se il modello scelto supporta
-    .with_structured_output() in modo affidabile PRIMA di costruire tutta la
-    pipeline attorno a quell'assunzione. Se fallisce ripetutamente, usare il
-    fallback JSON-mode + parsing manuale (vedi evaluate_section con retry).
+    Step 0 of the plan: check whether the chosen model reliably supports
+    .with_structured_output() BEFORE building the whole pipeline around that
+    assumption. If it fails repeatedly, use the JSON-mode + manual parsing
+    fallback (see evaluate_section with retry).
     """
     try:
         structured_llm = llm.with_structured_output(sample_model)
         result = structured_llm.invoke(
-            "Rispondi compilando lo schema con dati di esempio plausibili."
+            "Fill in the schema with plausible example data."
         )
         return isinstance(result, sample_model)
     except Exception as exc:
-        print(f"[Step 0] with_structured_output non supportato in modo affidabile: {exc}")
+        print(f"[Step 0] with_structured_output not reliably supported: {exc}")
         return False
 
 
 # ---------------------------------------------------------------------------
-# Agente 1: Estrattore -- versione di default (retrieval diretto, non agentico)
+# Agent 1: Extractor -- default version (direct retrieval, non-agentic)
 # ---------------------------------------------------------------------------
 
-EXTRACTOR_SYSTEM_PROMPT = """Sei un estrattore clinico. Ricevi frammenti di una
-cartella clinica relativi al criterio assegnato. Estrai frasi esatte, valori e
-date pertinenti. Non trarre conclusioni, non riassumere, non inferire. Se non
-trovi informazioni rilevanti, dichiaralo esplicitamente invece di inventare.
-Restituisci solo le evidenze grezze come testo, non JSON."""
+EXTRACTOR_SYSTEM_PROMPT = """You are a clinical extractor. You receive fragments
+of a clinical record related to the assigned criterion. Extract exact phrases,
+values, and dates that are relevant. Do not draw conclusions, do not
+summarize, do not infer. If you find no relevant information, state so
+explicitly instead of making anything up. Return only the raw evidence as
+text, not JSON."""
 
 
 def extract_evidence(llm: ChatOllama, ehr_vectorstore, criterion_query: str) -> str:
     """
-    Retrieval diretto: similarity search sulla KB EHR + prompt di estrazione.
-    Questo e' il percorso di default (config.USE_AGENTIC_EXTRACTOR = False).
+    Direct retrieval: similarity search over the EHR KB + extraction prompt.
+    This is the default path (config.USE_AGENTIC_EXTRACTOR = False).
     """
     retriever = ehr_vectorstore.as_retriever(search_kwargs={"k": config.EHR_RETRIEVER_K})
     docs = retriever.invoke(criterion_query)
     context = "\n---\n".join(d.page_content for d in docs)
 
     if not context.strip():
-        return "Nessun frammento pertinente trovato nella cartella clinica per questo criterio."
+        return "No relevant fragment found in the clinical record for this criterion."
 
     messages = [
         ("system", EXTRACTOR_SYSTEM_PROMPT),
-        ("human", f"Criterio da investigare: {criterion_query}\n\nFrammenti cartella clinica:\n{context}"),
+        ("human", f"Criterion to investigate: {criterion_query}\n\nClinical record fragments:\n{context}"),
     ]
     response = llm.invoke(messages)
     return response.content
@@ -76,11 +78,11 @@ def extract_evidence(llm: ChatOllama, ehr_vectorstore, criterion_query: str) -> 
 
 def extract_evidence_agentic(llm: ChatOllama, ehr_tool, criterion_query: str) -> str:
     """
-    Versione agentica (tool-calling reale) -- attivare solo dopo aver verificato
-    con test_structured_output_support() (o test analogo per il tool-calling)
-    che il modello la gestisce in modo consistente. Su modelli 8B quantizzati
-    il rischio di tool-call malformate e' concreto: se osservi errori di parsing
-    intermittenti, torna al percorso di default extract_evidence().
+    Agentic version (real tool-calling) -- enable only after verifying with
+    test_structured_output_support() (or an equivalent test for tool-calling)
+    that the model handles it consistently. On quantized 8B models the risk
+    of malformed tool calls is real: if you see intermittent parsing errors,
+    go back to the default path extract_evidence().
     """
     from langchain.agents import create_tool_calling_agent, AgentExecutor
     from langchain_core.prompts import ChatPromptTemplate
@@ -92,26 +94,30 @@ def extract_evidence_agentic(llm: ChatOllama, ehr_tool, criterion_query: str) ->
     ])
     agent = create_tool_calling_agent(llm, [ehr_tool], prompt)
     executor = AgentExecutor(agent=agent, tools=[ehr_tool], verbose=False)
-    result = executor.invoke({"input": f"Criterio da investigare: {criterion_query}"})
+    result = executor.invoke({"input": f"Criterion to investigate: {criterion_query}"})
     return result["output"]
 
 
 # ---------------------------------------------------------------------------
-# Agente 2: Valutatore -- structured output vincolato al modello Pydantic
+# Agent 2: Evaluator -- structured output constrained to the Pydantic model
 # ---------------------------------------------------------------------------
 
-EVALUATOR_SYSTEM_PROMPT = """Sei un validatore clinico. Leggi le evidenze estratte
-dalla cartella clinica e consulta i sinonimi noti dal paper Brighton (es. VTE puo'
-includere DVT). Compila il modulo scegliendo ESCLUSIVAMENTE tra le opzioni fornite
-dallo schema. Non aggiungere testo fuori schema.
+EVALUATOR_SYSTEM_PROMPT = """You are a clinical validator. Read the evidence
+extracted from the clinical record and consult the known synonyms from the
+Brighton paper (e.g. VTE can include DVT). Fill in the form choosing
+EXCLUSIVELY among the options provided by the schema. Do not add any text
+outside the schema.
 
-Fai estrema attenzione alle negazioni. Esempi:
-- "nessun edema" o "no swelling" -> l'opzione corrispondente NON va selezionata.
-- "il paziente nega dolore al polpaccio" -> "Calf pain or tenderness" NON va selezionata.
-- "assenza di segni di TVP" -> corrisponde a "There was no report of a recognized
-  DVT syndrome" o equivalente "None of the above...", NON a un sintomo positivo.
-Se le evidenze non menzionano affatto un sintomo (ne' in positivo ne' in negativo),
-NON assumere che sia assente: usa l'opzione di default/unknown prevista dallo schema.
+Pay extreme attention to negations. Examples:
+- "no edema" -> the corresponding option must NOT be selected.
+- "the patient denies calf pain" -> "Calf pain or tenderness" must NOT be
+  selected.
+- "no signs of DVT" -> corresponds to "There was no report of a recognized
+  DVT syndrome" or equivalently "None of the above...", NOT to a positive
+  symptom.
+If the evidence does not mention a symptom at all (neither positively nor
+negatively), do NOT assume it is absent: use the default/unknown option
+provided by the schema.
 """
 
 
@@ -123,19 +129,19 @@ def evaluate_section(
     max_retries: int = 2,
 ):
     """
-    Applica .with_structured_output() per vincolare l'output al Pydantic
-    del criterio corrente. Se lo Step 0 ha rilevato che il modello non supporta
-    structured output in modo affidabile, questa funzione e' il punto in cui
-    aggiungere il fallback: prompt esplicito "rispondi solo con JSON valido
-    secondo questo schema: {schema}" + section_model.model_validate_json()
-    con retry in caso di JSON malformato.
+    Applies .with_structured_output() to constrain the output to the current
+    criterion's Pydantic model. If Step 0 found that the model does not
+    reliably support structured output, this is the place to add the
+    fallback: an explicit prompt "answer only with valid JSON following this
+    schema: {schema}" + section_model.model_validate_json() with retry on
+    malformed JSON.
     """
     structured_llm = llm.with_structured_output(section_model)
 
-    human_prompt = f"Evidenze estratte dalla cartella clinica:\n{evidence_text}"
+    human_prompt = f"Evidence extracted from the clinical record:\n{evidence_text}"
     if brighton_context:
-        human_prompt += f"\n\nSinonimi/terminologia di riferimento (Brighton):\n{brighton_context}"
-    human_prompt += "\n\nCompila lo schema per questo criterio."
+        human_prompt += f"\n\nReference synonyms/terminology (Brighton):\n{brighton_context}"
+    human_prompt += "\n\nFill in the schema for this criterion."
 
     last_error = None
     for attempt in range(max_retries + 1):
@@ -144,10 +150,10 @@ def evaluate_section(
                 ("system", EVALUATOR_SYSTEM_PROMPT),
                 ("human", human_prompt),
             ])
-        except Exception as exc:  # es. ValidationError dal model_validator di B2
+        except Exception as exc:  # e.g. ValidationError from B2's model_validator
             last_error = exc
             human_prompt += (
-                f"\n\nATTENZIONE: il tentativo precedente ha fallito la validazione "
-                f"({exc}). Ricontrolla la coerenza interna della risposta."
+                f"\n\nWARNING: the previous attempt failed validation "
+                f"({exc}). Recheck the internal consistency of the answer."
             )
-    raise RuntimeError(f"Valutazione fallita dopo {max_retries + 1} tentativi: {last_error}")
+    raise RuntimeError(f"Evaluation failed after {max_retries + 1} attempts: {last_error}")

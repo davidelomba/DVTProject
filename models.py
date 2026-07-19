@@ -1,12 +1,13 @@
 """
-Modelli Pydantic per il questionario SEVALID_DVT (Criteria Form).
+Pydantic models for the SEVALID_DVT questionnaire (Criteria Form).
 
-Copertura completa delle sole domande a "crocetta" (scelta singola / multi-select),
-come richiesto. Escluse deliberatamente: date, campi di testo libero, descrizioni,
-"specify other" (es. a3_2_other, x_description).
+Full coverage of the "checkbox" questions only (single choice / multi-select),
+as requested. Deliberately excluded: dates, free-text fields, descriptions,
+"specify other" (e.g. a3_2_other, x_description).
 
-Ogni classe corrisponde a UNA domanda del form, cosi' l'Agente 2 puo' essere invocato
-sezione per sezione (vedi pipeline.py) senza dover compilare tutto in un colpo solo.
+Each class corresponds to ONE question in the form, so Agent 2 can be invoked
+section by section (see pipeline.py) instead of having to fill in the whole
+form in one go.
 """
 
 from typing import List, Literal
@@ -14,7 +15,7 @@ from pydantic import BaseModel, Field, model_validator
 
 
 # ---------------------------------------------------------------------------
-# Criterio A: Confirmation of DVT
+# Criterion A: Confirmation of DVT
 # ---------------------------------------------------------------------------
 
 class A1_Autopsy(BaseModel):
@@ -53,7 +54,7 @@ class A3_2_ImagingStudies(BaseModel):
 
 
 # ---------------------------------------------------------------------------
-# Criterio B: Clinical evidence for presence of DVT
+# Criterion B: Clinical evidence for presence of DVT
 # ---------------------------------------------------------------------------
 
 class B1_1_SymptomsReported(BaseModel):
@@ -85,14 +86,14 @@ class B2_NewSymptoms(BaseModel):
         none_label = "None of the above were present or it is unknown if any of 1-4 were present"
         if none_label in self.symptoms and len(self.symptoms) > 1:
             raise ValueError(
-                f"'{none_label}' non puo' coesistere con altre selezioni in B2 "
-                f"(trovato: {self.symptoms})"
+                f"'{none_label}' cannot coexist with other selections in B2 "
+                f"(found: {self.symptoms})"
             )
         return self
 
 
 # ---------------------------------------------------------------------------
-# Criterio C: D-Dimer
+# Criterion C: D-Dimer
 # ---------------------------------------------------------------------------
 
 class C_DDimer(BaseModel):
@@ -104,7 +105,7 @@ class C_DDimer(BaseModel):
 
 
 # ---------------------------------------------------------------------------
-# Criterio F
+# Criterion F
 # ---------------------------------------------------------------------------
 
 class F_ReportedBySpecialist(BaseModel):
@@ -114,7 +115,7 @@ class F_ReportedBySpecialist(BaseModel):
 
 
 # ---------------------------------------------------------------------------
-# Criterio X: Alternative diagnosis
+# Criterion X: Alternative diagnosis
 # ---------------------------------------------------------------------------
 
 class X_AlternativeDiagnosis(BaseModel):
@@ -125,7 +126,7 @@ class X_AlternativeDiagnosis(BaseModel):
 
 
 # ---------------------------------------------------------------------------
-# Contenitore per il form completo (unione di tutte le sezioni)
+# Container for the full form (union of all sections)
 # ---------------------------------------------------------------------------
 
 class DVT_CriteriaForm(BaseModel):
@@ -145,7 +146,7 @@ class DVT_CriteriaForm(BaseModel):
     x: X_AlternativeDiagnosis | None = None
 
 
-# Mappa nome-sezione -> classe Pydantic, usata dal loop in pipeline.py
+# Section-name -> Pydantic-class map, used by the loop in pipeline.py
 SECTION_MODELS = {
     "A1": A1_Autopsy,
     "A2": A2_SurgicalProcedure,
