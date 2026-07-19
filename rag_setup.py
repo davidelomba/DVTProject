@@ -93,3 +93,14 @@ def load_brighton_pdf_text(pdf_path: str) -> str:
 
     reader = PdfReader(pdf_path)
     return "\n".join(page.extract_text() or "" for page in reader.pages)
+
+
+def load_ehr_text(txt_path: str) -> str:
+    """
+    Reads the patient's clinical record from a plain .txt file.
+    If you later switch to PDF or DOCX clinical records, add an equivalent
+    loader here (e.g. reuse load_brighton_pdf_text's approach for PDF, or
+    python-docx for Word files) and call the right one from pipeline.py.
+    """
+    with open(txt_path, "r", encoding="utf-8") as f:
+        return f.read()

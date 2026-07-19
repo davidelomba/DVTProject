@@ -5,9 +5,11 @@ Main pipeline: for each section of the form,
 At the end, merges all sections into a DVT_CriteriaForm and produces the JSON.
 """
 
+import time
+
 import config
 from models import DVT_CriteriaForm, SECTION_MODELS
-from rag_setup import get_embeddings, build_brighton_kb, build_ehr_kb, load_brighton_pdf_text
+from rag_setup import get_embeddings, build_brighton_kb, build_ehr_kb, load_brighton_pdf_text, load_ehr_text
 from agents import build_llm, test_structured_output_support, extract_evidence, evaluate_section
 from aggregation import form_to_json_summary
 
@@ -29,7 +31,7 @@ SECTION_QUERIES = {
 }
 
 
-def run_pipeline(record_id: str, patient_ehr_text: str, brighton_pdf_path: str) -> DVT_CriteriaForm:
+def run_pipeline(record_id: str, patient_ehr_path: str, brighton_pdf_path: str) -> DVT_CriteriaForm:
     embeddings = get_embeddings()
     llm = build_llm()
 
@@ -44,6 +46,7 @@ def run_pipeline(record_id: str, patient_ehr_text: str, brighton_pdf_path: str) 
         )
 
     brighton_text = load_brighton_pdf_text(brighton_pdf_path)
+    patient_ehr_text = load_ehr_text(patient_ehr_path)
     brighton_kb = build_brighton_kb(brighton_text, embeddings=embeddings)
     ehr_kb = build_ehr_kb(patient_ehr_text, patient_id=record_id, embeddings=embeddings)
 
@@ -58,7 +61,11 @@ def run_pipeline(record_id: str, patient_ehr_text: str, brighton_pdf_path: str) 
         section_model = SECTION_MODELS[section_key]
         query = SECTION_QUERIES[section_key]
 
+        print(f"\n=== Section {section_key} ===", flush=True)
+
         # Agent 1: evidence extraction (direct retrieval by default, see config)
+        print(f"[{section_key}] Agent 1 (extractor) searching the clinical record...", flush=True)
+        t0 = time.time()
         if config.USE_AGENTIC_EXTRACTOR:
             from rag_setup import make_ehr_retriever_tool
             from agents import extract_evidence_agentic
@@ -66,31 +73,33 @@ def run_pipeline(record_id: str, patient_ehr_text: str, brighton_pdf_path: str) 
             evidence = extract_evidence_agentic(llm, ehr_tool, query)
         else:
             evidence = extract_evidence(llm, ehr_kb, query)
+        print(f"[{section_key}] Agent 1 done in {time.time() - t0:.1f}s", flush=True)
 
         # Brighton context (synonyms) relevant to this section
         brighton_docs = brighton_kb.as_retriever(search_kwargs={"k": 3}).invoke(query)
         brighton_context = "\n".join(d.page_content for d in brighton_docs)
 
         # Agent 2: evaluation constrained to the section's Pydantic schema
+        print(f"[{section_key}] Agent 2 (evaluator) filling in the schema...", flush=True)
+        t0 = time.time()
         section_result = evaluate_section(llm, section_model, evidence, brighton_context)
+        print(f"[{section_key}] Agent 2 done in {time.time() - t0:.1f}s", flush=True)
+
         form_data[field_name_map[section_key]] = section_result
 
-        print(f"[{section_key}] filled in: {section_result}")
+        print(f"[{section_key}] filled in: {section_result}", flush=True)
 
     form = DVT_CriteriaForm(**form_data)
     return form
 
 
 if __name__ == "__main__":
-    # Example run -- replace the placeholders with real paths.
+    # Replace these two paths with the actual locations of your files.
     record_id_example = "PATIENT_001"
-    patient_ehr_text_example = (
-        "The patient shows no pitting edema. Reports calf pain in the left leg "
-        "that started two days ago. No autopsy report available."
-    )
-    brighton_pdf_path_example = "/path/to/brighton_dvt_synonyms.pdf"
+    patient_ehr_path_example = "./patient_001.txt"          # plain .txt clinical record
+    brighton_pdf_path_example = "./1-s2.0-S0264410X22010854-main.pdf"  # Brighton paper PDF
 
-    form = run_pipeline(record_id_example, patient_ehr_text_example, brighton_pdf_path_example)
+    form = run_pipeline(record_id_example, patient_ehr_path_example, brighton_pdf_path_example)
 
     print("\n--- Filled-in JSON (checkboxes) ---")
     print(form_to_json_summary(form))

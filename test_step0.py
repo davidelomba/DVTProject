@@ -22,6 +22,8 @@ Interpreting the output:
   .with_structured_output().
 """
 
+import time
+
 from agents import build_llm
 from models import C_DDimer, B2_NewSymptoms
 
@@ -52,27 +54,40 @@ TEST_CASES = [
 def run_step0_evaluation():
     llm = build_llm()
 
-    print(f"LLM under test: {llm.model}\n")
+    print(f"LLM under test: {llm.model}\n", flush=True)
 
     for case in TEST_CASES:
-        print(f"--- {case['name']} ---")
+        print(f"--- {case['name']} ---", flush=True)
         structured_llm = llm.with_structured_output(case["model"])
 
         successes = 0
         errors = []
+        durations = []
 
         for i in range(N_REPETITIONS):
+            # Progress line printed BEFORE the call, so you see it's alive
+            # and know which attempt is currently running (not just "done").
+            print(f"  [attempt {i+1}/{N_REPETITIONS}] sending request to the model...", flush=True)
+            start = time.time()
             try:
                 result = structured_llm.invoke(case["prompt"])
+                elapsed = time.time() - start
+                durations.append(elapsed)
                 if isinstance(result, case["model"]):
                     successes += 1
+                    print(f"  [attempt {i+1}/{N_REPETITIONS}] OK in {elapsed:.1f}s -> {result}", flush=True)
                 else:
                     errors.append(f"attempt {i+1}: unexpected return type ({type(result)})")
+                    print(f"  [attempt {i+1}/{N_REPETITIONS}] unexpected type in {elapsed:.1f}s", flush=True)
             except Exception as exc:
+                elapsed = time.time() - start
+                durations.append(elapsed)
                 errors.append(f"attempt {i+1}: {type(exc).__name__} -- {exc}")
+                print(f"  [attempt {i+1}/{N_REPETITIONS}] FAILED in {elapsed:.1f}s -> {type(exc).__name__}", flush=True)
 
         rate = successes / N_REPETITIONS * 100
-        print(f"Successes: {successes}/{N_REPETITIONS} ({rate:.0f}%)")
+        avg_time = sum(durations) / len(durations) if durations else 0
+        print(f"\nSuccesses: {successes}/{N_REPETITIONS} ({rate:.0f}%) -- avg {avg_time:.1f}s/call")
         if errors:
             print("Failure details:")
             for e in errors:

@@ -3,13 +3,9 @@ Central configuration for the DVT pipeline.
 Change parameters here instead of scattering them across modules.
 """
 
-# --- Local LLM (via Ollama) ---
-# NOTE: not an official Ollama library model, uploaded by the community.
-# Verified exact name: koesn/llama3-openbiollm-8b (tag q4_K_M ~4.9GB, consistent
-# with the RAM budget). Make sure to run `ollama pull koesn/llama3-openbiollm-8b`
-# (or the specific tag, e.g. `:q4_K_M`) before running the pipeline.
-LLM_MODEL_NAME = "koesn/llama3-openbiollm-8b"  # or "biomistral" if you prefer that one
-LLM_TEMPERATURE = 0.0  # deterministic for both agents (extractor + evaluator)
+
+LLM_MODEL_NAME = "koesn/llama3-openbiollm-8b" 
+LLM_TEMPERATURE = 0.0
 
 # --- Local embeddings (lightweight, do not affect the LLM's RAM budget) ---
 EMBEDDING_MODEL_NAME = "BAAI/bge-small-en-v1.5"
