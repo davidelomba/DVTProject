@@ -85,7 +85,7 @@ def run_pipeline(record_id: str, patient_ehr_path: str, brighton_pdf_path: str):
             section_log["evidence"] = evidence
 
             # Brighton context (synonyms) relevant to this section
-            brighton_docs = brighton_kb.as_retriever(search_kwargs={"k": 3}).invoke(query)
+            brighton_docs = brighton_kb.as_retriever(search_kwargs={"k": config.BRIGHTON_RETRIEVER_K}).invoke(query)
             brighton_context = "\n".join(d.page_content for d in brighton_docs)
             section_log["brighton_context"] = brighton_context
 

@@ -48,6 +48,7 @@ EHR_RETRIEVER_K = 5
 # --- Chunking for the Brighton paper KB (static, English source PDF) ---
 BRIGHTON_CHUNK_SIZE = 800
 BRIGHTON_CHUNK_OVERLAP = 150
+BRIGHTON_RETRIEVER_K = 3
 
 # --- Persistent Chroma paths ---
 BRIGHTON_KB_PERSIST_DIR = "./chroma_brighton_kb"   # static KB, never changes
