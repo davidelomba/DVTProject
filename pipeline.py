@@ -32,7 +32,18 @@ SECTION_QUERIES = {
 }
 
 
-def run_pipeline(record_id: str, patient_ehr_path: str, brighton_pdf_path: str) -> DVT_CriteriaForm:
+def run_pipeline(record_id: str, patient_ehr_path: str, brighton_pdf_path: str):
+    """
+    Returns (form, audit_log).
+
+    audit_log is a dict keyed by section (A1, A2, ...) with the evidence
+    Agent 1 retrieved, the Brighton context given to Agent 2, and Agent 2's
+    full free-form reasoning text (including its FINAL_ANSWER line) for
+    whichever attempt succeeded. This is what makes a case like "the model
+    reasoned correctly but reported the wrong option/index" (or the
+    reverse) diagnosable after the fact, instead of requiring the whole
+    pipeline to be re-run in debug mode to find out.
+    """
     # Run test_step0.py separately before processing real patients, to confirm
     # the model in config.py is currently behaving reliably -- not repeated
     # here on every run since it takes several minutes on its own.
@@ -45,6 +56,7 @@ def run_pipeline(record_id: str, patient_ehr_path: str, brighton_pdf_path: str) 
     ehr_kb = build_ehr_kb(patient_ehr_text, patient_id=record_id, embeddings=embeddings)
 
     form_data = {"record_id": record_id}
+    audit_log = {}
     field_name_map = {
         "A1": "a1", "A2": "a2", "A3_1": "a3_1", "A3_2": "a3_2",
         "B1_1": "b1_1", "B1_2": "b1_2", "B2": "b2",
@@ -56,6 +68,7 @@ def run_pipeline(record_id: str, patient_ehr_path: str, brighton_pdf_path: str) 
         query = SECTION_QUERIES[section_key]
 
         print(f"\n=== Section {section_key} ===", flush=True)
+        section_log = {"query": query}
 
         try:
             # Agent 1: evidence extraction (direct retrieval by default, see config)
@@ -69,21 +82,25 @@ def run_pipeline(record_id: str, patient_ehr_path: str, brighton_pdf_path: str) 
             else:
                 evidence = extract_evidence(llm, ehr_kb, query)
             print(f"[{section_key}] Agent 1 done in {time.time() - t0:.1f}s", flush=True)
+            section_log["evidence"] = evidence
 
             # Brighton context (synonyms) relevant to this section
             brighton_docs = brighton_kb.as_retriever(search_kwargs={"k": 3}).invoke(query)
             brighton_context = "\n".join(d.page_content for d in brighton_docs)
+            section_log["brighton_context"] = brighton_context
 
             # Agent 2: evaluation constrained to the section's Pydantic schema
             print(f"[{section_key}] Agent 2 (evaluator) filling in the schema...", flush=True)
             t0 = time.time()
-            section_result = evaluate_section(llm, section_model, evidence, brighton_context)
+            section_result, reasoning_text = evaluate_section(llm, section_model, evidence, brighton_context)
             print(f"[{section_key}] Agent 2 done in {time.time() - t0:.1f}s", flush=True)
+            section_log["reasoning"] = reasoning_text
+            section_log["result"] = section_result.model_dump()
 
             form_data[field_name_map[section_key]] = section_result
             print(f"[{section_key}] filled in: {section_result}", flush=True)
 
-        except Exception:
+        except Exception as exc:
             # Partial-failure resilience: one section failing (e.g. retries
             # exhausted in evaluate_section, or an unexpected error) should
             # not lose the work already done on other sections. The field
@@ -91,9 +108,12 @@ def run_pipeline(record_id: str, patient_ehr_path: str, brighton_pdf_path: str) 
             print(f"[{section_key}] FAILED -- leaving this field as None. Traceback:", flush=True)
             traceback.print_exc()
             form_data[field_name_map[section_key]] = None
+            section_log["error"] = str(exc)
+
+        audit_log[section_key] = section_log
 
     form = DVT_CriteriaForm(**form_data)
-    return form
+    return form, audit_log
 
 
 if __name__ == "__main__":
@@ -105,7 +125,7 @@ if __name__ == "__main__":
     patient_ehr_path_example = "./patient_001.txt"          # plain .txt clinical record
     brighton_pdf_path_example = "./1-s2.0-S0264410X22010854-main.pdf"  # Brighton paper PDF
 
-    form = run_pipeline(record_id_example, patient_ehr_path_example, brighton_pdf_path_example)
+    form, audit_log = run_pipeline(record_id_example, patient_ehr_path_example, brighton_pdf_path_example)
 
     summary = form_to_json_summary(form)
 
@@ -114,8 +134,19 @@ if __name__ == "__main__":
 
     output_dir = "./output"
     os.makedirs(output_dir, exist_ok=True)
+
     output_path = os.path.join(output_dir, f"{record_id_example}.json")
     with open(output_path, "w", encoding="utf-8") as f:
         json.dump(summary, f, indent=2, ensure_ascii=False)
 
+    # Audit log: evidence, Brighton context, and full model reasoning for
+    # every section, including failed ones. Kept as a separate file (not
+    # merged into the clean output JSON) so it doesn't need to be shared
+    # downstream, but is available whenever a specific answer needs to be
+    # checked without re-running the pipeline.
+    audit_path = os.path.join(output_dir, f"{record_id_example}_audit_log.json")
+    with open(audit_path, "w", encoding="utf-8") as f:
+        json.dump(audit_log, f, indent=2, ensure_ascii=False)
+
     print(f"\nSaved to: {os.path.abspath(output_path)}")
+    print(f"Audit log saved to: {os.path.abspath(audit_path)}")

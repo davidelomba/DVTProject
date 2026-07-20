@@ -112,7 +112,19 @@ correct answer based on the evidence given. Consult the known synonyms from
 the Brighton paper when relevant (e.g. VTE can include DVT). Pay extreme
 attention to negations: if a symptom or finding is explicitly described as
 absent, denied, or ruled out, do not treat it as present. If the evidence
-does not mention a symptom or finding at all, do not assume it is absent."""
+does not mention a symptom or finding at all, do not assume it is absent.
+
+Some questions ask specifically about ONE method or procedure (e.g. autopsy,
+a specific surgical procedure, a specific imaging modality). For these:
+only select an option stating that the method was performed and/or
+confirmed DVT if the evidence EXPLICITLY states that THIS SPECIFIC method
+was used. Do not infer that a method was performed, or that it confirmed
+DVT, just because DVT was confirmed through a DIFFERENT method mentioned
+elsewhere in the evidence (e.g. do not treat DVT confirmed by ultrasound as
+evidence that an autopsy was performed or confirmed anything). If the
+evidence does not mention that specific method at all, the correct answer
+is the "not done / unknown" option for that method, even if DVT was
+confirmed by other means."""
 
 
 def _get_field_info(section_model):
@@ -242,6 +254,15 @@ def evaluate_section(
     is extracted and matched against the schema's valid options. See the
     module docstring for why this replaced two earlier, less reliable
     approaches.
+
+    Returns a (section_model_instance, reasoning_text) tuple. reasoning_text
+    is the model's full free-form response (including the FINAL_ANSWER
+    line) for the attempt that succeeded -- callers should persist this
+    alongside the JSON output. Without it, a wrong final answer is
+    unauditable after the fact: there is no way to tell whether the model's
+    clinical reasoning was correct and only the number/index was
+    misreported, or whether the reasoning itself was wrong -- and no way to
+    tell without re-running the whole pipeline in debug mode.
     """
     field_name, options, multi_select = _get_field_info(section_model)
     prompt = _build_reasoning_prompt(evidence_text, brighton_context, options, multi_select)
@@ -262,10 +283,10 @@ def evaluate_section(
                 matched = [_match_option(item, options) for item in raw_items]
                 seen = set()
                 matched = [m for m in matched if not (m in seen or seen.add(m))]
-                return section_model(**{field_name: matched})
+                return section_model(**{field_name: matched}), content
 
             matched = _match_option(raw_final, options)
-            return section_model(**{field_name: matched})
+            return section_model(**{field_name: matched}), content
 
         except Exception as exc:
             last_error = exc
