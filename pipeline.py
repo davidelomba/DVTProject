@@ -19,7 +19,7 @@ from aggregation import form_to_json_summary
 # clinical record. Refine based on the actual language of the EHRs you'll use
 # (e.g. local abbreviations, Italian vs English).
 SECTION_QUERIES = {
-    "A1": "autopsy report, pathologic evidence of deep vein thrombosis",
+    "A1": "autopsy report, necropsy, post-mortem examination, autoptic findings",
     "A2": "thrombectomy, surgical procedure related to DVT",
     "A3_1": "ultrasound, CT, MRI, venography: imaging outcome for deep vein thrombosis",
     "A3_2": "type of imaging study performed: compression ultrasonography, doppler, venography",

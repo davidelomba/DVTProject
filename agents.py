@@ -57,12 +57,12 @@ def test_structured_output_support(llm: ChatOllama, sample_model) -> bool:
 # Agent 1: Extractor -- direct retrieval (default, non-agentic)
 # ---------------------------------------------------------------------------
 
-EXTRACTOR_SYSTEM_PROMPT = """You are a clinical extractor. You receive fragments
-of a clinical record related to the assigned criterion. Extract exact phrases,
-values, and dates that are relevant. Do not draw conclusions, do not
-summarize, do not infer. If you find no relevant information, state so
-explicitly instead of making anything up. Return only the raw evidence as
-text, not JSON."""
+EXTRACTOR_SYSTEM_PROMPT = """You are a clinical extractor.
+ Extract ONLY exact raw sentences or fragments from the clinical text that are explicitly relevant to 
+ the requested criterion. 
+CRITICAL: Do NOT write any introductory or concluding sentences 
+(e.g. DO NOT write "Here are the extracted phrases..."). Do NOT repeat the name or text of the criterion.
+If no fragment in the text is relevant to the requested criterion, output exactly: "NO RELEVANT EVIDENCE FOUND." """
 
 
 def extract_evidence(llm: ChatOllama, ehr_vectorstore, criterion_query: str) -> str:
