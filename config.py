@@ -88,7 +88,7 @@ SECTION_KEYWORD_GATES = {
         "default_option_text": "No autopsy done, unknown if done, or done but results unavailable"
     },
     "A2": {
-        "keywords": ["thrombectom", "trombectom", "surgical", "surgery", "chirurg", "intervento"],
+        "keywords": ["thrombectom", "trombectom", "embolectom"],
         "default_option_text": "No surgical procedure done; or, done but either did not confirm presence of DVT or findings unknown; or unknown if done"
     }
 }
@@ -106,6 +106,12 @@ SECTION_HINTS = {
     "Imaging studies (ultrasound, Doppler, CT, MRI) performed on a living patient "
     "are NOT autopsies. If the patient is alive or no post-mortem autopsy is mentioned, "
     "you MUST select: 'No autopsy done, unknown if done, or done but results unavailable'."
+    ),
+
+    "A2": (
+        "CRITICAL FOR A2: Pay extreme attention to ANY negations preceding surgical terms. "
+        "If the clinical record explicitly states that a surgical procedure was denied, "
+        "not performed, or is absent, you MUST NOT select options 1 or 2. "
     ),
 
     "B1_1": (
