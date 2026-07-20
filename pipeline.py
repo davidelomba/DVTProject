@@ -103,7 +103,7 @@ if __name__ == "__main__":
     # Replace these two paths with the actual locations of your files.
     record_id_example = "PATIENT_001"
     patient_ehr_path_example = "./patient_001.txt"          # plain .txt clinical record
-    brighton_pdf_path_example = "./brighton_dvt_synonyms.pdf"  # Brighton paper PDF
+    brighton_pdf_path_example = "./1-s2.0-S0264410X22010854-main.pdf"  # Brighton paper PDF
 
     form = run_pipeline(record_id_example, patient_ehr_path_example, brighton_pdf_path_example)
 
