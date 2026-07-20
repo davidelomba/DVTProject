@@ -10,6 +10,7 @@ import shutil
 from langchain_chroma import Chroma
 from langchain_huggingface import HuggingFaceEmbeddings
 from langchain_text_splitters import RecursiveCharacterTextSplitter
+from pypdf import PdfReader
 
 import config
 
@@ -106,11 +107,8 @@ def make_ehr_retriever_tool(ehr_vectorstore: Chroma):
 
 def load_brighton_pdf_text(pdf_path: str) -> str:
     """
-    Extracts text from the Brighton paper PDF. Uses pypdf (standard library,
-    no extra setup needed beyond pip install pypdf).
+    Extracts text from the Brighton paper PDF using pypdf.
     """
-    from pypdf import PdfReader
-
     reader = PdfReader(pdf_path)
     return "\n".join(page.extract_text() or "" for page in reader.pages)
 

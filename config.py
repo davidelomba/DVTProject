@@ -103,9 +103,9 @@ SECTION_KEYWORD_GATES = {
 SECTION_HINTS = {
     "A1": (
         "CRITICAL: This question refers EXCLUSIVELY to post-mortem autopsy findings. "
-    "Imaging studies (ultrasound, Doppler, CT, MRI) performed on a living patient "
-    "are NOT autopsies. If the patient is alive or no post-mortem autopsy is mentioned, "
-    "you MUST select: 'No autopsy done, unknown if done, or done but results unavailable'."
+        "Imaging studies (ultrasound, Doppler, CT, MRI) performed on a living patient "
+        "are NOT autopsies. If the patient is alive or no post-mortem autopsy is mentioned, "
+        "you MUST select: 'No autopsy done, unknown if done, or done but results unavailable'."
     ),
 
     "A2": (
@@ -145,3 +145,25 @@ SECTION_HINTS = {
         "alternative diagnosis was found."
     )
 }
+
+
+# --- Cross-section dependency rules ---
+# Applied after all sections have been evaluated independently.
+# Each entry: if `if_section`'s field has any value other than `none_option`,
+# force `then_section`'s field to `forced_value`. Add new entries here when
+# additional inter-section dependencies are identified in the questionnaire.
+CROSS_SECTION_RULES = [
+    {
+        # Brighton dependency: B2 has >=1 reported symptom -> B1.1 must say ">=1 symptom reported".
+        "if_section": "b2",           # form_data key (lowercase)
+        "none_option": "None of the above were present or it is unknown if any of 1-4 were present",
+        "then_section": "b1_1",       # form_data key (lowercase)
+        "forced_value": "\u22651 symptom or sign of DVT was reported",
+        "audit_key": "B1_1",          # audit_log key (matches SECTION_ORDER casing)
+        "override_message": (
+            "B1.1 was automatically updated to '\u22651 symptom or sign of DVT was reported' "
+            "because symptoms were detected in Section B2, enforcing the "
+            "questionnaire's dependency rule."
+        ),
+    }
+]

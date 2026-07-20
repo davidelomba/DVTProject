@@ -57,11 +57,8 @@ def run_pipeline(record_id: str, patient_ehr_path: str, brighton_pdf_path: str):
 
     form_data = {"record_id": record_id}
     audit_log = {}
-    field_name_map = {
-        "A1": "a1", "A2": "a2", "A3_1": "a3_1", "A3_2": "a3_2",
-        "B1_1": "b1_1", "B1_2": "b1_2", "B2": "b2",
-        "C": "c", "F": "f", "X": "x",
-    }
+    # Section keys map to DVT_CriteriaForm fields via simple lower-casing
+    # (e.g. "A3_1" -> "a3_1"); no explicit mapping dict needed.
 
     for section_key in config.SECTION_ORDER:
         section_model = SECTION_MODELS[section_key]
@@ -100,29 +97,30 @@ def run_pipeline(record_id: str, patient_ehr_path: str, brighton_pdf_path: str):
             print(f"[{section_key}] Agent 2 done in {time.time() - t0:.1f}s", flush=True)
 
             # --- SOFT GATE CROSS-CHECK ---
-            gate_info = getattr(config, "SECTION_KEYWORD_GATES", {}).get(section_key)
+            gate_info = config.SECTION_KEYWORD_GATES.get(section_key)
             if gate_info:
-                # Estraiamo dinamicamente il nome del campo (es. 'answer')
+                # Dynamically retrieve the field name (e.g. 'answer') from the model
                 field_name = list(type(section_result).model_fields.keys())[0]
                 llm_chosen_answer = getattr(section_result, field_name)
-                
-                # Verifichiamo se l'LLM ha dato una risposta positiva (diversa dal default)
+
+                # Check whether the LLM gave a positive answer (i.e. different from the default)
                 if isinstance(llm_chosen_answer, list):
                     is_positive = any(ans != gate_info["default_option_text"] for ans in llm_chosen_answer)
                 else:
                     is_positive = (llm_chosen_answer != gate_info["default_option_text"])
-                
+
                 if is_positive:
                     evidence_lower = evidence.lower()
                     has_keyword = any(kw.lower() in evidence_lower for kw in gate_info["keywords"])
-                    
+
                     if not has_keyword:
                         print(f"[{section_key}] SOFT GATE TRIGGERED: LLM hallucinated a positive answer. Reverting to default.", flush=True)
-                        
-                        # Sovrascriviamo la risposta col default negativo
-                        setattr(section_result, field_name, gate_info["default_option_text"])
-                        
-                        # Tracciamo l'intervento nell'audit log per trasparenza
+
+                        # Rebuild the Pydantic instance with the safe default value
+                        # (avoids bypassing model validation that a bare setattr would do)
+                        section_result = type(section_result)(**{field_name: gate_info["default_option_text"]})
+
+                        # Record the override in the audit log for transparency
                         reasoning_text += (
                             f"\n\n[SYSTEM OVERRIDE]: The LLM originally selected '{llm_chosen_answer}', "
                             f"but no triggering keywords {gate_info['keywords']} were found in the evidence. "
@@ -133,7 +131,7 @@ def run_pipeline(record_id: str, patient_ehr_path: str, brighton_pdf_path: str):
             section_log["reasoning"] = reasoning_text
             section_log["result"] = section_result.model_dump()
 
-            form_data[field_name_map[section_key]] = section_result
+            form_data[section_key.lower()] = section_result
             print(f"[{section_key}] filled in: {section_result}", flush=True)
 
         except Exception as exc:
@@ -143,79 +141,49 @@ def run_pipeline(record_id: str, patient_ehr_path: str, brighton_pdf_path: str):
             # is left as None (DVT_CriteriaForm allows this on every field).
             print(f"[{section_key}] FAILED -- leaving this field as None. Traceback:", flush=True)
             traceback.print_exc()
-            form_data[field_name_map[section_key]] = None
+            form_data[section_key.lower()] = None
             section_log["error"] = str(exc)
 
         audit_log[section_key] = section_log
 
-    # ---------------------------------------------------------------------
-    # HARD-CODED LOGIC RULE: B2 -> B1.1 Dependency
-    # "If at least one of the first four answers in B2 is selected, 
-    # it implies that in B1.1 the first answer should be selected as well."
-    # ---------------------------------------------------------------------
-    b2_result = form_data.get("b2")
-    b1_1_result = form_data.get("b1_1")
+    # --- Cross-section dependency rules (declarative, see config.CROSS_SECTION_RULES) ---
+    # Rules are evaluated after all sections have been independently filled in.
+    for rule in config.CROSS_SECTION_RULES:
+        if_result = form_data.get(rule["if_section"])
+        then_result = form_data.get(rule["then_section"])
 
-    if b2_result is not None and b1_1_result is not None:
-        b2_field = list(type(b2_result).model_fields.keys())[0]
-        b1_1_field = list(type(b1_1_result).model_fields.keys())[0]
-        
-        b2_answers = getattr(b2_result, b2_field)
-        
-        has_actual_symptoms = any(
-            "None of the above" not in ans for ans in b2_answers
-        )
-        
-        if has_actual_symptoms:
-            forced_b1_1_answer = "≥1 symptom or sign of DVT was reported"
-            
-            if getattr(b1_1_result, b1_1_field) != forced_b1_1_answer:
-                print(f"[CROSS-SECTION RULE] B2 has symptoms. Forcing B1.1 to '{forced_b1_1_answer}'", flush=True)
-                setattr(b1_1_result, b1_1_field, forced_b1_1_answer)
-                
-                # Tracciamo la correzione nell'audit log
-                if "B1_1" in audit_log:
-                    audit_log["B1_1"]["reasoning"] += (
-                        "\n\n[SYSTEM OVERRIDE]: B1.1 was automatically updated to "
-                        "'≥1 symptom or sign of DVT was reported' because symptoms "
-                        "were detected in Section B2, enforcing the questionnaire's dependency rule."
+        if if_result is None or then_result is None:
+            continue
+
+        if_field = list(type(if_result).model_fields.keys())[0]
+        then_field = list(type(then_result).model_fields.keys())[0]
+
+        if_answers = getattr(if_result, if_field)
+        if not isinstance(if_answers, list):
+            if_answers = [if_answers]
+
+        has_non_default = any(ans != rule["none_option"] for ans in if_answers)
+
+        if has_non_default:
+            current_value = getattr(then_result, then_field)
+            if current_value != rule["forced_value"]:
+                print(
+                    f"[CROSS-SECTION RULE] '{rule['if_section']}' triggered. "
+                    f"Forcing '{rule['then_section']}' to '{rule['forced_value']}'.",
+                    flush=True,
+                )
+                # Rebuild the Pydantic instance with the forced value
+                # (safer than setattr: preserves model validation)
+                form_data[rule["then_section"]] = type(then_result)(
+                    **{then_field: rule["forced_value"]}
+                )
+                audit_key = rule["audit_key"]
+                if audit_key in audit_log:
+                    audit_log[audit_key]["reasoning"] = (
+                        audit_log[audit_key].get("reasoning", "")
+                        + f"\n\n[SYSTEM OVERRIDE]: {rule['override_message']}"
                     )
+    # -----------------------------------------------------------------------------------------
 
     form = DVT_CriteriaForm(**form_data)
     return form, audit_log
-
-
-if __name__ == "__main__":
-    import json
-    import os
-
-    # Replace these two paths with the actual locations of your files.
-    record_id_example = "PATIENT_001"
-    patient_ehr_path_example = "./patient_001.txt"          # plain .txt clinical record
-    brighton_pdf_path_example = "./1-s2.0-S0264410X22010854-main.pdf"  # Brighton paper PDF
-
-    form, audit_log = run_pipeline(record_id_example, patient_ehr_path_example, brighton_pdf_path_example)
-
-    summary = form_to_json_summary(form)
-
-    print("\n--- Filled-in JSON (checkboxes) ---")
-    print(json.dumps(summary, indent=2))
-
-    output_dir = "./output"
-    os.makedirs(output_dir, exist_ok=True)
-
-    output_path = os.path.join(output_dir, f"{record_id_example}.json")
-    with open(output_path, "w", encoding="utf-8") as f:
-        json.dump(summary, f, indent=2, ensure_ascii=False)
-
-    # Audit log: evidence, Brighton context, and full model reasoning for
-    # every section, including failed ones. Kept as a separate file (not
-    # merged into the clean output JSON) so it doesn't need to be shared
-    # downstream, but is available whenever a specific answer needs to be
-    # checked without re-running the pipeline.
-    audit_path = os.path.join(output_dir, f"{record_id_example}_audit_log.json")
-    with open(audit_path, "w", encoding="utf-8") as f:
-        json.dump(audit_log, f, indent=2, ensure_ascii=False)
-
-    print(f"\nSaved to: {os.path.abspath(output_path)}")
-    print(f"Audit log saved to: {os.path.abspath(audit_path)}")

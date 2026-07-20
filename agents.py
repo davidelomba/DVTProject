@@ -260,7 +260,7 @@ def evaluate_section(
     evidence_text: str,
     brighton_context: str = "",
     extra_instructions: str = "",
-    max_retries: int = 2,
+    max_retries: int = 2,  # additional retries after the first attempt; total attempts = max_retries + 1
 ):
     """
     Fills in the current section's schema: the model reasons freely (no
