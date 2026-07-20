@@ -101,20 +101,13 @@ SECTION_KEYWORD_GATES = {
 # explaining the acute clinical picture" -- conflating support FOR the DVT
 # diagnosis with a diagnosis INSTEAD OF it (see PATIENT_001 audit log).
 SECTION_HINTS = {
-    "X": (
-        "IMPORTANT -- clarification for this question: 'alternative "
-        "diagnosis' means a DIFFERENT medical condition that could explain "
-        "the patient's reported symptoms INSTEAD OF DVT (for example: a "
-        "muscle or tendon injury, a fracture, cellulitis, a ruptured "
-        "Baker's cyst, heart failure -- see the reference list above for "
-        "more examples). Evidence that SUPPORTS the DVT diagnosis itself "
-        "(positive imaging, an elevated D-dimer, or a DVT risk factor such "
-        "as recent travel or surgery) is NOT an alternative diagnosis and "
-        "must not be treated as one. If no different explanatory condition "
-        "is mentioned in the evidence, the correct answer is that no "
-        "alternative diagnosis was found."
+    "A1": (
+        "CRITICAL: This question refers EXCLUSIVELY to post-mortem autopsy findings. "
+    "Imaging studies (ultrasound, Doppler, CT, MRI) performed on a living patient "
+    "are NOT autopsies. If the patient is alive or no post-mortem autopsy is mentioned, "
+    "you MUST select: 'No autopsy done, unknown if done, or done but results unavailable'."
     ),
-    
+
     "B1_1": (
         "CRITICAL DISTINCTION FOR NEGATIONS: "
         "Select the second option ('There was no report of a recognized DVT syndrome') "
@@ -130,5 +123,19 @@ SECTION_HINTS = {
         "upper limit if it is explicitly mentioned in the text. "
         "If the lab's reference range is NOT available in the text, you MUST use 500 ng/mL "
         "as the default upper limit of normal (i.e., a value < 500 is normal, >= 500 exceeds the limit)."
+    ),
+
+        "X": (
+        "IMPORTANT -- clarification for this question: 'alternative "
+        "diagnosis' means a DIFFERENT medical condition that could explain "
+        "the patient's reported symptoms INSTEAD OF DVT (for example: a "
+        "muscle or tendon injury, a fracture, cellulitis, a ruptured "
+        "Baker's cyst, heart failure -- see the reference list above for "
+        "more examples). Evidence that SUPPORTS the DVT diagnosis itself "
+        "(positive imaging, an elevated D-dimer, or a DVT risk factor such "
+        "as recent travel or surgery) is NOT an alternative diagnosis and "
+        "must not be treated as one. If no different explanatory condition "
+        "is mentioned in the evidence, the correct answer is that no "
+        "alternative diagnosis was found."
     )
 }
