@@ -135,7 +135,17 @@ def _get_field_info(section_model):
 
 
 def _build_reasoning_prompt(evidence_text: str, brighton_context: str, options: list[str], multi_select: bool) -> str:
-    options_block = "\n".join(f"- {opt}" for opt in options)
+    # Options are numbered and the model is asked to answer with the NUMBER(S),
+    # not by copying the option text. This sidesteps a real failure mode found
+    # during testing: several questions have "mirror" options that differ only
+    # by a negation (e.g. A1: "...showed presence of DVT" vs "...showed no
+    # evidence of DVT"; A3_1: "...and confirmed DVT" vs "...but didn't confirm
+    # DVT"). If the model paraphrases even slightly instead of copying
+    # verbatim, a text-similarity fuzzy match (difflib) can latch onto the
+    # semantically OPPOSITE option, because the two strings are textually very
+    # close despite meaning the opposite thing. An index has no "near miss"
+    # failure mode of that kind.
+    options_block = "\n".join(f"{i}. {opt}" for i, opt in enumerate(options, start=1))
     prompt = f"Evidence: {evidence_text}"
     if brighton_context:
         prompt += f"\n\nReference synonyms/terminology (Brighton):\n{brighton_context}"
@@ -144,39 +154,76 @@ def _build_reasoning_prompt(evidence_text: str, brighton_context: str, options: 
     if multi_select:
         prompt += (
             "First explain your reasoning in a few sentences. Then, on the "
-            "very last line, write exactly:\nFINAL_ANSWER: <option 1>; <option 2>; ...\n"
-            "listing every option that applies, copied exactly as shown above, "
-            "separated by semicolons. If only one applies, list just that one."
+            "very last line of your entire response, write exactly:\n"
+            "FINAL_ANSWER: <number>; <number>; ...\n"
+            "listing the NUMBER of every option that applies, separated by "
+            "semicolons (e.g. \"FINAL_ANSWER: 1; 3\"). If only one applies, "
+            "list just that one number. Do not write the option text on this "
+            "line, only the number(s)."
         )
     else:
         prompt += (
             "First explain your reasoning in a few sentences. Then, on the "
-            "very last line, write exactly:\nFINAL_ANSWER: <the one option that applies>\n"
-            "copied exactly as shown above."
+            "very last line of your entire response, write exactly:\n"
+            "FINAL_ANSWER: <number>\n"
+            "with the NUMBER of the one option that applies (e.g. "
+            "\"FINAL_ANSWER: 2\"). Do not write the option text on this line, "
+            "only the number."
         )
     return prompt
 
 
 def _extract_final_answer_line(text: str) -> str:
-    match = re.search(r"FINAL_ANSWER:\s*(.+)", text)
-    if not match:
-        raise ValueError(f"No FINAL_ANSWER line found in response: {text!r}")
-    return match.group(1).strip()
-
-
-def _match_option(raw_value: str, valid_options: list[str], cutoff: float = 0.6) -> str:
     """
-    Exact match first, then fuzzy match against the valid enum options.
-    Strips common stray formatting the model sometimes adds (leading "- ",
-    trailing punctuation) before comparing.
+    Returns the content after the LAST "FINAL_ANSWER:" occurrence in the
+    response. Using the last (not first) match matters because the model's
+    free-form reasoning sometimes references the instruction itself (e.g.
+    "I will follow the FINAL_ANSWER: format as requested") before actually
+    answering; re.search would previously grab that mention instead of the
+    real answer on the closing line.
+    """
+    matches = re.findall(r"FINAL_ANSWER:\s*(.+)", text)
+    if not matches:
+        raise ValueError(f"No FINAL_ANSWER line found in response: {text!r}")
+    return matches[-1].strip()
+
+
+def _match_option(raw_value: str, valid_options: list[str], cutoff: float = 0.75) -> str:
+    """
+    Primary path: the raw value is the option's 1-based index (what the
+    prompt now asks for), which is unambiguous and immune to the
+    negation-pair confusion described in _build_reasoning_prompt.
+
+    Fallback path (only if the model didn't follow the numeric-answer
+    instruction and wrote text instead): exact text match first, then a
+    fuzzy match at a stricter cutoff than before (0.75, was 0.6). Every
+    fuzzy match is logged with its score so it can be audited -- silent
+    fuzzy matching on clinically opposite options was the original risk.
     """
     cleaned = raw_value.strip().lstrip("-").strip().rstrip(".;").strip()
 
+    # Numeric index path (expected/primary case).
+    index_candidate = cleaned.rstrip(".").strip()
+    if index_candidate.isdigit():
+        idx = int(index_candidate)
+        if 1 <= idx <= len(valid_options):
+            return valid_options[idx - 1]
+        raise ValueError(
+            f"Index {idx} out of range for {len(valid_options)} options: {valid_options}"
+        )
+
+    # Text fallback (model didn't answer with a number).
     if cleaned in valid_options:
         return cleaned
 
     close = difflib.get_close_matches(cleaned, valid_options, n=1, cutoff=cutoff)
     if close:
+        print(
+            f"[WARNING] Fuzzy text match used (no valid index given): "
+            f"'{raw_value}' -> '{close[0]}'. Verify this is correct, especially "
+            f"for negation-paired options.",
+            flush=True,
+        )
         return close[0]
 
     raise ValueError(f"Could not match '{raw_value}' to any of {valid_options}")

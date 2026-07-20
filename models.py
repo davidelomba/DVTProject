@@ -38,7 +38,7 @@ class A2_SurgicalProcedure(BaseModel):
 class A3_1_ImagingOutcome(BaseModel):
     answer: Literal[
         "\u22651 imaging study was done and confirmed DVT",
-        "\u22651 Imaging study was done but didn't confirm DVT",
+        "\u22651 imaging study was done but didn't confirm DVT",
         "No imaging studies done, unknown if done, or done but results unknown",
     ] = Field(description="A3.1. Imaging studies confirmed the presence of DVT — one best answer")
 

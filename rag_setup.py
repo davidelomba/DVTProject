@@ -5,10 +5,11 @@ Builds the two vector stores required by the plan:
 """
 
 import os
+import shutil
+
 from langchain_chroma import Chroma
 from langchain_huggingface import HuggingFaceEmbeddings
 from langchain_text_splitters import RecursiveCharacterTextSplitter
-from pypdf import PdfReader
 
 import config
 
@@ -33,7 +34,10 @@ def build_brighton_kb(brighton_pdf_text: str, embeddings=None, force_rebuild: bo
             embedding_function=embeddings,
         )
 
-    splitter = RecursiveCharacterTextSplitter(chunk_size=800, chunk_overlap=150)
+    splitter = RecursiveCharacterTextSplitter(
+        chunk_size=config.BRIGHTON_CHUNK_SIZE,
+        chunk_overlap=config.BRIGHTON_CHUNK_OVERLAP,
+    )
     chunks = splitter.split_text(brighton_pdf_text)
 
     return Chroma.from_texts(
@@ -59,6 +63,14 @@ def build_ehr_kb(patient_record_text: str, patient_id: str, embeddings=None) -> 
     chunks = splitter.split_text(patient_record_text)
 
     persist_dir = f"{config.EHR_KB_PERSIST_DIR}_{patient_id}"
+
+    # This KB is meant to be rebuilt fresh on every run (see module docstring).
+    # Without removing the old directory first, Chroma.from_texts() appends
+    # to whatever is already persisted there, so re-running the pipeline on
+    # the same patient_id (e.g. during debugging) silently accumulates
+    # duplicate chunks across runs, diluting retrieval relevance over time.
+    if os.path.isdir(persist_dir):
+        shutil.rmtree(persist_dir)
 
     return Chroma.from_texts(
         texts=chunks,

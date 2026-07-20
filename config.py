@@ -31,12 +31,23 @@ LLM_NUM_PREDICT = 512   # token cap: prevents runaway generation from costing mi
 LLM_REQUEST_TIMEOUT = 180  # seconds; this model has been observed to take >140s on some calls
 
 # --- Local embeddings (lightweight, do not affect the LLM's RAM budget) ---
-EMBEDDING_MODEL_NAME = "BAAI/bge-small-en-v1.5"
+# Multilingual model, not English-only: clinical records are in Italian.
+# Deliberately NOT translating the records to English instead -- machine
+# translation is an extra, non-deterministic, non-auditable step that risks
+# distorting exactly the kind of language this pipeline is most sensitive to
+# (negations, clinical terminology), on top of adding RAM/latency cost.
+# Keeping records in their original language + a multilingual embedding model
+# avoids that failure mode entirely.
+EMBEDDING_MODEL_NAME = "intfloat/multilingual-e5-small"
 
 # --- Chunking for the clinical record (EHR) ---
 EHR_CHUNK_SIZE = 800
 EHR_CHUNK_OVERLAP = 150
 EHR_RETRIEVER_K = 5
+
+# --- Chunking for the Brighton paper KB (static, English source PDF) ---
+BRIGHTON_CHUNK_SIZE = 800
+BRIGHTON_CHUNK_OVERLAP = 150
 
 # --- Persistent Chroma paths ---
 BRIGHTON_KB_PERSIST_DIR = "./chroma_brighton_kb"   # static KB, never changes
