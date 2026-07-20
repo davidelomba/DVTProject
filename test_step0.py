@@ -1,30 +1,17 @@
 """
-Step 0 evaluation script.
+Step 0 evaluation script -- final architecture (reason freely, then extract
+FINAL_ANSWER deterministically, with llama3:8b-instruct-q4_0).
 
-Run this BEFORE launching pipeline.py on real data. Requires Ollama to be
-installed and running, and the model configured in config.py to already be
-pulled (`ollama pull <model_name>`).
+Run this before launching pipeline.py on real data, to confirm the model
+still behaves consistently (not just on a single lucky run).
 
 Usage:
     python test_step0.py
-
-Interpreting the output:
-- 100% success rate on both schemas, across repetitions -> you can trust
-  .with_structured_output() and proceed with the pipeline as is.
-- High but not 100% success rate (e.g. 8/10) -> the model mostly works but is
-  not fully reliable: keep the retry mechanism already present in
-  evaluate_section() (max_retries) active, and monitor failures in the logs
-  during real use.
-- Low success rate (below ~70%) or systematic exceptions -> do not trust
-  native tool-calling: implement the JSON-mode fallback described in the
-  evaluate_section() docstring in agents.py (explicit prompt with the schema
-  + section_model.model_validate_json() with retry), instead of relying on
-  .with_structured_output().
 """
 
 import time
 
-from agents import build_llm
+from agents import build_llm, evaluate_section
 from models import C_DDimer, B2_NewSymptoms
 
 N_REPETITIONS = 10
@@ -33,22 +20,30 @@ TEST_CASES = [
     {
         "name": "C_DDimer (simple schema, single choice)",
         "model": C_DDimer,
-        "prompt": (
-            "Evidence: the patient's D-dimer came back at 1200 ng/mL, "
-            "the lab's upper limit of normal is 500 ng/mL. "
-            "Fill in the schema."
+        "evidence": (
+            "The patient's D-dimer came back at 1200 ng/mL, "
+            "the lab's upper limit of normal is 500 ng/mL."
         ),
+        "expected_answer": "D-dimer exceeded test lab's upper limit of normal.",
     },
     {
         "name": "B2_NewSymptoms (schema with multi-select and validator)",
         "model": B2_NewSymptoms,
-        "prompt": (
-            "Evidence: the patient has no edema. Reports pain in the left "
-            "calf. No mention of redness or warmth. "
-            "Fill in the schema."
+        "evidence": (
+            "The patient has no edema. Reports pain in the left calf. "
+            "No mention of redness or warmth."
         ),
+        "expected_symptoms": ["Calf pain or tenderness"],
     },
 ]
+
+
+def check_correctness(case, result) -> bool:
+    if "expected_answer" in case:
+        return result.answer == case["expected_answer"]
+    if "expected_symptoms" in case:
+        return set(result.symptoms) == set(case["expected_symptoms"])
+    return True
 
 
 def run_step0_evaluation():
@@ -58,36 +53,41 @@ def run_step0_evaluation():
 
     for case in TEST_CASES:
         print(f"--- {case['name']} ---", flush=True)
-        structured_llm = llm.with_structured_output(case["model"])
 
-        successes = 0
+        schema_valid_count = 0
+        correct_count = 0
         errors = []
         durations = []
 
         for i in range(N_REPETITIONS):
-            # Progress line printed BEFORE the call, so you see it's alive
-            # and know which attempt is currently running (not just "done").
             print(f"  [attempt {i+1}/{N_REPETITIONS}] sending request to the model...", flush=True)
             start = time.time()
             try:
-                result = structured_llm.invoke(case["prompt"])
+                result = evaluate_section(llm, case["model"], case["evidence"])
                 elapsed = time.time() - start
                 durations.append(elapsed)
-                if isinstance(result, case["model"]):
-                    successes += 1
-                    print(f"  [attempt {i+1}/{N_REPETITIONS}] OK in {elapsed:.1f}s -> {result}", flush=True)
+                schema_valid_count += 1
+
+                is_correct = check_correctness(case, result)
+                if is_correct:
+                    correct_count += 1
+                    print(f"  [attempt {i+1}/{N_REPETITIONS}] OK (correct) in {elapsed:.1f}s -> {result}", flush=True)
                 else:
-                    errors.append(f"attempt {i+1}: unexpected return type ({type(result)})")
-                    print(f"  [attempt {i+1}/{N_REPETITIONS}] unexpected type in {elapsed:.1f}s", flush=True)
+                    print(f"  [attempt {i+1}/{N_REPETITIONS}] schema-valid but WRONG in {elapsed:.1f}s -> {result}", flush=True)
             except Exception as exc:
                 elapsed = time.time() - start
                 durations.append(elapsed)
                 errors.append(f"attempt {i+1}: {type(exc).__name__} -- {exc}")
                 print(f"  [attempt {i+1}/{N_REPETITIONS}] FAILED in {elapsed:.1f}s -> {type(exc).__name__}", flush=True)
 
-        rate = successes / N_REPETITIONS * 100
         avg_time = sum(durations) / len(durations) if durations else 0
-        print(f"\nSuccesses: {successes}/{N_REPETITIONS} ({rate:.0f}%) -- avg {avg_time:.1f}s/call")
+        print(
+            f"\nSchema-valid: {schema_valid_count}/{N_REPETITIONS} "
+            f"({schema_valid_count / N_REPETITIONS * 100:.0f}%) -- "
+            f"Correct: {correct_count}/{N_REPETITIONS} "
+            f"({correct_count / N_REPETITIONS * 100:.0f}%) -- "
+            f"avg {avg_time:.1f}s/call"
+        )
         if errors:
             print("Failure details:")
             for e in errors:
@@ -95,9 +95,11 @@ def run_step0_evaluation():
         print()
 
     print(
-        "Read the results interpretation in this file's top docstring "
-        "before deciding whether to proceed with .with_structured_output() "
-        "or switch to the JSON-mode fallback."
+        "Note: 'Schema-valid' means a FINAL_ANSWER line was found and matched "
+        "to a valid option. 'Correct' means the content was also factually "
+        "right. Expect calls to take anywhere from ~10s to over 100s with "
+        "this model on CPU -- see config.LLM_REQUEST_TIMEOUT if calls are "
+        "being cut off."
     )
 
 

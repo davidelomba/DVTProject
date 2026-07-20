@@ -3,9 +3,32 @@ Central configuration for the DVT pipeline.
 Change parameters here instead of scattering them across modules.
 """
 
-
-LLM_MODEL_NAME = "koesn/llama3-openbiollm-8b" 
-LLM_TEMPERATURE = 0.0
+# --- Local LLM (via Ollama) ---
+# FINAL DECISION (after extensive empirical testing, see ACTION_PLAN.md):
+# - koesn/llama3-openbiollm-8b (community GGUF conversion): failed -- echoed
+#   the prompt back or hallucinated unrelated clinical cases on multi-
+#   constraint instructions.
+# - hf.co/aaditya/OpenBioLLM-Llama3-8B-GGUF:Q4_K_M (official GGUF from the
+#   original OpenBioLLM author): reasoned correctly in isolation, but
+#   consistently failed to follow ANY additional formatting instruction
+#   (JSON output, a fixed "FINAL_ANSWER:" line) once the system prompt grew
+#   past ~100 characters -- it would default to explaining in prose instead,
+#   regardless of instruction content. It also occasionally reasoned
+#   incorrectly on the harder multi-select schema (B2) depending on prompt
+#   phrasing.
+# - llama3:8b-instruct-q4_0 (official, generic instruction-tuned model):
+#   reliably reasons correctly AND follows the "reason, then write a
+#   FINAL_ANSWER: ... line" instruction, on both a simple single-choice
+#   schema and a harder multi-select schema. Chosen as the final model.
+# Trade-off: this is NOT a clinically fine-tuned model. Domain knowledge is
+# instead supplied via the RAG context (Brighton synonyms + extracted EHR
+# evidence) and the system prompt's negation-handling guidance, rather than
+# from the model's own training. This is a deliberate, documented choice,
+# not an oversight.
+LLM_MODEL_NAME = "llama3:8b-instruct-q4_0"
+LLM_TEMPERATURE = 0.0  # deterministic for both agents (extractor + evaluator)
+LLM_NUM_PREDICT = 512   # token cap: prevents runaway generation from costing minutes
+LLM_REQUEST_TIMEOUT = 180  # seconds; this model has been observed to take >140s on some calls
 
 # --- Local embeddings (lightweight, do not affect the LLM's RAM budget) ---
 EMBEDDING_MODEL_NAME = "BAAI/bge-small-en-v1.5"
@@ -20,14 +43,12 @@ BRIGHTON_KB_PERSIST_DIR = "./chroma_brighton_kb"   # static KB, never changes
 EHR_KB_PERSIST_DIR = "./chroma_ehr_kb"             # dynamic KB, one per patient/run
 
 # --- Extractor: use real tool-calling agent or direct retrieval? ---
-# Default False: on quantized 8B models, agentic tool-calling is often
-# unreliable (see ACTION_PLAN.md, point 4). Set to True only after verifying
-# with test_structured_output_support() in agents.py that the model handles
-# tool-calling consistently.
+# Default False: agentic tool-calling was never validated as reliable during
+# testing (all testing focused on the evaluator's structured-output problem).
+# Direct retrieval remains the safer default.
 USE_AGENTIC_EXTRACTOR = False
 
 # --- Questionnaire sections, in the order they should be processed ---
-# (used by the loop in pipeline.py)
 SECTION_ORDER = [
     "A1", "A2", "A3_1", "A3_2",
     "B1_1", "B1_2", "B2",

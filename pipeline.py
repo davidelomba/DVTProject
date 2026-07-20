@@ -6,11 +6,12 @@ At the end, merges all sections into a DVT_CriteriaForm and produces the JSON.
 """
 
 import time
+import traceback
 
 import config
 from models import DVT_CriteriaForm, SECTION_MODELS
 from rag_setup import get_embeddings, build_brighton_kb, build_ehr_kb, load_brighton_pdf_text, load_ehr_text
-from agents import build_llm, test_structured_output_support, extract_evidence, evaluate_section
+from agents import build_llm, extract_evidence, evaluate_section
 from aggregation import form_to_json_summary
 
 
@@ -32,18 +33,11 @@ SECTION_QUERIES = {
 
 
 def run_pipeline(record_id: str, patient_ehr_path: str, brighton_pdf_path: str) -> DVT_CriteriaForm:
+    # Run test_step0.py separately before processing real patients, to confirm
+    # the model in config.py is currently behaving reliably -- not repeated
+    # here on every run since it takes several minutes on its own.
     embeddings = get_embeddings()
     llm = build_llm()
-
-    # Step 0: verify structured-output compatibility BEFORE processing real patients.
-    # sample_model can be any of the available ones, e.g. C_DDimer (simple schema).
-    from models import C_DDimer
-    if not test_structured_output_support(llm, C_DDimer):
-        print(
-            "[Step 0] WARNING: with_structured_output is not reliable with "
-            f"{config.LLM_MODEL_NAME}. Consider the JSON-mode fallback "
-            "described in agents.evaluate_section() before proceeding on real data."
-        )
 
     brighton_text = load_brighton_pdf_text(brighton_pdf_path)
     patient_ehr_text = load_ehr_text(patient_ehr_path)
@@ -63,43 +57,65 @@ def run_pipeline(record_id: str, patient_ehr_path: str, brighton_pdf_path: str) 
 
         print(f"\n=== Section {section_key} ===", flush=True)
 
-        # Agent 1: evidence extraction (direct retrieval by default, see config)
-        print(f"[{section_key}] Agent 1 (extractor) searching the clinical record...", flush=True)
-        t0 = time.time()
-        if config.USE_AGENTIC_EXTRACTOR:
-            from rag_setup import make_ehr_retriever_tool
-            from agents import extract_evidence_agentic
-            ehr_tool = make_ehr_retriever_tool(ehr_kb)
-            evidence = extract_evidence_agentic(llm, ehr_tool, query)
-        else:
-            evidence = extract_evidence(llm, ehr_kb, query)
-        print(f"[{section_key}] Agent 1 done in {time.time() - t0:.1f}s", flush=True)
+        try:
+            # Agent 1: evidence extraction (direct retrieval by default, see config)
+            print(f"[{section_key}] Agent 1 (extractor) searching the clinical record...", flush=True)
+            t0 = time.time()
+            if config.USE_AGENTIC_EXTRACTOR:
+                from rag_setup import make_ehr_retriever_tool
+                from agents import extract_evidence_agentic
+                ehr_tool = make_ehr_retriever_tool(ehr_kb)
+                evidence = extract_evidence_agentic(llm, ehr_tool, query)
+            else:
+                evidence = extract_evidence(llm, ehr_kb, query)
+            print(f"[{section_key}] Agent 1 done in {time.time() - t0:.1f}s", flush=True)
 
-        # Brighton context (synonyms) relevant to this section
-        brighton_docs = brighton_kb.as_retriever(search_kwargs={"k": 3}).invoke(query)
-        brighton_context = "\n".join(d.page_content for d in brighton_docs)
+            # Brighton context (synonyms) relevant to this section
+            brighton_docs = brighton_kb.as_retriever(search_kwargs={"k": 3}).invoke(query)
+            brighton_context = "\n".join(d.page_content for d in brighton_docs)
 
-        # Agent 2: evaluation constrained to the section's Pydantic schema
-        print(f"[{section_key}] Agent 2 (evaluator) filling in the schema...", flush=True)
-        t0 = time.time()
-        section_result = evaluate_section(llm, section_model, evidence, brighton_context)
-        print(f"[{section_key}] Agent 2 done in {time.time() - t0:.1f}s", flush=True)
+            # Agent 2: evaluation constrained to the section's Pydantic schema
+            print(f"[{section_key}] Agent 2 (evaluator) filling in the schema...", flush=True)
+            t0 = time.time()
+            section_result = evaluate_section(llm, section_model, evidence, brighton_context)
+            print(f"[{section_key}] Agent 2 done in {time.time() - t0:.1f}s", flush=True)
 
-        form_data[field_name_map[section_key]] = section_result
+            form_data[field_name_map[section_key]] = section_result
+            print(f"[{section_key}] filled in: {section_result}", flush=True)
 
-        print(f"[{section_key}] filled in: {section_result}", flush=True)
+        except Exception:
+            # Partial-failure resilience: one section failing (e.g. retries
+            # exhausted in evaluate_section, or an unexpected error) should
+            # not lose the work already done on other sections. The field
+            # is left as None (DVT_CriteriaForm allows this on every field).
+            print(f"[{section_key}] FAILED -- leaving this field as None. Traceback:", flush=True)
+            traceback.print_exc()
+            form_data[field_name_map[section_key]] = None
 
     form = DVT_CriteriaForm(**form_data)
     return form
 
 
 if __name__ == "__main__":
+    import json
+    import os
+
     # Replace these two paths with the actual locations of your files.
     record_id_example = "PATIENT_001"
     patient_ehr_path_example = "./patient_001.txt"          # plain .txt clinical record
-    brighton_pdf_path_example = "./1-s2.0-S0264410X22010854-main.pdf"  # Brighton paper PDF
+    brighton_pdf_path_example = "./brighton_dvt_synonyms.pdf"  # Brighton paper PDF
 
     form = run_pipeline(record_id_example, patient_ehr_path_example, brighton_pdf_path_example)
 
+    summary = form_to_json_summary(form)
+
     print("\n--- Filled-in JSON (checkboxes) ---")
-    print(form_to_json_summary(form))
+    print(json.dumps(summary, indent=2))
+
+    output_dir = "./output"
+    os.makedirs(output_dir, exist_ok=True)
+    output_path = os.path.join(output_dir, f"{record_id_example}.json")
+    with open(output_path, "w", encoding="utf-8") as f:
+        json.dump(summary, f, indent=2, ensure_ascii=False)
+
+    print(f"\nSaved to: {os.path.abspath(output_path)}")
