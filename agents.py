@@ -146,7 +146,13 @@ def _get_field_info(section_model):
     return field_name, options, False
 
 
-def _build_reasoning_prompt(evidence_text: str, brighton_context: str, options: list[str], multi_select: bool) -> str:
+def _build_reasoning_prompt(
+    evidence_text: str,
+    brighton_context: str,
+    options: list[str],
+    multi_select: bool,
+    extra_instructions: str = "",
+) -> str:
     # Options are numbered and the model is asked to answer with the NUMBER(S),
     # not by copying the option text. This sidesteps a real failure mode found
     # during testing: several questions have "mirror" options that differ only
@@ -161,6 +167,8 @@ def _build_reasoning_prompt(evidence_text: str, brighton_context: str, options: 
     prompt = f"Evidence: {evidence_text}"
     if brighton_context:
         prompt += f"\n\nReference synonyms/terminology (Brighton):\n{brighton_context}"
+    if extra_instructions:
+        prompt += f"\n\n{extra_instructions}"
     prompt += f"\n\nOptions:\n{options_block}\n\n"
 
     if multi_select:
@@ -246,6 +254,7 @@ def evaluate_section(
     section_model,
     evidence_text: str,
     brighton_context: str = "",
+    extra_instructions: str = "",
     max_retries: int = 2,
 ):
     """
@@ -254,6 +263,10 @@ def evaluate_section(
     is extracted and matched against the schema's valid options. See the
     module docstring for why this replaced two earlier, less reliable
     approaches.
+
+    extra_instructions (optional): section-specific clarification appended
+    to the prompt, for criteria whose meaning the model tends to invert or
+    conflate with generic instructions alone (see config.SECTION_HINTS).
 
     Returns a (section_model_instance, reasoning_text) tuple. reasoning_text
     is the model's full free-form response (including the FINAL_ANSWER
@@ -265,7 +278,7 @@ def evaluate_section(
     tell without re-running the whole pipeline in debug mode.
     """
     field_name, options, multi_select = _get_field_info(section_model)
-    prompt = _build_reasoning_prompt(evidence_text, brighton_context, options, multi_select)
+    prompt = _build_reasoning_prompt(evidence_text, brighton_context, options, multi_select, extra_instructions)
 
     last_error = None
     for attempt in range(max_retries + 1):
@@ -291,9 +304,12 @@ def evaluate_section(
         except Exception as exc:
             last_error = exc
             prompt += (
-                f"\n\n(Your previous attempt failed: {exc}. Make sure to "
-                f"include the FINAL_ANSWER line exactly as instructed, "
-                f"copying the option text exactly as shown in the list above.)"
+                f"\n\n(Your previous attempt failed: {exc}. Remember: on "
+                f"the very last line of your response, write exactly "
+                f"'FINAL_ANSWER: <number>' (or several numbers separated by "
+                f"';' for a multi-select question), using ONLY the option's "
+                f"number from the list above. Do not write the option text "
+                f"on that line.)"
             )
 
     raise RuntimeError(f"Evaluation failed after {max_retries + 1} attempts: {last_error}")

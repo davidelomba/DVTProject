@@ -66,3 +66,69 @@ SECTION_ORDER = [
     "B1_1", "B1_2", "B2",
     "C", "F", "X",
 ]
+
+# --- Deterministic keyword gates ---
+# For sections asking whether ONE SPECIFIC method/procedure was performed
+# (autopsy, surgery), the LLM (llama3:8b-instruct-q4_0, 8B quantized) was
+# observed to hallucinate a full positive narrative even when the evidence
+# never mentions the method at all -- e.g. for A1 it wrote "the evidence
+# explicitly states that an autopsy was performed" when the extracted
+# evidence contained no such statement (see PATIENT_001 audit log). The
+# system prompt instruction against this alone did not reliably prevent it.
+#
+# As a deterministic safety net: if NONE of the configured keywords appear
+# (case-insensitive) in Agent 1's extracted evidence for that section, skip
+# the LLM call entirely and default straight to the configured "not done /
+# unknown" option. If a keyword IS present, the LLM still evaluates
+# normally (its presence doesn't by itself confirm a positive answer -- the
+# evidence could equally say the method was NOT done).
+SECTION_KEYWORD_GATES = {
+    "A1": {
+        "keywords": ["autops", "autoptic", "postmortem", "post-mortem", "necrosc"],
+        "default_option_text": "No autopsy done, unknown if done, or done but results unavailable"
+    },
+    "A2": {
+        "keywords": ["thrombectom", "trombectom", "surgical", "surgery", "chirurg", "intervento"],
+        "default_option_text": "No surgical procedure done; or, done but either did not confirm presence of DVT or findings unknown; or unknown if done"
+    }
+}
+
+# --- Section-specific clarifications appended to the evaluator's prompt ---
+# Generic instructions in EVALUATOR_SYSTEM_PROMPT don't cover criteria whose
+# meaning is easy for the model to invert or conflate. X is the clearest
+# case found so far: the model reasoned that DVT symptoms (and a DVT risk
+# factor, recent travel) were themselves "an alternative diagnosis
+# explaining the acute clinical picture" -- conflating support FOR the DVT
+# diagnosis with a diagnosis INSTEAD OF it (see PATIENT_001 audit log).
+SECTION_HINTS = {
+    "X": (
+        "IMPORTANT -- clarification for this question: 'alternative "
+        "diagnosis' means a DIFFERENT medical condition that could explain "
+        "the patient's reported symptoms INSTEAD OF DVT (for example: a "
+        "muscle or tendon injury, a fracture, cellulitis, a ruptured "
+        "Baker's cyst, heart failure -- see the reference list above for "
+        "more examples). Evidence that SUPPORTS the DVT diagnosis itself "
+        "(positive imaging, an elevated D-dimer, or a DVT risk factor such "
+        "as recent travel or surgery) is NOT an alternative diagnosis and "
+        "must not be treated as one. If no different explanatory condition "
+        "is mentioned in the evidence, the correct answer is that no "
+        "alternative diagnosis was found."
+    ),
+    
+    "B1_1": (
+        "CRITICAL DISTINCTION FOR NEGATIONS: "
+        "Select the second option ('There was no report of a recognized DVT syndrome') "
+        "ONLY IF the clinical record EXPLICITLY states that there are no signs or symptoms "
+        "(e.g., 'no leg swelling', 'no calf pain'). "
+        "Select the third option ('It is unknown...') IF there is NO information at all "
+        "regarding the presence or absence of DVT signs/symptoms in the extracted text."
+    ),
+    
+    "C": (
+        "D-DIMER REFERENCE RANGE RULE: "
+        "To determine if the D-Dimer value is normal or exceeded, use the laboratory-specific "
+        "upper limit if it is explicitly mentioned in the text. "
+        "If the lab's reference range is NOT available in the text, you MUST use 500 ng/mL "
+        "as the default upper limit of normal (i.e., a value < 500 is normal, >= 500 exceeds the limit)."
+    )
+}

@@ -74,7 +74,7 @@ def run_pipeline(record_id: str, patient_ehr_path: str, brighton_pdf_path: str):
             # Agent 1: evidence extraction (direct retrieval by default, see config)
             print(f"[{section_key}] Agent 1 (extractor) searching the clinical record...", flush=True)
             t0 = time.time()
-            if config.USE_AGENTIC_EXTRACTOR:
+            if getattr(config, "USE_AGENTIC_EXTRACTOR", False):
                 from rag_setup import make_ehr_retriever_tool
                 from agents import extract_evidence_agentic
                 ehr_tool = make_ehr_retriever_tool(ehr_kb)
@@ -89,11 +89,47 @@ def run_pipeline(record_id: str, patient_ehr_path: str, brighton_pdf_path: str):
             brighton_context = "\n".join(d.page_content for d in brighton_docs)
             section_log["brighton_context"] = brighton_context
 
-            # Agent 2: evaluation constrained to the section's Pydantic schema
+            # Agent 2: evaluation constrained to the section's Pydantic schema.
+            # (Soft Gate: Always call LLM, check for hallucinations afterwards)
             print(f"[{section_key}] Agent 2 (evaluator) filling in the schema...", flush=True)
             t0 = time.time()
-            section_result, reasoning_text = evaluate_section(llm, section_model, evidence, brighton_context)
+            extra_instructions = config.SECTION_HINTS.get(section_key, "")
+            section_result, reasoning_text = evaluate_section(
+                llm, section_model, evidence, brighton_context, extra_instructions
+            )
             print(f"[{section_key}] Agent 2 done in {time.time() - t0:.1f}s", flush=True)
+
+            # --- SOFT GATE CROSS-CHECK ---
+            gate_info = getattr(config, "SECTION_KEYWORD_GATES", {}).get(section_key)
+            if gate_info:
+                # Estraiamo dinamicamente il nome del campo (es. 'answer')
+                field_name = list(section_result.model_fields.keys())[0]
+                llm_chosen_answer = getattr(section_result, field_name)
+                
+                # Verifichiamo se l'LLM ha dato una risposta positiva (diversa dal default)
+                if isinstance(llm_chosen_answer, list):
+                    is_positive = any(ans != gate_info["default_option_text"] for ans in llm_chosen_answer)
+                else:
+                    is_positive = (llm_chosen_answer != gate_info["default_option_text"])
+                
+                if is_positive:
+                    evidence_lower = evidence.lower()
+                    has_keyword = any(kw.lower() in evidence_lower for kw in gate_info["keywords"])
+                    
+                    if not has_keyword:
+                        print(f"[{section_key}] SOFT GATE TRIGGERED: LLM hallucinated a positive answer. Reverting to default.", flush=True)
+                        
+                        # Sovrascriviamo la risposta col default negativo
+                        setattr(section_result, field_name, gate_info["default_option_text"])
+                        
+                        # Tracciamo l'intervento nell'audit log per trasparenza
+                        reasoning_text += (
+                            f"\n\n[SYSTEM OVERRIDE]: The LLM originally selected '{llm_chosen_answer}', "
+                            f"but no triggering keywords {gate_info['keywords']} were found in the evidence. "
+                            f"Answer was automatically reverted to the negative default."
+                        )
+            # -------------------------------
+
             section_log["reasoning"] = reasoning_text
             section_log["result"] = section_result.model_dump()
 
@@ -111,6 +147,39 @@ def run_pipeline(record_id: str, patient_ehr_path: str, brighton_pdf_path: str):
             section_log["error"] = str(exc)
 
         audit_log[section_key] = section_log
+
+    # ---------------------------------------------------------------------
+    # HARD-CODED LOGIC RULE: B2 -> B1.1 Dependency
+    # "If at least one of the first four answers in B2 is selected, 
+    # it implies that in B1.1 the first answer should be selected as well."
+    # ---------------------------------------------------------------------
+    b2_result = form_data.get("b2")
+    b1_1_result = form_data.get("b1_1")
+
+    if b2_result is not None and b1_1_result is not None:
+        b2_field = list(b2_result.model_fields.keys())[0]
+        b1_1_field = list(b1_1_result.model_fields.keys())[0]
+        
+        b2_answers = getattr(b2_result, b2_field)
+        
+        has_actual_symptoms = any(
+            "None of the above" not in ans for ans in b2_answers
+        )
+        
+        if has_actual_symptoms:
+            forced_b1_1_answer = "≥1 symptom or sign of DVT was reported"
+            
+            if getattr(b1_1_result, b1_1_field) != forced_b1_1_answer:
+                print(f"[CROSS-SECTION RULE] B2 has symptoms. Forcing B1.1 to '{forced_b1_1_answer}'", flush=True)
+                setattr(b1_1_result, b1_1_field, forced_b1_1_answer)
+                
+                # Tracciamo la correzione nell'audit log
+                if "B1_1" in audit_log:
+                    audit_log["B1_1"]["reasoning"] += (
+                        "\n\n[SYSTEM OVERRIDE]: B1.1 was automatically updated to "
+                        "'≥1 symptom or sign of DVT was reported' because symptoms "
+                        "were detected in Section B2, enforcing the questionnaire's dependency rule."
+                    )
 
     form = DVT_CriteriaForm(**form_data)
     return form, audit_log
