@@ -58,11 +58,14 @@ def test_structured_output_support(llm: ChatOllama, sample_model) -> bool:
 # ---------------------------------------------------------------------------
 
 EXTRACTOR_SYSTEM_PROMPT = """You are a clinical extractor.
- Extract ONLY exact raw sentences or fragments from the clinical text that are explicitly relevant to 
- the requested criterion. 
-CRITICAL: Do NOT write any introductory or concluding sentences 
-(e.g. DO NOT write "Here are the extracted phrases..."). Do NOT repeat the name or text of the criterion.
-If no fragment in the text is relevant to the requested criterion, output exactly: "NO RELEVANT EVIDENCE FOUND." """
+Extract ONLY exact raw sentences or fragments from the clinical text that are explicitly relevant to the requested criterion.
+
+CRITICAL RULES:
+1. Do NOT write any introductory or concluding sentences (e.g. DO NOT write "Here are the extracted phrases..."). 
+2. Do NOT repeat the name or text of the criterion.
+3. Extract the complete raw fragment to preserve full contextual meaning (including negations or qualifying temporal statements).
+4. If no fragment in the text is relevant to the requested criterion, output exactly: "NO RELEVANT EVIDENCE FOUND."
+"""
 
 
 def extract_evidence(llm: ChatOllama, ehr_vectorstore, criterion_query: str) -> str:
@@ -110,9 +113,10 @@ def extract_evidence_agentic(llm: ChatOllama, ehr_tool, criterion_query: str) ->
 EVALUATOR_SYSTEM_PROMPT = """You are a clinical validator. Determine the
 correct answer based on the evidence given. Consult the known synonyms from
 the Brighton paper when relevant (e.g. VTE can include DVT). Pay extreme
-attention to negations: if a symptom or finding is explicitly described as
-absent, denied, or ruled out, do not treat it as present. If the evidence
-does not mention a symptom or finding at all, do not assume it is absent.
+attention to negations: if a symptom, finding, or procedure is explicitly 
+described as absent, denied, negated, or ruled out, do not treat it as present. 
+If the evidence does not mention a symptom or finding at all, do not assume 
+it is absent.
 
 Some questions ask specifically about ONE method or procedure (e.g. autopsy,
 a specific surgical procedure, a specific imaging modality). For these:
@@ -121,9 +125,10 @@ confirmed DVT if the evidence EXPLICITLY states that THIS SPECIFIC method
 was used. Do not infer that a method was performed, or that it confirmed
 DVT, just because DVT was confirmed through a DIFFERENT method mentioned
 elsewhere in the evidence (e.g. do not treat DVT confirmed by ultrasound as
-evidence that an autopsy was performed or confirmed anything). If the
-evidence does not mention that specific method at all, the correct answer
-is the "not done / unknown" option for that method, even if DVT was
+evidence that an autopsy was performed or confirmed anything). Furthermore, 
+if the evidence EXPLICITLY NEGATES the procedure (e.g., states no surgery 
+was performed), or does not mention that specific method at all, the correct 
+answer is the "not done / unknown" option for that method, even if DVT was
 confirmed by other means."""
 
 
