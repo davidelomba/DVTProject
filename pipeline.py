@@ -103,7 +103,7 @@ def run_pipeline(record_id: str, patient_ehr_path: str, brighton_pdf_path: str):
             gate_info = getattr(config, "SECTION_KEYWORD_GATES", {}).get(section_key)
             if gate_info:
                 # Estraiamo dinamicamente il nome del campo (es. 'answer')
-                field_name = list(section_result.model_fields.keys())[0]
+                field_name = list(type(section_result).model_fields.keys())[0]
                 llm_chosen_answer = getattr(section_result, field_name)
                 
                 # Verifichiamo se l'LLM ha dato una risposta positiva (diversa dal default)
@@ -157,8 +157,8 @@ def run_pipeline(record_id: str, patient_ehr_path: str, brighton_pdf_path: str):
     b1_1_result = form_data.get("b1_1")
 
     if b2_result is not None and b1_1_result is not None:
-        b2_field = list(b2_result.model_fields.keys())[0]
-        b1_1_field = list(b1_1_result.model_fields.keys())[0]
+        b2_field = list(type(b2_result).model_fields.keys())[0]
+        b1_1_field = list(type(b1_1_result).model_fields.keys())[0]
         
         b2_answers = getattr(b2_result, b2_field)
         
