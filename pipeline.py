@@ -11,8 +11,9 @@ import traceback
 import config
 from models import DVT_CriteriaForm, SECTION_MODELS
 from rag_setup import get_embeddings, build_brighton_kb, build_ehr_kb, load_brighton_pdf_text, load_ehr_text
-from agents import build_llm, extract_evidence, evaluate_section
-from aggregation import form_to_json_summary
+from agents import build_llm, extract_evidence, evaluate_section, extract_evidence_full_text
+from rag_setup import make_ehr_retriever_tool
+from agents import extract_evidence_agentic
 
 
 # Retrieval query for each section: guides Agent 1 on what to look for in the
@@ -53,7 +54,7 @@ def run_pipeline(record_id: str, patient_ehr_path: str, brighton_pdf_path: str):
     brighton_text = load_brighton_pdf_text(brighton_pdf_path)
     patient_ehr_text = load_ehr_text(patient_ehr_path)
     brighton_kb = build_brighton_kb(brighton_text, embeddings=embeddings)
-    ehr_kb = build_ehr_kb(patient_ehr_text, patient_id=record_id, embeddings=embeddings)
+    # ehr_kb = build_ehr_kb(patient_ehr_text, patient_id=record_id, embeddings=embeddings)
 
     form_data = {"record_id": record_id}
     audit_log = {}
@@ -71,13 +72,12 @@ def run_pipeline(record_id: str, patient_ehr_path: str, brighton_pdf_path: str):
             # Agent 1: evidence extraction (direct retrieval by default, see config)
             print(f"[{section_key}] Agent 1 (extractor) searching the clinical record...", flush=True)
             t0 = time.time()
-            if getattr(config, "USE_AGENTIC_EXTRACTOR", False):
-                from rag_setup import make_ehr_retriever_tool
-                from agents import extract_evidence_agentic
-                ehr_tool = make_ehr_retriever_tool(ehr_kb)
-                evidence = extract_evidence_agentic(llm, ehr_tool, query)
-            else:
-                evidence = extract_evidence(llm, ehr_kb, query)
+            # if getattr(config, "USE_AGENTIC_EXTRACTOR", False):
+                # ehr_tool = make_ehr_retriever_tool(ehr_kb)
+                # evidence = extract_evidence_agentic(llm, ehr_tool, query)
+            # else:
+                # evidence = extract_evidence(llm, ehr_kb, query)
+            evidence = extract_evidence_full_text(llm, patient_ehr_text, query)
             print(f"[{section_key}] Agent 1 done in {time.time() - t0:.1f}s", flush=True)
             section_log["evidence"] = evidence
 
