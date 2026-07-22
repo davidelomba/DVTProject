@@ -111,12 +111,16 @@ SECTION_HINTS = {
         "Select 'Yes' ONLY if the diagnosis is stated with absolutely no supporting clinical details."
     ),
     "X": (
-        "Look for an explicitly stated ALTERNATIVE medical condition or disease (e.g., Baker's cyst, "
-        "muscle tear, cellulitis, fracture) that the physician identified as the TRUE cause of the symptoms INSTEAD of DVT. "
-        "If the final diagnosis is indeed DVT, or if no other competing disease is mentioned in the evidence, "
-        "you MUST select the option indicating 'No alternative diagnosis was found to explain the acute illness'."
+        "CRITICAL ERROR PREVENTION: Symptoms (like pain, swelling, edema) are NOT alternative diagnoses. "
+        "Do NOT guess or assume an alternative diagnosis just because symptoms are present. "
+        "You must select 'An alternative diagnosis was found' ONLY IF the clinical record explicitly names "
+        "a DIFFERENT medical condition (e.g., Cellulitis, Baker's cyst, muscle tear) as the TRUE cause "
+        "of the illness INSTEAD of DVT. "
+        "If the clinical record diagnoses DVT, or if no other specific competing disease is confirmed, "
+        "you MUST select the option: 'No alternative diagnosis was found to explain the acute illness'."
     ),
 }
+
 
 # --- Cross-section dependency rules ---
 # Evaluated after all sections are independently filled in. Each entry: if
