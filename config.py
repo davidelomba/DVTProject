@@ -131,19 +131,19 @@ SECTION_HINTS = {
         "as the default upper limit of normal (i.e., a value < 500 is normal, >= 500 exceeds the limit)."
     ),
 
-        "X": (
-        "IMPORTANT -- clarification for this question: 'alternative "
-        "diagnosis' means a DIFFERENT medical condition that could explain "
-        "the patient's reported symptoms INSTEAD OF DVT (for example: a "
-        "muscle or tendon injury, a fracture, cellulitis, a ruptured "
-        "Baker's cyst, heart failure -- see the reference list above for "
-        "more examples). Evidence that SUPPORTS the DVT diagnosis itself "
-        "(positive imaging, an elevated D-dimer, or a DVT risk factor such "
-        "as recent travel or surgery) is NOT an alternative diagnosis and "
-        "must not be treated as one. If no different explanatory condition "
-        "is mentioned in the evidence, the correct answer is that no "
-        "alternative diagnosis was found."
-    )
+    "F": (
+        "CRITICAL: This criterion asks if the DVT was reported 'WITHOUT details'. "
+        "If the evidence provides specific details about the diagnostic tests used, "
+        "such as imaging findings, specific veins affected (e.g., 'vena poplitea'), or laboratory results, "
+        "you MUST select 'No'. Select 'Yes' ONLY if the diagnosis is stated with absolutely no supporting clinical details."
+    ),
+
+    "X": (
+        "Look for an explicitly stated ALTERNATIVE medical condition or disease (e.g., Baker's cyst, "
+        "muscle tear, cellulitis, fracture) that the physician identified as the TRUE cause of the symptoms INSTEAD of DVT. "
+        "If the final diagnosis is indeed DVT, or if no other competing disease is mentioned in the evidence, "
+        "you MUST select the option indicating 'No alternative diagnosis was found to explain the acute illness'."
+    ),
 }
 
 
