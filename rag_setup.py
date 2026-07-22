@@ -11,7 +11,7 @@ from langchain_chroma import Chroma
 from langchain_huggingface import HuggingFaceEmbeddings
 from langchain_text_splitters import RecursiveCharacterTextSplitter
 from pypdf import PdfReader
-
+from langchain_core.tools.retriever import create_retriever_tool
 import config
 
 
@@ -96,7 +96,6 @@ def make_ehr_retriever_tool(ehr_vectorstore: Chroma):
     the pipeline works without it when EXTRACTOR_MODE is not "agentic".
     If missing: pip install langchain
     """
-    from langchain.tools import create_retriever_tool
 
     ehr_retriever = ehr_vectorstore.as_retriever(search_kwargs={"k": config.EHR_RETRIEVER_K})
     return create_retriever_tool(
