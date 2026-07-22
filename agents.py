@@ -48,12 +48,12 @@ def test_structured_output_support(llm: ChatOllama, sample_model) -> bool:
 # ---------------------------------------------------------------------------
 
 EXTRACTOR_SYSTEM_PROMPT = """You are a clinical extractor.
-Extract ONLY exact raw sentences or fragments from the clinical text that are explicitly relevant to the requested criterion.
+Extract ONLY exact raw sentences or fragments from the clinical record that are explicitly relevant to the requested criterion.
 
 CRITICAL RULES:
-1. Do NOT write any introductory or concluding sentences (e.g. DO NOT write "Here are the extracted phrases..."). 
-2. Do NOT repeat the name or text of the criterion.
-3. Extract the complete raw fragment to preserve full contextual meaning (including negations or qualifying temporal statements).
+1. The clinical record may be written in ITALIAN. Match Italian medical terminology and procedure names.
+2. Do NOT write any introductory or concluding sentences.
+3. Extract the complete raw fragment in its original language (Italian or English) to preserve full contextual meaning.
 4. If no fragment in the text is relevant to the requested criterion, output exactly: "NO RELEVANT EVIDENCE FOUND."
 """
 
