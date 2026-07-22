@@ -1,8 +1,8 @@
 """
 Pydantic models for the SEVALID_DVT questionnaire (Criteria Form).
 
-Full coverage of the "checkbox" questions only (single choice / multi-select),
-as requested. Deliberately excluded: dates, free-text fields, descriptions,
+Full coverage of the "checkbox" questions only (single choice / multi-select).
+Deliberately excluded: dates, free-text fields, descriptions,
 "specify other" (e.g. a3_2_other, x_description).
 
 Each class corresponds to ONE question in the form, so Agent 2 can be invoked

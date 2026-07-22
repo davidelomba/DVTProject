@@ -1,12 +1,11 @@
 """
-Core module defining Agent 1 (Extractor) and Agent 2 (Evaluator).
+Agent 1 (Extractor) and Agent 2 (Evaluator).
 
-This architecture uses a two-step approach:
-  1. Extractor: Retrieves exact evidence from the clinical record based on a specific query.
-  2. Evaluator: Receives the evidence and evaluates it against predefined options.
-     To maximize reliability, the Evaluator reasons freely in plain text and 
-     outputs a fixed-format line ("FINAL_ANSWER: <number>") at the end. This line 
-     is then parsed using regex and mapped to the valid schema options.
+Agent 1 pulls the relevant fragment(s) from the clinical record for a given
+criterion. Agent 2 reasons over that evidence in plain text and ends its
+response with a fixed-format line ("FINAL_ANSWER: <number>"), which is
+parsed and mapped to the schema's valid options -- more reliable than
+asking the model for structured/JSON output directly (see config.py).
 """
 
 import difflib
@@ -19,7 +18,7 @@ import config
 
 
 def build_llm(temperature: float = None) -> ChatOllama:
-    """Initializes and returns the ChatOllama LLM instance based on configuration."""
+    """Builds the configured ChatOllama instance."""
     return ChatOllama(
         model=config.LLM_MODEL_NAME,
         temperature=temperature if temperature is not None else config.LLM_TEMPERATURE,
@@ -29,11 +28,8 @@ def build_llm(temperature: float = None) -> ChatOllama:
 
 
 def test_structured_output_support(llm: ChatOllama, sample_model) -> bool:
-    """
-    Utility function to verify if the configured LLM reliably supports 
-    LangChain's native .with_structured_output() method.
-    Not used in the primary pipeline, but kept for diagnostic purposes.
-    """
+    """Diagnostic helper: checks if the model supports .with_structured_output().
+    Not used by the main pipeline (see agents.py module docstring for why)."""
     try:
         structured_llm = llm.with_structured_output(sample_model)
         result = structured_llm.invoke("Fill in the schema with plausible example data.")
@@ -44,7 +40,7 @@ def test_structured_output_support(llm: ChatOllama, sample_model) -> bool:
 
 
 # ---------------------------------------------------------------------------
-# Agent 1: Extractor -- Evidence retrieval and exact extraction
+# Agent 1: Extractor
 # ---------------------------------------------------------------------------
 
 EXTRACTOR_SYSTEM_PROMPT = """You are a clinical extractor.
@@ -60,8 +56,11 @@ CRITICAL RULES:
 
 def extract_evidence(llm: ChatOllama, ehr_vectorstore, criterion_query: str) -> str:
     """
-    Primary extraction method: performs a similarity search over the vector store 
-    and uses the LLM to extract exact, relevant fragments.
+    RAG-based extraction: similarity search over a chunked/embedded clinical
+    record, then the LLM extracts the relevant fragments from the retrieved
+    chunks. NOT used by the default pipeline (see extract_evidence_full_text)
+    -- kept for clinical records too long to fit whole in the model's context
+    window, where chunked retrieval becomes necessary again.
     """
     retriever = ehr_vectorstore.as_retriever(search_kwargs={"k": config.EHR_RETRIEVER_K})
     docs = retriever.invoke(criterion_query)
@@ -77,9 +76,13 @@ def extract_evidence(llm: ChatOllama, ehr_vectorstore, criterion_query: str) -> 
     response = llm.invoke(messages)
     return response.content
 
+
 def extract_evidence_full_text(llm: ChatOllama, full_ehr_text: str, criterion_query: str) -> str:
     """
-    Instead of searching for snippets using the RAG, pass the ENTIRE report to Agent 1.
+    Default extraction path: passes the entire clinical record to the LLM
+    instead of retrieving chunks. Simpler and avoids retrieval misses, and
+    is a reasonable default as long as the record comfortably fits in the
+    model's context window (see extract_evidence for the RAG alternative).
     """
     messages = [
         ("system", EXTRACTOR_SYSTEM_PROMPT),
@@ -88,12 +91,20 @@ def extract_evidence_full_text(llm: ChatOllama, full_ehr_text: str, criterion_qu
     response = llm.invoke(messages)
     return response.content
 
-"""
-def extract_evidence_agentic(llm: ChatOllama, ehr_tool, criterion_query: str) -> str:
-    
-    Alternative extraction method using a LangChain tool-calling agent.
-    To be used if config.USE_AGENTIC_EXTRACTOR is enabled.
-    
+
+def extract_evidence_agentic(llm: ChatOllama, ehr_tool, criterion_query: str, max_iterations: int = 3) -> str:
+    """
+    Agentic extraction: the model gets a retrieval tool and decides itself
+    whether/how many times to call it, instead of a single fixed-query call.
+    Requires the base `langchain` package (pip install langchain).
+
+    max_iterations caps how many tool calls the agent can make before being
+    forced to answer -- a safety net given this model's tendency (seen
+    during evaluator testing) to run away with generation when not tightly
+    constrained. NOT validated as reliable yet; test with a standalone
+    script (e.g. comparing its output against extract_evidence_full_text
+    on the same evidence) before trusting it in the full pipeline.
+    """
     from langchain.agents import create_tool_calling_agent, AgentExecutor
     from langchain_core.prompts import ChatPromptTemplate
 
@@ -103,13 +114,19 @@ def extract_evidence_agentic(llm: ChatOllama, ehr_tool, criterion_query: str) ->
         ("placeholder", "{agent_scratchpad}"),
     ])
     agent = create_tool_calling_agent(llm, [ehr_tool], prompt)
-    executor = AgentExecutor(agent=agent, tools=[ehr_tool], verbose=False)
+    executor = AgentExecutor(
+        agent=agent,
+        tools=[ehr_tool],
+        verbose=False,
+        max_iterations=max_iterations,
+        early_stopping_method="force",
+    )
     result = executor.invoke({"input": f"Criterion to investigate: {criterion_query}"})
     return result["output"]
 
-"""
+
 # ---------------------------------------------------------------------------
-# Agent 2: Evaluator -- Free-text reasoning and deterministic extraction
+# Agent 2: Evaluator
 # ---------------------------------------------------------------------------
 
 EVALUATOR_SYSTEM_PROMPT = """You are a clinical validator. Determine the
@@ -135,10 +152,8 @@ confirmed by other means."""
 
 
 def _get_field_info(section_model):
-    """
-    Inspects a Pydantic model to return its single field's name, valid options, 
-    and a boolean indicating if it is a multi-select field.
-    """
+    """Returns (field_name, valid_options, is_multi_select) for a section's
+    Pydantic model, based on whether its field is Literal[...] or List[Literal[...]]."""
     field_name = next(iter(section_model.model_fields.keys()))
     annotation = section_model.model_fields[field_name].annotation
 
@@ -159,8 +174,10 @@ def _build_reasoning_prompt(
     extra_instructions: str = "",
 ) -> str:
     """
-    Constructs the prompt instructing the LLM to reason over the evidence and 
-    respond with the corresponding index number of the chosen option(s).
+    Builds the evaluator prompt. Options are numbered and the model answers
+    with the number(s), not the option text -- this avoids fuzzy-matching
+    a paraphrased answer onto the wrong option when two options are near-
+    identical except for a negation (e.g. "confirmed DVT" vs "didn't confirm DVT").
     """
     options_block = "\n".join(f"{i}. {opt}" for i, opt in enumerate(options, start=1))
     prompt = f"Evidence: {evidence_text}"
@@ -171,7 +188,7 @@ def _build_reasoning_prompt(
     prompt += f"\n\nOptions:\n{options_block}\n\n"
 
     base_instruction = "First explain your reasoning in a few sentences. Then, on the very last line of your entire response, write exactly:\n"
-    
+
     if multi_select:
         prompt += (
             base_instruction +
@@ -193,10 +210,9 @@ def _build_reasoning_prompt(
 
 
 def _extract_final_answer_line(text: str) -> str:
-    """
-    Extracts the content immediately following the last occurrence of 'FINAL_ANSWER:' 
-    in the LLM's response using regex.
-    """
+    """Returns the content after the LAST 'FINAL_ANSWER:' occurrence (not the
+    first, since the model sometimes references the instruction itself before
+    actually answering)."""
     matches = re.findall(r"FINAL_ANSWER:\s*(.+)", text)
     if not matches:
         raise ValueError(f"No FINAL_ANSWER line found in response: {text!r}")
@@ -205,13 +221,13 @@ def _extract_final_answer_line(text: str) -> str:
 
 def _match_option(raw_value: str, valid_options: list[str], cutoff: float = 0.75) -> str:
     """
-    Attempts to map the extracted raw value to one of the valid string options.
-    Primary path: Assumes the value is a 1-based index (e.g., '1' maps to options[0]).
-    Fallback path: Attempts an exact text match, followed by a fuzzy string match.
+    Maps the extracted value to a valid option. Primary path: numeric index
+    (what the prompt asks for). Fallback: exact text match, then fuzzy match
+    (logged, since a silent fuzzy match risks landing on a negation-opposite
+    option) -- only used if the model didn't answer with a bare number.
     """
     cleaned = raw_value.strip().lstrip("-").strip().rstrip(".;").strip()
 
-    # Numeric index path (expected/primary case).
     index_candidate = cleaned.rstrip(".").strip()
     if index_candidate.isdigit():
         idx = int(index_candidate)
@@ -221,7 +237,6 @@ def _match_option(raw_value: str, valid_options: list[str], cutoff: float = 0.75
             f"Index {idx} out of range for {len(valid_options)} options: {valid_options}"
         )
 
-    # Text fallback (triggered if the model didn't answer with a number).
     if cleaned in valid_options:
         return cleaned
 
@@ -247,12 +262,10 @@ def evaluate_section(
     max_retries: int = 2,
 ):
     """
-    Evaluates the evidence for a specific schema section. Prompts the LLM to 
-    reason and extract the answer, automatically retrying if parsing fails.
-
-    Returns:
-        tuple: (section_model_instance, reasoning_text) containing the populated 
-        Pydantic model and the full response text from the LLM.
+    Fills in one section's schema from the evidence. Returns
+    (section_model_instance, reasoning_text) -- reasoning_text is the
+    model's full response, kept so a wrong answer can later be audited
+    without re-running the pipeline (see pipeline.py's audit_log).
     """
     field_name, options, multi_select = _get_field_info(section_model)
     prompt = _build_reasoning_prompt(evidence_text, brighton_context, options, multi_select, extra_instructions)
@@ -272,8 +285,7 @@ def evaluate_section(
                 raw_items = [item.strip() for item in raw_final.split(";") if item.strip()]
                 matched = [_match_option(item, options) for item in raw_items]
                 seen = set()
-                # Deduplicate matches while preserving order
-                matched = [m for m in matched if not (m in seen or seen.add(m))]
+                matched = [m for m in matched if not (m in seen or seen.add(m))]  # dedupe, keep order
                 return section_model(**{field_name: matched}), content
 
             matched = _match_option(raw_final, options)
@@ -281,7 +293,6 @@ def evaluate_section(
 
         except Exception as exc:
             last_error = exc
-            # Append a correction instruction to the prompt before the next attempt
             prompt += (
                 f"\n\n(Your previous attempt failed: {exc}. Remember: on "
                 f"the very last line of your response, write exactly "

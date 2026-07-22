@@ -51,7 +51,11 @@ def build_brighton_kb(brighton_pdf_text: str, embeddings=None, force_rebuild: bo
 
 def build_ehr_kb(patient_record_text: str, patient_id: str, embeddings=None) -> Chroma:
     """
-    Dynamic KB: the single patient's clinical record.
+    Dynamic KB: the single patient's clinical record, chunked and embedded.
+    Only needed when config.EXTRACTOR_MODE is "rag" (agents.extract_evidence)
+    or "agentic" (agents.extract_evidence_agentic, via the retriever tool
+    built by make_ehr_retriever_tool below) -- not used when EXTRACTOR_MODE
+    is "full_text" (the default), which passes the record directly instead.
     Persisted in a dedicated per-patient subfolder, so different runs
     don't overwrite one another.
     """
@@ -83,16 +87,14 @@ def build_ehr_kb(patient_record_text: str, patient_id: str, embeddings=None) -> 
 
 def make_ehr_retriever_tool(ehr_vectorstore: Chroma):
     """
-    Exposes the EHR retriever as a LangChain Tool, for the optional agentic
-    Agent 1 (see agents.py -- USE_AGENTIC_EXTRACTOR in config.py).
-    If direct retrieval is used instead (default), this tool is not needed:
-    call ehr_vectorstore.as_retriever().invoke(query) directly.
+    Wraps the EHR retriever as a LangChain Tool, used by the agentic
+    extractor (agents.extract_evidence_agentic) when config.EXTRACTOR_MODE
+    is "agentic" -- see pipeline.py for where this is called.
 
-    NOTE: requires the base `langchain` package (not just langchain-core/
-    langchain-community/langchain-ollama). Imported lazily here so the rest
-    of the pipeline works without it when USE_AGENTIC_EXTRACTOR is False
-    (the default). If you hit a ModuleNotFoundError here, run:
-    pip install langchain
+    Requires the base `langchain` package (not just langchain-core/
+    langchain-community/langchain-ollama). Imported lazily so the rest of
+    the pipeline works without it when EXTRACTOR_MODE is not "agentic".
+    If missing: pip install langchain
     """
     from langchain.tools import create_retriever_tool
 
