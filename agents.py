@@ -11,9 +11,12 @@ asking the model for structured/JSON output directly (see config.py).
 import difflib
 import re
 from typing import get_args, get_origin
-
+from langchain_classic.agents import (
+    AgentExecutor,
+    create_tool_calling_agent,
+)
+from langchain_core.prompts import ChatPromptTemplate
 from langchain_ollama import ChatOllama
-
 import config
 
 
@@ -105,8 +108,6 @@ def extract_evidence_agentic(llm: ChatOllama, ehr_tool, criterion_query: str, ma
     script (e.g. comparing its output against extract_evidence_full_text
     on the same evidence) before trusting it in the full pipeline.
     """
-    from langchain.agents import create_tool_calling_agent, AgentExecutor
-    from langchain_core.prompts import ChatPromptTemplate
 
     prompt = ChatPromptTemplate.from_messages([
         ("system", EXTRACTOR_SYSTEM_PROMPT),
