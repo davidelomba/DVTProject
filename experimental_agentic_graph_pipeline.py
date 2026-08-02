@@ -32,6 +32,15 @@ Design (see conversation / README context for the two options considered):
 Requires the `langgraph` package (already listed in requirements.txt) and
 the base `langchain` package (needed by agents.extract_evidence_agentic).
 
+Model note: config.LLM_MODEL_NAME ("llama3:8b-instruct-q4_0") does not
+support Ollama's native tool-calling API (confirmed: Ollama returns "model
+does not support tools", HTTP 400, when a tool is bound to it). Llama 3
+(base) never got tool-calling support in Ollama; only Llama 3.1+ does. So
+Agent 1's agentic search here uses a SEPARATE model (AGENTIC_LLM_MODEL_NAME
+below, "llama3.1:8b-instruct-q4_0") while Agent 2 (evaluator, no tools
+involved) keeps using config.LLM_MODEL_NAME via agents.build_llm(),
+unchanged. Requires: ollama pull llama3.1:8b-instruct-q4_0
+
 Caveat: NOT validated. Agent 1's agentic search is explicitly marked
 unreliable in agents.py/config.py; running it across all 10 sections (instead
 of the 3-section smoke test in debug_agentic_extractor.py) is itself part of
@@ -43,6 +52,7 @@ import os
 from typing import Optional, TypedDict
 
 from langgraph.graph import StateGraph, END
+from langchain_ollama import ChatOllama
 
 import config
 from models import DVT_CriteriaForm, SECTION_MODELS
@@ -57,6 +67,30 @@ from rag_setup import (
 from agents import build_llm, extract_evidence_agentic, evaluate_section
 from pipeline import SECTION_QUERIES  # reused as-is, not duplicated
 from aggregation import form_to_json_summary
+
+
+# ---------------------------------------------------------------------------
+# Separate tool-calling-capable model for Agent 1's agentic search
+# ---------------------------------------------------------------------------
+# config.LLM_MODEL_NAME does not support Ollama's native tool-calling API
+# (see module docstring). This constant picks a model that does, used ONLY
+# by the search_record node. Swap it for another tool-capable model (e.g.
+# "mistral:7b") if preferred -- see https://ollama.com/search?c=tools
+#
+# Requires: ollama pull llama3.1:8b-instruct-q4_0
+AGENTIC_LLM_MODEL_NAME = "llama3.1:8b-instruct-q4_0"
+
+
+def build_agentic_llm() -> ChatOllama:
+    """Tool-calling-capable model, used only by the search_record node.
+    Agent 2 (answer_criterion) keeps using agents.build_llm() unchanged,
+    since it never binds any tool."""
+    return ChatOllama(
+        model=AGENTIC_LLM_MODEL_NAME,
+        temperature=config.LLM_TEMPERATURE,
+        num_predict=config.LLM_NUM_PREDICT,
+        request_timeout=config.LLM_REQUEST_TIMEOUT,
+    )
 
 
 # ---------------------------------------------------------------------------
@@ -240,12 +274,15 @@ def _finalize(state: GraphState) -> GraphState:
 # Graph assembly
 # ---------------------------------------------------------------------------
 
-def build_graph(llm, ehr_tool, brighton_kb):
+def build_graph(search_llm, answer_llm, ehr_tool, brighton_kb):
+    """search_llm: tool-calling-capable model, used by Agent 1 (search_record).
+    answer_llm: config.LLM_MODEL_NAME model, used by Agent 2 (answer_criterion),
+    which needs no tool support."""
     graph = StateGraph(GraphState)
 
     graph.add_node("select_next", _select_next)
-    graph.add_node("search_record", _make_search_node(llm, ehr_tool))
-    graph.add_node("answer_criterion", _make_answer_node(llm, brighton_kb))
+    graph.add_node("search_record", _make_search_node(search_llm, ehr_tool))
+    graph.add_node("answer_criterion", _make_answer_node(answer_llm, brighton_kb))
     graph.add_node("finalize", _finalize)
 
     graph.set_entry_point("select_next")
@@ -268,7 +305,8 @@ def build_graph(llm, ehr_tool, brighton_kb):
 def run_experimental_pipeline(record_id: str, patient_ehr_path: str, brighton_pdf_path: str):
     """Same return shape as pipeline.run_pipeline: (form, audit_log)."""
     embeddings = get_embeddings()
-    llm = build_llm()
+    llm = build_llm()                  # Agent 2 (evaluator) -- unchanged model, no tools needed
+    agentic_llm = build_agentic_llm()  # Agent 1 (agentic search) -- tool-calling-capable model
 
     brighton_text = load_brighton_pdf_text(brighton_pdf_path)
     patient_ehr_text = load_ehr_text(patient_ehr_path)
@@ -278,7 +316,7 @@ def run_experimental_pipeline(record_id: str, patient_ehr_path: str, brighton_pd
     ehr_kb = build_ehr_kb(patient_ehr_text, patient_id=record_id, embeddings=embeddings)
     ehr_tool = make_ehr_retriever_tool(ehr_kb)
 
-    app = build_graph(llm, ehr_tool, brighton_kb)
+    app = build_graph(agentic_llm, llm, ehr_tool, brighton_kb)
 
     initial_state: GraphState = {
         "record_id": record_id,
