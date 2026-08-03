@@ -96,10 +96,7 @@ SECTION_HINTS = {
         "a DVT -- it is background terminology, NOT a description of what was actually "
         "done for this patient. Do NOT select an option just because it appears in the "
         "Brighton reference list; select it only if the evidence itself names that "
-        "specific test. An Italian 'ecocolordoppler venoso' (color/duplex Doppler "
-        "ultrasound) corresponds to 'Doppler/Duplex Ultrasound', not automatically to "
-        "'Compression ultrasonography' unless compression is explicitly mentioned, and "
-        "does NOT imply that CT/MR venography or contrast venography were also performed."
+        "specific test. "
     ),
     "B1_1": (
         "CRITICAL DISTINCTION FOR NEGATIONS: "
