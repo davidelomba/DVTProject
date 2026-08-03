@@ -89,6 +89,18 @@ SECTION_HINTS = {
         "If the clinical record explicitly states that a surgical procedure was denied, "
         "not performed, or is absent, you MUST NOT select options 1 or 2. "
     ),
+    "A3_2": (
+        "CRITICAL FOR A3.2: Select ONLY the specific imaging modality(ies) EXPLICITLY "
+        "stated to have been performed on THIS patient in the evidence text. The "
+        "Brighton reference context lists ALL modalities that CAN in general confirm "
+        "a DVT -- it is background terminology, NOT a description of what was actually "
+        "done for this patient. Do NOT select an option just because it appears in the "
+        "Brighton reference list; select it only if the evidence itself names that "
+        "specific test. An Italian 'ecocolordoppler venoso' (color/duplex Doppler "
+        "ultrasound) corresponds to 'Doppler/Duplex Ultrasound', not automatically to "
+        "'Compression ultrasonography' unless compression is explicitly mentioned, and "
+        "does NOT imply that CT/MR venography or contrast venography were also performed."
+    ),
     "B1_1": (
         "CRITICAL DISTINCTION FOR NEGATIONS: "
         "Select the second option ('There was no report of a recognized DVT syndrome') "
@@ -96,6 +108,16 @@ SECTION_HINTS = {
         "(e.g., 'no leg swelling', 'no calf pain'). "
         "Select the third option ('It is unknown...') IF there is NO information at all "
         "regarding the presence or absence of DVT signs/symptoms in the extracted text."
+    ),
+    "B2": (
+        "CRITICAL FOR B2: Select ONLY the specific symptoms/signs EXPLICITLY documented "
+        "in the evidence text for THIS patient -- do not select an option just because "
+        "the Brighton reference context lists it as a symptom generally associated with "
+        "DVT. Pay special attention to NOT confuse 'absent blood flow' seen on an imaging "
+        "study (e.g. Italian 'flusso assente' on a Doppler/ultrasound, a finding about "
+        "venous flow) with 'absent pulses' (a distinct physical examination finding about "
+        "arterial pulses) -- these are NOT the same thing; only select 'Absent pulses in "
+        "legs or arms' if pulse examination is explicitly mentioned as absent."
     ),
     "C": (
         "D-DIMER REFERENCE RANGE RULE: "
