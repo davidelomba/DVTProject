@@ -16,8 +16,20 @@ import config
 
 
 def get_embeddings():
-    """Lightweight, local embedding model; does not impact the LLM's RAM budget."""
-    return HuggingFaceEmbeddings(model_name=config.EMBEDDING_MODEL_NAME)
+    """Lightweight, local embedding model; does not impact the LLM's RAM budget.
+
+    intfloat/multilingual-e5-small is trained to expect a "query: "/"passage: "
+    prefix on every input depending on its role (its own model card warns of a
+    performance degradation without it) -- verified against the installed
+    langchain-huggingface: embed_documents() uses encode_kwargs, embed_query()
+    uses query_encode_kwargs (falling back to encode_kwargs if empty), both
+    passed straight through to sentence-transformers' encode(prompt=...).
+    """
+    return HuggingFaceEmbeddings(
+        model_name=config.EMBEDDING_MODEL_NAME,
+        encode_kwargs={"prompt": "passage: "},
+        query_encode_kwargs={"prompt": "query: "},
+    )
 
 
 def build_brighton_kb(brighton_pdf_text: str, embeddings=None, force_rebuild: bool = False) -> Chroma:
