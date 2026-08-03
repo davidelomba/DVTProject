@@ -1,5 +1,5 @@
 """
-Pydantic models for the SEVALID_DVT questionnaire (Criteria Form).
+Pydantic models for the questionnaire (Criteria Form).
 
 Full coverage of the "checkbox" questions only (single choice / multi-select).
 Deliberately excluded: dates, free-text fields, descriptions,
