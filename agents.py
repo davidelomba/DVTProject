@@ -320,27 +320,47 @@ def _build_reasoning_prompt(
         prompt += f"\n\n{extra_instructions}"
     prompt += f"\n\nOptions:\n{options_block}\n\n"
 
-    base_instruction = "First explain your reasoning in a few sentences. Then, on the very last line of your entire response, write exactly:\n"
+    base_instruction = "First explain your reasoning in a few sentences. Then, at the end of your response, write exactly two more lines, in this order:\n"
 
-    # Output format differs for multi-select (semicolon-separated numbers)
-    # vs single-choice (one number) -- parsed back out by
-    # _extract_final_answer_line/_match_option below.
+    # Output format differs for multi-select (semicolon-separated) vs
+    # single-choice (one item) -- parsed back out by _extract_final_answer_line/
+    # _extract_labeled_line/_match_option below.
+    #
+    # FINAL_OPTION is asked for IN ADDITION to FINAL_ANSWER (not instead of):
+    # a real failure mode was traced where the model's own prose reasoning
+    # correctly identified the right option (e.g. "venous ultrasound"), but
+    # the NUMBER it wrote on the old single FINAL_ANSWER line pointed at a
+    # different, wrong option -- a mapping slip between reasoning and index,
+    # not a misunderstanding of the evidence (traced on section A3_2, where
+    # "Compression ultrasonography" and "Doppler/Duplex Ultrasound" both
+    # contain "ultrasound"/"ultrasonography" and are easy to conflate by
+    # index alone). Asking the model to also copy the option's exact text
+    # gives evaluate_section a second, independently-derived answer to
+    # cross-check the number against -- see evaluate_section below.
     if multi_select:
         prompt += (
             base_instruction +
+            "FINAL_OPTION: <option text>; <option text>; ...\n"
+            "copying VERBATIM, for every option that applies, the exact text of that "
+            "option as written in the numbered list above (not a paraphrase), separated "
+            "by semicolons.\n"
             "FINAL_ANSWER: <number>; <number>; ...\n"
-            "listing the NUMBER of every option that applies, separated by "
-            "semicolons (e.g. \"FINAL_ANSWER: 1; 3\"). If only one applies, "
-            "list just that one number. Do not write the option text on this "
-            "line, only the number(s)."
+            "with the NUMBER of every option that applies, separated by semicolons, in "
+            "the SAME order as the FINAL_OPTION line -- each number must correspond to "
+            "the same option you just named there (e.g. \"FINAL_OPTION: Leg swelling or "
+            "pitting oedema\" must be followed by \"FINAL_ANSWER: 2\" if that option is "
+            "listed as 2. above). If only one applies, write just that one option/number "
+            "on each line."
         )
     else:
         prompt += (
             base_instruction +
+            "FINAL_OPTION: <option text>\n"
+            "copying VERBATIM the exact text of the one option that applies, as written "
+            "in the numbered list above (not a paraphrase).\n"
             "FINAL_ANSWER: <number>\n"
-            "with the NUMBER of the one option that applies (e.g. "
-            "\"FINAL_ANSWER: 2\"). Do not write the option text on this line, "
-            "only the number."
+            "with the NUMBER of that SAME option (e.g. if FINAL_OPTION copies option 2's "
+            "text, FINAL_ANSWER must be 2)."
         )
     return prompt
 
@@ -355,6 +375,18 @@ def _extract_final_answer_line(text: str) -> str:
     matches = re.findall(r"FINAL_ANSWER:\s*(.+)", text)
     if not matches:
         raise ValueError(f"No FINAL_ANSWER line found in response: {text!r}")
+    return matches[-1].strip()
+
+
+def _extract_labeled_line(text: str, label: str) -> str | None:
+    """Same lookup as _extract_final_answer_line, generalized to any labeled
+    line (used for 'FINAL_OPTION:'). Returns None instead of raising when the
+    label is absent -- unlike FINAL_ANSWER, FINAL_OPTION is a best-effort
+    cross-check (see _build_reasoning_prompt), not a hard requirement, so its
+    absence should degrade gracefully rather than fail the whole evaluation."""
+    matches = re.findall(rf"{re.escape(label)}:\s*(.+)", text)
+    if not matches:
+        return None
     return matches[-1].strip()
 
 
@@ -428,11 +460,37 @@ def evaluate_section(
 
         try:
             raw_final = _extract_final_answer_line(content)
+            # Best-effort second signal (see _build_reasoning_prompt): the
+            # option text the model copied verbatim, independent of the
+            # number it wrote on FINAL_ANSWER. None if the model skipped it.
+            raw_option_text = _extract_labeled_line(content, "FINAL_OPTION")
 
             if multi_select:
                 # Each ';'-separated item mapped to a valid option independently.
                 raw_items = [item.strip() for item in raw_final.split(";") if item.strip()]
                 matched = [_match_option(item, options) for item in raw_items]
+
+                if raw_option_text:
+                    text_items = [item.strip() for item in raw_option_text.split(";") if item.strip()]
+                    try:
+                        matched_by_text = [_match_option(item, options) for item in text_items]
+                    except Exception:
+                        matched_by_text = None
+                    # Disagreement means the model's own number-mapping slipped
+                    # relative to the option text it just copied verbatim --
+                    # trust the copied text (see _build_reasoning_prompt for
+                    # why this was added: A3_2 correctly named the right
+                    # modality in prose but wrote the wrong index).
+                    if matched_by_text and matched_by_text != matched:
+                        print(
+                            f"[WARNING] FINAL_OPTION text {matched_by_text} disagreed with "
+                            f"FINAL_ANSWER number {matched} -- trusting the verbatim option "
+                            f"text. Raw model output: FINAL_OPTION={raw_option_text!r} "
+                            f"FINAL_ANSWER={raw_final!r}",
+                            flush=True,
+                        )
+                        matched = matched_by_text
+
                 seen = set()
                 matched = [m for m in matched if not (m in seen or seen.add(m))]  # dedupe, keep order
                 # Constructing via section_model(...) re-validates the value
@@ -440,6 +498,22 @@ def evaluate_section(
                 return section_model(**{field_name: matched}), content
 
             matched = _match_option(raw_final, options)
+
+            if raw_option_text:
+                try:
+                    matched_by_text = _match_option(raw_option_text, options)
+                except Exception:
+                    matched_by_text = None
+                if matched_by_text and matched_by_text != matched:
+                    print(
+                        f"[WARNING] FINAL_OPTION text '{matched_by_text}' disagreed with "
+                        f"FINAL_ANSWER number '{matched}' -- trusting the verbatim option "
+                        f"text. Raw model output: FINAL_OPTION={raw_option_text!r} "
+                        f"FINAL_ANSWER={raw_final!r}",
+                        flush=True,
+                    )
+                    matched = matched_by_text
+
             return section_model(**{field_name: matched}), content
 
         except Exception as exc:
@@ -447,12 +521,11 @@ def evaluate_section(
             # extended prompt, instead of giving up on the first bad response.
             last_error = exc
             prompt += (
-                f"\n\n(Your previous attempt failed: {exc}. Remember: on "
-                f"the very last line of your response, write exactly "
-                f"'FINAL_ANSWER: <number>' (or several numbers separated by "
-                f"';' for a multi-select question), using ONLY the option's "
-                f"number from the list above. Do not write the option text "
-                f"on that line.)"
+                f"\n\n(Your previous attempt failed: {exc}. Remember: end your "
+                f"response with a 'FINAL_OPTION: <option text>' line copying the "
+                f"exact option text verbatim, followed by a 'FINAL_ANSWER: <number>' "
+                f"line with that same option's number (several, separated by ';', "
+                f"for a multi-select question).)"
             )
 
     # All attempts exhausted without a parseable/valid answer.
