@@ -95,6 +95,28 @@ def extract_evidence_full_text(llm: ChatOllama, full_ehr_text: str, criterion_qu
     return response.content
 
 
+# Used only by extract_evidence_agentic below. EXTRACTOR_SYSTEM_PROMPT (shared
+# with extract_evidence/extract_evidence_full_text) assumes the record text is
+# already included in the human message -- true for those two, but NOT for the
+# agentic path, where the record is only reachable through search_patient_record.
+# Without an explicit instruction to call the tool first, a real-patient test
+# (10-section run against an actual EHR with unambiguous findings for most
+# criteria) showed the model just answered "NO RELEVANT EVIDENCE FOUND." on
+# EVERY section, without ever invoking the tool -- a total retrieval failure,
+# not a precision problem.
+AGENTIC_EXTRACTOR_SYSTEM_PROMPT = EXTRACTOR_SYSTEM_PROMPT + """
+
+TOOL USE: You have access to a tool called `search_patient_record` that searches
+the patient's clinical record. The record is NOT included in this conversation
+-- you can only see it by calling this tool. You MUST call `search_patient_record`
+at least once, using the criterion as your search query (you may call it again
+with a reformulated or narrower query if the first result doesn't seem
+relevant). Only after calling the tool and reviewing its results may you decide
+whether relevant evidence exists. Do NOT answer "NO RELEVANT EVIDENCE FOUND."
+without having called the tool at least once.
+"""
+
+
 def extract_evidence_agentic(llm: ChatOllama, ehr_tool, criterion_query: str, max_iterations: int = 3) -> str:
     """
     Agentic extraction: the model gets a retrieval tool and decides itself
@@ -107,10 +129,15 @@ def extract_evidence_agentic(llm: ChatOllama, ehr_tool, criterion_query: str, ma
     constrained. NOT validated as reliable yet; test with a standalone
     script (e.g. comparing its output against extract_evidence_full_text
     on the same evidence) before trusting it in the full pipeline.
+
+    Uses AGENTIC_EXTRACTOR_SYSTEM_PROMPT (not the shared EXTRACTOR_SYSTEM_PROMPT)
+    -- see that constant's comment: without an explicit instruction to call the
+    tool, the model was found to skip it entirely and default straight to the
+    negative fallback string on every section.
     """
 
     prompt = ChatPromptTemplate.from_messages([
-        ("system", EXTRACTOR_SYSTEM_PROMPT),
+        ("system", AGENTIC_EXTRACTOR_SYSTEM_PROMPT),
         ("human", "{input}"),
         ("placeholder", "{agent_scratchpad}"),
     ])
@@ -122,7 +149,13 @@ def extract_evidence_agentic(llm: ChatOllama, ehr_tool, criterion_query: str, ma
         max_iterations=max_iterations,
         early_stopping_method="force",
     )
-    result = executor.invoke({"input": f"Criterion to investigate: {criterion_query}"})
+    result = executor.invoke({
+        "input": (
+            f"Criterion to investigate: {criterion_query}\n\n"
+            "Use the search_patient_record tool to look in the patient's "
+            "clinical record before answering."
+        )
+    })
     return result["output"]
 
 
