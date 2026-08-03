@@ -104,6 +104,21 @@ def extract_evidence_full_text(llm: ChatOllama, full_ehr_text: str, criterion_qu
 # criteria) showed the model just answered "NO RELEVANT EVIDENCE FOUND." on
 # EVERY section, without ever invoking the tool -- a total retrieval failure,
 # not a precision problem.
+#
+# Second, separate issue found once retrieval started working: the agent's
+# final answer (the free-form chat turn after calling the tool) tends to
+# paraphrase/translate/summarize the tool's results instead of quoting them
+# verbatim, even though EXTRACTOR_SYSTEM_PROMPT already asks for raw fragments
+# only. Two concrete wrong downstream answers were traced back to this:
+# (1) section F flipped from correct ("No") to wrong ("Yes") because the
+# agent's "evidence" was a paraphrase ("La diagnosi... e' stata riferita dallo
+# specialista") that dropped clinical details present in the source text but
+# not carried into that paraphrase; (2) section A3_2 mislabeled the imaging
+# modality as "compression ultrasonography" because the agent's own English
+# rendering of "ecocolordoppler venoso" introduced that (incorrect) term --
+# Agent 2 then reasoned correctly over an already-corrupted quote. The
+# "TRANSCRIPTION" paragraph below re-states the no-paraphrasing rule more
+# forcefully, specific to this failure mode.
 AGENTIC_EXTRACTOR_SYSTEM_PROMPT = EXTRACTOR_SYSTEM_PROMPT + """
 
 TOOL USE: You have access to a tool called `search_patient_record` that searches
@@ -114,6 +129,18 @@ with a reformulated or narrower query if the first result doesn't seem
 relevant). Only after calling the tool and reviewing its results may you decide
 whether relevant evidence exists. Do NOT answer "NO RELEVANT EVIDENCE FOUND."
 without having called the tool at least once.
+
+TRANSCRIPTION RULE FOR YOUR FINAL ANSWER: once you have enough information to
+answer, your final answer must consist ONLY of the exact original sentence(s)
+copied verbatim (word-for-word) from the tool's results, in their original
+language. Do NOT paraphrase, translate, summarize, reword, or add your own
+interpretation of what a finding means -- copying the wrong words (e.g.
+translating "ecocolordoppler" as "compression ultrasonography" instead of
+quoting it as-is) or dropping details present in the source text will directly
+cause the next step to reach a wrong conclusion. Do NOT add framing sentences
+like "Based on the search results..." or "Here is the relevant evidence...".
+If multiple fragments are relevant, list each verbatim, one per line, with no
+other commentary.
 """
 
 
@@ -133,7 +160,10 @@ def extract_evidence_agentic(llm: ChatOllama, ehr_tool, criterion_query: str, ma
     Uses AGENTIC_EXTRACTOR_SYSTEM_PROMPT (not the shared EXTRACTOR_SYSTEM_PROMPT)
     -- see that constant's comment: without an explicit instruction to call the
     tool, the model was found to skip it entirely and default straight to the
-    negative fallback string on every section.
+    negative fallback string on every section. That prompt also enforces a
+    verbatim-transcription rule, added after tracing two wrong final answers
+    (sections F and A3_2) back to the agent paraphrasing/translating the
+    tool's results instead of quoting them exactly.
     """
 
     prompt = ChatPromptTemplate.from_messages([
