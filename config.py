@@ -16,6 +16,16 @@ LLM_TEMPERATURE = 0.0  # deterministic output for both agents
 LLM_NUM_PREDICT = 512   # token cap: prevents runaway generation
 LLM_REQUEST_TIMEOUT = 180  # seconds; allows time for reasoning on slower hardware
 
+# Separate tool-calling-capable model, used ONLY by Agent 1's autonomous
+# search step in "agentic_graph" mode (see agentic_graph.py). LLM_MODEL_NAME
+# above does NOT support Ollama's native tool-calling API (confirmed:
+# Ollama returns "model does not support tools", HTTP 400, when a tool is
+# bound to it) -- base Llama 3 never got tool-calling support in Ollama,
+# only Llama 3.1+ does. Agent 2 (evaluator) never binds tools, so it keeps
+# using LLM_MODEL_NAME regardless of EXTRACTOR_MODE.
+# Requires: ollama pull llama3.1:8b-instruct-q4_0
+AGENTIC_LLM_MODEL_NAME = "llama3.1:8b-instruct-q4_0"
+
 # --- Local embeddings ---
 # Multilingual model, since clinical records here are in Italian. Records are
 # NOT machine-translated to English first: translation is a non-deterministic,
@@ -28,15 +38,20 @@ EMBEDDING_MODEL_NAME = "intfloat/multilingual-e5-small"
 #   record fits the model's context window.
 # "rag": chunked/embedded retrieval (agents.extract_evidence). Needed for
 #   clinical records too long to pass whole.
-# "agentic": tool-calling extraction (agents.extract_evidence_agentic).
-#   NOT yet validated as reliable -- test standalone before trusting it in
-#   the full pipeline. Requires the base `langchain` package.
+# "agentic_graph": tool-calling extraction (agents.extract_evidence_agentic),
+#   Agent 1 explores the record autonomously -- orchestrated as an explicit
+#   LangGraph state machine (agentic_graph.py), using a separate tool-
+#   calling-capable model for the search step (AGENTIC_LLM_MODEL_NAME below)
+#   since LLM_MODEL_NAME doesn't support Ollama tool-calling. NOT yet
+#   validated as reliable -- retrieval quality/coverage can vary between
+#   runs since Agent 1 decides autonomously how to search. Requires the
+#   base `langchain` package and `langgraph`.
 EXTRACTOR_MODE = "full_text"
-AGENTIC_MAX_ITERATIONS = 5  # cap on tool calls per section, only used if EXTRACTOR_MODE == "agentic"
+AGENTIC_MAX_ITERATIONS = 5  # cap on tool calls per section, used by "agentic_graph" mode
 
 # --- Chunking for the clinical record (EHR) ---
-# Only used when EXTRACTOR_MODE is "rag" or "agentic" (both need the record
-# chunked/embedded into a vector store; full_text mode does not).
+# Only used when EXTRACTOR_MODE is "rag" or "agentic_graph" (both need the
+# record chunked/embedded into a vector store; full_text mode does not).
 EHR_CHUNK_SIZE = 800
 EHR_CHUNK_OVERLAP = 150
 EHR_RETRIEVER_K = 5

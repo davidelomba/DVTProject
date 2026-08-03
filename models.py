@@ -81,9 +81,13 @@ class B2_NewSymptoms(BaseModel):
         "None of the above were present or it is unknown if any of 1-4 were present",
     ] ] = Field(default_factory=list, description="B2. New onset clinical symptoms or signs — check all that apply")
 
+    # Runs automatically after Pydantic builds the instance (mode="after"),
+    # so this also re-validates whenever criteria_rules rebuilds a B2 result.
     @model_validator(mode="after")
     def none_is_exclusive(self):
         none_label = "None of the above were present or it is unknown if any of 1-4 were present"
+        # Reject "none of the above" combined with any actual symptom --
+        # logically inconsistent (e.g. "calf pain" + "none of the above").
         if none_label in self.symptoms and len(self.symptoms) > 1:
             raise ValueError(
                 f"'{none_label}' cannot coexist with other selections in B2 "

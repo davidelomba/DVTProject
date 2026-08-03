@@ -27,7 +27,9 @@ def get_embeddings():
     """
     return HuggingFaceEmbeddings(
         model_name=config.EMBEDDING_MODEL_NAME,
+        # Applied when embedding stored chunks (embed_documents()).
         encode_kwargs={"prompt": "passage: "},
+        # Applied when embedding a search query (embed_query()).
         query_encode_kwargs={"prompt": "query: "},
     )
 
@@ -41,6 +43,8 @@ def build_brighton_kb(brighton_pdf_text: str, embeddings=None, force_rebuild: bo
     """
     embeddings = embeddings or get_embeddings()
 
+    # Reuse the existing index instead of recomputing embeddings: the
+    # Brighton paper is static and identical across every patient/run.
     if os.path.isdir(config.BRIGHTON_KB_PERSIST_DIR) and not force_rebuild:
         return Chroma(
             persist_directory=config.BRIGHTON_KB_PERSIST_DIR,
@@ -53,6 +57,7 @@ def build_brighton_kb(brighton_pdf_text: str, embeddings=None, force_rebuild: bo
     )
     chunks = splitter.split_text(brighton_pdf_text)
 
+    # Builds the index from scratch and persists it to disk.
     return Chroma.from_texts(
         texts=chunks,
         embedding=embeddings,
@@ -65,9 +70,10 @@ def build_ehr_kb(patient_record_text: str, patient_id: str, embeddings=None) -> 
     """
     Dynamic KB: the single patient's clinical record, chunked and embedded.
     Only needed when config.EXTRACTOR_MODE is "rag" (agents.extract_evidence)
-    or "agentic" (agents.extract_evidence_agentic, via the retriever tool
-    built by make_ehr_retriever_tool below) -- not used when EXTRACTOR_MODE
-    is "full_text" (the default), which passes the record directly instead.
+    or "agentic_graph" (agents.extract_evidence_agentic, via the retriever
+    tool built by make_ehr_retriever_tool below) -- not used when
+    EXTRACTOR_MODE is "full_text" (the default), which passes the record
+    directly instead.
     Persisted in a dedicated per-patient subfolder, so different runs
     don't overwrite one another.
     """
@@ -79,6 +85,7 @@ def build_ehr_kb(patient_record_text: str, patient_id: str, embeddings=None) -> 
     )
     chunks = splitter.split_text(patient_record_text)
 
+    # Suffixed per patient_id so concurrent/different runs don't clash.
     persist_dir = f"{config.EHR_KB_PERSIST_DIR}_{patient_id}"
 
     # This KB is meant to be rebuilt fresh on every run (see module docstring).
@@ -101,13 +108,15 @@ def make_ehr_retriever_tool(ehr_vectorstore: Chroma):
     """
     Wraps the EHR retriever as a LangChain Tool, used by the agentic
     extractor (agents.extract_evidence_agentic) when config.EXTRACTOR_MODE
-    is "agentic" -- see pipeline.py for where this is called.
+    is "agentic_graph" -- see pipeline.py for where this is called.
 
     Requires the base `langchain` package (not just langchain-core/
     langchain-community/langchain-ollama).
     """
 
     ehr_retriever = ehr_vectorstore.as_retriever(search_kwargs={"k": config.EHR_RETRIEVER_K})
+    # Wraps the retriever as a LangChain Tool object the agent can call by
+    # name ("search_patient_record") with a free-text query of its choosing.
     return create_retriever_tool(
         ehr_retriever,
         "search_patient_record",

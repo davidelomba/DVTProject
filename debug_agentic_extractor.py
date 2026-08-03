@@ -37,6 +37,9 @@ def run_comparison():
     llm = build_llm()
     patient_ehr_text = load_ehr_text(PATIENT_EHR_PATH)
 
+    # The agentic extractor needs the record chunked/embedded and wrapped
+    # as a searchable tool -- full_text mode below reuses the same llm but
+    # needs neither of these.
     print("Building EHR knowledge base for the agentic extractor...")
     embeddings = get_embeddings()
     ehr_kb = build_ehr_kb(patient_ehr_text, patient_id=RECORD_ID, embeddings=embeddings)
@@ -46,12 +49,16 @@ def run_comparison():
     for section_key, query in TEST_QUERIES.items():
         print(f"{'=' * 70}\nSection {section_key} -- query: {query}\n{'=' * 70}")
 
+        # Baseline: whole record passed directly, no retrieval involved.
         print("\n--- full_text mode (current default) ---")
         t0 = time.time()
         result_full = extract_evidence_full_text(llm, patient_ehr_text, query)
         print(f"Done in {time.time() - t0:.1f}s")
         print(result_full)
 
+        # Comparison: model autonomously decides how to search the tool.
+        # Wrapped in try/except since this path is explicitly unvalidated
+        # and can fail in ways full_text mode can't (e.g. runaway tool use).
         print("\n--- agentic mode (tool-calling) ---")
         t0 = time.time()
         try:

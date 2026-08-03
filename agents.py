@@ -24,6 +24,8 @@ def build_llm(temperature: float = None) -> ChatOllama:
     """Builds the configured ChatOllama instance."""
     return ChatOllama(
         model=config.LLM_MODEL_NAME,
+        # Allows a one-off override; defaults to the deterministic
+        # config.LLM_TEMPERATURE (0.0) used everywhere else.
         temperature=temperature if temperature is not None else config.LLM_TEMPERATURE,
         num_predict=config.LLM_NUM_PREDICT,
         request_timeout=config.LLM_REQUEST_TIMEOUT,
@@ -65,10 +67,13 @@ def extract_evidence(llm: ChatOllama, ehr_vectorstore, criterion_query: str) -> 
     -- kept for clinical records too long to fit whole in the model's context
     window, where chunked retrieval becomes necessary again.
     """
+    # Fixed top-k similarity search against the EHR vector store (no
+    # autonomous decision-making by the model, unlike extract_evidence_agentic).
     retriever = ehr_vectorstore.as_retriever(search_kwargs={"k": config.EHR_RETRIEVER_K})
     docs = retriever.invoke(criterion_query)
     context = "\n---\n".join(d.page_content for d in docs)
 
+    # Short-circuit: nothing retrieved, so skip the LLM call entirely.
     if not context.strip():
         return "No relevant fragment found in the clinical record for this criterion."
 
@@ -87,6 +92,8 @@ def extract_evidence_full_text(llm: ChatOllama, full_ehr_text: str, criterion_qu
     is a reasonable default as long as the record comfortably fits in the
     model's context window (see extract_evidence for the RAG alternative).
     """
+    # Whole record embedded directly in the prompt -- no retrieval step,
+    # so there is no "wrong chunk retrieved" failure mode in this mode.
     messages = [
         ("system", EXTRACTOR_SYSTEM_PROMPT),
         ("human", f"Criterion to investigate: {criterion_query}\n\nFull Clinical Record:\n{full_ehr_text}"),
@@ -166,19 +173,27 @@ def extract_evidence_agentic(llm: ChatOllama, ehr_tool, criterion_query: str, ma
     tool's results instead of quoting them exactly.
     """
 
+    # {agent_scratchpad} is where LangChain injects the running history of
+    # tool calls/results as the agent iterates.
     prompt = ChatPromptTemplate.from_messages([
         ("system", AGENTIC_EXTRACTOR_SYSTEM_PROMPT),
         ("human", "{input}"),
         ("placeholder", "{agent_scratchpad}"),
     ])
+    # Binds the search tool to the model and wires up the ReAct-style
+    # tool-calling loop (LangChain's create_tool_calling_agent).
     agent = create_tool_calling_agent(llm, [ehr_tool], prompt)
     executor = AgentExecutor(
         agent=agent,
         tools=[ehr_tool],
         verbose=False,
         max_iterations=max_iterations,
+        # If max_iterations is hit, force a final answer instead of
+        # raising/looping forever.
         early_stopping_method="force",
     )
+    # Explicit reminder to use the tool, on top of the system prompt's TOOL
+    # USE paragraph -- belt-and-suspenders against the "never searches" bug.
     result = executor.invoke({
         "input": (
             f"Criterion to investigate: {criterion_query}\n\n"
@@ -218,14 +233,19 @@ confirmed by other means."""
 def _get_field_info(section_model):
     """Returns (field_name, valid_options, is_multi_select) for a section's
     Pydantic model, based on whether its field is Literal[...] or List[Literal[...]]."""
+    # Every section schema has exactly one field; grab it generically
+    # instead of hardcoding "answer" vs "studies" vs "symptoms" etc.
     field_name = next(iter(section_model.model_fields.keys()))
     annotation = section_model.model_fields[field_name].annotation
 
+    # Multi-select fields are typed List[Literal[...]] -- unwrap the list
+    # to get at the inner Literal's options.
     if get_origin(annotation) is list:
         inner = get_args(annotation)[0]
         options = list(get_args(inner))
         return field_name, options, True
 
+    # Single-choice fields are typed Literal[...] directly.
     options = list(get_args(annotation))
     return field_name, options, False
 
@@ -243,16 +263,23 @@ def _build_reasoning_prompt(
     a paraphrased answer onto the wrong option when two options are near-
     identical except for a negation (e.g. "confirmed DVT" vs "didn't confirm DVT").
     """
+    # Options numbered 1..N; the model answers with the NUMBER, not the
+    # option text (see docstring: avoids fuzzy-matching onto the wrong
+    # near-identical, negation-flipped option).
     options_block = "\n".join(f"{i}. {opt}" for i, opt in enumerate(options, start=1))
     prompt = f"Evidence: {evidence_text}"
     if brighton_context:
         prompt += f"\n\nReference synonyms/terminology (Brighton):\n{brighton_context}"
+    # Per-section hint (config.SECTION_HINTS), if this section has one.
     if extra_instructions:
         prompt += f"\n\n{extra_instructions}"
     prompt += f"\n\nOptions:\n{options_block}\n\n"
 
     base_instruction = "First explain your reasoning in a few sentences. Then, on the very last line of your entire response, write exactly:\n"
 
+    # Output format differs for multi-select (semicolon-separated numbers)
+    # vs single-choice (one number) -- parsed back out by
+    # _extract_final_answer_line/_match_option below.
     if multi_select:
         prompt += (
             base_instruction +
@@ -277,6 +304,9 @@ def _extract_final_answer_line(text: str) -> str:
     """Returns the content after the LAST 'FINAL_ANSWER:' occurrence (not the
     first, since the model sometimes references the instruction itself before
     actually answering)."""
+    # findall (not search): the model sometimes echoes the instruction text
+    # itself before the real answer, so multiple matches can occur --
+    # matches[-1] below always takes the LAST one.
     matches = re.findall(r"FINAL_ANSWER:\s*(.+)", text)
     if not matches:
         raise ValueError(f"No FINAL_ANSWER line found in response: {text!r}")
@@ -290,8 +320,11 @@ def _match_option(raw_value: str, valid_options: list[str], cutoff: float = 0.75
     (logged, since a silent fuzzy match risks landing on a negation-opposite
     option) -- only used if the model didn't answer with a bare number.
     """
+    # Strip stray formatting the model sometimes adds around the number
+    # (leading "-", trailing "." or ";").
     cleaned = raw_value.strip().lstrip("-").strip().rstrip(".;").strip()
 
+    # Primary path: the prompt asks for a bare 1-based index.
     index_candidate = cleaned.rstrip(".").strip()
     if index_candidate.isdigit():
         idx = int(index_candidate)
@@ -301,9 +334,13 @@ def _match_option(raw_value: str, valid_options: list[str], cutoff: float = 0.75
             f"Index {idx} out of range for {len(valid_options)} options: {valid_options}"
         )
 
+    # Fallback 1: model answered with the option text verbatim.
     if cleaned in valid_options:
         return cleaned
 
+    # Fallback 2: fuzzy match, logged explicitly -- a silent fuzzy match
+    # risks landing on a negation-opposite option (e.g. "confirmed DVT" vs
+    # "didn't confirm DVT" are textually close but semantically opposite).
     close = difflib.get_close_matches(cleaned, valid_options, n=1, cutoff=cutoff)
     if close:
         print(
@@ -331,10 +368,12 @@ def evaluate_section(
     model's full response, kept so a wrong answer can later be audited
     without re-running the pipeline (see pipeline.py's audit_log).
     """
+    # Schema introspection + prompt built once, outside the retry loop.
     field_name, options, multi_select = _get_field_info(section_model)
     prompt = _build_reasoning_prompt(evidence_text, brighton_context, options, multi_select, extra_instructions)
 
     last_error = None
+    # Up to max_retries + 1 attempts total (1 initial + retries on parse failure).
     for attempt in range(max_retries + 1):
         response = llm.invoke([
             ("system", EVALUATOR_SYSTEM_PROMPT),
@@ -346,16 +385,21 @@ def evaluate_section(
             raw_final = _extract_final_answer_line(content)
 
             if multi_select:
+                # Each ';'-separated item mapped to a valid option independently.
                 raw_items = [item.strip() for item in raw_final.split(";") if item.strip()]
                 matched = [_match_option(item, options) for item in raw_items]
                 seen = set()
                 matched = [m for m in matched if not (m in seen or seen.add(m))]  # dedupe, keep order
+                # Constructing via section_model(...) re-validates the value
+                # against the schema (e.g. B2's none-is-exclusive rule).
                 return section_model(**{field_name: matched}), content
 
             matched = _match_option(raw_final, options)
             return section_model(**{field_name: matched}), content
 
         except Exception as exc:
+            # Parsing/matching failed: remember the error and retry with an
+            # extended prompt, instead of giving up on the first bad response.
             last_error = exc
             prompt += (
                 f"\n\n(Your previous attempt failed: {exc}. Remember: on "
@@ -366,4 +410,5 @@ def evaluate_section(
                 f"on that line.)"
             )
 
+    # All attempts exhausted without a parseable/valid answer.
     raise RuntimeError(f"Evaluation failed after {max_retries + 1} attempts: {last_error}")
