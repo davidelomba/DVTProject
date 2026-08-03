@@ -32,7 +32,7 @@ EMBEDDING_MODEL_NAME = "intfloat/multilingual-e5-small"
 #   NOT yet validated as reliable -- test standalone before trusting it in
 #   the full pipeline. Requires the base `langchain` package.
 EXTRACTOR_MODE = "full_text"
-AGENTIC_MAX_ITERATIONS = 3  # cap on tool calls per section, only used if EXTRACTOR_MODE == "agentic"
+AGENTIC_MAX_ITERATIONS = 5  # cap on tool calls per section, only used if EXTRACTOR_MODE == "agentic"
 
 # --- Chunking for the clinical record (EHR) ---
 # Only used when EXTRACTOR_MODE is "rag" or "agentic" (both need the record
@@ -45,7 +45,7 @@ EHR_KB_PERSIST_DIR = "./chroma_ehr_kb"
 # --- Chunking for the static reference KB (Brighton guidelines PDF) ---
 BRIGHTON_CHUNK_SIZE = 800
 BRIGHTON_CHUNK_OVERLAP = 150
-BRIGHTON_RETRIEVER_K = 3
+BRIGHTON_RETRIEVER_K = 5
 BRIGHTON_KB_PERSIST_DIR = "./chroma_brighton_kb"  # static KB, rarely changes
 
 # --- Questionnaire sections, in execution order ---
