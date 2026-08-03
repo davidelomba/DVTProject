@@ -92,17 +92,28 @@ def make_ehr_retriever_tool(ehr_vectorstore: Chroma):
     is "agentic" -- see pipeline.py for where this is called.
 
     Requires the base `langchain` package (not just langchain-core/
-    langchain-community/langchain-ollama). Imported lazily so the rest of
-    the pipeline works without it when EXTRACTOR_MODE is not "agentic".
-    If missing: pip install langchain
+    langchain-community/langchain-ollama).
     """
 
     ehr_retriever = ehr_vectorstore.as_retriever(search_kwargs={"k": config.EHR_RETRIEVER_K})
     return create_retriever_tool(
         ehr_retriever,
         "search_patient_record",
-        "Use this tool to search for symptoms, surgical reports, dates, and lab "
-        "results in the patient's clinical record.",
+        # Deliberately spells out every clinical domain touched by the 10
+        # questionnaire criteria (A1, A2, A3_1/A3_2, B1_1/B1_2/B2, C, F, X) --
+        # the same description is reused unchanged across all sections, so a
+        # narrower one risks the model not thinking to search for a domain
+        # (e.g. autopsy, imaging modality, specialist diagnosis) it doesn't
+        # explicitly mention.
+        "Use this tool to search the patient's clinical record for any "
+        "information relevant to a DVT (deep vein thrombosis) diagnosis: "
+        "reported symptoms or signs (e.g. calf pain, swelling, redness), "
+        "imaging studies and their outcomes (ultrasound, Doppler, CT/MR "
+        "venography, contrast venography), autopsy or pathology findings, "
+        "surgical procedures (e.g. thrombectomy), laboratory results (e.g. "
+        "D-dimer values and reference ranges), diagnoses reported by a "
+        "specialist, and any alternative diagnosis that could explain the "
+        "symptoms.",
     )
 
 
