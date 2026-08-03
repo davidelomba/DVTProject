@@ -151,7 +151,13 @@ other commentary.
 """
 
 
-def extract_evidence_agentic(llm: ChatOllama, ehr_tool, criterion_query: str, max_iterations: int = 3) -> str:
+def extract_evidence_agentic(
+    llm: ChatOllama,
+    ehr_tool,
+    ehr_vectorstore,
+    criterion_query: str,
+    max_iterations: int = 3,
+) -> str:
     """
     Agentic extraction: the model gets a retrieval tool and decides itself
     whether/how many times to call it, instead of a single fixed-query call.
@@ -160,17 +166,31 @@ def extract_evidence_agentic(llm: ChatOllama, ehr_tool, criterion_query: str, ma
     max_iterations caps how many tool calls the agent can make before being
     forced to answer -- a safety net given this model's tendency (seen
     during evaluator testing) to run away with generation when not tightly
-    constrained. NOT validated as reliable yet; test with a standalone
-    script (e.g. comparing its output against extract_evidence_full_text
-    on the same evidence) before trusting it in the full pipeline.
+    constrained. NOT validated as reliable yet.
+
+    IMPORTANT: the returned evidence is built from the RAW chunks returned
+    by every tool call the agent made (result["intermediate_steps"]), UNION
+    a deterministic fixed-query retrieval against ehr_vectorstore (the same
+    top-k search "rag" mode would do) -- NOT from the agent's own final
+    chat-turn text (previously returned as result["output"]). Two real
+    failure modes motivated this:
+    (1) the agent's final answer sometimes paraphrased/translated/summarized
+    what the tool found instead of quoting it verbatim, corrupting
+    downstream answers (traced to sections F and A3_2);
+    (2) even with verbatim quoting enforced, the agent sometimes stopped
+    searching after a tool call that happened to rank an irrelevant chunk
+    above the actually relevant one for that section's query (traced to
+    section B2 repeatedly missing its symptom sentence while B1_1, same
+    run, found it) -- a retrieval *coverage* problem, not a wording one.
+    The deterministic floor guarantees the fixed-query top-k chunks are
+    always included regardless of what the agent's own search decided to
+    do; the agent's own tool calls (using its own reformulated queries) can
+    only ever add more coverage on top of that floor, never less.
 
     Uses AGENTIC_EXTRACTOR_SYSTEM_PROMPT (not the shared EXTRACTOR_SYSTEM_PROMPT)
     -- see that constant's comment: without an explicit instruction to call the
     tool, the model was found to skip it entirely and default straight to the
-    negative fallback string on every section. That prompt also enforces a
-    verbatim-transcription rule, added after tracing two wrong final answers
-    (sections F and A3_2) back to the agent paraphrasing/translating the
-    tool's results instead of quoting them exactly.
+    negative fallback string on every section.
     """
 
     # {agent_scratchpad} is where LangChain injects the running history of
@@ -191,6 +211,9 @@ def extract_evidence_agentic(llm: ChatOllama, ehr_tool, criterion_query: str, ma
         # If max_iterations is hit, force a final answer instead of
         # raising/looping forever.
         early_stopping_method="force",
+        # Needed to recover the RAW tool outputs below (result["intermediate_steps"]),
+        # instead of only the agent's own final chat-turn text.
+        return_intermediate_steps=True,
     )
     # Explicit reminder to use the tool, on top of the system prompt's TOOL
     # USE paragraph -- belt-and-suspenders against the "never searches" bug.
@@ -201,7 +224,29 @@ def extract_evidence_agentic(llm: ChatOllama, ehr_tool, criterion_query: str, ma
             "clinical record before answering."
         )
     })
-    return result["output"]
+
+    # Raw text actually returned by each tool call (e.g. the retriever
+    # tool's own formatted chunk dump) -- not the agent's paraphrase of it.
+    agent_chunks = [
+        str(observation) for _, observation in result.get("intermediate_steps", [])
+    ]
+
+    # Deterministic floor: the same fixed-query top-k retrieval "rag" mode
+    # uses, run unconditionally regardless of what the agent itself searched for.
+    floor_retriever = ehr_vectorstore.as_retriever(search_kwargs={"k": config.EHR_RETRIEVER_K})
+    floor_chunks = [d.page_content for d in floor_retriever.invoke(criterion_query)]
+
+    # Union, deduplicated (exact-string match), floor first since it's
+    # guaranteed relevant to the criterion query.
+    seen = set()
+    combined = [
+        c for c in floor_chunks + agent_chunks if c.strip() and not (c in seen or seen.add(c))
+    ]
+
+    if not combined:
+        return "NO RELEVANT EVIDENCE FOUND."
+
+    return "\n---\n".join(combined)
 
 
 # ---------------------------------------------------------------------------

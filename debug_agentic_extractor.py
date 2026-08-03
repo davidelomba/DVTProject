@@ -63,7 +63,7 @@ def run_comparison():
         t0 = time.time()
         try:
             result_agentic = extract_evidence_agentic(
-                llm, ehr_tool, query, max_iterations=config.AGENTIC_MAX_ITERATIONS
+                llm, ehr_tool, ehr_kb, query, max_iterations=config.AGENTIC_MAX_ITERATIONS
             )
             print(f"Done in {time.time() - t0:.1f}s")
             print(result_agentic)

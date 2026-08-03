@@ -35,7 +35,12 @@ Requires: ollama pull llama3.1:8b-instruct-q4_0 -- and the `langgraph` package.
 
 Caveat: NOT validated as reliable (see config.EXTRACTOR_MODE comment) --
 retrieval quality/coverage can vary between runs since Agent 1 decides
-autonomously how to search.
+autonomously how to search. Mitigated (not eliminated) by a deterministic
+fixed-query retrieval floor added in agents.extract_evidence_agentic: the
+evidence passed to answer_criterion is always the union of whatever the
+agent's own tool calls found AND a fixed top-k similarity search against
+the EHR vector store, so a run where the agent's own search comes up short
+still has the same baseline coverage "rag" mode would have gotten.
 """
 
 from typing import Optional, TypedDict
@@ -100,7 +105,7 @@ def _route_after_select(state: GraphState) -> str:
     return "finalize" if state["done"] else "search_record"
 
 
-def _make_search_node(llm, ehr_tool, section_queries: dict):
+def _make_search_node(llm, ehr_tool, ehr_vectorstore, section_queries: dict):
     def search_record(state: GraphState) -> GraphState:
         section_key = state["current_section"]
         query = section_queries[section_key]
@@ -108,10 +113,12 @@ def _make_search_node(llm, ehr_tool, section_queries: dict):
         print(f"[{section_key}] Agent 1 (agentic search) exploring the record...", flush=True)
         try:
             # Agent 1 decides autonomously how/whether to call the search
-            # tool; see agents.extract_evidence_agentic for the tool-calling
-            # agent itself.
+            # tool, UNION a deterministic fixed-query retrieval floor
+            # against ehr_vectorstore -- see agents.extract_evidence_agentic
+            # for why the floor was added (B2 repeatedly missing its
+            # symptom sentence despite the agent's own search).
             evidence = extract_evidence_agentic(
-                llm, ehr_tool, query, max_iterations=config.AGENTIC_MAX_ITERATIONS
+                llm, ehr_tool, ehr_vectorstore, query, max_iterations=config.AGENTIC_MAX_ITERATIONS
             )
         except Exception as exc:
             # A failed search shouldn't crash the whole graph -- the next
@@ -199,15 +206,17 @@ def _finalize(state: GraphState) -> GraphState:
 # Graph assembly
 # ---------------------------------------------------------------------------
 
-def build_graph(search_llm, answer_llm, ehr_tool, brighton_kb, section_queries: dict):
+def build_graph(search_llm, answer_llm, ehr_tool, ehr_vectorstore, brighton_kb, section_queries: dict):
     """search_llm: tool-calling-capable model, used by Agent 1 (search_record).
     answer_llm: config.LLM_MODEL_NAME model, used by Agent 2 (answer_criterion),
-    which needs no tool support."""
+    which needs no tool support. ehr_vectorstore: the same Chroma object
+    ehr_tool wraps, passed separately so search_record can also run the
+    deterministic retrieval floor (see agents.extract_evidence_agentic)."""
     graph = StateGraph(GraphState)
 
     # Register the 4 nodes described in the module docstring.
     graph.add_node("select_next", _select_next)
-    graph.add_node("search_record", _make_search_node(search_llm, ehr_tool, section_queries))
+    graph.add_node("search_record", _make_search_node(search_llm, ehr_tool, ehr_vectorstore, section_queries))
     graph.add_node("answer_criterion", _make_answer_node(answer_llm, brighton_kb, section_queries))
     graph.add_node("finalize", _finalize)
 
@@ -234,6 +243,7 @@ def run_agentic_graph_pipeline(
     evaluator_llm,
     search_llm,
     ehr_tool,
+    ehr_vectorstore,
     brighton_kb,
     section_queries: dict,
 ):
@@ -248,7 +258,7 @@ def run_agentic_graph_pipeline(
     both of those once, uniformly, regardless of which mode produced
     form_data.
     """
-    app = build_graph(search_llm, evaluator_llm, ehr_tool, brighton_kb, section_queries)
+    app = build_graph(search_llm, evaluator_llm, ehr_tool, ehr_vectorstore, brighton_kb, section_queries)
 
     # Every section starts unfilled; the queue drives select_next's loop.
     initial_state: GraphState = {

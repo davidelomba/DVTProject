@@ -80,7 +80,8 @@ def run_pipeline(record_id: str, patient_ehr_path: str, brighton_pdf_path: str):
         # rules (applied once, uniformly, further down).
         form_data, audit_log = run_agentic_graph_pipeline(
             record_id, evaluator_llm=llm, search_llm=search_llm,
-            ehr_tool=ehr_tool, brighton_kb=brighton_kb, section_queries=SECTION_QUERIES,
+            ehr_tool=ehr_tool, ehr_vectorstore=ehr_kb, brighton_kb=brighton_kb,
+            section_queries=SECTION_QUERIES,
         )
     else:
         form_data = {"record_id": record_id}
