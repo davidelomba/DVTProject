@@ -112,6 +112,16 @@ SECTION_HINTS = {
         "done for this patient. Do NOT select an option just because it appears in the "
         "Brighton reference list; select it only if the evidence itself names that "
         "specific test. "
+        "NOTE: the Brighton reference material sometimes groups related techniques "
+        "into a single combined description (e.g. 'ultrasound with and without "
+        "doppler'), even though the options below list them separately. When this "
+        "happens, base your choice on the SPECIFIC technique named in THIS patient's "
+        "evidence text, not on how the reference material happens to group or order "
+        "them -- e.g. a color/duplex Doppler study should map to 'Doppler/Duplex "
+        "Ultrasound', a study described in terms of vein compressibility should map "
+        "to 'Compression ultrasonography', regardless of which term the Brighton "
+        "context mentions first or most prominently. If the evidence itself genuinely "
+        "describes elements of both techniques, select both."
     ),
     "B1_1": (
         "CRITICAL DISTINCTION FOR NEGATIONS: "
@@ -142,7 +152,13 @@ SECTION_HINTS = {
         "CRITICAL: This criterion asks if the diagnosis was reported 'WITHOUT details'. "
         "If the evidence provides specific clinical details about the diagnostic tests used, "
         "such as imaging findings, affected anatomy, or laboratory results, you MUST select 'No'. "
-        "Select 'Yes' ONLY if the diagnosis is stated with absolutely no supporting clinical details."
+        "Select 'Yes' ONLY if the diagnosis is stated with absolutely no supporting clinical details. "
+        "NOTE: judge this by whether a specific finding is present -- an anatomical location, a "
+        "measurement/value, or a described result -- NOT by whether the extracted evidence fragment "
+        "also happens to repeat the NAME of the test/procedure that produced it. The evidence you "
+        "receive is an extracted fragment and may omit the test's name even when a specific finding "
+        "is present; the absence of the test's name alone is NOT evidence that the diagnosis lacked "
+        "details."
     ),
     "X": (
         "CRITICAL ERROR PREVENTION: Symptoms (like pain, swelling, edema) are NOT alternative diagnoses. "
