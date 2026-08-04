@@ -400,6 +400,12 @@ def _match_option(raw_value: str, valid_options: list[str], cutoff: float = 0.75
     # Strip stray formatting the model sometimes adds around the number
     # (leading "-", trailing "." or ";").
     cleaned = raw_value.strip().lstrip("-").strip().rstrip(".;").strip()
+    # Also strip a leading "<digits>." or "<digits>)" list-style prefix the
+    # model sometimes echoes when copying an option verbatim (e.g. "1. D-dimer
+    # exceeded..." instead of just "D-dimer exceeded..."), which would
+    # otherwise fail the exact-match check below and fall through to an
+    # unnecessary fuzzy match.
+    cleaned = re.sub(r"^\d+[.)]\s*", "", cleaned).strip()
 
     # Primary path: the prompt asks for a bare 1-based index.
     index_candidate = cleaned.rstrip(".").strip()
