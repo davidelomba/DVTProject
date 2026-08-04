@@ -411,9 +411,20 @@ def _match_option(raw_value: str, valid_options: list[str], cutoff: float = 0.75
             f"Index {idx} out of range for {len(valid_options)} options: {valid_options}"
         )
 
-    # Fallback 1: model answered with the option text verbatim.
-    if cleaned in valid_options:
-        return cleaned
+    # Fallback 1: model answered with the option text verbatim. Compared
+    # with trailing punctuation stripped from BOTH sides: the model often
+    # writes the option text on FINAL_OPTION mid-line, right before a
+    # newline into FINAL_ANSWER, and naturally omits a trailing period that
+    # IS part of the option's canonical text in models.py (e.g. section C's
+    # "...upper limit of normal." with a period) -- without this, an
+    # otherwise-correct verbatim answer would miss the exact-match check
+    # and fall through to a fuzzy match unnecessarily. Returns the
+    # ORIGINAL option text (with punctuation), not the normalized one, so
+    # the result still satisfies the schema's exact Literal values.
+    normalized = cleaned.rstrip(".").strip()
+    for option in valid_options:
+        if normalized == option.rstrip(".").strip():
+            return option
 
     # Fallback 2: fuzzy match, logged explicitly -- a silent fuzzy match
     # risks landing on a negation-opposite option (e.g. "confirmed DVT" vs

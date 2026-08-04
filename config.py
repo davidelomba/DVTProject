@@ -117,7 +117,14 @@ SECTION_HINTS = {
         "compressibility) -- not synonyms, even though both use an ultrasound probe "
         "and the Brighton reference material sometimes lists them together. Base "
         "your choice on the specific technique named in the evidence, not on how "
-        "the reference material groups them."
+        "the reference material groups them. "
+        "Use the Brighton material only for general terminology, not as a "
+        "description of what was done for this patient. Between the "
+        "ultrasound-based options, judge by which physical property the evidence "
+        "actually describes: flow/Doppler signal maps to 'Doppler/Duplex "
+        "Ultrasound'; vein compressibility maps to 'Compression ultrasonography'. "
+        "A generic mention of 'ultrasound' alone is not enough to pick one over "
+        "the other."
     ),
     "B1_1": (
         "CRITICAL DISTINCTION FOR NEGATIONS: "
