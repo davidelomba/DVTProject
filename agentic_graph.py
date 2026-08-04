@@ -33,14 +33,6 @@ while Agent 2 (evaluator, never binds a tool) keeps using config.LLM_MODEL_NAME
 via agents.build_llm(), unchanged.
 Requires: ollama pull llama3.1:8b-instruct-q4_0 -- and the `langgraph` package.
 
-Caveat: NOT validated as reliable (see config.EXTRACTOR_MODE comment) --
-retrieval quality/coverage can vary between runs since Agent 1 decides
-autonomously how to search. Mitigated (not eliminated) by a deterministic
-fixed-query retrieval floor added in agents.extract_evidence_agentic: the
-evidence passed to answer_criterion is always the union of whatever the
-agent's own tool calls found AND a fixed top-k similarity search against
-the EHR vector store, so a run where the agent's own search comes up short
-still has the same baseline coverage "rag" mode would have gotten.
 """
 
 from typing import Optional, TypedDict

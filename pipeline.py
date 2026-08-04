@@ -15,9 +15,6 @@ from models import DVT_CriteriaForm, SECTION_MODELS
 from rag_setup import get_embeddings, build_brighton_kb, build_ehr_kb, make_ehr_retriever_tool, load_brighton_pdf_text, load_ehr_text
 from agents import build_llm, evaluate_section, extract_evidence, extract_evidence_full_text
 from criteria_rules import apply_keyword_gate, apply_details_gate, apply_cross_section_rules
-# agentic_graph implements the "agentic_graph" EXTRACTOR_MODE; imported here
-# (top-level, not inside run_pipeline) now that it no longer imports anything
-# back from this module, so there is no import cycle to defer.
 from agentic_graph import build_agentic_llm, run_agentic_graph_pipeline
 
 

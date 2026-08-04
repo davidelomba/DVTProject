@@ -24,24 +24,10 @@ def build_llm(temperature: float = None) -> ChatOllama:
     """Builds the configured ChatOllama instance."""
     return ChatOllama(
         model=config.LLM_MODEL_NAME,
-        # Allows a one-off override; defaults to the deterministic
-        # config.LLM_TEMPERATURE (0.0) used everywhere else.
         temperature=temperature if temperature is not None else config.LLM_TEMPERATURE,
         num_predict=config.LLM_NUM_PREDICT,
         request_timeout=config.LLM_REQUEST_TIMEOUT,
     )
-
-
-def test_structured_output_support(llm: ChatOllama, sample_model) -> bool:
-    """Diagnostic helper: checks if the model supports .with_structured_output().
-    Not used by the main pipeline (see agents.py module docstring for why)."""
-    try:
-        structured_llm = llm.with_structured_output(sample_model)
-        result = structured_llm.invoke("Fill in the schema with plausible example data.")
-        return isinstance(result, sample_model)
-    except Exception as exc:
-        print(f"[with_structured_output check] not reliably supported: {exc}")
-        return False
 
 
 # ---------------------------------------------------------------------------
@@ -495,9 +481,7 @@ def evaluate_section(
                         matched_by_text = None
                     # Disagreement means the model's own number-mapping slipped
                     # relative to the option text it just copied verbatim --
-                    # trust the copied text (see _build_reasoning_prompt for
-                    # why this was added: A3_2 correctly named the right
-                    # modality in prose but wrote the wrong index).
+                    # trust the copied text.
                     if matched_by_text and matched_by_text != matched:
                         print(
                             f"[WARNING] FINAL_OPTION text {matched_by_text} disagreed with "
