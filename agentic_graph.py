@@ -51,7 +51,7 @@ from langchain_ollama import ChatOllama
 import config
 from models import SECTION_MODELS
 from agents import extract_evidence_agentic, evaluate_section
-from criteria_rules import apply_keyword_gate
+from criteria_rules import apply_keyword_gate, apply_details_gate
 
 
 def build_agentic_llm() -> ChatOllama:
@@ -177,6 +177,11 @@ def _make_answer_node(llm, brighton_kb, section_queries: dict):
             # (see pipeline.py) -- single source of truth in criteria_rules.py.
             section_result, reasoning_text = apply_keyword_gate(
                 section_key, section_result, evidence, reasoning_text
+            )
+            # Same section-F details gate used by every other mode (see
+            # criteria_rules.apply_details_gate) -- single source of truth.
+            section_result, reasoning_text = apply_details_gate(
+                section_key, section_result, reasoning_text
             )
 
             section_log["reasoning"] = reasoning_text

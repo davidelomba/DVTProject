@@ -1,8 +1,11 @@
 """
 Deterministic safety nets applied on top of the two LLM agents' output:
-per-section keyword gates and cross-section dependency rules.
+per-section keyword gates, the section-F details gate, and cross-section
+dependency rules.
 
 """
+
+import re
 
 import config
 
@@ -61,6 +64,64 @@ def apply_keyword_gate(section_key: str, section_result, evidence: str, reasonin
                 f"but no triggering keywords {gate_info['keywords']} were found in the evidence. "
                 f"Answer was automatically reverted to the negative default."
             )
+
+    return section_result, reasoning_text
+
+
+def apply_details_gate(section_key: str, section_result, reasoning_text: str):
+    """
+    Section F only ("reported by specialist, without details"): a real bug
+    was traced where Agent 2's own reasoning correctly concluded that
+    specific clinical details WERE present in the evidence, but the
+    FINAL_OPTION/FINAL_ANSWER lines still answered 'Yes' (reported WITHOUT
+    details) anyway -- a self-contradiction between the reasoning prose and
+    the final lines that the FINAL_OPTION-vs-FINAL_ANSWER cross-check in
+    agents.evaluate_section cannot catch, since those two lines agreed with
+    each other (both wrong in the same direction).
+
+    Rather than trusting the model's own Yes/No mapping for F -- the step
+    where it was observed to flip -- SECTION_HINTS["F"] (config.py) asks the
+    model for an explicit 'DETAILS_PRESENT: yes/no' line, a factual judgment
+    it has reliably reported correctly. This function derives F's answer
+    MECHANICALLY from that line instead: the model still does the actual
+    clinical-language judgment (is a specific finding present?), only the
+    final Yes/No label -- not the underlying evidence -- is decided here.
+
+    Returns (section_result, reasoning_text), unchanged if section_key is
+    not "F" or the DETAILS_PRESENT line is missing/unparseable (e.g. the
+    model skipped it despite the instruction -- degrades gracefully rather
+    than failing the evaluation).
+    """
+    if section_key != "F":
+        return section_result, reasoning_text
+
+    match = re.search(r"DETAILS_PRESENT:\s*(yes|no)", reasoning_text, re.IGNORECASE)
+    if not match:
+        return section_result, reasoning_text
+
+    details_present = match.group(1).lower() == "yes"
+    # F's schema: "Yes" means reported WITHOUT details, "No" means reported
+    # WITH details (or not reported at all) -- see models.F_ReportedBySpecialist.
+    correct_answer = "No" if details_present else "Yes"
+
+    field_name = list(type(section_result).model_fields.keys())[0]
+    llm_chosen_answer = getattr(section_result, field_name)
+
+    if llm_chosen_answer != correct_answer:
+        print(
+            f"[F] DETAILS GATE TRIGGERED: model's own DETAILS_PRESENT="
+            f"{'yes' if details_present else 'no'} implies '{correct_answer}', but "
+            f"FINAL_ANSWER was '{llm_chosen_answer}'. Overriding.",
+            flush=True,
+        )
+        # Rebuilt via the model's own constructor (not setattr), same
+        # reasoning as apply_keyword_gate: keeps Pydantic validation.
+        section_result = type(section_result)(**{field_name: correct_answer})
+        reasoning_text += (
+            f"\n\n[SYSTEM OVERRIDE]: The LLM originally selected '{llm_chosen_answer}', "
+            f"which contradicted its own DETAILS_PRESENT={'yes' if details_present else 'no'} "
+            f"judgment. Answer was automatically corrected to '{correct_answer}'."
+        )
 
     return section_result, reasoning_text
 

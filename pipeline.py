@@ -14,7 +14,7 @@ import config
 from models import DVT_CriteriaForm, SECTION_MODELS
 from rag_setup import get_embeddings, build_brighton_kb, build_ehr_kb, make_ehr_retriever_tool, load_brighton_pdf_text, load_ehr_text
 from agents import build_llm, evaluate_section, extract_evidence, extract_evidence_full_text
-from criteria_rules import apply_keyword_gate, apply_cross_section_rules
+from criteria_rules import apply_keyword_gate, apply_details_gate, apply_cross_section_rules
 # agentic_graph implements the "agentic_graph" EXTRACTOR_MODE; imported here
 # (top-level, not inside run_pipeline) now that it no longer imports anything
 # back from this module, so there is no import cycle to defer.
@@ -129,6 +129,13 @@ def run_pipeline(record_id: str, patient_ehr_path: str, brighton_pdf_path: str):
                 # shared with agentic_graph.py via criteria_rules.py.
                 section_result, reasoning_text = apply_keyword_gate(
                     section_key, section_result, evidence, reasoning_text
+                )
+                # Section-F-only details gate (see criteria_rules.apply_details_gate):
+                # derives F's Yes/No mechanically from the model's own explicit
+                # DETAILS_PRESENT judgment, instead of trusting its own Yes/No
+                # mapping -- the step where it was observed to self-contradict.
+                section_result, reasoning_text = apply_details_gate(
+                    section_key, section_result, reasoning_text
                 )
 
                 section_log["reasoning"] = reasoning_text
