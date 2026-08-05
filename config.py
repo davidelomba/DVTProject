@@ -72,6 +72,26 @@ SECTION_KEYWORD_GATES = {
     "A2": {
         "keywords": ["thrombectom", "trombectom", "embolectom"],
         "default_option_text": "No surgical procedure done; or, done but either did not confirm presence of DVT or findings unknown; or unknown if done"
+    },
+    "X": {
+        # Names of the actual differential-diagnosis conditions from the Brighton
+        # Table 2 list (physical trauma, cardiovascular, and "other conditions"
+        # categories) -- a risk factor (e.g. a long flight) or a denied/absent
+        # symptom is NOT one of these, so it can never trigger this gate; only
+        # the record naming one of these specific competing conditions can.
+        # Most terms share a Latin/Greek root across Italian and English
+        # (cellulit-, vasculit-, cirrosi/cirrhosis, nefrosic-/nephrotic); a few
+        # do not, so both the English and Italian term are listed explicitly,
+        # same exception already made for "thrombectom"/"trombectom" in A2.
+        "keywords": [
+            "cellulit", "baker", "fractur", "frattur", "compartment", "compartimental",
+            "vasculit", "cirrhosis", "cirrosi", "nephrotic", "nefrosic",
+            "lymphatic", "linfatic", "heart failure", "scompenso cardiaco",
+            "muscle tear", "strappo muscolare", "hematoma", "ematoma",
+            "septic arthritis", "artrite settica", "fistula", "fistola",
+            "dependent edema", "edema declive",
+        ],
+        "default_option_text": "No alternative diagnosis was found to explain the acute illness"
     }
 }
 
@@ -123,16 +143,25 @@ SECTION_HINTS = {
         "in the evidence text for THIS patient -- do not select an option just because "
         "the Brighton reference context lists it as a symptom generally associated with "
         "DVT. "
-        "Pay special attention to NOT confuse 'absent blood flow' reported by an imaging "
-        "study (a Doppler/ultrasound finding about venous flow in a thrombosed segment) "
-        "with 'absent pulses' (a distinct physical examination finding, from palpating "
-        "the patient's pulse) -- these are NOT the same thing regardless of the language "
-        "the record is written in; only select 'Absent pulses in legs or arms' if pulse "
-        "palpation/examination is explicitly reported as absent, never merely because an "
-        "imaging study reports no flow in a vein. "
-        "Also check carefully for any explicit mention of localized warmth or increased "
-        "skin/local temperature in the affected limb -- this maps to 'Redness, warmth, or "
-        "pain in one or more extremities' even if redness itself is not mentioned."
+        "MANDATORY CHECKLIST -- these four options are NOT mutually exclusive and a single "
+        "finding can justify more than one of them; before writing your final answer, go "
+        "through the evidence text and check EACH of the four options separately, one at a "
+        "time: "
+        "(1) Calf pain or tenderness -- is pain or tenderness specifically in the calf "
+        "documented anywhere in the evidence (e.g. pain on palpation of the calf)? If yes, "
+        "select it, even if that same sentence also mentions other symptoms. "
+        "(2) Leg swelling or pitting oedema -- is swelling/oedema of the leg documented? "
+        "(3) Absent pulses in legs or arms -- is a pulse EXAMINATION explicitly reported as "
+        "absent? Do NOT confuse this with 'absent blood flow' reported by an imaging study "
+        "(a Doppler/ultrasound finding about venous flow in a thrombosed segment) -- these "
+        "are NOT the same thing regardless of the language the record is written in; only "
+        "select this if pulse palpation/examination itself is reported as absent, never "
+        "merely because an imaging study reports no flow in a vein. "
+        "(4) Redness, warmth, or pain in one or more extremities -- is redness, increased "
+        "local skin temperature/warmth, OR pain in an extremity documented? Check for this "
+        "independently of option (1): calf pain already selected under option (1) does not "
+        "need to be re-justified here, but a separate mention of warmth or increased local "
+        "temperature (even without redness) is enough to select this option on its own."
     ),
     "C": (
         "D-DIMER REFERENCE RANGE RULE: "
