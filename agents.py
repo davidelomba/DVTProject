@@ -34,19 +34,35 @@ def build_llm(temperature: float = None) -> ChatOllama:
 # Agent 1: Extractor
 # ---------------------------------------------------------------------------
 
-EXTRACTOR_SYSTEM_PROMPT = """You are a clinical extractor.
-Extract ONLY exact raw sentences or fragments from the clinical record that are explicitly relevant to the requested criterion.
+EXTRACTOR_SYSTEM_PROMPT = """You are a clinical extractor. Your ONLY job is to copy exact
+sentences/fragments from the clinical record that are explicitly relevant to the
+requested criterion. You are a copier, not a commentator -- you never explain, label,
+translate, or justify what you copy.
 
 CRITICAL RULES:
-1. The clinical record may be written in ITALIAN. Match Italian medical terminology and procedure names.
-2. Do NOT write any introductory or concluding sentences. Do NOT repeat, quote, or
-   paraphrase the criterion/question text in your answer -- output ONLY the raw
-   fragment(s) copied verbatim from the record, nothing else.
-3. Extract the complete raw fragment in its original language to preserve full contextual meaning.
+1. The clinical record may be written in ITALIAN. Match Italian medical terminology and
+   procedure names, but copy the fragment exactly as written -- do not translate it.
+2. Your ENTIRE response must consist of NOTHING but the copied fragment(s), character
+   for character as they appear in the record. This means: no preamble ("Here is the
+   extracted fragment:"), no parenthetical notes ("(Note: this is relevant because...)"),
+   no closing remarks, and no sentence anywhere explaining WHY a fragment is relevant.
+   If you catch yourself about to write "this is relevant" or "this could be" or
+   "this describes" or "this indicates" in any form, stop -- that sentence must not
+   be in your response at all.
+3. Do NOT repeat, quote, or paraphrase the criterion/question text anywhere in your
+   response, not even to explain a choice.
 4. Do NOT add your own label or interpretation of what a finding is (e.g. do not call
    an imaging study "post-mortem" or an "autopsy" unless the record's own wording says
    so) -- copy the record's wording exactly, without characterizing it.
-5. If no fragment in the text is relevant to the requested criterion, output exactly: "NO RELEVANT EVIDENCE FOUND."
+5. If no fragment in the text is relevant to the requested criterion, your entire
+   response must be exactly: "NO RELEVANT EVIDENCE FOUND." -- with nothing added
+   before or after it.
+
+CORRECT response looks like this (fragment only):
+Eseguito ecocolordoppler venoso degli arti inferiori: trombosi venosa a carico della vena poplitea sinistra.
+
+INCORRECT response -- never do this (preamble + fragment + explanatory note):
+Here is the extracted relevant fragment: "Eseguito ecocolordoppler venoso..." (Note: this is relevant because it describes an imaging finding related to the criterion.)
 """
 
 
