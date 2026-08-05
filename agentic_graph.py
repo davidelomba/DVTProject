@@ -29,8 +29,9 @@ support Ollama's native tool-calling API (confirmed: Ollama returns "model
 does not support tools", HTTP 400, when a tool is bound to it). Only
 Llama 3.1+ has tool-calling support in Ollama, not base Llama 3. So Agent
 1's search step here uses a separate model, config.AGENTIC_LLM_MODEL_NAME,
-while Agent 2 (evaluator, never binds a tool) keeps using config.LLM_MODEL_NAME
-via agents.build_llm(), unchanged.
+while Agent 2 (evaluator, never binds a tool) uses config.EVALUATOR_LLM_MODEL_NAME
+via agents.build_llm(model_name=...) -- both models are built once in
+pipeline.py and passed in, see run_agentic_graph_pipeline below.
 Requires: ollama pull llama3.1:8b-instruct-q4_0 -- and the `langgraph` package.
 
 """
@@ -48,8 +49,9 @@ from criteria_rules import apply_keyword_gate, apply_details_gate
 
 def build_agentic_llm() -> ChatOllama:
     """Tool-calling-capable model, used only by the search_record node.
-    Agent 2 (answer_criterion) keeps using agents.build_llm() unchanged,
-    since it never binds any tool. See config.AGENTIC_LLM_MODEL_NAME."""
+    Agent 2 (answer_criterion) is built separately in pipeline.py via
+    agents.build_llm(config.EVALUATOR_LLM_MODEL_NAME), since it never binds
+    any tool. See config.AGENTIC_LLM_MODEL_NAME."""
     return ChatOllama(
         model=config.AGENTIC_LLM_MODEL_NAME,
         temperature=config.LLM_TEMPERATURE,
@@ -205,8 +207,8 @@ def _finalize(state: GraphState) -> GraphState:
 
 def build_graph(search_llm, answer_llm, ehr_tool, ehr_vectorstore, brighton_kb, section_queries: dict):
     """search_llm: tool-calling-capable model, used by Agent 1 (search_record).
-    answer_llm: config.LLM_MODEL_NAME model, used by Agent 2 (answer_criterion),
-    which needs no tool support. ehr_vectorstore: the same Chroma object
+    answer_llm: config.EVALUATOR_LLM_MODEL_NAME model, used by Agent 2
+    (answer_criterion), which needs no tool support. ehr_vectorstore: the same Chroma object
     ehr_tool wraps, passed separately so search_record can also run the
     deterministic retrieval floor (see agents.extract_evidence_agentic)."""
     graph = StateGraph(GraphState)

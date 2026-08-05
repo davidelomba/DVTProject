@@ -4,14 +4,17 @@ Drives both retrieval (RAG) parameters and LLM reasoning constraints.
 """
 
 # --- Local LLM (via Ollama) ---
-LLM_MODEL_NAME = "llama3:8b-instruct-q4_0"
-LLM_TEMPERATURE = 0.0  # deterministic output for both agents
+# One model name per pipeline role. All three are built through the same
+# agents.build_llm(model_name=...) factory, so trying a different model for
+# any single role is a one-line change here -- no code changes needed
+# elsewhere. LLM_TEMPERATURE/LLM_NUM_PREDICT/LLM_REQUEST_TIMEOUT are shared
+# generation settings applied to whichever model is built for a given role.
+LLM_MODEL_NAME = "llama3:8b-instruct-q4_0"  # Agent 1 (extractor), all modes
+EVALUATOR_LLM_MODEL_NAME = "cniongolo/biomistral"  # Agent 2 (evaluator), all modes
+AGENTIC_LLM_MODEL_NAME = "llama3.1:8b-instruct-q4_0"  # Agent 1's search step, "agentic_graph" mode only
+LLM_TEMPERATURE = 0.0  # deterministic output for all agents
 LLM_NUM_PREDICT = 512   # token cap: prevents runaway generation
 LLM_REQUEST_TIMEOUT = 180  # seconds; allows time for reasoning on slower hardware
-
-
-
-AGENTIC_LLM_MODEL_NAME = "llama3.1:8b-instruct-q4_0"
 
 # --- Local embeddings ---
 # Multilingual model, since clinical records here are in Italian. Records are

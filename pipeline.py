@@ -44,10 +44,15 @@ def run_pipeline(record_id: str, patient_ehr_path: str, brighton_pdf_path: str):
     full reasoning text for whichever attempt succeeded. This makes a wrong
     answer diagnosable after the fact, without re-running the pipeline.
     """
-    # Embedding model and evaluator LLM: built once and reused across every
-    # section, instead of being recreated on each loop iteration.
+    # Embedding model and per-role LLMs: built once and reused across every
+    # section, instead of being recreated on each loop iteration. Two
+    # separate models by default (config.LLM_MODEL_NAME for Agent 1,
+    # config.EVALUATOR_LLM_MODEL_NAME for Agent 2) -- change either constant
+    # in config.py to try a different model for that role, no code changes
+    # needed here.
     embeddings = get_embeddings()
     llm = build_llm()
+    evaluator_llm = build_llm(config.EVALUATOR_LLM_MODEL_NAME)
 
     # Load both source texts once: the static Brighton reference paper and
     # this run's patient record.
@@ -76,7 +81,7 @@ def run_pipeline(record_id: str, patient_ehr_path: str, brighton_pdf_path: str):
         # plain loop below, just not yet passed through the cross-section
         # rules (applied once, uniformly, further down).
         form_data, audit_log = run_agentic_graph_pipeline(
-            record_id, evaluator_llm=llm, search_llm=search_llm,
+            record_id, evaluator_llm=evaluator_llm, search_llm=search_llm,
             ehr_tool=ehr_tool, ehr_vectorstore=ehr_kb, brighton_kb=brighton_kb,
             section_queries=SECTION_QUERIES,
         )
@@ -118,7 +123,7 @@ def run_pipeline(record_id: str, patient_ehr_path: str, brighton_pdf_path: str):
                 t0 = time.time()
                 extra_instructions = config.SECTION_HINTS.get(section_key, "")
                 section_result, reasoning_text = evaluate_section(
-                    llm, section_model, evidence, brighton_context, extra_instructions
+                    evaluator_llm, section_model, evidence, brighton_context, extra_instructions
                 )
                 print(f"[{section_key}] Agent 2 done in {time.time() - t0:.1f}s", flush=True)
 

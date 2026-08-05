@@ -20,10 +20,19 @@ from langchain_ollama import ChatOllama
 import config
 
 
-def build_llm(temperature: float = None) -> ChatOllama:
-    """Builds the configured ChatOllama instance."""
+def build_llm(model_name: str = None, temperature: float = None) -> ChatOllama:
+    """Builds a ChatOllama instance for a given pipeline role.
+
+    model_name defaults to config.LLM_MODEL_NAME (Agent 1, the extractor) if
+    not given. To use a different model for a role, pass the relevant config
+    constant explicitly -- e.g. build_llm(config.EVALUATOR_LLM_MODEL_NAME) for
+    Agent 2. This is the single factory for every non-tool-calling model in
+    the pipeline; adding a new role only requires a new config constant and a
+    call here, not a new function (see build_agentic_llm below for the one
+    exception, which needs Ollama's tool-calling API).
+    """
     return ChatOllama(
-        model=config.LLM_MODEL_NAME,
+        model=model_name if model_name is not None else config.LLM_MODEL_NAME,
         temperature=temperature if temperature is not None else config.LLM_TEMPERATURE,
         num_predict=config.LLM_NUM_PREDICT,
         request_timeout=config.LLM_REQUEST_TIMEOUT,
