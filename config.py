@@ -99,6 +99,16 @@ SECTION_HINTS = {
         "done for this patient. Do NOT select an option just because it appears in the "
         "Brighton reference list; select it only if the evidence itself names that "
         "specific test. "
+        "DISTINGUISHING ULTRASOUND MODALITIES: 'Compression ultrasonography' is a "
+        "grayscale (B-mode) test that checks whether the vein collapses under probe "
+        "pressure -- it does not by itself assess blood flow. 'Doppler/Duplex "
+        "Ultrasound' is any ultrasound exam that also assesses blood flow using the "
+        "Doppler effect (color Doppler, duplex, echo-color-Doppler, flow/velocity "
+        "studies, absent/present flow signal). If the evidence describes a flow or "
+        "Doppler/color exam, select 'Doppler/Duplex Ultrasound', NOT 'Compression "
+        "ultrasonography', even if compression is not explicitly mentioned. If the "
+        "evidence clearly documents both vein compressibility AND blood flow "
+        "assessment, select both options."
     ),
     "B1_1": (
         "CRITICAL DISTINCTION FOR NEGATIONS: "
