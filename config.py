@@ -33,7 +33,7 @@ EMBEDDING_MODEL_NAME = "intfloat/multilingual-e5-small"
 #   validated as reliable -- retrieval quality/coverage can vary between
 #   runs since Agent 1 decides autonomously how to search. Requires the
 #   base `langchain` package and `langgraph`.
-EXTRACTOR_MODE = "full_text"
+EXTRACTOR_MODE = "agentic_graph"  # "full_text", "rag", or "agentic_graph"
 AGENTIC_MAX_ITERATIONS = 5  # cap on tool calls per section, used by "agentic_graph" mode
 
 # --- Chunking for the clinical record (EHR) ---
@@ -149,7 +149,10 @@ SECTION_HINTS = {
         "imaging study reports no flow in a vein. "
         "A mention of increased local skin temperature or warmth alone is enough to "
         "select 'Redness, warmth, or pain in one or more extremities', even without "
-        "redness, and even if calf pain is already selected separately."
+        "redness, and even if calf pain is already selected separately. "
+        "Before finalizing your answer, re-read the evidence once more against every "
+        "option -- it is easy to stop as soon as you find one or two matches and miss "
+        "a symptom mentioned elsewhere in the same text."
     ),
     "C": (
         "D-DIMER REFERENCE RANGE RULE: "
