@@ -4,26 +4,13 @@ Drives both retrieval (RAG) parameters and LLM reasoning constraints.
 """
 
 # --- Local LLM (via Ollama) ---
-# FINAL DECISION (after extensive empirical testing):
-# - Specialized medical/bio LLMs (e.g., OpenBioLLM variants) often struggled
-#   with strict formatting constraints (JSON output, fixed trigger phrases)
-#   once the system prompt grew too complex, defaulting to prose instead.
-# - Generic instruction-tuned models (llama3:8b-instruct-q4_0) reliably
-#   reason correctly AND follow formatting instructions, including on
-#   multi-select schemas. Chosen as the final model.
 LLM_MODEL_NAME = "llama3:8b-instruct-q4_0"
 LLM_TEMPERATURE = 0.0  # deterministic output for both agents
 LLM_NUM_PREDICT = 512   # token cap: prevents runaway generation
 LLM_REQUEST_TIMEOUT = 180  # seconds; allows time for reasoning on slower hardware
 
-# Separate tool-calling-capable model, used ONLY by Agent 1's autonomous
-# search step in "agentic_graph" mode (see agentic_graph.py). LLM_MODEL_NAME
-# above does NOT support Ollama's native tool-calling API (confirmed:
-# Ollama returns "model does not support tools", HTTP 400, when a tool is
-# bound to it) -- base Llama 3 never got tool-calling support in Ollama,
-# only Llama 3.1+ does. Agent 2 (evaluator) never binds tools, so it keeps
-# using LLM_MODEL_NAME regardless of EXTRACTOR_MODE.
-# Requires: ollama pull llama3.1:8b-instruct-q4_0
+
+
 AGENTIC_LLM_MODEL_NAME = "llama3.1:8b-instruct-q4_0"
 
 # --- Local embeddings ---
@@ -125,11 +112,7 @@ SECTION_HINTS = {
         "CRITICAL FOR B2: Select ONLY the specific symptoms/signs EXPLICITLY documented "
         "in the evidence text for THIS patient -- do not select an option just because "
         "the Brighton reference context lists it as a symptom generally associated with "
-        "DVT. Pay special attention to NOT confuse 'absent blood flow' seen on an imaging "
-        "study (e.g. Italian 'flusso assente' on a Doppler/ultrasound, a finding about "
-        "venous flow) with 'absent pulses' (a distinct physical examination finding about "
-        "arterial pulses) -- these are NOT the same thing; only select 'Absent pulses in "
-        "legs or arms' if pulse examination is explicitly mentioned as absent."
+        "DVT."
     ),
     "C": (
         "D-DIMER REFERENCE RANGE RULE: "

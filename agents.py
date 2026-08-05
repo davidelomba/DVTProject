@@ -40,7 +40,7 @@ Extract ONLY exact raw sentences or fragments from the clinical record that are 
 CRITICAL RULES:
 1. The clinical record may be written in ITALIAN. Match Italian medical terminology and procedure names.
 2. Do NOT write any introductory or concluding sentences.
-3. Extract the complete raw fragment in its original language (Italian or English) to preserve full contextual meaning.
+3. Extract the complete raw fragment in its original language to preserve full contextual meaning.
 4. If no fragment in the text is relevant to the requested criterion, output exactly: "NO RELEVANT EVIDENCE FOUND."
 """
 
@@ -127,9 +127,8 @@ TRANSCRIPTION RULE FOR YOUR FINAL ANSWER: once you have enough information to
 answer, your final answer must consist ONLY of the exact original sentence(s)
 copied verbatim (word-for-word) from the tool's results, in their original
 language. Do NOT paraphrase, translate, summarize, reword, or add your own
-interpretation of what a finding means -- copying the wrong words (e.g.
-translating "ecocolordoppler" as "compression ultrasonography" instead of
-quoting it as-is) or dropping details present in the source text will directly
+interpretation of what a finding means -- copying the wrong words or dropping 
+details present in the source text will directly
 cause the next step to reach a wrong conclusion. Do NOT add framing sentences
 like "Based on the search results..." or "Here is the relevant evidence...".
 If multiple fragments are relevant, list each verbatim, one per line, with no
