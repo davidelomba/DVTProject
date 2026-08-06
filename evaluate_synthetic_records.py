@@ -188,8 +188,9 @@ def print_report(report: dict):
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
-    parser.add_argument("predictions_dir", nargs="?", default="./output",
-                         help="Directory of pipeline output JSON files (default: ./output)")
+    parser.add_argument("predictions_dir", nargs="?", default=str(Path(__file__).parent / "output"),
+                         help="Directory of pipeline output JSON files (default: ./output, "
+                              "resolved relative to this script's own location)")
     args = parser.parse_args()
 
     ground_truth = load_ground_truth()

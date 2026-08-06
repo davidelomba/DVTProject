@@ -38,7 +38,7 @@ from pipeline import run_pipeline
 from aggregation import form_to_json_summary
 
 RECORDS_DIR = Path(__file__).parent / "data" / "synthetic_records"
-BRIGHTON_PDF_PATH = "./data/reference/1-s2.0-S0264410X22010854-main.pdf"
+BRIGHTON_PDF_PATH = str(Path(__file__).parent / "data" / "reference" / "1-s2.0-S0264410X22010854-main.pdf")
 OUTPUT_DIR = Path(__file__).parent / "output"
 
 

@@ -3,6 +3,18 @@ Central configuration for the clinical extraction pipeline.
 Drives both retrieval (RAG) parameters and LLM reasoning constraints.
 """
 
+from pathlib import Path
+
+# Anchor point for every path constant below, so they resolve to the same
+# place regardless of the current working directory the interpreter was
+# launched from -- a bare "./vectorstores/..." string is relative to
+# whatever directory you happened to run `python ...` in, not to where
+# config.py lives on disk, and silently creates a fresh, empty vector store
+# folder outside the project if you run a script from anywhere else (this
+# bit a real run on 2026-08-06: synthetic-record vector stores ended up
+# outside the project entirely).
+PROJECT_ROOT = Path(__file__).resolve().parent
+
 # --- Local LLM (via Ollama) ---
 # One model name per pipeline role. All three are built through the same
 # agents.build_llm(model_name=...) factory, so trying a different model for
@@ -45,13 +57,13 @@ AGENTIC_MAX_ITERATIONS = 5  # cap on tool calls per section, used by "agentic_gr
 EHR_CHUNK_SIZE = 800
 EHR_CHUNK_OVERLAP = 150
 EHR_RETRIEVER_K = 5
-EHR_KB_PERSIST_DIR = "./vectorstores/chroma_ehr_kb"
+EHR_KB_PERSIST_DIR = str(PROJECT_ROOT / "vectorstores" / "chroma_ehr_kb")
 
 # --- Chunking for the static reference KB (Brighton guidelines PDF) ---
 BRIGHTON_CHUNK_SIZE = 800
 BRIGHTON_CHUNK_OVERLAP = 150
 BRIGHTON_RETRIEVER_K = 5
-BRIGHTON_KB_PERSIST_DIR = "./vectorstores/chroma_brighton_kb"  # static KB, rarely changes
+BRIGHTON_KB_PERSIST_DIR = str(PROJECT_ROOT / "vectorstores" / "chroma_brighton_kb")  # static KB, rarely changes
 
 # --- Questionnaire sections, in execution order ---
 SECTION_ORDER = [

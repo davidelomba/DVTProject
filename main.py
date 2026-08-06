@@ -11,16 +11,22 @@ the reference guidelines PDF and the desired patient/record identifier.
 import json
 import os
 from datetime import datetime
+from pathlib import Path
 
 from pipeline import run_pipeline
 from aggregation import form_to_json_summary
+
+# Anchored to this file's own location, not the current working directory --
+# see config.PROJECT_ROOT's docstring comment for why a bare "./..." string
+# is fragile (it broke a real run when launched from a different cwd).
+PROJECT_ROOT = Path(__file__).resolve().parent
 
 
 def main():
     # Replace these with the actual locations of your files.
     record_id = "PATIENT_001"
-    patient_ehr_path = "./data/patient_001.txt"                                   # Plain .txt clinical record
-    brighton_pdf_path = "./data/reference/1-s2.0-S0264410X22010854-main.pdf"      # Brighton guidelines PDF
+    patient_ehr_path = str(PROJECT_ROOT / "data" / "patient_001.txt")                                   # Plain .txt clinical record
+    brighton_pdf_path = str(PROJECT_ROOT / "data" / "reference" / "1-s2.0-S0264410X22010854-main.pdf")  # Brighton guidelines PDF
 
     # Run the extraction and evaluation pipeline
     form, audit_log = run_pipeline(record_id, patient_ehr_path, brighton_pdf_path)
@@ -32,7 +38,7 @@ def main():
     print(json.dumps(summary, indent=2))
 
     # Ensure output directory exists
-    output_dir = "./output"
+    output_dir = str(PROJECT_ROOT / "output")
     os.makedirs(output_dir, exist_ok=True)
 
     # Timestamp shared by both files of this run, so a JSON and its matching
