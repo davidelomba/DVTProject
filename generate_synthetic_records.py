@@ -65,8 +65,8 @@ branch, B1_1's clearly-negative branch, F's Yes branch, B2's Absent-pulses
 true positive).
 
 Usage: python generate_synthetic_records.py
-Output: synthetic_records/<scenario_id>_<style_id>.txt (the record) and
-        synthetic_records/<scenario_id>_<style_id>_ground_truth.json (answers).
+Output: data/synthetic_records/<scenario_id>_<style_id>.txt (the record) and
+        data/synthetic_records/<scenario_id>_<style_id>_ground_truth.json (answers).
 """
 
 import json
@@ -81,7 +81,7 @@ from agents import build_llm
 WRITER_MODEL_NAME = "qwen2.5:7b-instruct"
 WRITER_TEMPERATURE = 0.8
 
-OUTPUT_DIR = Path(__file__).parent / "synthetic_records"
+OUTPUT_DIR = Path(__file__).parent / "data" / "synthetic_records"
 
 WRITER_SYSTEM_PROMPT = """Sei un medico di pronto soccorso che scrive cartelle
 cliniche in ITALIANO per un paziente con sospetta trombosi venosa profonda (TVP).

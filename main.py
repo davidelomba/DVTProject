@@ -19,8 +19,8 @@ from aggregation import form_to_json_summary
 def main():
     # Replace these with the actual locations of your files.
     record_id = "PATIENT_001"
-    patient_ehr_path = "./patient_001.txt"                       # Plain .txt clinical record
-    brighton_pdf_path = "./1-s2.0-S0264410X22010854-main.pdf"    # Brighton guidelines PDF
+    patient_ehr_path = "./data/patient_001.txt"                                   # Plain .txt clinical record
+    brighton_pdf_path = "./data/reference/1-s2.0-S0264410X22010854-main.pdf"      # Brighton guidelines PDF
 
     # Run the extraction and evaluation pipeline
     form, audit_log = run_pipeline(record_id, patient_ehr_path, brighton_pdf_path)

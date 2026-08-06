@@ -1,6 +1,6 @@
 """
 Compares pipeline output JSON files against the synthetic ground-truth JSONs
-in synthetic_records/ (see generate_synthetic_records.py), and reports
+in data/synthetic_records/ (see generate_synthetic_records.py), and reports
 per-section accuracy plus TP/TN/FP/FN counts.
 
 COMPARISON ONLY: this does NOT run the pipeline itself. Run main.py (or your
@@ -49,7 +49,7 @@ from typing import get_args, get_origin
 
 from models import SECTION_MODELS
 
-GROUND_TRUTH_DIR = Path(__file__).parent / "synthetic_records"
+GROUND_TRUTH_DIR = Path(__file__).parent / "data" / "synthetic_records"
 
 
 def _field_info(section_name: str):
@@ -68,7 +68,7 @@ def _field_info(section_name: str):
 
 def load_ground_truth() -> dict:
     """record_id -> ground truth dict, read from every
-    synthetic_records/*_ground_truth.json file."""
+    data/synthetic_records/*_ground_truth.json file."""
     gt = {}
     for path in sorted(GROUND_TRUTH_DIR.glob("*_ground_truth.json")):
         data = json.loads(path.read_text(encoding="utf-8"))

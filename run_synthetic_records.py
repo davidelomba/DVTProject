@@ -1,6 +1,6 @@
 """
 Runs the extraction pipeline once for every synthetic clinical record in
-synthetic_records/ (see generate_synthetic_records.py), saving output +
+data/synthetic_records/ (see generate_synthetic_records.py), saving output +
 audit log to ./output/ in the same format/naming convention main.py uses
 for a single record -- so evaluate_synthetic_records.py can pick up the
 results directly with its default predictions directory (./output).
@@ -37,8 +37,8 @@ import config
 from pipeline import run_pipeline
 from aggregation import form_to_json_summary
 
-RECORDS_DIR = Path(__file__).parent / "synthetic_records"
-BRIGHTON_PDF_PATH = "./1-s2.0-S0264410X22010854-main.pdf"
+RECORDS_DIR = Path(__file__).parent / "data" / "synthetic_records"
+BRIGHTON_PDF_PATH = "./data/reference/1-s2.0-S0264410X22010854-main.pdf"
 OUTPUT_DIR = Path(__file__).parent / "output"
 
 

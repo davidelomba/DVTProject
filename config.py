@@ -45,13 +45,13 @@ AGENTIC_MAX_ITERATIONS = 5  # cap on tool calls per section, used by "agentic_gr
 EHR_CHUNK_SIZE = 800
 EHR_CHUNK_OVERLAP = 150
 EHR_RETRIEVER_K = 5
-EHR_KB_PERSIST_DIR = "./chroma_ehr_kb"
+EHR_KB_PERSIST_DIR = "./vectorstores/chroma_ehr_kb"
 
 # --- Chunking for the static reference KB (Brighton guidelines PDF) ---
 BRIGHTON_CHUNK_SIZE = 800
 BRIGHTON_CHUNK_OVERLAP = 150
 BRIGHTON_RETRIEVER_K = 5
-BRIGHTON_KB_PERSIST_DIR = "./chroma_brighton_kb"  # static KB, rarely changes
+BRIGHTON_KB_PERSIST_DIR = "./vectorstores/chroma_brighton_kb"  # static KB, rarely changes
 
 # --- Questionnaire sections, in execution order ---
 SECTION_ORDER = [
