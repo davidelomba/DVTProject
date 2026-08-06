@@ -174,7 +174,14 @@ SECTION_HINTS = {
         "To determine if the D-Dimer value is normal or exceeded, use the laboratory-specific "
         "upper limit if it is explicitly mentioned in the text. "
         "If the lab's reference range is NOT available in the text, you MUST use 500 ng/mL "
-        "as the default upper limit of normal (i.e., a value < 500 is normal, >= 500 exceeds the limit)."
+        "as the default upper limit of normal (i.e., a value < 500 is normal, >= 500 exceeds the limit). "
+        "IMPORTANT: only apply this rule to a result that explicitly refers to the D-Dimer test by "
+        "name (e.g. 'D-dimero', 'D-Dimer'). Other lab findings -- leukocytosis, elevated CRP/PCR, "
+        "white blood cell count, etc. -- are NOT D-Dimer and must NOT be used to infer a D-Dimer "
+        "result. If the D-Dimer test itself is never mentioned in the evidence, select 'D-dimer not "
+        "tested, or tested but results unknown or not available', even if other lab abnormalities are "
+        "present. A qualitative statement that the D-Dimer exceeded (or was within) the lab's limit "
+        "(e.g. 'D-dimero superiore al limite di laboratorio') is sufficient evidence on its own. "
     ),
     "F": (
         "CRITICAL: This criterion asks if the diagnosis was reported 'WITHOUT details'. "

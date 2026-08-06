@@ -350,7 +350,11 @@ def _build_reasoning_prompt(
             "the same option you just named there (e.g. \"FINAL_OPTION: Leg swelling or "
             "pitting oedema\" must be followed by \"FINAL_ANSWER: 2\" if that option is "
             "listed as 2. above). If only one applies, write just that one option/number "
-            "on each line."
+            "on each line.\n"
+            "Only include an option if your reasoning above explicitly discussed evidence "
+            "supporting it. Do NOT include an option 'by default', as a safety margin, or "
+            "just because it is listed first -- every option you list on FINAL_OPTION must "
+            "be traceable to a specific sentence in your reasoning."
         )
     else:
         prompt += (
