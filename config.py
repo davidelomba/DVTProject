@@ -10,7 +10,7 @@ Drives both retrieval (RAG) parameters and LLM reasoning constraints.
 # elsewhere. LLM_TEMPERATURE/LLM_NUM_PREDICT/LLM_REQUEST_TIMEOUT are shared
 # generation settings applied to whichever model is built for a given role.
 LLM_MODEL_NAME = "llama3:8b-instruct-q4_0"  # Agent 1 (extractor), all modes
-EVALUATOR_LLM_MODEL_NAME = "cniongolo/biomistral"  # Agent 2 (evaluator), all modes
+EVALUATOR_LLM_MODEL_NAME = "llama3:8b-instruct-q4_0"  # Agent 2 (evaluator), all modes
 AGENTIC_LLM_MODEL_NAME = "llama3.1:8b-instruct-q4_0"  # Agent 1's search step, "agentic_graph" mode only
 LLM_TEMPERATURE = 0.0  # deterministic output for all agents
 LLM_NUM_PREDICT = 512   # token cap: prevents runaway generation
