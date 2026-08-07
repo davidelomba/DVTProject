@@ -1,0 +1,129 @@
+{
+  "records_compared": 23,
+  "records_missing_prediction": [
+    "SYN_12_other_procedure_positive_v2",
+    "SYN_13_contrast_venography_only_v1",
+    "SYN_13_contrast_venography_only_v2",
+    "SYN_14_other_imaging_incidental_v1",
+    "SYN_14_other_imaging_incidental_v2",
+    "SYN_15_ddimer_negative_low_probability_v1",
+    "SYN_15_ddimer_negative_low_probability_v2",
+    "SYN_16_no_dvt_syndrome_reported_v1",
+    "SYN_16_no_dvt_syndrome_reported_v2",
+    "SYN_17_diagnosis_no_details_v1",
+    "SYN_17_diagnosis_no_details_v2",
+    "SYN_18_absent_pulses_true_positive_v1",
+    "SYN_18_absent_pulses_true_positive_v2"
+  ],
+  "sections": {
+    "A1": {
+      "compared": 23,
+      "missing": 0,
+      "exact_matches": 22,
+      "tp": 22,
+      "tn": 45,
+      "fp": 1,
+      "fn": 1,
+      "accuracy": 0.9565217391304348
+    },
+    "A2": {
+      "compared": 23,
+      "missing": 0,
+      "exact_matches": 22,
+      "tp": 22,
+      "tn": 45,
+      "fp": 1,
+      "fn": 1,
+      "accuracy": 0.9565217391304348
+    },
+    "A3_1": {
+      "compared": 23,
+      "missing": 0,
+      "exact_matches": 20,
+      "tp": 20,
+      "tn": 43,
+      "fp": 3,
+      "fn": 3,
+      "accuracy": 0.8695652173913043
+    },
+    "A3_2": {
+      "compared": 23,
+      "missing": 0,
+      "exact_matches": 8,
+      "tp": 15,
+      "tn": 77,
+      "fp": 21,
+      "fn": 2,
+      "accuracy": 0.34782608695652173
+    },
+    "B1_1": {
+      "compared": 23,
+      "missing": 0,
+      "exact_matches": 22,
+      "tp": 22,
+      "tn": 45,
+      "fp": 1,
+      "fn": 1,
+      "accuracy": 0.9565217391304348
+    },
+    "B1_2": {
+      "compared": 23,
+      "missing": 0,
+      "exact_matches": 18,
+      "tp": 19,
+      "tn": 20,
+      "fp": 7,
+      "fn": 0,
+      "accuracy": 0.782608695652174
+    },
+    "B2": {
+      "compared": 22,
+      "missing": 1,
+      "exact_matches": 11,
+      "tp": 37,
+      "tn": 60,
+      "fp": 11,
+      "fn": 2,
+      "accuracy": 0.5
+    },
+    "C": {
+      "compared": 23,
+      "missing": 0,
+      "exact_matches": 23,
+      "tp": 23,
+      "tn": 46,
+      "fp": 0,
+      "fn": 0,
+      "accuracy": 1.0
+    },
+    "F": {
+      "compared": 23,
+      "missing": 0,
+      "exact_matches": 20,
+      "tp": 20,
+      "tn": 20,
+      "fp": 3,
+      "fn": 3,
+      "accuracy": 0.8695652173913043
+    },
+    "X": {
+      "compared": 23,
+      "missing": 0,
+      "exact_matches": 21,
+      "tp": 21,
+      "tn": 21,
+      "fp": 2,
+      "fn": 2,
+      "accuracy": 0.9130434782608695
+    }
+  },
+  "overall": {
+    "compared": 229,
+    "exact_matches": 187,
+    "tp": 221,
+    "tn": 422,
+    "fp": 50,
+    "fn": 15,
+    "accuracy": 0.8165938864628821
+  }
+}

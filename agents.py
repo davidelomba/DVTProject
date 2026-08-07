@@ -499,16 +499,38 @@ def evaluate_section(
                         matched_by_text = None
                     # Disagreement means the model's own number-mapping slipped
                     # relative to the option text it just copied verbatim --
-                    # trust the copied text.
+                    # trust the copied text, but ONLY when both lines list the
+                    # SAME NUMBER of items. A real bug was traced (section
+                    # B1_2) where the model habitually pads FINAL_OPTION with
+                    # every category in the list ("Lower extremity DVT; Upper
+                    # extremity DVT;") while FINAL_ANSWER correctly names just
+                    # the one that actually applies ("1;") -- blindly trusting
+                    # the longer text list there silently turned a correct
+                    # single answer into a wrong double answer. When the
+                    # counts differ, that's a stronger signal one of the two
+                    # lines is padded/truncated than that the model made a
+                    # simple index-mapping slip, so the (shorter, more
+                    # conservative) number-based answer is kept instead.
                     if matched_by_text and matched_by_text != matched:
-                        print(
-                            f"[WARNING] FINAL_OPTION text {matched_by_text} disagreed with "
-                            f"FINAL_ANSWER number {matched} -- trusting the verbatim option "
-                            f"text. Raw model output: FINAL_OPTION={raw_option_text!r} "
-                            f"FINAL_ANSWER={raw_final!r}",
-                            flush=True,
-                        )
-                        matched = matched_by_text
+                        if len(matched_by_text) != len(matched):
+                            print(
+                                f"[WARNING] FINAL_OPTION text {matched_by_text} and "
+                                f"FINAL_ANSWER number {matched} disagree AND have a "
+                                f"different number of items -- keeping the number-based "
+                                f"answer (not trusting text, likely padded/truncated). "
+                                f"Raw model output: FINAL_OPTION={raw_option_text!r} "
+                                f"FINAL_ANSWER={raw_final!r}",
+                                flush=True,
+                            )
+                        else:
+                            print(
+                                f"[WARNING] FINAL_OPTION text {matched_by_text} disagreed with "
+                                f"FINAL_ANSWER number {matched} -- trusting the verbatim option "
+                                f"text. Raw model output: FINAL_OPTION={raw_option_text!r} "
+                                f"FINAL_ANSWER={raw_final!r}",
+                                flush=True,
+                            )
+                            matched = matched_by_text
 
                 seen = set()
                 matched = [m for m in matched if not (m in seen or seen.add(m))]  # dedupe, keep order

@@ -4,7 +4,9 @@
 
 **Esame Obiettivo:** Vena arto inferiore sinistro: arrossamento, calore, doloroso al tocco.
 
-**Esami di Laboratorio/IstrUMENTALI:**  
+**Esami di Laboratorio/IstrUMENTALI:**
 - D-dimero non eseguito
-- Leucocitosi e PCR elevata (diagnosi confermata da leucocitosi e PCR elevata)  
+- Leucocitosi e PCR elevata
 - Compressione ecografica (ecografia compressiva) venosa arto inferiore sinistro: vene comprimibili, NESSUNA evidenza di trombosi.
+
+**Diagnosi dello specialista:** Cellulite dell'arto inferiore sinistro, confermata da leucocitosi e PCR elevata. Nessun coinvolgimento del sistema venoso profondo.
