@@ -1,0 +1,115 @@
+{
+  "records_compared": 36,
+  "records_missing_prediction": [],
+  "sections": {
+    "A1": {
+      "compared": 36,
+      "missing": 0,
+      "exact_matches": 36,
+      "tp": 36,
+      "tn": 72,
+      "fp": 0,
+      "fn": 0,
+      "accuracy": 1.0
+    },
+    "A2": {
+      "compared": 36,
+      "missing": 0,
+      "exact_matches": 34,
+      "tp": 34,
+      "tn": 70,
+      "fp": 2,
+      "fn": 2,
+      "accuracy": 0.9444444444444444
+    },
+    "A3_1": {
+      "compared": 36,
+      "missing": 0,
+      "exact_matches": 31,
+      "tp": 31,
+      "tn": 67,
+      "fp": 5,
+      "fn": 5,
+      "accuracy": 0.8611111111111112
+    },
+    "A3_2": {
+      "compared": 36,
+      "missing": 0,
+      "exact_matches": 9,
+      "tp": 20,
+      "tn": 109,
+      "fp": 47,
+      "fn": 4,
+      "accuracy": 0.25
+    },
+    "B1_1": {
+      "compared": 36,
+      "missing": 0,
+      "exact_matches": 32,
+      "tp": 32,
+      "tn": 68,
+      "fp": 4,
+      "fn": 4,
+      "accuracy": 0.8888888888888888
+    },
+    "B1_2": {
+      "compared": 36,
+      "missing": 0,
+      "exact_matches": 30,
+      "tp": 28,
+      "tn": 37,
+      "fp": 7,
+      "fn": 0,
+      "accuracy": 0.8333333333333334
+    },
+    "B2": {
+      "compared": 35,
+      "missing": 1,
+      "exact_matches": 24,
+      "tp": 56,
+      "tn": 105,
+      "fp": 11,
+      "fn": 3,
+      "accuracy": 0.6857142857142857
+    },
+    "C": {
+      "compared": 36,
+      "missing": 0,
+      "exact_matches": 35,
+      "tp": 35,
+      "tn": 71,
+      "fp": 1,
+      "fn": 1,
+      "accuracy": 0.9722222222222222
+    },
+    "F": {
+      "compared": 36,
+      "missing": 0,
+      "exact_matches": 18,
+      "tp": 18,
+      "tn": 18,
+      "fp": 18,
+      "fn": 18,
+      "accuracy": 0.5
+    },
+    "X": {
+      "compared": 36,
+      "missing": 0,
+      "exact_matches": 34,
+      "tp": 34,
+      "tn": 34,
+      "fp": 2,
+      "fn": 2,
+      "accuracy": 0.9444444444444444
+    }
+  },
+  "overall": {
+    "compared": 359,
+    "exact_matches": 283,
+    "tp": 324,
+    "tn": 651,
+    "fp": 97,
+    "fn": 39,
+    "accuracy": 0.7883008356545961
+  }
+}
