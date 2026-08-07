@@ -131,10 +131,15 @@ def apply_cross_section_rules(form_data: dict, audit_log: dict) -> dict:
     See config.CROSS_SECTION_RULES.
 
     Evaluated once, after every section has been independently filled in
-    (regardless of which execution mode produced form_data): if
-    rule["if_section"]'s answer has any value other than rule["none_option"],
-    force rule["then_section"]'s answer to rule["forced_value"], and append
-    an explanatory note to that section's audit log entry.
+    (regardless of which execution mode produced form_data). Two trigger
+    styles (see config.CROSS_SECTION_RULES's own comment):
+      - rule["none_option"] set: fires if rule["if_section"]'s answer has any
+        value OTHER than none_option (a positive finding implies then_section).
+      - rule["trigger_value"] set: fires if rule["if_section"]'s answer
+        EQUALS trigger_value (that specific answer implies then_section
+        can't have one, e.g. A3.1 = "no imaging done" implies A3.2 is empty).
+    Either way, rule["then_section"]'s answer is forced to rule["forced_value"],
+    and an explanatory note is appended to that section's audit log entry.
 
     Mutates and returns form_data.
     """
@@ -157,11 +162,15 @@ def apply_cross_section_rules(form_data: dict, audit_log: dict) -> dict:
         if not isinstance(if_answers, list):
             if_answers = [if_answers]
 
-        # True if the "if" section reported at least one real finding
-        # (anything other than its "none/unknown" option).
-        has_non_default = any(ans != rule["none_option"] for ans in if_answers)
+        if "trigger_value" in rule:
+            # Fires when the if_section's answer EQUALS trigger_value.
+            should_trigger = any(ans == rule["trigger_value"] for ans in if_answers)
+        else:
+            # Original polarity: fires when if_section reported at least one
+            # real finding (anything other than its "none/unknown" option).
+            should_trigger = any(ans != rule["none_option"] for ans in if_answers)
 
-        if has_non_default:
+        if should_trigger:
             current_value = getattr(then_result, then_field)
             # Only override if the "then" section doesn't already match --
             # avoids redundant log noise when Agent 2 already agreed on its own.

@@ -155,19 +155,22 @@ SECTION_HINTS = {
     ),
     "B2": (
         "CRITICAL FOR B2: Select every option EXPLICITLY documented in the evidence for "
-        "THIS patient -- the options are independent, not mutually exclusive; evaluate "
-        "each one separately against the evidence. Do not select an option just because "
-        "the Brighton reference context lists it as a symptom generally associated with DVT. "
-        "'Calf pain or tenderness' and 'Redness, warmth, or pain in one or more extremities' "
-        "are DIFFERENT findings -- never select them as a pair by default. Select 'Calf pain "
-        "or tenderness' ONLY if pain or tenderness specifically in the calf is described. "
-        "Select 'Redness, warmth, or pain in one or more extremities' ONLY if redness, "
+        "THIS patient -- the options are independent, not mutually exclusive; evaluate each "
+        "one separately. Do not select an option just because the Brighton reference "
+        "context lists it as a symptom generally associated with DVT.\n"
+        "- 'Calf pain or tenderness': select ONLY if pain or tenderness specifically IN THE "
+        "CALF is described.\n"
+        "- 'Redness, warmth, or pain in one or more extremities': select ONLY if redness, "
         "warmth, or pain in an extremity is described that is NOT itself calf-specific "
-        "tenderness. "
-        "'Absent blood flow' on an imaging/Doppler study is NOT the same as 'absent "
-        "pulses' on physical examination -- only select 'Absent pulses in legs or arms' "
-        "if a pulse examination itself is reported as absent, never merely because an "
-        "imaging study reports no flow in a vein."
+        "tenderness.\n"
+        "- These two are DIFFERENT findings -- never select both just because one applies. "
+        "Each needs its OWN evidence.\n"
+        "- EXAMPLE: evidence says 'pain and redness in the right arm' (no mention of calf or "
+        "leg anywhere) -> select ONLY 'Redness, warmth, or pain in one or more extremities'. "
+        "Do NOT also select 'Calf pain or tenderness' -- there is no calf involved.\n"
+        "- 'Absent pulses in legs or arms': select ONLY if a pulse examination itself is "
+        "reported as absent. 'Absent blood flow' on an imaging/Doppler study is NOT the same "
+        "thing -- never select this merely because an imaging study reports no flow in a vein."
     ),
     "C": (
         "D-DIMER REFERENCE RANGE RULE: "
@@ -185,26 +188,16 @@ SECTION_HINTS = {
     ),
     "F": (
         "CRITICAL: This criterion asks if the diagnosis was reported 'WITHOUT details'. "
-        "If the evidence provides specific clinical details about the diagnostic tests used, "
-        "such as imaging findings, affected anatomy, or laboratory results, you MUST select 'No'. "
-        "Select 'Yes' ONLY if the diagnosis is stated with absolutely no supporting clinical details. "
-        "NOTE: judge this by whether a specific finding is present -- an anatomical location, a "
-        "measurement/value, or a described result -- NOT by whether the extracted evidence fragment "
-        "also happens to repeat the NAME of the test/procedure that produced it. The evidence you "
-        "receive is an extracted fragment and may omit the test's name even when a specific finding "
-        "is present; the absence of the test's name alone is NOT evidence that the diagnosis lacked "
-        "details. "
-        "EXAMPLES that DO count as a specific finding (-> 'No' / DETAILS_PRESENT: yes): a lab result "
-        "such as leukocytosis, an elevated/normal CRP, or a D-dimer value; an imaging/ultrasound "
-        "result EVEN IF NEGATIVE (e.g. 'compressible veins, no evidence of thrombosis'); a named "
-        "anatomical site. These count as details even if they are not specifically about DVT, and "
-        "even if the final diagnosis is a condition OTHER than DVT (e.g. cellulitis) -- what matters "
-        "is whether ANY specific clinical finding is described anywhere in the evidence, not whether "
-        "it confirms or relates to DVT specifically. "
-        "Also, immediately before FINAL_OPTION, write one more line: 'DETAILS_PRESENT: yes' or "
-        "'DETAILS_PRESENT: no' -- yes if the evidence contains any specific finding as described "
-        "above, no only if the diagnosis is stated as a bare conclusion with no specific finding of "
-        "any kind. Answer this independently of what you are about to write on FINAL_OPTION."
+        "If the evidence provides specific clinical details about the diagnostic tests used "
+        "-- such as an imaging finding (even a NEGATIVE one, e.g. 'no evidence of thrombosis'), "
+        "a lab value (e.g. leukocytosis, CRP, D-dimer), or a named anatomical site -- you MUST "
+        "select 'No', even if that finding is not itself about DVT or the final diagnosis is a "
+        "different condition (e.g. cellulitis). Select 'Yes' ONLY if the diagnosis is stated as "
+        "a bare conclusion with absolutely no supporting clinical details. "
+        "NOTE: judge this by whether a specific finding is present -- NOT by whether the evidence "
+        "fragment also repeats the NAME of the test that produced it; the fragment may omit the "
+        "test's name even when a finding is present. "
+        "Immediately before FINAL_OPTION, write: 'DETAILS_PRESENT: yes' or 'DETAILS_PRESENT: no'."
     ),
     "X": (
         "CRITICAL ERROR PREVENTION: Symptoms (like pain, swelling, edema) are NOT alternative diagnoses. "
@@ -224,9 +217,13 @@ SECTION_HINTS = {
 
 
 # --- Cross-section dependency rules ---
-# Evaluated after all sections are independently filled in. Each entry: if
-# `if_section`'s field has any value other than `none_option`, force
-# `then_section`'s field to `forced_value`.
+# Evaluated after all sections are independently filled in. Two trigger
+# styles, picked by which key the rule defines:
+#   - "none_option": fires when if_section's field has any value OTHER than
+#     none_option (a positive finding in if_section implies then_section).
+#   - "trigger_value": fires when if_section's field EQUALS trigger_value (a
+#     specific if_section answer implies then_section can't have one).
+# Either way, then_section's field is forced to forced_value.
 CROSS_SECTION_RULES = [
     {
         "if_section": "b2",           # form_data key (lowercase)
@@ -239,5 +236,18 @@ CROSS_SECTION_RULES = [
             "because specific symptoms were detected in Section B2, enforcing the "
             "questionnaire's structural dependency rule."
         ),
-    }
+    },
+    {
+        "if_section": "a3_1",         # form_data key (lowercase)
+        "trigger_value": "No imaging studies done, unknown if done, or done but results unknown",
+        "then_section": "a3_2",       # form_data key (lowercase)
+        "forced_value": [],
+        "audit_key": "A3_2",          # audit_log key (matches SECTION_ORDER casing)
+        "override_message": (
+            "A3.2 was automatically cleared because Section A3.1 reported that no "
+            "imaging study was done, enforcing the questionnaire's structural "
+            "dependency rule (A3.2 only applies when A3.1 confirms an imaging study "
+            "was performed)."
+        ),
+    },
 ]

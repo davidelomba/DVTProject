@@ -58,11 +58,26 @@ smoke-testing:
 
 COVERAGE: every Literal option in every one of the 10 sections is hit by at
 least one scenario below (validated programmatically -- see conversation on
-2026-08-06). Scenarios 11-18 were added specifically to close gaps found in
-the initial 10-scenario set (A1's negative-but-done branch, A2's non-
-thrombectomy branch, A3_2's Contrast venography/Other, C's within-normal-range
-branch, B1_1's clearly-negative branch, F's Yes branch, B2's Absent-pulses
-true positive).
+2026-08-06). Scenarios 11-18 were added to close gaps found in the initial
+10-scenario set (A1's negative-but-done branch, A2's non-thrombectomy branch,
+A3_2's Contrast venography/Other, C's within-normal-range branch, B1_1's
+clearly-negative branch, F's Yes branch, B2's Absent-pulses true positive).
+Scenarios 19-24 were added on 2026-08-07 to thicken branches that were still
+down to a single example each -- notably autopsy (A1's two positive branches
+only had one scenario apiece) and upper-extremity DVT (B1_2's "Upper
+extremity DVT" only had SYN_03, always paired with CT venography) -- and to
+decouple two branches that had been confounded in a single scenario each
+(A3_1's "didn't confirm" and X's "alternative diagnosis found" both used to
+live only in SYN_02, together). Scenarios 25-29 (same day) covered the
+remaining single-example branches: A2's "Thrombectomy", A3_2's "CT or MR
+venography"/"Contrast venography"/"Other", B2's "Absent pulses in legs or
+arms", and F's "Yes" -- every Literal option across all 10 sections now has
+at least 2 scenarios (validated programmatically).
+
+STYLE: only one narrative style (STYLE_VARIANTS' "v2") is generated per
+scenario -- the earlier telegraphic/abbreviation-heavy "v1" style was dropped
+per the user's request on 2026-08-07 (kept producing records terse enough to
+lose clinical nuance the ground truth depended on).
 
 Usage: python generate_synthetic_records.py
 Output: data/synthetic_records/<scenario_id>_<style_id>.txt (the record) and
@@ -100,15 +115,6 @@ REGOLE FERREE:
 """
 
 STYLE_VARIANTS = [
-    {
-        "id": "v1",
-        "directive": (
-            "Stile pronto soccorso, telegrafico e sintetico. Struttura in sezioni "
-            "esplicite nell'ordine: Anamnesi patologica remota, Anamnesi Prossima, "
-            "Esame obiettivo, Esami di laboratorio/strumentali. Usa abbreviazioni "
-            "cliniche italiane comuni (PA, FC, FR, SpO2, TC) per i parametri vitali."
-        ),
-    },
     {
         "id": "v2",
         "directive": (
@@ -557,6 +563,268 @@ SCENARIOS = [
             "b2": {"symptoms": ["Calf pain or tenderness", "Leg swelling or pitting oedema", "Absent pulses in legs or arms"]},
             "c": {"answer": "D-dimer exceeded test lab's upper limit of normal."},
             "f": {"answer": "No"},
+            "x": {"answer": "No alternative diagnosis was found to explain the acute illness"},
+        },
+    },
+    {
+        "id": "SYN_19_autopsy_positive_upper_extremity",
+        "description": "Secondo caso di autopsia positiva, contesto diverso da SYN_08 e con TVP dell'arto SUPERIORE -- rinforza sia A1 positivo che B1_2 arto superiore",
+        "facts": [
+            "Paziente donna, 68 anni, portatrice di catetere venoso centrale per chemioterapia sul braccio sinistro, deceduta improvvisamente in reparto oncologico",
+            "Nei giorni precedenti riferito dolore e arrossamento al braccio sinistro, sede del catetere",
+            "Nessun esame di imaging venoso ne' D-dimero eseguiti prima del decesso",
+            "Nessun intervento chirurgico eseguito",
+            "Riscontro autoptico: trombosi venosa profonda della vena succlavia sinistra con embolia polmonare massiva come causa del decesso",
+            "Nessuna diagnosi alternativa identificata all'autopsia",
+        ],
+        "ground_truth": {
+            "a1": {"answer": "Autopsy showed presence of DVT"},
+            "a2": {"answer": "No surgical procedure done; or, done but either did not confirm presence of DVT or findings unknown; or unknown if done"},
+            "a3_1": {"answer": "No imaging studies done, unknown if done, or done but results unknown"},
+            "a3_2": {"studies": []},
+            "b1_1": {"answer": "≥1 symptom or sign of DVT was reported"},
+            "b1_2": {"types": ["Upper extremity DVT"]},
+            "b2": {"symptoms": ["Redness, warmth, or pain in one or more extremities"]},
+            "c": {"answer": "D-dimer not tested, or tested but results unknown or not available"},
+            "f": {"answer": "No"},
+            "x": {"answer": "No alternative diagnosis was found to explain the acute illness"},
+        },
+    },
+    {
+        "id": "SYN_20_autopsy_negative_trauma",
+        "description": "Secondo caso di autopsia negativa per TVP, contesto traumatico diverso da SYN_11 (arresto cardiaco in anziana)",
+        "facts": [
+            "Paziente uomo, 45 anni, deceduto in seguito a politrauma da incidente stradale",
+            "Nessun sintomo di gonfiore, dolore, arrossamento o calore agli arti riportato prima del decesso",
+            "Nessun esame di imaging venoso o D-dimero eseguito in vita",
+            "Nessun intervento chirurgico correlato a TVP eseguito",
+            "Riscontro autoptico: esame del sistema venoso profondo degli arti negativo, nessuna evidenza di trombosi venosa profonda",
+            "Causa del decesso: emorragia interna massiva da trauma, non correlata a fenomeni tromboembolici venosi",
+        ],
+        "ground_truth": {
+            "a1": {"answer": "Autopsy done but showed no evidence of DVT"},
+            "a2": {"answer": "No surgical procedure done; or, done but either did not confirm presence of DVT or findings unknown; or unknown if done"},
+            "a3_1": {"answer": "No imaging studies done, unknown if done, or done but results unknown"},
+            "a3_2": {"studies": []},
+            "b1_1": {"answer": "There was no report of a recognized DVT syndrome"},
+            "b1_2": {"types": []},
+            "b2": {"symptoms": ["None of the above were present or it is unknown if any of 1-4 were present"]},
+            "c": {"answer": "D-dimer not tested, or tested but results unknown or not available"},
+            "f": {"answer": "No"},
+            "x": {"answer": "No alternative diagnosis was found to explain the acute illness"},
+        },
+    },
+    {
+        "id": "SYN_21_alt_diagnosis_bakers_cyst",
+        "description": "Diagnosi alternativa di cisti di Baker rotta (invece di cellulite come in SYN_02) -- rinforza X positivo e C nella norma",
+        "facts": [
+            "Paziente donna, 52 anni",
+            "Nessuna storia di autopsia o intervento chirurgico recente",
+            "Da 3 giorni dolore al polpaccio e gonfiore dell'arto inferiore destro, comparsi dopo un'attivita' fisica intensa",
+            "D-dimero: 410 ng/mL, entro il range di normalita' del laboratorio",
+            "Ecografia compressiva venosa arto inferiore destro: vene comprimibili, nessuna evidenza di trombosi; visualizzata raccolta liquida compatibile con cisti di Baker rotta nella regione poplitea",
+            "Diagnosi dello specialista: rottura di cisti di Baker, nessun coinvolgimento del sistema venoso profondo",
+        ],
+        "ground_truth": {
+            "a1": {"answer": "No autopsy done, unknown if done, or done but results unavailable"},
+            "a2": {"answer": "No surgical procedure done; or, done but either did not confirm presence of DVT or findings unknown; or unknown if done"},
+            "a3_1": {"answer": "≥1 imaging study was done but didn't confirm DVT"},
+            "a3_2": {"studies": ["Compression ultrasonography"]},
+            "b1_1": {"answer": "≥1 symptom or sign of DVT was reported"},
+            "b1_2": {"types": ["Lower extremity DVT"]},
+            "b2": {"symptoms": ["Calf pain or tenderness", "Leg swelling or pitting oedema"]},
+            "c": {"answer": "D-dimer tested and was within test lab's range of normal"},
+            "f": {"answer": "No"},
+            "x": {"answer": "An alternative diagnosis was found that explained the acute illness"},
+        },
+    },
+    {
+        "id": "SYN_22_upper_extremity_effort_thrombosis",
+        "description": "TVP primaria dell'arto superiore da sforzo (sindrome di Paget-Schroetter), confermata a ecocolordoppler (non CT come in SYN_03) -- diversifica sia B1_2 arto superiore che la modalita' di imaging associata",
+        "facts": [
+            "Paziente uomo, 24 anni, atleta, nessun catetere venoso ne' storia oncologica",
+            "Nessuna storia di autopsia o intervento chirurgico recente",
+            "Da 2 giorni gonfiore e dolore improvvisi al braccio destro dominante, comparsi dopo intensa attivita' di sollevamento pesi",
+            "Cute del braccio destro arrossata e calda al tatto",
+            "D-dimero: 2.200 ng/mL, superiore al limite di laboratorio",
+            "Ecocolordoppler venoso arto superiore destro: trombosi della vena succlavia destra da sforzo, quadro compatibile con sindrome di Paget-Schroetter",
+        ],
+        "ground_truth": {
+            "a1": {"answer": "No autopsy done, unknown if done, or done but results unavailable"},
+            "a2": {"answer": "No surgical procedure done; or, done but either did not confirm presence of DVT or findings unknown; or unknown if done"},
+            "a3_1": {"answer": "≥1 imaging study was done and confirmed DVT"},
+            "a3_2": {"studies": ["Doppler/Duplex Ultrasound"]},
+            "b1_1": {"answer": "≥1 symptom or sign of DVT was reported"},
+            "b1_2": {"types": ["Upper extremity DVT"]},
+            "b2": {"symptoms": ["Redness, warmth, or pain in one or more extremities"]},
+            "c": {"answer": "D-dimer exceeded test lab's upper limit of normal."},
+            "f": {"answer": "No"},
+            "x": {"answer": "No alternative diagnosis was found to explain the acute illness"},
+        },
+    },
+    {
+        "id": "SYN_23_other_procedure_ivc_filter",
+        "description": "Secondo caso A2 'Other procedure', diverso dalla trombolisi di SYN_12 -- posizionamento di filtro cavale con venografia intraprocedurale che conferma il trombo",
+        "facts": [
+            "Paziente donna, 58 anni, controindicazione alla terapia anticoagulante",
+            "Nessuna autopsia",
+            "Da 3 giorni dolore al polpaccio ed edema severo dell'arto inferiore sinistro",
+            "Ecocolordoppler venoso: trombosi venosa ileo-femorale sinistra estesa",
+            "Sottoposta a posizionamento di filtro cavale per via percutanea; la venografia intraprocedurale ha confermato la presenza del trombo nella vena iliaca sinistra",
+            "D-dimero: 3.100 ng/mL, superiore al limite di laboratorio",
+        ],
+        "ground_truth": {
+            "a1": {"answer": "No autopsy done, unknown if done, or done but results unavailable"},
+            "a2": {"answer": "Other procedure done that confirmed presence of DVT"},
+            "a3_1": {"answer": "≥1 imaging study was done and confirmed DVT"},
+            "a3_2": {"studies": ["Doppler/Duplex Ultrasound"]},
+            "b1_1": {"answer": "≥1 symptom or sign of DVT was reported"},
+            "b1_2": {"types": ["Lower extremity DVT"]},
+            "b2": {"symptoms": ["Calf pain or tenderness", "Leg swelling or pitting oedema"]},
+            "c": {"answer": "D-dimer exceeded test lab's upper limit of normal."},
+            "f": {"answer": "No"},
+            "x": {"answer": "No alternative diagnosis was found to explain the acute illness"},
+        },
+    },
+    {
+        "id": "SYN_24_imaging_inconclusive_no_alt_diagnosis",
+        "description": "Ecografia negativa per TVP ma NESSUNA diagnosi alternativa identificata -- decoupla A3_1='didn't confirm' da X='alternative found', confondi solo insieme in SYN_02",
+        "facts": [
+            "Paziente donna, 37 anni",
+            "Nessuna storia di autopsia o intervento chirurgico recente",
+            "Da 2 giorni dolore al polpaccio sinistro, senza edema ne' arrossamento evidenti",
+            "D-dimero: 890 ng/mL, superiore al limite di laboratorio",
+            "Ecografia compressiva venosa arto inferiore sinistro: vene comprimibili, nessuna evidenza di trombosi",
+            "Paziente dimessa con diagnosi incerta; nessuna diagnosi alternativa identificata, consigliato controllo clinico a distanza di pochi giorni",
+        ],
+        "ground_truth": {
+            "a1": {"answer": "No autopsy done, unknown if done, or done but results unavailable"},
+            "a2": {"answer": "No surgical procedure done; or, done but either did not confirm presence of DVT or findings unknown; or unknown if done"},
+            "a3_1": {"answer": "≥1 imaging study was done but didn't confirm DVT"},
+            "a3_2": {"studies": ["Compression ultrasonography"]},
+            "b1_1": {"answer": "≥1 symptom or sign of DVT was reported"},
+            "b1_2": {"types": ["Lower extremity DVT"]},
+            "b2": {"symptoms": ["Calf pain or tenderness"]},
+            "c": {"answer": "D-dimer exceeded test lab's upper limit of normal."},
+            "f": {"answer": "No"},
+            "x": {"answer": "No alternative diagnosis was found to explain the acute illness"},
+        },
+    },
+    {
+        "id": "SYN_25_thrombectomy_postpartum",
+        "description": "Secondo caso A2 'Thrombectomy', contesto diverso da SYN_07 (puerperio invece di presentazione acuta generica)",
+        "facts": [
+            "Paziente donna, 31 anni, in puerperio (3 settimane dopo parto cesareo)",
+            "Nessuna storia di autopsia",
+            "Da 1 giorno dolore severo al polpaccio ed edema massivo dell'intero arto inferiore sinistro, cute tesa e dolente",
+            "Ecocolordoppler venoso urgente: trombosi ileo-femorale sinistra estesa con interessamento della vena cava inferiore",
+            "Sottoposta a trombectomia chirurgica d'urgenza, con conferma intraoperatoria del trombo",
+            "D-dimero: 5.800 ng/mL, superiore al limite di laboratorio",
+        ],
+        "ground_truth": {
+            "a1": {"answer": "No autopsy done, unknown if done, or done but results unavailable"},
+            "a2": {"answer": "Thrombectomy related to DVT performed"},
+            "a3_1": {"answer": "≥1 imaging study was done and confirmed DVT"},
+            "a3_2": {"studies": ["Doppler/Duplex Ultrasound"]},
+            "b1_1": {"answer": "≥1 symptom or sign of DVT was reported"},
+            "b1_2": {"types": ["Lower extremity DVT"]},
+            "b2": {"symptoms": ["Calf pain or tenderness", "Leg swelling or pitting oedema"]},
+            "c": {"answer": "D-dimer exceeded test lab's upper limit of normal."},
+            "f": {"answer": "No"},
+            "x": {"answer": "No alternative diagnosis was found to explain the acute illness"},
+        },
+    },
+    {
+        "id": "SYN_26_ct_venography_pregnancy_pelvic",
+        "description": "Secondo caso A3_2 'CT or MR venography', diverso da SYN_03 (TVP pelvica in gravidanza, ecografia non dirimente per limiti anatomici)",
+        "facts": [
+            "Paziente donna, 29 anni, in gravidanza (28 settimane)",
+            "Nessuna storia di autopsia o intervento chirurgico recente",
+            "Da 4 giorni dolore al polpaccio e gonfiore dell'intero arto inferiore sinistro, fino alla regione inguinale",
+            "Ecografia compressiva venosa arto inferiore sinistro: risultata non dirimente per la sede pelvica del sospetto trombo, limitata dall'utero gravido",
+            "RM venografia pelvica: trombosi della vena iliaca comune sinistra",
+            "D-dimero: 2.600 ng/mL, superiore al limite di laboratorio",
+        ],
+        "ground_truth": {
+            "a1": {"answer": "No autopsy done, unknown if done, or done but results unavailable"},
+            "a2": {"answer": "No surgical procedure done; or, done but either did not confirm presence of DVT or findings unknown; or unknown if done"},
+            "a3_1": {"answer": "≥1 imaging study was done and confirmed DVT"},
+            "a3_2": {"studies": ["CT or MR venography"]},
+            "b1_1": {"answer": "≥1 symptom or sign of DVT was reported"},
+            "b1_2": {"types": ["Lower extremity DVT"]},
+            "b2": {"symptoms": ["Calf pain or tenderness", "Leg swelling or pitting oedema"]},
+            "c": {"answer": "D-dimer exceeded test lab's upper limit of normal."},
+            "f": {"answer": "No"},
+            "x": {"answer": "No alternative diagnosis was found to explain the acute illness"},
+        },
+    },
+    {
+        "id": "SYN_27_contrast_venography_absent_pulses",
+        "description": "Secondo caso A3_2 'Contrast venography' E secondo caso B2 'Absent pulses' vero positivo, diversi da SYN_13/SYN_18 -- edema massivo con compressione arteriosa",
+        "facts": [
+            "Paziente uomo, 57 anni, arteriopatia periferica nota",
+            "Nessuna autopsia o intervento chirurgico recente",
+            "Da 18 ore dolore severo al polpaccio ed edema massivo dell'arto inferiore destro, cute marezzata",
+            "Esame obiettivo: polsi periferici (pedidio e tibiale posteriore) NON palpabili all'arto inferiore destro",
+            "Ecografia compressiva risultata tecnicamente limitata per l'esteso edema (NON ha confermato nulla)",
+            "Flebografia con mezzo di contrasto arto inferiore destro: difetto di riempimento esteso a carico della vena iliaca e femorale destra, compatibile con trombosi venosa profonda",
+            "D-dimero: 4.900 ng/mL, superiore al limite di laboratorio",
+        ],
+        "ground_truth": {
+            "a1": {"answer": "No autopsy done, unknown if done, or done but results unavailable"},
+            "a2": {"answer": "No surgical procedure done; or, done but either did not confirm presence of DVT or findings unknown; or unknown if done"},
+            "a3_1": {"answer": "≥1 imaging study was done and confirmed DVT"},
+            "a3_2": {"studies": ["Contrast venography"]},
+            "b1_1": {"answer": "≥1 symptom or sign of DVT was reported"},
+            "b1_2": {"types": ["Lower extremity DVT"]},
+            "b2": {"symptoms": ["Calf pain or tenderness", "Leg swelling or pitting oedema", "Absent pulses in legs or arms"]},
+            "c": {"answer": "D-dimer exceeded test lab's upper limit of normal."},
+            "f": {"answer": "No"},
+            "x": {"answer": "No alternative diagnosis was found to explain the acute illness"},
+        },
+    },
+    {
+        "id": "SYN_28_other_modality_plethysmography",
+        "description": "Secondo caso A3_2 'Other', diverso da SYN_14 -- pletismografia ad impedenza invece di TC incidentale",
+        "facts": [
+            "Paziente donna, 66 anni, portatrice di pacemaker (controindicazione relativa alla risonanza magnetica)",
+            "Nessuna autopsia o intervento chirurgico recente",
+            "Da 3 giorni dolore al polpaccio e gonfiore dell'arto inferiore sinistro",
+            "Pletismografia ad impedenza dell'arto inferiore sinistro: alterazione del reflusso venoso compatibile con trombosi venosa profonda prossimale",
+            "D-dimero: 2.050 ng/mL, superiore al limite di laboratorio",
+        ],
+        "ground_truth": {
+            "a1": {"answer": "No autopsy done, unknown if done, or done but results unavailable"},
+            "a2": {"answer": "No surgical procedure done; or, done but either did not confirm presence of DVT or findings unknown; or unknown if done"},
+            "a3_1": {"answer": "≥1 imaging study was done and confirmed DVT"},
+            "a3_2": {"studies": ["Other"]},
+            "b1_1": {"answer": "≥1 symptom or sign of DVT was reported"},
+            "b1_2": {"types": ["Lower extremity DVT"]},
+            "b2": {"symptoms": ["Calf pain or tenderness", "Leg swelling or pitting oedema"]},
+            "c": {"answer": "D-dimer exceeded test lab's upper limit of normal."},
+            "f": {"answer": "No"},
+            "x": {"answer": "No alternative diagnosis was found to explain the acute illness"},
+        },
+    },
+    {
+        "id": "SYN_29_diagnosis_no_details_second",
+        "description": "Secondo caso F='Yes', diverso da SYN_17 -- nota di trasferimento inter-ospedaliero invece di segnalazione del medico di base",
+        "facts": [
+            "Paziente uomo, 49 anni",
+            "Nota di trasferimento inter-ospedaliero: 'paziente con diagnosi di trombosi venosa profonda dell'arto inferiore destro'",
+            "Nessun dettaglio clinico, esame obiettivo, di laboratorio o di imaging disponibile in questa sede oltre alla diagnosi riferita",
+            "Nessuna autopsia o intervento chirurgico recente",
+        ],
+        "ground_truth": {
+            "a1": {"answer": "No autopsy done, unknown if done, or done but results unavailable"},
+            "a2": {"answer": "No surgical procedure done; or, done but either did not confirm presence of DVT or findings unknown; or unknown if done"},
+            "a3_1": {"answer": "No imaging studies done, unknown if done, or done but results unknown"},
+            "a3_2": {"studies": []},
+            "b1_1": {"answer": "It is unknown if there was a report of a DVT syndrome"},
+            "b1_2": {"types": []},
+            "b2": {"symptoms": ["None of the above were present or it is unknown if any of 1-4 were present"]},
+            "c": {"answer": "D-dimer not tested, or tested but results unknown or not available"},
+            "f": {"answer": "Yes"},
             "x": {"answer": "No alternative diagnosis was found to explain the acute illness"},
         },
     },
