@@ -1,9 +1,7 @@
-La paziente è una donna di 58 anni senza storia medica significativa e priva di antecedenti chirurgici recenti. Ha riportato l'esecuzione di un volo intercontinentale di 9 ore esattamente 5 giorni prima dell'inizio dei sintomi, fattore di rischio che ha contribuito alla sua situazione attuale.
+La paziente è una donna, 58 anni. Non ha storia medica notevole e nessuna autopsia o intervento chirurgico recente. La sua attività antecedente include un viaggio aereo di 9 ore effettuato 5 giorni prima dell'esordio dei sintomi, che rappresenta un fattore di rischio per la trombosi venosa profonda.
 
-In corso di osservazione sono emersi i seguenti sintomi: da circa 3 giorni il paziente denuncia una sensazione dolorosa al polpaccio destro e un edema progressivo dell'arto inferiore. In aggiunta, si verifica un aumento della temperatura cutanea locale alla regione del polpaccio.
+Dal suo esame clinico, si evidenzia il presence di dolore al polpaccio destro e un edema progressivo dell'arto inferiore destro. Inoltre, è stato osservato un aumento della temperatura cutanea locale nel punto del polpaccio destro. 
 
-I reperti di laboratorio hanno riscontrato un D-dimero elevato, con valori di 2.100 ng/mL, superiore al limite stabilito dal laboratorio. 
+I risultati degli esami strumentali sono rilevanti: il D-dimero è risultato superiore al limite di laboratorio, valendo 2.100 ng/mL. Inoltre, l'ecocolordoppler venoso dell'arto inferiore destro ha evidenziato la presenza di una trombosi venosa poplitea destra con assenza di flusso nel segmento trombizzato.
 
-L'ecocolore Doppler venoso dell'arto inferiore destro ha rilevato la presenza di una trombosi venosa poplitea destra, accompagnata da un flusso assente nel segmento affetto.
-
-Non sono state considerate alternative diagnosici in quanto non sono state menzionate.
+Non sono state menzionate diagnosi alternative al momento.

@@ -1,11 +1,5 @@
-Il paziente, un uomo di 66 anni, presentava una storia medica caratterizzata dall'insorgenza improvvisa e acuta di dolore nel lato sinistro dell’arto inferiore, associato a edema. Le condizioni erano state presenti per circa sei ore al momento del suo arrivo presso il pronto soccorso.
+Il paziente è un uomo di 66 anni che si presenta in pronto soccorso con una storia d'inizio recente, di sei ore fa, caratterizzata da un dolore acuto e edema improvviso nell'arto inferiore sinistro. Inoltre, l'esame cutaneo dell'estremo ha evidenziato una diminuzione della temperatura con la presenza di una tonalità di pelle pallida.
 
-L'esame fisico rivelava un arto inferiore sinistro con edema significativo e una temperatura cutanea diminuita rispetto all’arto destro, mantenendo una tonalità pallida. La cute era fredda al tocco, suggerendo una potenziale compromissione del flusso sanguigno.
+Per approfondire, è stato effettuato un ecocolordoppler venoso urgente che ha rilevato la presenza di una trombosi ileo-femorale sinistra estesa. In seguito a questa scoperta, il paziente è subito sottoposto a una trombectomia chirurgica d'urgenza per trattamento del trombo venoso ileo-femorale. Durante l'intervento, la conferma del corretto raggiungimento del sito anatomico e della presenza del trombo è stata effettuata.
 
-Esecutti l'ecocolore Doppler venoso urgente dell'arto inferiore sinistro, il quale rilevò la presenza di un trombosi ileofemorale estesa. Questa diagnosi è stata confermata durante l'intervento chirurgico d'urgenza con la trombectomia, in cui è stato possibile visualizzare e rimuovere direttamente il trombo.
-
-Il paziente ha subito una procedura di trombectomia chirurgica per trattare la trombosi venosa estesa del femore e dell’ileo. Durante l'operazione è stata confermata la presenza del trombo mediante i mezzi intrasoperatori adatti.
-
-Inoltre, si è verificato un aumento significativo dei valori di D-dimero, risultando 4.400 ng/mL, valore superiore al limite di laboratorio stabilizzato dal nostro istituto.
-
-Il paziente è stato dimesso in osservazione dopo il successo dell'intervento e l'assenza di complicanze intraoperatorie o post-operatorie immediatamente notabili.
+Inoltre, il d-dimero, utilizzato come marker di dissochiarazione coagulomielopatico, risulta essere 4.400 ng/mL, valore superiore al limite stabilito dal laboratorio.
