@@ -126,6 +126,65 @@ def apply_details_gate(section_key: str, section_result, reasoning_text: str):
     return section_result, reasoning_text
 
 
+def apply_absent_pulses_gate(section_key: str, section_result, evidence: str, reasoning_text: str):
+    """
+    B2 only, and only its 'Absent pulses in legs or arms' option: this exact
+    option was traced -- across three separate scenario runs (SYN_05,
+    2026-08-06/07/08), each after a different rewrite of SECTION_HINTS['B2']
+    -- to a single recurring failure: the model selects it purely from
+    imaging/Doppler language ("flusso assente" / "no flow"), with reasoning
+    that explicitly (and wrongly) equates the two, e.g. "no flow detected...
+    this implies pulses were absent". The hint already tells it these are
+    different things; that alone hasn't been reliable enough.
+
+    Deliberately scoped to ONLY this one section/option pair, not a general
+    "is this option justified" check (that generic version was tried and
+    removed -- see project history). 'Absent pulses' was picked because its
+    distinguishing evidence is close to unambiguous (the words "polso"/
+    "polsi"/"pulse" either appear in the evidence or they don't), unlike
+    B2's other options (calf pain, redness/warmth) or A3_2's modalities,
+    whose phrasing varies too much for a short keyword list to be safe
+    without a real risk of dropping a correctly-selected option.
+
+    If 'Absent pulses in legs or arms' is selected but none of those
+    keywords appear (case-insensitively) in Agent 1's evidence for this
+    section, the option is dropped -- any OTHER options already selected in
+    B2 are left untouched. Returns (section_result, reasoning_text)
+    unchanged for every other section, and unchanged for B2 itself unless
+    this specific option was selected without support.
+    """
+    if section_key != "B2":
+        return section_result, reasoning_text
+
+    target = "Absent pulses in legs or arms"
+    field_name = list(type(section_result).model_fields.keys())[0]
+    selected = getattr(section_result, field_name)
+
+    if target not in selected:
+        return section_result, reasoning_text
+
+    evidence_lower = (evidence or "").lower()
+    has_pulse_keyword = any(kw in evidence_lower for kw in ("polso", "polsi", "pulse"))
+
+    if not has_pulse_keyword:
+        print(
+            f"[B2] ABSENT PULSES GATE TRIGGERED: '{target}' selected but no pulse-exam "
+            f"keyword ('polso'/'polsi'/'pulse') found in the evidence -- dropping it.",
+            flush=True,
+        )
+        new_selected = [s for s in selected if s != target]
+        # Rebuilt via the model's own constructor (not setattr), same
+        # reasoning as apply_keyword_gate: keeps Pydantic validation.
+        section_result = type(section_result)(**{field_name: new_selected})
+        reasoning_text += (
+            f"\n\n[SYSTEM OVERRIDE]: Removed '{target}' from the selection -- no "
+            f"pulse-exam keyword found in the evidence; absent flow on an imaging "
+            f"study alone is not sufficient justification for this option."
+        )
+
+    return section_result, reasoning_text
+
+
 def apply_cross_section_rules(form_data: dict, audit_log: dict) -> dict:
     """
     See config.CROSS_SECTION_RULES.

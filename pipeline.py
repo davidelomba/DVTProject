@@ -14,7 +14,12 @@ import config
 from models import DVT_CriteriaForm, SECTION_MODELS
 from rag_setup import get_embeddings, build_brighton_kb, build_ehr_kb, make_ehr_retriever_tool, load_brighton_pdf_text, load_ehr_text
 from agents import build_llm, evaluate_section, extract_evidence, extract_evidence_full_text
-from criteria_rules import apply_keyword_gate, apply_details_gate, apply_cross_section_rules
+from criteria_rules import (
+    apply_keyword_gate,
+    apply_details_gate,
+    apply_absent_pulses_gate,
+    apply_cross_section_rules,
+)
 from agentic_graph import build_agentic_llm, run_agentic_graph_pipeline
 
 
@@ -138,6 +143,11 @@ def run_pipeline(record_id: str, patient_ehr_path: str, brighton_pdf_path: str):
                 # mapping -- the step where it was observed to self-contradict.
                 section_result, reasoning_text = apply_details_gate(
                     section_key, section_result, reasoning_text
+                )
+                # B2's "Absent pulses" only (see criteria_rules.apply_absent_pulses_gate):
+                # drops that one option if the evidence has no pulse-exam keyword.
+                section_result, reasoning_text = apply_absent_pulses_gate(
+                    section_key, section_result, evidence, reasoning_text
                 )
 
                 section_log["reasoning"] = reasoning_text
