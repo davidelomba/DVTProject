@@ -1,5 +1,5 @@
 {
-  "record_id": "SYN_22_upper_extremity_effort_thrombosis_v2",
+  "record_id": "SYN_05_absent_flow_not_pulses_trap_v2",
   "a1": {
     "answer": "No autopsy done, unknown if done, or done but results unavailable"
   },
@@ -19,13 +19,13 @@
   },
   "b1_2": {
     "types": [
-      "Upper extremity DVT"
+      "Lower extremity DVT"
     ]
   },
   "b2": {
     "symptoms": [
-      "Redness, warmth, or pain in one or more extremities",
-      "Absent pulses in legs or arms"
+      "Calf pain or tenderness",
+      "Leg swelling or pitting oedema"
     ]
   },
   "c": {
