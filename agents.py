@@ -534,6 +534,30 @@ def evaluate_section(
 
                 seen = set()
                 matched = [m for m in matched if not (m in seen or seen.add(m))]  # dedupe, keep order
+
+                # "None of the above"-style options are mutually exclusive with
+                # every real finding (enforced by B2's none_is_exclusive
+                # validator in models.py). The model was observed selecting
+                # both at once (SYN_19: "Redness, warmth..." + "None of the
+                # above..."), which made section_model(...) below raise --
+                # and, since the retry only feeds back the raw Pydantic
+                # traceback, it kept failing all 3 attempts and left the whole
+                # section None (a total loss, worse than a partly-wrong
+                # answer). Resolved here instead: drop the "none" option and
+                # keep the specific findings, since naming a concrete symptom
+                # is the more informative of the two contradictory signals.
+                if len(matched) > 1:
+                    none_options = [m for m in matched if m.lower().startswith("none of the above")]
+                    if none_options:
+                        print(
+                            f"[WARNING] Model selected {none_options} together with real "
+                            f"findings {[m for m in matched if m not in none_options]} -- "
+                            f"mutually exclusive. Dropping the 'none of the above' option "
+                            f"and keeping the specific findings.",
+                            flush=True,
+                        )
+                        matched = [m for m in matched if m not in none_options]
+
                 # Constructing via section_model(...) re-validates the value
                 # against the schema (e.g. B2's none-is-exclusive rule).
                 return section_model(**{field_name: matched}), content
