@@ -72,12 +72,40 @@ live only in SYN_02, together). Scenarios 25-29 (same day) covered the
 remaining single-example branches: A2's "Thrombectomy", A3_2's "CT or MR
 venography"/"Contrast venography"/"Other", B2's "Absent pulses in legs or
 arms", and F's "Yes" -- every Literal option across all 10 sections now has
-at least 2 scenarios (validated programmatically).
+at least 2 scenarios (validated programmatically). Scenario 30 was added on
+2026-08-16 for a different reason: not to cover a missing option, but to break
+a spurious CORRELATION between two sections that per-option coverage checks
+cannot detect (elevated D-dimer always co-occurring with confirmed DVT) -- see
+that scenario's own comment, and note the same audit could usefully be applied
+to other section pairs.
 
 STYLE: only one narrative style (STYLE_VARIANTS' "v2") is generated per
 scenario -- the earlier telegraphic/abbreviation-heavy "v1" style was dropped
 per the user's request on 2026-08-07 (kept producing records terse enough to
 lose clinical nuance the ground truth depended on).
+
+STYLE FIDELITY: STYLE_VARIANTS' directive is modelled on the single real
+record supplied by clinicians (data/patient_001.txt) -- inline section labels,
+abbreviated vitals, home medications, pertinent negatives, one continuous
+block, ~1450 characters. See that constant's comment for the measured
+divergences this is meant to close. Scenario dicts may also carry a
+"writer_notes" list: constraints ABOUT the writing (never content), kept out
+of "facts" because the writer used to copy such parentheticals verbatim into
+the record.
+
+RECORD LENGTH -- KNOWN LIMITATION, deliberately accepted for now: records are
+short (~1450 characters even after the style change above), i.e. roughly ONE
+config.EHR_CHUNK_SIZE chunk, while
+config.EHR_RETRIEVER_K asks for 5. Retrieval therefore returns the whole
+record every time -- measured across a full 29-record run, the evidence Agent
+1 passed to Agent 2 had a median length of 1.00x the source text (min 1.00,
+max 1.16). That means "rag" and "agentic_graph" currently produce the same
+evaluator input as "full_text", so the three config.EXTRACTOR_MODEs cannot be
+compared meaningfully on this dataset. A padding mechanism (routine
+DVT-irrelevant background, sized to span several chunks) was implemented and
+then reverted on 2026-08-16: real clinical records are expected from
+collaborators, and Davide prefers to run the mode comparison on those rather
+than on synthetically-lengthened text. Revisit when those arrive.
 
 Usage: python generate_synthetic_records.py
 Output: data/synthetic_records/<scenario_id>_<style_id>.txt (the record) and
@@ -112,19 +140,91 @@ REGOLE FERREE:
    identico indipendentemente dallo stile.
 5. Output SOLO il testo della cartella clinica, nessun commento, nessuna nota,
    nessuna intestazione tipo "Ecco la cartella clinica:".
+6. Scrivi come un medico che documenta un paziente, MAI come qualcuno che
+   compila o commenta un questionario: non scrivere frasi del tipo "non sono
+   state menzionate diagnosi alternative", "non e' stato riportato X" o "questo
+   e' solo un fattore di rischio". Se un elemento non fa parte dei fatti,
+   semplicemente non compare nel referto: non dichiararne l'assenza.
+7. La direttiva di stile puo' chiederti di aggiungere elementi di contorno
+   realistici (parametri vitali, terapia domiciliare, negazioni pertinenti):
+   questi sono l'UNICA eccezione consentita alla regola 1, e non devono mai
+   contraddire i fatti clinici forniti ne' riguardare gli stessi sintomi,
+   esami o procedure di cui i fatti parlano.
 """
 
+# Informed by -- but deliberately NOT a copy of -- the one real record
+# available (data/patient_001.txt, supplied by clinicians). A 2026-08-16
+# comparison found the generated records diverged from it on almost every
+# stylistic axis: ~900 characters against the real record's ~1450, no section
+# labels (6/29), no vital signs (4/29), no pertinent negatives (6/29), no home
+# medication list (0/29), virtually no incidental quantitative detail (1/29).
+# Closing that gap matters for external validity: measuring the pipeline only
+# on clean, signal-dense text overstates how it would do on real records.
+#
+# WHY THIS IS PHRASED GENERICALLY: the directive asks for the STRUCTURAL
+# features that Italian hospital records share as a genre (labelled sections,
+# abbreviated vitals, home medications, pertinent negatives, continuous prose),
+# and deliberately avoids dictating the exact section labels, drug names or
+# negation wording. An earlier draft quoted patient_001 almost verbatim -- but
+# a writer LLM copies the examples it is given, so prescribing them would have
+# produced 27 near-identical variants of a single real document: homogeneous
+# rather than realistic, and overfitted to the idiosyncrasies of one clinician
+# at one department (n=1). Leaving the surface wording free lets the writer's
+# temperature 0.8 supply the variation that the removed second style variant
+# used to provide, without doubling the number of records to generate and run.
 STYLE_VARIANTS = [
     {
         "id": "v2",
         "directive": (
-            "Stile discorsivo e narrativo, come una lettera di dimissione, SENZA "
-            "intestazioni di sezione rigide. Ordina il racconto partendo "
-            "dall'esame obiettivo e dagli esami strumentali, poi l'anamnesi. Scrivi "
-            "i termini clinici per esteso, evita abbreviazioni."
+            "Scrivi il documento come un referto ospedaliero italiano reale, in "
+            "prosa continua (nessun elenco puntato). Organizza il contenuto nelle "
+            "sezioni tipiche di un referto italiano -- anamnesi remota, anamnesi "
+            "prossima, esame obiettivo, esami di laboratorio e strumentali -- "
+            "introducendole con una breve etichetta in linea nel testo; scegli tu "
+            "la formulazione esatta delle etichette e l'ordine piu' naturale. "
+            "Riporta i parametri vitali con le abbreviazioni cliniche italiane "
+            "d'uso comune e valori plausibili nella norma, salvo diversa "
+            "indicazione nei fatti. "
+            "Includi elementi anamnestici di contorno realistici e non correlati "
+            "al quesito diagnostico: una breve terapia domiciliare, lo stato "
+            "allergologico, e alcune negazioni pertinenti su sintomi NON gia' "
+            "citati nei fatti. Varia il lessico e non riutilizzare formule fisse. "
+            "Non negare MAI qualcosa che i fatti riportano come presente. "
+            "Lunghezza complessiva indicativa: 1300-1600 caratteri."
+        ),
+        # Scenarios whose ground truth is F="Yes" ("diagnosis reported WITHOUT
+        # details") cannot use the directive above: a single vital sign, lab
+        # value or examination finding would make the record detailed and flip
+        # F's correct answer to "No". They get this instead -- which is also
+        # what such a document looks like in reality, since a bare referral or
+        # inter-hospital transfer note genuinely is short and finding-free.
+        "directive_no_details": (
+            "Scrivi il documento come una breve nota di segnalazione o di "
+            "trasferimento ospedaliera italiana reale, in prosa continua. "
+            "Riporta i dati anagrafici, la provenienza della segnalazione e la "
+            "diagnosi riferita, e indica che non e' disponibile altra "
+            "documentazione clinica. "
+            "NON inventare e NON riportare alcun parametro vitale, valore di "
+            "laboratorio, reperto di esame obiettivo o risultato strumentale: la "
+            "loro assenza e' il contenuto stesso del documento. "
+            "Puoi includere solo elementi anagrafici o amministrativi. "
+            "Lunghezza complessiva indicativa: 500-700 caratteri."
         ),
     },
 ]
+
+
+def directive_for(scenario: dict, style: dict) -> str:
+    """Picks the style directive appropriate to this scenario.
+
+    See STYLE_VARIANTS' "directive_no_details" comment: F="Yes" scenarios are
+    defined by the ABSENCE of clinical detail, so they cannot be written in the
+    detail-rich house style without invalidating their own ground truth.
+    """
+    if scenario["ground_truth"]["f"]["answer"] == "Yes":
+        return style["directive_no_details"]
+    return style["directive"]
+
 
 # ---------------------------------------------------------------------------
 # Scenarios: (facts fed to the writer LLM) + (ground truth, authored by hand)
@@ -139,12 +239,15 @@ SCENARIOS = [
         "facts": [
             "Paziente donna, 58 anni",
             "Nessuna storia di autopsia o intervento chirurgico recente",
-            "Volo intercontinentale di 9 ore effettuato 5 giorni prima dell'esordio (fattore di rischio, non menzionare altre diagnosi)",
+            "Volo intercontinentale di 9 ore effettuato 5 giorni prima dell'esordio",
             "Da 3 giorni dolore al polpaccio destro ed edema progressivo dell'arto",
             "Aumento della temperatura cutanea locale al polpaccio destro",
             "D-dimero: 2.100 ng/mL, superiore al limite di laboratorio",
             "Ecocolordoppler venoso arto inferiore destro: trombosi venosa poplitea destra, flusso assente nel segmento trombizzato",
-            "Nessuna menzione di diagnosi alternativa",
+        ],
+        "writer_notes": [
+            "Il volo va riportato come semplice dato anamnestico, senza commentarne il ruolo",
+            "Non nominare alcuna diagnosi alternativa e non dichiarare che non ce ne sono",
         ],
         "ground_truth": {
             "a1": {"answer": "No autopsy done, unknown if done, or done but results unavailable"},
@@ -211,13 +314,16 @@ SCENARIOS = [
         "id": "SYN_04_multi_imaging_confirmed",
         "description": "TVP confermata da due studi di imaging diversi (compressione + doppler), nessun arrossamento/calore",
         "facts": [
-            "Paziente uomo, 70 anni, recente sostituzione protesica del ginocchio (intervento NON di trombectomia, solo fattore di rischio)",
+            "Paziente uomo, 70 anni, recente sostituzione protesica del ginocchio",
             "Nessuna autopsia",
             "Da 5 giorni dolore al polpaccio sinistro ed edema dell'arto",
             "Nessun arrossamento o aumento di temperatura locale riportato",
             "D-dimero: 3.050 ng/mL, superiore al limite di laboratorio",
             "Ecografia compressiva venosa arto inferiore sinistro: vena poplitea non comprimibile",
             "Ecocolordoppler dello stesso arto, eseguito lo stesso giorno: conferma trombosi della vena poplitea sinistra",
+        ],
+        "writer_notes": [
+            "La protesi di ginocchio va riportata solo come dato anamnestico remoto; non descriverla come intervento eseguito per la trombosi ne' collegarla alla diagnosi attuale",
         ],
         "ground_truth": {
             "a1": {"answer": "No autopsy done, unknown if done, or done but results unavailable"},
@@ -239,10 +345,13 @@ SCENARIOS = [
             "Paziente donna, 51 anni",
             "Nessuna autopsia o intervento chirurgico recente",
             "Da 2 giorni dolore gravativo al polpaccio destro con edema progressivo",
-            "Esame obiettivo NON menziona alcun esame dei polsi periferici (non riportare polsi presenti né assenti)",
             "D-dimero: 1.650 ng/mL, superiore al limite di laboratorio",
             "Ecocolordoppler venoso arto inferiore destro: trombosi venosa poplitea destra con flusso assente nel segmento trombizzato",
             "Vene femorali comuni e superficiali pervie",
+        ],
+        "writer_notes": [
+            "Non riportare NULLA sui polsi periferici, ne' presenti ne' assenti ne' non valutabili: l'esame dei polsi non deve comparire in alcuna forma",
+            "Nelle negazioni pertinenti non includere nulla che riguardi i polsi o la perfusione arteriosa",
         ],
         "ground_truth": {
             "a1": {"answer": "No autopsy done, unknown if done, or done but results unavailable"},
@@ -433,9 +542,12 @@ SCENARIOS = [
             "Paziente donna, 47 anni",
             "Nessuna autopsia o intervento chirurgico recente",
             "Da 4 giorni dolore al polpaccio ed edema dell'arto inferiore destro",
-            "Ecografia compressiva risultata non dirimente per artefatti tecnici (NON ha confermato nulla)",
+            "Ecografia compressiva risultata non dirimente per artefatti tecnici",
             "Flebografia con mezzo di contrasto arto inferiore destro: difetto di riempimento centrale a carico della vena poplitea destra, compatibile con trombosi venosa profonda",
             "D-dimero: 2.400 ng/mL, superiore al limite di laboratorio",
+        ],
+        "writer_notes": [
+            "L'ecografia compressiva non deve risultare in alcun modo confermativa: descrivila come non diagnostica per limiti tecnici, senza attribuirle reperti",
         ],
         "ground_truth": {
             "a1": {"answer": "No autopsy done, unknown if done, or done but results unavailable"},
@@ -456,9 +568,13 @@ SCENARIOS = [
         "facts": [
             "Paziente uomo, 68 anni",
             "Nessuna autopsia o intervento chirurgico recente",
-            "TC total body eseguita per stadiazione oncologica (motivo NON correlato a sospetta TVP) ha incidentalmente mostrato trombosi della vena femorale sinistra",
+            "TC total body eseguita per stadiazione oncologica, che ha incidentalmente mostrato trombosi della vena femorale sinistra",
             "Successivamente riferito dolore lieve al polpaccio sinistro, presente da alcuni giorni",
             "D-dimero: 1.900 ng/mL, superiore al limite di laboratorio",
+        ],
+        "writer_notes": [
+            "La TC total body va presentata come esame oncologico di stadiazione con reperto incidentale, non come indagine richiesta per sospetta trombosi",
+            "Non nominare ecografia, ecocolordoppler o flebografia: l'unica indagine per immagini eseguita e' la TC total body",
         ],
         "ground_truth": {
             "a1": {"answer": "No autopsy done, unknown if done, or done but results unavailable"},
@@ -766,9 +882,12 @@ SCENARIOS = [
             "Nessuna autopsia o intervento chirurgico recente",
             "Da 18 ore dolore severo al polpaccio ed edema massivo dell'arto inferiore destro, cute marezzata",
             "Esame obiettivo: polsi periferici (pedidio e tibiale posteriore) NON palpabili all'arto inferiore destro",
-            "Ecografia compressiva risultata tecnicamente limitata per l'esteso edema (NON ha confermato nulla)",
+            "Ecografia compressiva risultata tecnicamente limitata per l'esteso edema",
             "Flebografia con mezzo di contrasto arto inferiore destro: difetto di riempimento esteso a carico della vena iliaca e femorale destra, compatibile con trombosi venosa profonda",
             "D-dimero: 4.900 ng/mL, superiore al limite di laboratorio",
+        ],
+        "writer_notes": [
+            "L'ecografia compressiva non deve risultare in alcun modo confermativa: descrivila come non diagnostica per limiti tecnici, senza attribuirle reperti",
         ],
         "ground_truth": {
             "a1": {"answer": "No autopsy done, unknown if done, or done but results unavailable"},
@@ -828,15 +947,84 @@ SCENARIOS = [
             "x": {"answer": "No alternative diagnosis was found to explain the acute illness"},
         },
     },
+    {
+        "id": "SYN_30_confirmed_dvt_normal_ddimer",
+        "description": (
+            "TVP confermata a ecocolordoppler CON D-dimero nella norma -- rompe la "
+            "correlazione spuria D-dimero elevato <-> TVP confermata presente in tutti "
+            "gli altri 29 scenari (vedi il commento sotto)"
+        ),
+        # Added 2026-08-16 on the basis of the Brighton paper itself
+        # (data/reference/1-s2.0-S0264410X22010854-main.pdf), which states
+        # explicitly that laboratory results "can be normal in the presence of
+        # thrombotic or thromboembolic events or abnormal in the absence of
+        # thrombosis or thromboembolism". A coverage audit of the other 29
+        # scenarios found that a normal D-dimer ONLY ever appeared in records
+        # where DVT was ruled out (SYN_15, SYN_21), and that no scenario at all
+        # paired a confirmed DVT with a normal D-dimer. The corpus therefore
+        # taught a correlation the source guideline calls false, and a model
+        # exploiting that shortcut would have scored better than it deserved.
+        # This scenario breaks it: imaging is unambiguously positive while C is
+        # unambiguously normal, so section C cannot be inferred from the DVT
+        # outcome (or vice versa).
+        #
+        # NOTE ON HOW BRIGHTON IS USED HERE: as a clinical authority for
+        # SCENARIO DESIGN only. The paper is deliberately NOT used to word the
+        # generated records -- pipeline.py already feeds Agent 2 retrieved
+        # context from this same PDF as reference terminology, so phrasing the
+        # test records with it would make the evaluator match text against its
+        # own glossary (circular validation) and overstate accuracy relative to
+        # real clinician-written records.
+        "facts": [
+            "Paziente uomo, 61 anni",
+            "Nessuna autopsia o intervento chirurgico recente",
+            "Da 5 giorni dolore al polpaccio destro con edema dell'arto inferiore omolaterale",
+            "D-dimero: 380 ng/mL, entro il range di normalita' del laboratorio",
+            "Ecocolordoppler venoso arto inferiore destro: trombosi venosa poplitea destra con flusso assente nel segmento trombizzato",
+        ],
+        "writer_notes": [
+            "Riporta il valore del D-dimero come dato di laboratorio fra gli altri, senza commentarne la discordanza con il reperto ecografico e senza spiegazioni fisiopatologiche",
+            "Il referto ecografico deve restare inequivocabilmente positivo per trombosi",
+        ],
+        "ground_truth": {
+            "a1": {"answer": "No autopsy done, unknown if done, or done but results unavailable"},
+            "a2": {"answer": "No surgical procedure done; or, done but either did not confirm presence of DVT or findings unknown; or unknown if done"},
+            "a3_1": {"answer": "≥1 imaging study was done and confirmed DVT"},
+            "a3_2": {"studies": ["Doppler/Duplex Ultrasound"]},
+            "b1_1": {"answer": "≥1 symptom or sign of DVT was reported"},
+            "b1_2": {"types": ["Lower extremity DVT"]},
+            "b2": {"symptoms": ["Calf pain or tenderness", "Leg swelling or pitting oedema"]},
+            "c": {"answer": "D-dimer tested and was within test lab's range of normal"},
+            "f": {"answer": "No"},
+            "x": {"answer": "No alternative diagnosis was found to explain the acute illness"},
+        },
+    },
 ]
 
 
 def facts_to_prompt(scenario: dict, style: dict) -> str:
     facts_block = "\n".join(f"- {fact}" for fact in scenario["facts"])
-    return (
-        f"Direttiva di stile: {style['directive']}\n\n"
+    prompt = (
+        f"Direttiva di stile: {directive_for(scenario, style)}\n\n"
         f"Fatti clinici da includere (tutti, nessuno escluso, nessuno aggiunto):\n{facts_block}"
     )
+    # Constraints ABOUT the writing, kept strictly apart from the clinical
+    # facts and marked as not-to-be-written. They used to live inside the
+    # facts as parentheticals ("(fattore di rischio, non menzionare altre
+    # diagnosi)"), and the writer copied them verbatim into the record: three
+    # generated records ended up containing sentences like "Non sono state
+    # menzionate diagnosi alternative" or "non vengono considerati diagnosi a
+    # se' stanti". A real record never comments on the questionnaire like
+    # that, and worse, such a sentence hands the evaluator section X's answer
+    # instead of requiring it to be inferred from the clinical picture.
+    notes = scenario.get("writer_notes")
+    if notes:
+        notes_block = "\n".join(f"- {n}" for n in notes)
+        prompt += (
+            f"\n\nVincoli di scrittura (istruzioni per te, NON scriverle nel "
+            f"referto e non parafrasarle):\n{notes_block}"
+        )
+    return prompt
 
 
 def build_ground_truth(record_id: str, scenario: dict) -> dict:
