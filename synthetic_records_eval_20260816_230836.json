@@ -1,0 +1,115 @@
+{
+  "records_compared": 30,
+  "records_missing_prediction": [],
+  "sections": {
+    "A1": {
+      "compared": 30,
+      "missing": 0,
+      "exact_matches": 28,
+      "tp": 28,
+      "tn": 58,
+      "fp": 2,
+      "fn": 2,
+      "accuracy": 0.9333333333333333
+    },
+    "A2": {
+      "compared": 30,
+      "missing": 0,
+      "exact_matches": 27,
+      "tp": 27,
+      "tn": 57,
+      "fp": 3,
+      "fn": 3,
+      "accuracy": 0.9
+    },
+    "A3_1": {
+      "compared": 30,
+      "missing": 0,
+      "exact_matches": 21,
+      "tp": 21,
+      "tn": 51,
+      "fp": 9,
+      "fn": 9,
+      "accuracy": 0.7
+    },
+    "A3_2": {
+      "compared": 30,
+      "missing": 0,
+      "exact_matches": 12,
+      "tp": 14,
+      "tn": 100,
+      "fp": 29,
+      "fn": 7,
+      "accuracy": 0.4
+    },
+    "B1_1": {
+      "compared": 30,
+      "missing": 0,
+      "exact_matches": 27,
+      "tp": 27,
+      "tn": 57,
+      "fp": 3,
+      "fn": 3,
+      "accuracy": 0.9
+    },
+    "B1_2": {
+      "compared": 30,
+      "missing": 0,
+      "exact_matches": 24,
+      "tp": 24,
+      "tn": 28,
+      "fp": 8,
+      "fn": 0,
+      "accuracy": 0.8
+    },
+    "B2": {
+      "compared": 30,
+      "missing": 0,
+      "exact_matches": 17,
+      "tp": 40,
+      "tn": 88,
+      "fp": 12,
+      "fn": 10,
+      "accuracy": 0.5666666666666667
+    },
+    "C": {
+      "compared": 30,
+      "missing": 0,
+      "exact_matches": 26,
+      "tp": 26,
+      "tn": 56,
+      "fp": 4,
+      "fn": 4,
+      "accuracy": 0.8666666666666667
+    },
+    "F": {
+      "compared": 30,
+      "missing": 0,
+      "exact_matches": 21,
+      "tp": 21,
+      "tn": 21,
+      "fp": 9,
+      "fn": 9,
+      "accuracy": 0.7
+    },
+    "X": {
+      "compared": 30,
+      "missing": 0,
+      "exact_matches": 28,
+      "tp": 28,
+      "tn": 28,
+      "fp": 2,
+      "fn": 2,
+      "accuracy": 0.9333333333333333
+    }
+  },
+  "overall": {
+    "compared": 300,
+    "exact_matches": 231,
+    "tp": 256,
+    "tn": 544,
+    "fp": 81,
+    "fn": 49,
+    "accuracy": 0.77
+  }
+}

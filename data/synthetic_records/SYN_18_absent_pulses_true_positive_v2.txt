@@ -1,7 +1,9 @@
-Il paziente è un uomo, 63 anni, presentante da circa 12 ore sintomi consistenti in edema massivo e dolore severo localizzati al polpaccio e all'arto inferiore sinistro. La pelle dell'arto affetto presenta un aspetto cianotico.
+Il paziente, uomo, 63 anni, presentato con un episodio di edema massivo e dolore severo al polpaccio e all'arto inferiore sinistro da circa 12 ore. Negli ultimi giorni, inoltre, è stato notato un aumento notevole della temperatura corporea e una leggera astenia, senza manifestazioni febbrili. L'edema si estende fino al ginocchio inferiore, con una cianosi cutanea marcata. 
 
-Durante l'esame obiettivo, è stato notato la non palpabilità dei polsi periferici (pedidio e tibiale posteriore) nell'arto inferiore sinistro, suggerendo una compromissione del flusso sanguigno.
+L'anamnesi prossima evidenzia la mancanza di recenti interventi chirurgici o autopsie, ma si evidenzia un recente periodo di terapia domiciliare per infezione respiratoria virale, con la prescrizione di amoxicillina e ibuprofeno. Il paziente non nega alcun sintomo cronico noto, come ipertensione aritmica, diabete o problemi cardiosvascolari, ma menziona una storia allergologica positiva a polvere di abete e muffa.
 
-Per approfondire il quadro clinico, si è resa disponibile un'ecocolordoppler venoso dell'arto inferiore sinistro. I risultati hanno evidenziato la presenza di una trombosi venosa ileo-femorale estesa, compatibile con un flegmasia cerulea dolens.
+Nel corso del consultazione, il paziente esibisce un dispiacere significativo per i movimenti dell'arto inferiore sinistro, che aggravano il dolore e la sensazione di gonfiore. Il paziente è in generale in buone condizioni, con un peso e una altezza proporzionali, e si trova in una posizione seduta, mantenendo l'arto inferiore sinistro leggermente elevato.
 
-Al laboratorio, il valore del D-dimero è risultato significativamente elevato, con 5.200 ng/mL, superiore al limite normale di laboratorio.
+L'esame obiettivo rileva un'assenza di palpabilità dei polsi periferici, in particolare del pedidio e del tibiale posteriore, suggerendo un'eventuale trombosi venosa profonda (TVP). Il paziente presenta un'asimmetria marcata tra l'arto inferiore destro e sinistro, con un'area di gonfiore significativa, cianosi cutanea e un dolore intensificato con lo spostamento di tale artro.
+
+Nel corso del consultorio sono stato richiesto un esame di laboratorio, risultato del quale è emerso un D-dimero elevato, pari a 5.200 ng/mL, superiore al limite di laboratorio. Questo valore, in

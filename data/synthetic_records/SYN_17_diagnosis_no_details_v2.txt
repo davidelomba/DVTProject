@@ -1,7 +1,5 @@
-La paziente è una donna di 60 anni. La visita presso il nostro servizio si svolge su richiesta del medico di base, con l'ipotesi clinica di trombosi venosa profonda (TVP) dell'arto inferiore sinistro.
-
-All'esame obiettivo non sono disponibili dettagli specifici riguardo alla condizione attuale della paziente. Il riferimento è esclusivamente a una diagnosi sospetta fornita dal medico di base.
-
-In assenza di ulteriori informazioni cliniche, esami di laboratorio o strumentali, non possiamo effettuare un valutazione più approfondita né confermare la diagnosi. L'ipotesi di TVP rimane sospetta basata sulla storia riferita.
-
-La paziente è stata dimessa con indicazioni per una consultazione in ambulatorio nel giro di poche settimane, con l'esigenza di esaminare ulteriormente i sintomi e le eventuali modifiche cliniche.
+Anagrafica paziente: Donna, 60 anni.  
+Provenienza: Riferita dal medico di base.  
+Diagnosi riferita: Trombosi venosa profonda dell'arto inferiore sinistro.  
+Non disponibile ulteriori documentazioni cliniche.  
+Nessun intervento chirurgico o autopsia recente.

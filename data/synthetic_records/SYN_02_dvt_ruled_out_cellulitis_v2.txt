@@ -1,7 +1,11 @@
-Il paziente è un uomo di 45 anni senza storia di autopsia o intervento chirurgico recente. In questi ultimi due giorni ha presentato arrossamento, calore e dolore alla gamba sinistra, accompagnati da febbre con temperatura corporea di 38,3°C.
+Il paziente, uomo di 45 anni, si presenta con anamnesi remota non rilevante, a eccezione di un leggero arrossamento sinistro alla gamba sinistra che non era presente in precedenza. Non ha avuto autopsie o interventi chirurgici recenti, né ha dichiarato problemi cronici a carico del sistema cardiovascolare o respiratorio.
 
-Per esaminare la possibile presenza di trombosi venosa profonda (TVP), è stata condotta una compression ecografia venosa dell'arto inferiore sinistro. I risultati hanno evidenziato il presence di vene comprimibili, ma non sono stati riscontrati segni di trombosi.
+Nel corso degli ultimi due giorni, l'articolazione giuntura ginocchio sinistro ha iniziato a manifestare arrossamento, calore e dolore intensificato, senza che siano stati notati sintomi analoghi nel lato destro. Il paziente ha notato anche una leggera febbre, con temperatura corporea massima di 38,3°C nel periodo di osservazione. Ha dichiarato di non soffrire di dolori pleurici, né di disturbi cutanei generalizzati o emorragie.
 
-Non è stato eseguito un test diagnostico specifico come il d-dimero.
+L'osservazione del paziente in esame obiettivo evidenzia un arrossamento e gonfiore localizzato nella gamba sinistra, con una temperatura cutanea leggermente riscaldata. Non sono state rilevate anomalie nel turgore cutaneo e l'articolazione ginocchio sinistro non presenta crepitate o rilevanti limitazioni mobili. 
 
-Lo specialista ha diagnosi definitiva di cellulite dell'arto inferiore sinistro, confermata dalla presenza di leucocitosi e aumento della PCR. Non è stato evidenziato alcun coinvolgimento del sistema venoso profondo.
+Per approfondire la diagnosi, è stata eseguita una compression ecografia venosa arto inferiore sinistro, risultata negativa per presenza di trombosi venosa profonda, con le vene comprimibili e un flusso sanguigno mantenuto. Non è stato possibile eseguire il d-dimero per motivi non specificati dal paziente.
+
+Nel corso dell'esame, sono state rilevate leucocitosi e PCR elevate, indicativi di un processo inflamatario, senza evidenze di coinvolgimento venoso profondo. La diagnosi di cellulite dell'arto inferiore sinistro è confermata, basata su questi risultati, e si è deciso di iniziare una terapia antibiotica.
+
+Il paziente è stato avvisato su seguire una terapia antibiotica domiciliare per 7 giorni, mantenere il riposo del membro inferiore
