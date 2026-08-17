@@ -694,6 +694,11 @@ SCENARIOS = [
             "Riscontro autoptico: esame del sistema venoso profondo degli arti negativo, nessuna evidenza di trombosi venosa profonda",
             "Causa del decesso: emorragia interna massiva da trauma, non correlata a fenomeni tromboembolici venosi",
         ],
+        "writer_notes": [
+            "Il paziente e' deceduto e non e' mai stato in grado di riferire sintomi: non attribuirgli dichiarazioni, negazioni o anamnesi raccolte direttamente da lui",
+            "L'assenza di sintomi agli arti va resa come constatazione clinica del personale, non come qualcosa che il paziente ha negato",
+            "Non scrivere frasi che descrivono la cartella stessa (del tipo 'non sono state riportate/menzionate...'): riporta solo fatti clinici",
+        ],
         "ground_truth": {
             "a1": {"answer": "Autopsy done but showed no evidence of DVT"},
             "a2": {"answer": "No surgical procedure done; or, done but either did not confirm presence of DVT or findings unknown; or unknown if done"},
@@ -954,7 +959,8 @@ SCENARIOS = [
             "Ecocolordoppler venoso arto inferiore destro: trombosi venosa poplitea destra con flusso assente nel segmento trombizzato",
         ],
         "writer_notes": [
-            "Riporta il valore del D-dimero come dato di laboratorio fra gli altri, senza commentarne la discordanza con il reperto ecografico e senza spiegazioni fisiopatologiche",
+            "Riporta il valore del D-dimero come un dato di laboratorio qualsiasi, insieme agli altri, senza aggiungere alcun commento sul suo significato",
+            "NON scrivere da nessuna parte che il D-dimero e' discorde, inatteso, sorprendente o in contrasto con l'ecografia, e non aggiungere spiegazioni fisiopatologiche: la discordanza non deve essere segnalata al lettore in alcun modo",
             "Il referto ecografico deve restare inequivocabilmente positivo per trombosi",
         ],
         "ground_truth": {
@@ -1043,8 +1049,16 @@ def build_ground_truth(record_id: str, scenario: dict) -> dict:
 # and still be reporting the same study.
 _FACT_MARKERS = {
     "d-dimero": ["d-dimero", "d dimero", "ddimero"],
-    "ecocolordoppler": ["ecocolordoppler", "eco-color-doppler", "ecocolor doppler", "ecodoppler"],
-    "ecografia compressiva": ["ecografia compressiva", "compressiva", "compressione ecografica"],
+    # "doppler" on its own is accepted: the writer misspells the compound
+    # ("ecocoloredoppler") often enough that requiring a full spelling rejects
+    # records where the study is plainly reported.
+    "ecocolordoppler": ["doppler", "ecodoppler"],
+    # "comprimibil" covers the clinically equivalent way of reporting the same
+    # study -- describing the veins as compressible rather than naming the
+    # technique -- which is how a real record often puts it.
+    "ecografia compressiva": [
+        "ecografia compressiva", "compressiva", "compressione ecografica", "comprimibil",
+    ],
     "flebografia": ["flebografia", "flebografico"],
     "venografia": ["venografia", "venografico"],
     "tc total body": ["tc total body", "tc totale", "total body"],
@@ -1233,10 +1247,25 @@ def main():
         help="Only re-check the records already in data/synthetic_records/ "
              "against check_record(); generate nothing and call no LLM.",
     )
+    parser.add_argument(
+        "--only", nargs="+", metavar="ID",
+        help="Regenerate only the scenarios whose id contains one of these "
+             "strings (e.g. --only SYN_20 SYN_30). Every other record is left "
+             "untouched, so a single defective one can be re-rolled without "
+             "spending a full generation run or disturbing the rest of the set.",
+    )
     args = parser.parse_args()
 
     if args.check:
         sys.exit(1 if check_existing_records() else 0)
+
+    scenarios = SCENARIOS
+    if args.only:
+        scenarios = [s for s in SCENARIOS if any(frag in s["id"] for frag in args.only)]
+        if not scenarios:
+            sys.exit(f"No scenario id matches {args.only}.")
+        print(f"Regenerating {len(scenarios)} of {len(SCENARIOS)} scenarios: "
+              f"{', '.join(s['id'] for s in scenarios)}\n", flush=True)
 
     OUTPUT_DIR.mkdir(exist_ok=True)
     llm = build_llm(
@@ -1246,7 +1275,7 @@ def main():
     )
 
     still_defective = []
-    for scenario in SCENARIOS:
+    for scenario in scenarios:
         for style in STYLE_VARIANTS:
             record_id = f"{scenario['id']}_{style['id']}"
             print(f"[{record_id}] generating ({scenario['description']})...", flush=True)
