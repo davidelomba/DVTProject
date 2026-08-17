@@ -14,12 +14,7 @@ import config
 from models import DVT_CriteriaForm, SECTION_MODELS
 from rag_setup import get_embeddings, build_brighton_kb, build_ehr_kb, make_ehr_retriever_tool, load_brighton_pdf_text, load_ehr_text
 from agents import build_llm, evaluate_section, extract_evidence, extract_evidence_full_text
-from criteria_rules import (
-    apply_keyword_gate,
-    apply_details_gate,
-    apply_absent_pulses_gate,
-    apply_cross_section_rules,
-)
+from criteria_rules import apply_section_gates, apply_cross_section_rules
 from agentic_graph import build_agentic_llm, run_agentic_graph_pipeline
 
 
@@ -39,15 +34,62 @@ SECTION_QUERIES = {
     "X": "alternative diagnosis explaining the acute clinical picture",
 }
 
+# Key under which run_pipeline records the settings a run was produced with.
+# Chosen so it cannot collide with a section name (config.SECTION_ORDER holds
+# A1, A2, A3_1, ...), since the audit log is otherwise keyed by section.
+RUN_CONFIG_KEY = "_run_config"
+
+
+def _run_config_snapshot() -> dict:
+    """Captures the settings that determine what a run produces.
+
+    Recorded in the audit log so an output file is self-describing: without it
+    there is no way to tell, months later, whether a given result came from a
+    run with the deterministic gates enabled, which model answered, or which
+    extraction mode was used -- all of which are varied between experiments.
+
+    Returns:
+        A JSON-serialisable dict of the relevant config values.
+    """
+    return {
+        "extractor_mode": config.EXTRACTOR_MODE,
+        "section_gates_enabled": dict(config.SECTION_GATES_ENABLED),
+        # Always applied, never switchable: recorded so a reader does not have
+        # to know that to interpret the run.
+        "cross_section_rules_applied": True,
+        "models": {
+            "extractor": config.LLM_MODEL_NAME,
+            "evaluator": config.EVALUATOR_LLM_MODEL_NAME,
+            "agentic_search": config.AGENTIC_LLM_MODEL_NAME,
+            "embeddings": config.EMBEDDING_MODEL_NAME,
+        },
+        "generation": {
+            "temperature": config.LLM_TEMPERATURE,
+            "num_predict": config.LLM_NUM_PREDICT,
+        },
+        "retrieval": {
+            "ehr_chunk_size": config.EHR_CHUNK_SIZE,
+            "ehr_chunk_overlap": config.EHR_CHUNK_OVERLAP,
+            "ehr_retriever_k": config.EHR_RETRIEVER_K,
+            "brighton_retriever_k": config.BRIGHTON_RETRIEVER_K,
+        },
+    }
+
 
 def run_pipeline(record_id: str, patient_ehr_path: str, brighton_pdf_path: str):
-    """
-    Returns (form, audit_log).
+    """Fills in the whole questionnaire for one clinical record.
 
-    audit_log is a dict keyed by section (A1, A2, ...) with the evidence
-    Agent 1 extracted, the Brighton context given to Agent 2, and Agent 2's
-    full reasoning text for whichever attempt succeeded. This makes a wrong
-    answer diagnosable after the fact, without re-running the pipeline.
+    Args:
+        record_id: identifier carried into the results.
+        patient_ehr_path: the .txt clinical record.
+        brighton_pdf_path: the reference guideline PDF.
+
+    Returns:
+        (form, audit_log). audit_log is keyed by section (A1, A2, ...) and
+        holds, for each, the evidence Agent 1 extracted, the guideline context
+        given to Agent 2 and Agent 2's full reasoning, so a wrong answer stays
+        diagnosable without re-running. It also carries a RUN_CONFIG_KEY entry
+        describing the settings the run was produced with.
     """
     # Embedding model and per-role LLMs: built once and reused across every
     # section, instead of being recreated on each loop iteration. Two
@@ -132,21 +174,9 @@ def run_pipeline(record_id: str, patient_ehr_path: str, brighton_pdf_path: str):
                 )
                 print(f"[{section_key}] Agent 2 done in {time.time() - t0:.1f}s", flush=True)
 
-                # Deterministic keyword gate (see config.SECTION_KEYWORD_GATES),
-                # shared with agentic_graph.py via criteria_rules.py.
-                section_result, reasoning_text = apply_keyword_gate(
-                    section_key, section_result, evidence, reasoning_text
-                )
-                # Section-F-only details gate (see criteria_rules.apply_details_gate):
-                # derives F's Yes/No mechanically from the model's own explicit
-                # DETAILS_PRESENT judgment, instead of trusting its own Yes/No
-                # mapping -- the step where it was observed to self-contradict.
-                section_result, reasoning_text = apply_details_gate(
-                    section_key, section_result, reasoning_text
-                )
-                # B2's "Absent pulses" only (see criteria_rules.apply_absent_pulses_gate):
-                # drops that one option if the evidence has no pulse-exam keyword.
-                section_result, reasoning_text = apply_absent_pulses_gate(
+                # Per-section deterministic gates, individually switchable in
+                # config.SECTION_GATES_ENABLED and shared with agentic_graph.py.
+                section_result, reasoning_text = apply_section_gates(
                     section_key, section_result, evidence, reasoning_text
                 )
 
@@ -169,6 +199,9 @@ def run_pipeline(record_id: str, patient_ehr_path: str, brighton_pdf_path: str):
     # once here regardless of which EXTRACTOR_MODE produced form_data --
     # shared with agentic_graph.py via criteria_rules.py.
     form_data = apply_cross_section_rules(form_data, audit_log)
+
+    # Added last, so it cannot be mistaken for a section by the loops above.
+    audit_log[RUN_CONFIG_KEY] = _run_config_snapshot()
 
     form = DVT_CriteriaForm(**form_data)
     return form, audit_log

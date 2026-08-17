@@ -17,12 +17,11 @@ evidence, not which sections get evaluated or in what order.
 Graph shape:
     select_next -> {search_record, finalize} -> answer_criterion -> select_next (loop)
 
-The deterministic keyword gate (criteria_rules.apply_keyword_gate) is
-applied inside answer_criterion, exactly like every other mode. Cross-section
-dependency rules (criteria_rules.apply_cross_section_rules) are NOT applied
-inside this module -- they run once, uniformly for every EXTRACTOR_MODE,
-in pipeline.run_pipeline after this graph returns. That keeps a single
-source of truth for both safety nets across all execution modes.
+The per-section gates (criteria_rules.apply_section_gates) are applied inside
+answer_criterion, exactly as in every other mode. Cross-section dependency
+rules are NOT applied here: they run once in pipeline.run_pipeline after this
+graph returns, so both safety nets have a single source of truth across all
+execution modes.
 
 Model note: base Llama 3 does not support Ollama's tool-calling API (binding a
 tool to it returns HTTP 400, "model does not support tools"); only Llama 3.1+
@@ -42,7 +41,7 @@ from langchain_ollama import ChatOllama
 import config
 from models import SECTION_MODELS
 from agents import extract_evidence_agentic, evaluate_section
-from criteria_rules import apply_keyword_gate, apply_details_gate, apply_absent_pulses_gate
+from criteria_rules import apply_section_gates
 
 
 def build_agentic_llm() -> ChatOllama:
@@ -210,15 +209,9 @@ def _make_answer_node(llm, brighton_kb, section_queries: dict):
                 llm, section_model, evidence, brighton_context, extra_instructions
             )
 
-            # The same three gates pipeline.py applies, in the same order:
-            # criteria_rules.py is the single source of truth for all modes.
-            section_result, reasoning_text = apply_keyword_gate(
-                section_key, section_result, evidence, reasoning_text
-            )
-            section_result, reasoning_text = apply_details_gate(
-                section_key, section_result, reasoning_text
-            )
-            section_result, reasoning_text = apply_absent_pulses_gate(
+            # The same per-section gates pipeline.py applies: criteria_rules.py
+            # is the single source of truth for every mode.
+            section_result, reasoning_text = apply_section_gates(
                 section_key, section_result, evidence, reasoning_text
             )
 

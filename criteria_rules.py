@@ -194,6 +194,40 @@ def apply_absent_pulses_gate(section_key: str, section_result, evidence: str, re
     return section_result, reasoning_text
 
 
+def apply_section_gates(section_key: str, section_result, evidence: str, reasoning_text: str):
+    """Applies every enabled per-section gate, in order.
+
+    Single entry point used by all execution modes, so a section's answer goes
+    through the same post-processing whichever way the evidence was gathered.
+    Each gate is skipped when switched off in config.SECTION_GATES_ENABLED,
+    which is what makes an ablation a config change rather than a code change.
+
+    Args:
+        section_key: section identifier, e.g. "B2".
+        section_result: the section's Pydantic model instance.
+        evidence: the text Agent 1 extracted for this section.
+        reasoning_text: Agent 2's full response.
+
+    Returns:
+        (section_result, reasoning_text) after the enabled gates. With all of
+        them disabled this is the identity function, i.e. the model's raw
+        answer is kept.
+    """
+    if config.SECTION_GATES_ENABLED.get("keyword", True):
+        section_result, reasoning_text = apply_keyword_gate(
+            section_key, section_result, evidence, reasoning_text
+        )
+    if config.SECTION_GATES_ENABLED.get("details", True):
+        section_result, reasoning_text = apply_details_gate(
+            section_key, section_result, reasoning_text
+        )
+    if config.SECTION_GATES_ENABLED.get("absent_pulses", True):
+        section_result, reasoning_text = apply_absent_pulses_gate(
+            section_key, section_result, evidence, reasoning_text
+        )
+    return section_result, reasoning_text
+
+
 def apply_cross_section_rules(form_data: dict, audit_log: dict) -> dict:
     """Enforces the questionnaire's structural dependencies between sections.
 

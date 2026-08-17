@@ -69,6 +69,29 @@ SECTION_ORDER = [
     "C", "F", "X",
 ]
 
+# --- Per-section deterministic gates: on/off switches ---
+# Ablation switches for the post-processing applied to each section's answer
+# (see criteria_rules.apply_section_gates). Turning one off means the model's
+# raw answer is kept as-is for the sections that gate covers, which is what
+# makes it possible to measure how much of the pipeline's accuracy comes from
+# the model itself and how much from these safety nets -- worth re-measuring
+# whenever the model changes, since they exist to compensate for specific
+# failure modes that a more capable model may not have.
+#
+# NOT included here on purpose: CROSS_SECTION_RULES below. Those encode the
+# questionnaire's own structure (if A3.1 says no imaging was done, A3.2 cannot
+# list any study), not a workaround for a model weakness, so they hold no
+# matter which model answers and are always applied.
+SECTION_GATES_ENABLED = {
+    # Reverts a positive answer when the evidence never names the procedure
+    # (A1, A2, X -- see SECTION_KEYWORD_GATES below).
+    "keyword": True,
+    # Derives section F's Yes/No from the model's own DETAILS_PRESENT line.
+    "details": True,
+    # Drops B2's "Absent pulses" when no pulse examination is in the evidence.
+    "absent_pulses": True,
+}
+
 # --- Deterministic keyword gates (safety net for specific procedures) ---
 # For criteria asking about ONE specific method (autopsy, surgery), the LLM
 # can hallucinate a positive answer even when the method is never mentioned.

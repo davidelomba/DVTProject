@@ -19,6 +19,13 @@ from langchain_core.prompts import ChatPromptTemplate
 from langchain_ollama import ChatOllama
 import config
 
+# The single spelling of "Agent 1 found nothing", shared by the prompts that
+# ask for it and by the code paths that produce it without calling the model.
+# Kept as one constant so the two cannot drift apart: downstream code and any
+# later analysis of the audit logs both need one string to look for, not
+# several near-synonyms.
+NO_EVIDENCE = "NO RELEVANT EVIDENCE FOUND."
+
 
 def build_llm(model_name: str = None, temperature: float = None,
               num_predict: int = None) -> ChatOllama:
@@ -55,7 +62,7 @@ def build_llm(model_name: str = None, temperature: float = None,
 # Agent 1: Extractor
 # ---------------------------------------------------------------------------
 
-EXTRACTOR_SYSTEM_PROMPT = """You are a clinical extractor. Copy exact sentences/fragments
+EXTRACTOR_SYSTEM_PROMPT = f"""You are a clinical extractor. Copy exact sentences/fragments
 from the clinical record that are relevant to the requested criterion. You are a copier,
 not a commentator: never explain, label, translate, or justify what you copy.
 
@@ -69,7 +76,7 @@ RULES:
    no sentence explaining why it's relevant, no repeating the criterion text, and no
    added labels or interpretation (e.g. never call an ultrasound "post-mortem" or
    "autopsy" unless the record itself says so).
-4. If nothing is relevant, output exactly: "NO RELEVANT EVIDENCE FOUND."
+4. If nothing is relevant, output exactly: "{NO_EVIDENCE}"
 
 CORRECT: Eseguito ecocolordoppler venoso degli arti inferiori: trombosi venosa a carico della vena poplitea sinistra.
 INCORRECT: Here is the extracted relevant fragment: "Eseguito ecocolordoppler venoso..." (Note: this is relevant because it describes an imaging finding related to the criterion.)
@@ -90,7 +97,7 @@ def extract_evidence(llm: ChatOllama, ehr_vectorstore, criterion_query: str) -> 
         criterion_query: what to look for, from pipeline.SECTION_QUERIES.
 
     Returns:
-        The extracted fragments, or a "no relevant fragment" message.
+        The extracted fragments, or NO_EVIDENCE if retrieval came back empty.
     """
     # Fixed k, unlike extract_evidence_agentic: the model makes no retrieval
     # decisions in this mode.
@@ -98,9 +105,10 @@ def extract_evidence(llm: ChatOllama, ehr_vectorstore, criterion_query: str) -> 
     docs = retriever.invoke(criterion_query)
     context = "\n---\n".join(d.page_content for d in docs)
 
-    # Nothing retrieved: skip the LLM call entirely.
+    # Nothing retrieved: skip the LLM call entirely and report the same
+    # "no evidence" string the model itself would have been asked to produce.
     if not context.strip():
-        return "No relevant fragment found in the clinical record for this criterion."
+        return NO_EVIDENCE
 
     messages = [
         ("system", EXTRACTOR_SYSTEM_PROMPT),
@@ -139,13 +147,13 @@ def extract_evidence_full_text(llm: ChatOllama, full_ehr_text: str, criterion_qu
 #
 # TOOL USE: the base prompt assumes the record is already in the human message.
 # Here it is only reachable through search_patient_record, and without an
-# explicit instruction to call it the model answers "NO RELEVANT EVIDENCE
-# FOUND." on every section without ever searching.
+# explicit instruction to call it the model reports no evidence on every
+# section without ever searching.
 #
 # TRANSCRIPTION: the agent's final chat turn tends to paraphrase, translate or
 # summarise what the tool returned. A corrupted quote makes Agent 2 reason
 # correctly over the wrong text, so the rule is restated forcefully here.
-AGENTIC_EXTRACTOR_SYSTEM_PROMPT = EXTRACTOR_SYSTEM_PROMPT + """
+AGENTIC_EXTRACTOR_SYSTEM_PROMPT = EXTRACTOR_SYSTEM_PROMPT + f"""
 
 TOOL USE: You have access to a tool called `search_patient_record` that searches
 the patient's clinical record. The record is NOT included in this conversation
@@ -153,7 +161,7 @@ the patient's clinical record. The record is NOT included in this conversation
 at least once, using the criterion as your search query (you may call it again
 with a reformulated or narrower query if the first result doesn't seem
 relevant). Only after calling the tool and reviewing its results may you decide
-whether relevant evidence exists. Do NOT answer "NO RELEVANT EVIDENCE FOUND."
+whether relevant evidence exists. Do NOT answer "{NO_EVIDENCE}"
 without having called the tool at least once.
 
 TRANSCRIPTION RULE FOR YOUR FINAL ANSWER: once you have enough information to
@@ -201,8 +209,8 @@ def extract_evidence_agentic(
             answer, bounding runaway generation.
 
     Returns:
-        The concatenated tool results, deduplicated, or "NO RELEVANT EVIDENCE
-        FOUND." if the agent never retrieved anything.
+        The concatenated tool results, deduplicated, or NO_EVIDENCE if the
+        agent never retrieved anything.
     """
 
     # {agent_scratchpad} is where LangChain injects the running history of
@@ -251,7 +259,7 @@ def extract_evidence_agentic(
     ]
 
     if not combined:
-        return "NO RELEVANT EVIDENCE FOUND."
+        return NO_EVIDENCE
 
     return "\n---\n".join(combined)
 
