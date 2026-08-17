@@ -1,5 +1,3 @@
-Anagrafica paziente: Donna, 60 anni.  
-Provenienza: Riferita dal medico di base.  
-Diagnosi riferita: Trombosi venosa profonda dell'arto inferiore sinistro.  
-Non disponibile ulteriori documentazioni cliniche.  
-Nessun intervento chirurgico o autopsia recente.
+Segnalazione ospedaliera:
+
+Paziente donna, 60 anni, riferita dal medico di base con diagnosi di sospetta trombosi venosa profonda dell'arto inferiore sinistro. Nessun dettaglio clinico, esame obiettivo, di laboratorio o di imaging disponibile in questa sede oltre alla diagnosi riferita. Nessuna autopsia o intervento chirurgico recente.

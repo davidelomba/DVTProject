@@ -1,9 +1,26 @@
-Il paziente, 45 anni, uomo, deceduto in seguito a un politrauma subito in seguito a un incidente stradale. La patologia venosa non è stata menzionata nella storia preincidentale, con nessun sintomo di gonfiore, dolore, arrossamento o calore agli arti. Nessun esame di imaging venoso o D-dimero è stato eseguito in vita del paziente. La terapia domiciliare consisteva in antidolorifici e antiinflammatori per il trauma subito, con riscontro negativo da parte del paziente a possibili complicanze tromboemboliche.
+**Anamnesi remota**
 
-L'anamnesi remota non evidenzia fatti significativi, tranne l’assenza di eventi tromboembolici. Nel corso del decesso, è stato riscontrato un forte arrossamento e gonfiore al tronco, presumibilmente dovuto a emorragia interna massiva, non correlata a fenomeni tromboembolici venosi. Gli esami del sistema venoso profondo agli arti, condotti in corso di autopsia, sono risultati negativi, non rilevando alcuna evidenza di trombosi venosa profonda.
+Il paziente, 45 anni, uomo, è deceduto in seguito a un incidente stradale avvenuto circa due ore prima dell'arrivo all'ospedale. Non sono state riportate anamnesi specifiche di sintomi pre-incidentali come gonfiore, dolore, arrossamento o calore agli arti. L'incidente è stato causato da un urto frontalizzato che ha portato a un politrauma con lesioni multiple. Il paziente ha ricevuto primo soccorso sul luogo dell'incidente e poi trasportato in ospedale in condizioni di coma profondo.
 
-L'esame obiettivo rileva la presenza di un politrauma con diverse lesioni, con sintomi principali di emorragia interna, polmonare e cerebrale, non correlata a fenomeni tromboembolici venosi. Non è stata riscontrata la presenza di altri sintomi che potessero essere correlati a una potenziale trombosi venosa profonda, come dolori, arrossamenti, gonfiamenti o calori agli arti.
+**Anamnesi prossima**
 
-I parametri vitali alla fine della vita del paziente sono stati: pressione arteriosa 130/80 mmHg, frequenza cardiaca 80 battiti/minuti, frequenza respiratoria 16 respiro/minuti, temperatura corporea 36.9°C, saturazione di ossigeno 98% (con ossigeno in maschera). 
+L'arrivo all'ospedale è stato rapido, con il paziente in coma profondo e le condizioni vitali critiche. Non sono state riportate anamnesi mediche specifiche pre-incidentali. La valutazione iniziale ha evidenziato la presenza di multiple lesioni cutanee e ossee, ma non sono state menzionate sintomi di natura sanguigna o venosa nei giorni precedenti. Non sono stati eseguiti esami di imaging venoso o misurazioni del D-dimero durante la vita del paziente.
 
-Nessun intervento chirurgico correlato a TVP è stato eseguito. Non sono state menzionate diagnosi alternative, e la paz
+**Esame obiettivo**
+
+All'arrivo all'UO, il paziente presentava una condizione grave con: 
+- Sistole 105/65 mmHg
+- Frequenza respiratoria 22/min
+- Frequenza cardiale 120/min
+- Temperatura 37.2°C
+- Saturazione inossidante 95% su O2 40% 
+
+Il paziente era in coma profondo, con iridi bilaterali dilatate e inerte. Sul tronco e sulle membra erano evidenziati multiple lesioni ecchimotiche e contusi, ma non sono state osservate aree di gonfiore o arrossamento. Non sono state riportate anomalie cutanee suggerenti un'infiammazione o un'alterazione della circolazione venosa.
+
+**Esami di laboratorio e strumentali**
+
+Nessun esame di laboratorio o strumentale correlato a TVP è stato eseguito prima del decesso. Non sono state riportate attività di terapia domiciliare specifiche. Il paziente ha negato di avere problemi respiratori, cardiaci o cutanei in precedenza, anche se ha menzionato una piccola allergia al polline. Non sono state riportate negazioni concernenti sintomi di natura venosa come gonfiore, dolore o arrossamento agli arti.
+
+**Conclusioni**
+
+Il riscontro autoptico non ha evidenziato la presenza di trombosi venosa profonda nel sistema venoso profondo degli arti. Il decesso è stato causato da emorragia interna massiva da trauma, non correlata a fenomeni tromboembolici venosi.

@@ -1,9 +1,15 @@
-Il paziente, 57 anni, uomo, con antecedente di arteriopatia periferica nota, è stato ricondotto al pronto soccorso dopo 18 ore da inizio dolore severo al polpaccio ed edema massivo dell'arto inferiore destro, con cutanea colorazione marezzata. L'anamnesi prossima riporta il fatto che il paziente ha notato la manifestazione di questi sintomi improvvisi, con una progressione marcata del dolore e dell'edema nel corso delle ultime ore. 
+**Anamnesi remota**
 
-L'indagine fisica ha evidenziato un polso periferico (pedidio e tibiale posteriore) non palpabile all'arto inferiore destro, con una cutanea colorazione marrone scuro. L'esame ecografico dell'arto inferiore destro risultò tecnicamente limitato a causa dell'esteso edema, non consentendo un'interpretazione diagnostica soddisfacente. 
+Il paziente, 57 anni, uomo, in osservazione per dolori severe al polpaccio destro e edema massivo dell'arto inferiore destro, ha una storia personale di arteriopatia periferica ben documentata. Il paziente non ha recentemente sottoposto a interventi chirurgici o autopsie, e non è attualmente in terapia ospedaliera. Negazioni pertinenti: infezioni respiratorie recenti, febbre, tosse, vomito, diarrea, artropatia cronica. Non nega di aver avuto dolori al ginocchio destro in passato, che erano stati trattati con terapia antinfiammatoria non steroidale.
 
-Il paziente ha sottoposto a flebografia con mezzo di contrasto dell'arto inferiore destro, che ha rilevato un difetto di riempimento esteso a carico della vena iliaca e femorale destra, compatibile con una diagnosi di trombosi venosa profonda. 
+**Anamnesi prossima**
 
-L'analisi del sangue ha mostrato un D-dimero elevato, risultando 4.900 ng/mL, superiore al limite di laboratorio. 
+Il paziente si rivolge al pronto soccorso in seguito a un'insorgenza repentina di dolore severo al polpaccio destro, associato ad edema massivo dell'arto inferiore destro, con una storia remota di arteriopatia periferica nota. L'autovalutazione indica che i sintomi si sono manifestati esattamente 18 ore fa, con l'edema che è progressivamente aumentato in intensità e estensione. Il paziente non ha notato alterazioni della temperatura corporea, pruriti, o manifestazioni di dolore diverso. Non nega di aver utilizzato un termosifone per le mani negli ultimi giorni, ma nega aver praticato attività fisiche estreme o aver avuto recenti viaggi.
 
-Il paziente ha una terapia domiciliare per arteriopatia periferica con pompa per circolazione, e non ha manifestato alergie note. Nega anamnesticamente dolori toracici, emorragie, febbre e altri sintomi non correlati ai presenti.
+**Esame obiettivo**
+
+Esame: il paziente è consapevole e attento, in buona condizione generale. Tratteggio generale: statura 180 cm, peso 85 kg, indice di massa corporea 25.0 kg/m², pressione arteriosa 135/85 mmHg, frequenza cardiaca 72 battiti/minuti, respirazione 16 respirazioni/minute, temperatura corporea 37.0°C. Palpazione: polsi periferici (pedidio e tibiale posteriore) non palpabili all'arto inferiore destro, con evidente edema. Palpazione bilaterale dei polsi superiore e periferici rimane normale. Tratteggio regionale: trazione arteriosa normale, senza segni di infiammazione o dolore localizzato.
+
+**Esami di laboratorio e strumentali**
+
+Ecografia compressiva dell'arto inferiore destro risultata tecnicamente limitata per l'esteso edema, non consentendo un'interpretazione diagnostica. Valore del d-dimero: 4.900 ng/mL, superiore al limite di laboratorio. Flebografia con mezzo di contrasto dell'arto inferiore destro: risultato diagnostico di difetto di riempimento esteso a carico della vena iliaca e femorale destra, compatibile con trombosi venosa profonda.

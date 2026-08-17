@@ -1,9 +1,17 @@
-La paziente, 37 anni, è una donna in buone condizioni generali. Dal 2 giorni fa, si lamenta di un dolore in corrispondenza del polpaccio sinistro, non accompagnato da edema né arrossamento. La paziente, nega effusion articolare, gonfiori e febbre. La sua storia personale non registra interventi chirurgici recenti né autopsie. La terapia domiciliare prescritta comprende un'intravenousa antibiotica per una suppurativa amigdalite recente.
+Il paziente è una donna di 37 anni, senza storia di autopsia o intervento chirurgico recente. Da circa due giorni si lamenta di dolore localizzato nel polpaccio sinistro, senza segni evidenti di edema o arrossamento. Nelle prime ore non si è notata un aumento della temperatura alla zona dolorosa.
 
-Nel corso dell'anamnesi, la paziente menziona il consumo occasionale di antinfiammatori in caso di dolori, ma nega tabagismo, alcolismo e consumo di droghe. Ha una storia familiare positiva per diabete di tipo 2 negli anziani. Non si ritiene che essa abbia problemi alle articolazioni, né sintomi di varicella o herpes zoster.
+**Anamnesi prossima**:
+Il paziente ha iniziato a notare il dolore nel polpaccio sinistro il giorno prima della visita, che si è mantenuto costante e non ha seguito una progressione. Non ha notato nessuna intromissione fisica o trauma recente che possa averla causato. Non ha intrecciato il dolore con movimenti o con il camminare, rimanendo comunque attiva nella vita quotidiana. 
 
-L'esame del paziente rivela un leggero aumento del movimento del polpaccio sinistro, con dolore al tocco, ma senza evidenza di edema o arrossamento. Non sono state evidenziate alterazioni della circolazione sanguigna ai livelli delle caviglie e del ginocchio sinistro. 
+**Esame obiettivo**:
+Il paziente è in buone condizioni generali. Pesi e misure corporee all'interno dei limiti normali. Parametri vitali: pressione sanguigna 120/80 mmHg, frequenza cardiaca 72 battiti/minuti, respiro 18 battiti/minuti, temperatura corporea 36,8°C. In termini di sintomi, il paziente denuncia un dolore localizzato nel polpaccio sinistro, senza manifestazione di edema o arrossamento. 
 
-L'esame di laboratorio ha rilevato un D-dimero di 890 ng/mL, superiore al limite di laboratorio. L'ecografia compressiva del veno dell'arto inferiore sinistro ha mostrato vene comprimibili, ma senza evidenza di trombosi.
+**Esami di laboratorio e strumentali**:
+Il d-dimero, tracciato oggi, è risultato elevato con un valore di 890 ng/mL, superiore al limite di laboratorio. Inoltre, l'ecografia compressiva venosa dell'arto inferiore sinistro non ha evidenziato nessuna trombosi, avendo identificato solo vene comprimibili.
 
-Il paziente è dimesso con la diagnosi incerta di sospetta trombosi venosa profonda. Nessuna diagnosi alternativa è stata identificata. Consigliata è una ricognizione clinica a distanza di pochi giorni.
+**Considerazioni diagnostiche**:
+Il d-dimero elevato, associato al dolore localizzato, suggerisce una sospetta trombosi venosa profonda (TVP). Tuttavia, l'assenza di edema, arrossamento e l'esclusione trombosi mediante l'ecografia compressiva, hanno portato alla diagnosi incerta. Non sono state identificate diagnosi alternative, e la paziente è stata consigliata un controllo clinico a distanza di pochi giorni.
+
+Nel corso del periodo di osservazione, la paziente ha svolto alcune attività normali, compresa una breve passeggiata. Non ha seguito alcuna terapia domiciliare specifica fino ad oggi. Nella terapia per problemi cutanei, l'unico farmaco in uso è il corticosteroidi in forma locale per problemi di dermatite. In quanto allergologa, la paziente ha una negazione per farmaci a base di aspirina e simili, ma non ha mai avuto reazioni allergiche significative.
+
+Il paziente ha rifiutato l'ossigenoterapia e l'uso di supporti termici, preferendo mantenere un regime di movimento con una passeggiata di circa 30 minuti al giorno. Non ha mostrato segni di claustrofobia o rifiuto verso procedure diagnostiche future, anche se ha espresso la preferenza per un controllo medico in casa se possibile.
