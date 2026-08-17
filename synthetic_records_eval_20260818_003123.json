@@ -1,0 +1,115 @@
+{
+  "records_compared": 30,
+  "records_missing_prediction": [],
+  "sections": {
+    "A1": {
+      "compared": 30,
+      "missing": 0,
+      "exact_matches": 29,
+      "tp": 29,
+      "tn": 59,
+      "fp": 1,
+      "fn": 1,
+      "accuracy": 0.9666666666666667
+    },
+    "A2": {
+      "compared": 30,
+      "missing": 0,
+      "exact_matches": 26,
+      "tp": 26,
+      "tn": 56,
+      "fp": 4,
+      "fn": 4,
+      "accuracy": 0.8666666666666667
+    },
+    "A3_1": {
+      "compared": 30,
+      "missing": 0,
+      "exact_matches": 26,
+      "tp": 26,
+      "tn": 56,
+      "fp": 4,
+      "fn": 4,
+      "accuracy": 0.8666666666666667
+    },
+    "A3_2": {
+      "compared": 30,
+      "missing": 0,
+      "exact_matches": 16,
+      "tp": 15,
+      "tn": 105,
+      "fp": 24,
+      "fn": 6,
+      "accuracy": 0.5333333333333333
+    },
+    "B1_1": {
+      "compared": 30,
+      "missing": 0,
+      "exact_matches": 28,
+      "tp": 28,
+      "tn": 58,
+      "fp": 2,
+      "fn": 2,
+      "accuracy": 0.9333333333333333
+    },
+    "B1_2": {
+      "compared": 30,
+      "missing": 0,
+      "exact_matches": 25,
+      "tp": 24,
+      "tn": 30,
+      "fp": 6,
+      "fn": 0,
+      "accuracy": 0.8333333333333334
+    },
+    "B2": {
+      "compared": 30,
+      "missing": 0,
+      "exact_matches": 16,
+      "tp": 41,
+      "tn": 86,
+      "fp": 14,
+      "fn": 9,
+      "accuracy": 0.5333333333333333
+    },
+    "C": {
+      "compared": 30,
+      "missing": 0,
+      "exact_matches": 29,
+      "tp": 29,
+      "tn": 59,
+      "fp": 1,
+      "fn": 1,
+      "accuracy": 0.9666666666666667
+    },
+    "F": {
+      "compared": 30,
+      "missing": 0,
+      "exact_matches": 22,
+      "tp": 22,
+      "tn": 22,
+      "fp": 8,
+      "fn": 8,
+      "accuracy": 0.7333333333333333
+    },
+    "X": {
+      "compared": 30,
+      "missing": 0,
+      "exact_matches": 28,
+      "tp": 28,
+      "tn": 28,
+      "fp": 2,
+      "fn": 2,
+      "accuracy": 0.9333333333333333
+    }
+  },
+  "overall": {
+    "compared": 300,
+    "exact_matches": 245,
+    "tp": 268,
+    "tn": 559,
+    "fp": 66,
+    "fn": 37,
+    "accuracy": 0.8166666666666667
+  }
+}
