@@ -125,6 +125,17 @@ def load_ground_truth() -> dict:
 
 
 def compare(pairs: dict, ground_truth: dict) -> dict:
+    """Compares two runs section by section and scores each against truth.
+
+    Args:
+        pairs: record_id -> (run A entry, run B entry), as built by pair_up.
+        ground_truth: record_id -> reference answers, used only for the two
+            accuracy columns.
+
+    Returns:
+        A report dict with per-section stability, the list of sections that
+        changed, and each run's own accuracy for comparison.
+    """
     section_names = list(SECTION_MODELS.keys())
     report = {
         "records_compared": len(pairs),
@@ -184,6 +195,7 @@ def compare(pairs: dict, ground_truth: dict) -> dict:
 
 
 def print_report(report: dict):
+    """Prints the report from compare(), ending with the noise-floor figure."""
     print(f"\nRecords compared across both runs: {report['records_compared']}")
 
     header = f"{'Section':<8} {'Stability':>10} {'Compared':>9} {'Changed':>8} {'AccRunA':>8} {'AccRunB':>8}"
@@ -224,6 +236,7 @@ def print_report(report: dict):
 
 
 def main():
+    """Compares two runs and saves a stability report."""
     parser = argparse.ArgumentParser(
         description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter
     )

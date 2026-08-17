@@ -1,121 +1,77 @@
 """
-Data-augmentation script: generates synthetic Italian clinical records, paired
+Data-augmentation script: generates synthetic Italian clinical records paired
 with matching ground-truth JSON (same shape as models.DVT_CriteriaForm), so the
-pipeline's prompts/hints (config.SECTION_HINTS, EXTRACTOR_SYSTEM_PROMPT, the
-deterministic gates in criteria_rules.py) can be validated on more than the
-single real patient_001.txt they were originally tuned against.
+pipeline can be validated on more than the single real record it was originally
+tuned against.
 
-TWO-PHASE DESIGN -- NOT a single LLM call:
+TWO-PHASE DESIGN -- not a single LLM call:
   1. Every scenario's clinical facts AND its correct answer for all 10 Brighton
-     sections are hardcoded below in plain Python, using models.py's exact
-     Literal option strings. Ground truth is authored by construction, not
-     guessed by an LLM -- otherwise it would not be trustworthy as a reference.
-  2. A separate LLM call turns those facts into a natural, varied Italian
-     clinical narrative. The prompt explicitly forbids inventing findings
-     beyond the given facts, so the generated text can't silently contradict
-     its own ground truth.
+     sections are written by hand below, using models.py's exact Literal
+     strings. The ground truth is authored by construction, never guessed by a
+     model, which is what makes it usable as a reference.
+  2. A separate LLM call turns those facts into Italian clinical prose. Its
+     prompt forbids inventing findings beyond the ones supplied, so the text
+     cannot silently contradict its own ground truth.
 
-MODEL CHOICE: uses a model NOT used by ANY pipeline role (WRITER_MODEL_NAME
-below, a plain literal -- deliberately not read from config.py), at
-WRITER_TEMPERATURE=0.8 instead of the pipeline's deterministic 0.0. Reasons,
-discussed with the user on 2026-08-06:
-  - Reusing any pipeline model at temperature=0.0 would make every "style
-    variant" of a scenario nearly identical (deterministic generation),
-    defeating the point of testing phrasing robustness.
-  - Writing test records with the SAME model that later extracts evidence
-    from them risks a same-distribution bias -- the extractor may parse that
-    model's own phrasing habits unrealistically well compared to genuine
-    human-written records. This isn't limited to config.LLM_MODEL_NAME (the
-    full_text/rag extractor): config.AGENTIC_LLM_MODEL_NAME (the
-    agentic_graph search step) was considered and rejected for the same
-    reason -- it would bias validation specifically for that mode. Using a
-    model absent from every role in config.py keeps the synthetic set
-    neutral regardless of which EXTRACTOR_MODE is being validated.
-  - qwen2.5:7b-instruct was picked as a solid, officially-maintained Ollama
-    tag (no risk of the template mismatch that broke cniongolo/biomistral)
-    with strong multilingual/Italian support. Requires: ollama pull
-    qwen2.5:7b-instruct.
+MODEL CHOICE: the writer uses a model that no pipeline role uses
+(WRITER_MODEL_NAME, deliberately a literal rather than a config import), at a
+non-zero temperature. Two reasons:
+  - At temperature 0 every regeneration of a scenario would be identical,
+    leaving no lexical variation to test robustness against.
+  - Writing the test records with a model the pipeline also uses risks a
+    same-distribution bias: the extractor would parse that model's phrasing
+    habits unrealistically well. This applies to every role, including the
+    agentic search step, so a model outside config.py keeps the set neutral
+    whichever EXTRACTOR_MODE is being validated.
+  qwen2.5:7b-instruct is an officially-maintained Ollama tag with solid
+  Italian. Requires: ollama pull qwen2.5:7b-instruct.
 
-NOTE ON LANGUAGE: scenario facts/descriptions and prompts are in ITALIAN
-here, matching the language of the clinical records themselves (per the
-user's request on 2026-08-06) -- keeps facts and generated output in the
-same language, avoiding an extra translation step inside the writer prompt.
-Everything else (docstrings, code, comments) stays in English.
+LANGUAGE: scenario facts, descriptions and writer prompts are in Italian, to
+match the records themselves and avoid a translation step inside the writer
+prompt. Code, comments and docstrings stay in English.
 
-KNOWN INTERPRETIVE ASSUMPTIONS -- worth checking against the Brighton paper
-before treating this as ground truth for thesis results, not just pipeline
-smoke-testing:
-  - B1_1/B1_2 reflect what was REPORTED/suspected as a DVT syndrome, regardless
-    of whether A3_1/X later confirm or rule it out (mirrors how the existing
-    SECTION_HINTS are worded elsewhere in the project).
-  - F's Yes/No follows criteria_rules.apply_details_gate's own convention:
-    "No" covers both "reported WITH clinical details" and "not reported at
-    all"; "Yes" is reserved for "reported WITHOUT details".
-  - B2 has no generic "swelling" option for arms (only "Leg swelling or
-    pitting oedema", worded lower-extremity-specific) -- the upper-extremity
-    scenario below (03) deliberately does NOT count arm swelling toward any
-    B2 option, rather than silently stretching the schema's wording.
+INTERPRETIVE ASSUMPTIONS worth re-checking against the Brighton paper before
+these numbers are used as thesis results rather than smoke tests:
+  - B1_1/B1_2 record what was REPORTED or suspected as a DVT syndrome, whether
+    or not A3_1/X later confirm or rule it out.
+  - F follows criteria_rules.apply_details_gate's convention: "No" covers both
+    "reported WITH details" and "not reported at all"; "Yes" is reserved for
+    "reported WITHOUT details".
+  - B2 has no generic swelling option for arms, only the lower-extremity
+    "Leg swelling or pitting oedema". Upper-extremity scenarios therefore do
+    not count arm swelling toward any B2 option, rather than stretching the
+    schema's wording.
 
-COVERAGE: every Literal option in every one of the 10 sections is hit by at
-least one scenario below (validated programmatically -- see conversation on
-2026-08-06). Scenarios 11-18 were added to close gaps found in the initial
-10-scenario set (A1's negative-but-done branch, A2's non-thrombectomy branch,
-A3_2's Contrast venography/Other, C's within-normal-range branch, B1_1's
-clearly-negative branch, F's Yes branch, B2's Absent-pulses true positive).
-Scenarios 19-24 were added on 2026-08-07 to thicken branches that were still
-down to a single example each -- notably autopsy (A1's two positive branches
-only had one scenario apiece) and upper-extremity DVT (B1_2's "Upper
-extremity DVT" only had SYN_03, always paired with CT venography) -- and to
-decouple two branches that had been confounded in a single scenario each
-(A3_1's "didn't confirm" and X's "alternative diagnosis found" both used to
-live only in SYN_02, together). Scenarios 25-29 (same day) covered the
-remaining single-example branches: A2's "Thrombectomy", A3_2's "CT or MR
-venography"/"Contrast venography"/"Other", B2's "Absent pulses in legs or
-arms", and F's "Yes" -- every Literal option across all 10 sections now has
-at least 2 scenarios (validated programmatically). Scenario 30 was added on
-2026-08-16 for a different reason: not to cover a missing option, but to break
-a spurious CORRELATION between two sections that per-option coverage checks
-cannot detect (elevated D-dimer always co-occurring with confirmed DVT) -- see
-that scenario's own comment, and note the same audit could usefully be applied
-to other section pairs.
+COVERAGE: every Literal option of all 10 sections is exercised by at least two
+scenarios, verified programmatically. One scenario (SYN_30) exists for a
+different reason: it breaks a CORRELATION rather than covering an option --
+before it, an elevated D-dimer co-occurred with a confirmed DVT in every
+record, which per-option coverage checks cannot detect and which lets a model
+score well on section C without reading the value. Other section pairs could
+usefully be audited the same way.
 
-STYLE: only one narrative style (STYLE_VARIANTS' "v2") is generated per
-scenario -- the earlier telegraphic/abbreviation-heavy "v1" style was dropped
-per the user's request on 2026-08-07 (kept producing records terse enough to
-lose clinical nuance the ground truth depended on).
+STYLE: one narrative style per scenario, modelled on the structure of the real
+record supplied by clinicians (inline section labels, abbreviated vitals, home
+medications, pertinent negatives, continuous prose). See STYLE_VARIANTS for
+what it prescribes and what it deliberately leaves free.
 
-STYLE FIDELITY: STYLE_VARIANTS' directive is modelled on the single real
-record supplied by clinicians (data/patient_001.txt) -- inline section labels,
-abbreviated vitals, home medications, pertinent negatives, one continuous
-block, ~1450 characters. See that constant's comment for the measured
-divergences this is meant to close. Scenario dicts may also carry a
-"writer_notes" list: constraints ABOUT the writing (never content), kept out
-of "facts" because the writer used to copy such parentheticals verbatim into
-the record.
+RECORD LENGTH -- KNOWN LIMITATION: at roughly 1450 characters a record is about
+ONE config.EHR_CHUNK_SIZE chunk, while config.EHR_RETRIEVER_K asks for 5, so
+retrieval returns the whole record every time. Measured over a full run, the
+evidence Agent 1 passed to Agent 2 had a median length of 1.00x the source
+text. "rag" and "agentic_graph" therefore produce the same evaluator input as
+"full_text", and the three modes cannot be compared meaningfully on this
+dataset. Padding the records was tried and reverted: real clinical records are
+expected from collaborators and the comparison belongs on those.
 
-RECORD LENGTH -- KNOWN LIMITATION, deliberately accepted for now: records are
-short (~1450 characters even after the style change above), i.e. roughly ONE
-config.EHR_CHUNK_SIZE chunk, while
-config.EHR_RETRIEVER_K asks for 5. Retrieval therefore returns the whole
-record every time -- measured across a full 29-record run, the evidence Agent
-1 passed to Agent 2 had a median length of 1.00x the source text (min 1.00,
-max 1.16). That means "rag" and "agentic_graph" currently produce the same
-evaluator input as "full_text", so the three config.EXTRACTOR_MODEs cannot be
-compared meaningfully on this dataset. A padding mechanism (routine
-DVT-irrelevant background, sized to span several chunks) was implemented and
-then reverted on 2026-08-16: real clinical records are expected from
-collaborators, and Davide prefers to run the mode comparison on those rather
-than on synthetically-lengthened text. Revisit when those arrive.
-
-FIDELITY CHECK: every generated record is verified before being saved (see
-check_record and generate_checked_record) and re-rolled if it fails, because
-the writer has repeatedly been caught dropping or altering supplied facts.
-The same checks can be run over an already-generated corpus, without calling
-any LLM, via:  python generate_synthetic_records.py --check
+FIDELITY CHECK: each record is verified before being saved and regenerated if
+it fails, because the writer has repeatedly been caught dropping or altering
+supplied facts. See check_record. The same checks run over an existing corpus,
+without calling any LLM:  python generate_synthetic_records.py --check
 
 Usage: python generate_synthetic_records.py
 Output: data/synthetic_records/<scenario_id>_<style_id>.txt (the record) and
-        data/synthetic_records/<scenario_id>_<style_id>_ground_truth.json (answers).
+        data/synthetic_records/<scenario_id>_<style_id>_ground_truth.json.
 """
 
 import argparse
@@ -132,15 +88,14 @@ from agents import build_llm
 # use, in either mode, now or after future config changes.
 WRITER_MODEL_NAME = "qwen2.5:7b-instruct"
 WRITER_TEMPERATURE = 0.8
-# Overrides config.LLM_NUM_PREDICT (512 tokens, sized for the pipeline's short
-# structured answers) for the writer only -- see agents.build_llm's num_predict
-# parameter for the incident this prevents. 512 tokens is about 1750 Italian
-# characters, i.e. just under the length this generator asks for, so the cap
-# was cutting records off mid-sentence instead of visibly failing.
+# Overrides config.LLM_NUM_PREDICT for the writer only. That default (512
+# tokens, sized for the pipeline's short structured answers) is about 1750
+# Italian characters -- just under the length asked for here, so it silently
+# cuts records off mid-sentence rather than failing visibly.
 WRITER_NUM_PREDICT = 3072
-# Regeneration attempts per record when check_record() rejects the output.
-# The writer runs at temperature 0.8, so a retry genuinely resamples rather
-# than reproducing the same defective text.
+# Regeneration attempts per record when check_record() rejects the output. The
+# writer's non-zero temperature makes each retry a genuine resample rather than
+# a repeat of the same defective text.
 WRITER_MAX_ATTEMPTS = 3
 
 OUTPUT_DIR = Path(__file__).parent / "data" / "synthetic_records"
@@ -171,26 +126,23 @@ REGOLE FERREE:
    esami o procedure di cui i fatti parlano.
 """
 
-# Informed by -- but deliberately NOT a copy of -- the one real record
-# available (data/patient_001.txt, supplied by clinicians). A 2026-08-16
-# comparison found the generated records diverged from it on almost every
-# stylistic axis: ~900 characters against the real record's ~1450, no section
-# labels (6/29), no vital signs (4/29), no pertinent negatives (6/29), no home
-# medication list (0/29), virtually no incidental quantitative detail (1/29).
-# Closing that gap matters for external validity: measuring the pipeline only
-# on clean, signal-dense text overstates how it would do on real records.
+# Informed by, but not a copy of, the one real record available
+# (data/patient_001.txt). Generated records diverge from it on nearly every
+# stylistic axis unless told otherwise: much shorter, no section labels, no
+# vital signs, no pertinent negatives, no home medications, almost no
+# incidental quantitative detail. Closing that gap matters for external
+# validity, since measuring the pipeline on clean, signal-dense text overstates
+# how it would do on real records.
 #
-# WHY THIS IS PHRASED GENERICALLY: the directive asks for the STRUCTURAL
-# features that Italian hospital records share as a genre (labelled sections,
-# abbreviated vitals, home medications, pertinent negatives, continuous prose),
-# and deliberately avoids dictating the exact section labels, drug names or
-# negation wording. An earlier draft quoted patient_001 almost verbatim -- but
-# a writer LLM copies the examples it is given, so prescribing them would have
-# produced 27 near-identical variants of a single real document: homogeneous
-# rather than realistic, and overfitted to the idiosyncrasies of one clinician
-# at one department (n=1). Leaving the surface wording free lets the writer's
-# temperature 0.8 supply the variation that the removed second style variant
-# used to provide, without doubling the number of records to generate and run.
+# The directive is phrased generically ON PURPOSE. It asks for the structural
+# features Italian hospital records share as a genre -- labelled sections,
+# abbreviated vitals, home medications, pertinent negatives, continuous prose
+# -- but never dictates the exact labels, drug names or negation wording. A
+# writer LLM copies the examples it is given, so prescribing those would yield
+# near-identical variants of one real document: homogeneous rather than
+# realistic, and overfitted to one clinician at one department. Leaving the
+# surface wording free lets the writer's temperature supply the variation,
+# without generating a second record per scenario.
 STYLE_VARIANTS = [
     {
         "id": "v2",
@@ -234,11 +186,17 @@ STYLE_VARIANTS = [
 
 
 def directive_for(scenario: dict, style: dict) -> str:
-    """Picks the style directive appropriate to this scenario.
+    """Picks the style directive appropriate to a scenario.
 
-    See STYLE_VARIANTS' "directive_no_details" comment: F="Yes" scenarios are
-    defined by the ABSENCE of clinical detail, so they cannot be written in the
-    detail-rich house style without invalidating their own ground truth.
+    Args:
+        scenario: an entry of SCENARIOS.
+        style: an entry of STYLE_VARIANTS.
+
+    Returns:
+        The detail-rich house directive, or the detail-free one for scenarios
+        whose ground truth is F="Yes". Those are defined by the ABSENCE of
+        clinical detail, so a single vital sign or lab value written into them
+        would flip F's correct answer.
     """
     if scenario["ground_truth"]["f"]["answer"] == "Yes":
         return style["directive_no_details"]
@@ -970,30 +928,24 @@ SCENARIOS = [
         "id": "SYN_30_confirmed_dvt_normal_ddimer",
         "description": (
             "TVP confermata a ecocolordoppler CON D-dimero nella norma -- rompe la "
-            "correlazione spuria D-dimero elevato <-> TVP confermata presente in tutti "
-            "gli altri 29 scenari (vedi il commento sotto)"
+            "correlazione spuria D-dimero elevato <-> TVP confermata (vedi il commento)"
         ),
-        # Added 2026-08-16 on the basis of the Brighton paper itself
-        # (data/reference/1-s2.0-S0264410X22010854-main.pdf), which states
-        # explicitly that laboratory results "can be normal in the presence of
-        # thrombotic or thromboembolic events or abnormal in the absence of
-        # thrombosis or thromboembolism". A coverage audit of the other 29
-        # scenarios found that a normal D-dimer ONLY ever appeared in records
-        # where DVT was ruled out (SYN_15, SYN_21), and that no scenario at all
-        # paired a confirmed DVT with a normal D-dimer. The corpus therefore
-        # taught a correlation the source guideline calls false, and a model
-        # exploiting that shortcut would have scored better than it deserved.
-        # This scenario breaks it: imaging is unambiguously positive while C is
-        # unambiguously normal, so section C cannot be inferred from the DVT
-        # outcome (or vice versa).
+        # Exists to break a correlation, not to cover an option. In every other
+        # scenario a normal D-dimer appears only where DVT was ruled out, so
+        # section C can be answered correctly from the DVT outcome alone,
+        # without reading the value -- a shortcut this model is known to take
+        # elsewhere. Here imaging is unambiguously positive while C is
+        # unambiguously normal, so neither section can be inferred from the
+        # other.
         #
-        # NOTE ON HOW BRIGHTON IS USED HERE: as a clinical authority for
-        # SCENARIO DESIGN only. The paper is deliberately NOT used to word the
-        # generated records -- pipeline.py already feeds Agent 2 retrieved
-        # context from this same PDF as reference terminology, so phrasing the
-        # test records with it would make the evaluator match text against its
-        # own glossary (circular validation) and overstate accuracy relative to
-        # real clinician-written records.
+        # Clinically sound per the Brighton paper, which states that laboratory
+        # results "can be normal in the presence of thrombotic or
+        # thromboembolic events or abnormal in the absence of thrombosis".
+        # Note the paper is used as a clinical authority for scenario DESIGN
+        # only, never to word the records: pipeline.py already feeds Agent 2
+        # retrieved context from that same PDF, so writing the test records
+        # with its vocabulary would have the evaluator match text against its
+        # own glossary and overstate accuracy on real records.
         "facts": [
             "Paziente uomo, 61 anni",
             "Nessuna autopsia o intervento chirurgico recente",
@@ -1022,20 +974,25 @@ SCENARIOS = [
 
 
 def facts_to_prompt(scenario: dict, style: dict) -> str:
+    """Assembles the human message sent to the writer for one record.
+
+    Args:
+        scenario: an entry of SCENARIOS.
+        style: an entry of STYLE_VARIANTS.
+
+    Returns:
+        The prompt: style directive, clinical facts, and the scenario's
+        writer_notes if it has any.
+    """
     facts_block = "\n".join(f"- {fact}" for fact in scenario["facts"])
     prompt = (
         f"Direttiva di stile: {directive_for(scenario, style)}\n\n"
         f"Fatti clinici da includere (tutti, nessuno escluso, nessuno aggiunto):\n{facts_block}"
     )
-    # Constraints ABOUT the writing, kept strictly apart from the clinical
-    # facts and marked as not-to-be-written. They used to live inside the
-    # facts as parentheticals ("(fattore di rischio, non menzionare altre
-    # diagnosi)"), and the writer copied them verbatim into the record: three
-    # generated records ended up containing sentences like "Non sono state
-    # menzionate diagnosi alternative" or "non vengono considerati diagnosi a
-    # se' stanti". A real record never comments on the questionnaire like
-    # that, and worse, such a sentence hands the evaluator section X's answer
-    # instead of requiring it to be inferred from the clinical picture.
+    # writer_notes are constraints ABOUT the writing, kept in their own block
+    # and marked as not-to-be-written. Inside "facts" they get copied verbatim
+    # into the record, which both breaks the illusion of a clinical document
+    # and can hand the evaluator an answer it should have had to infer.
     notes = scenario.get("writer_notes")
     if notes:
         notes_block = "\n".join(f"- {n}" for n in notes)
@@ -1047,6 +1004,17 @@ def facts_to_prompt(scenario: dict, style: dict) -> str:
 
 
 def build_ground_truth(record_id: str, scenario: dict) -> dict:
+    """Builds the reference answers saved alongside a generated record.
+
+    Args:
+        record_id: "<scenario id>_<style id>", the key the evaluation uses to
+            pair a prediction with its reference.
+        scenario: an entry of SCENARIOS.
+
+    Returns:
+        The scenario's hand-authored answers, with record_id added. No model is
+        involved at any point, which is what makes this usable as a reference.
+    """
     gt = {"record_id": record_id}
     gt.update(scenario["ground_truth"])
     return gt
@@ -1056,26 +1024,23 @@ def build_ground_truth(record_id: str, scenario: dict) -> dict:
 # Fidelity check
 # ---------------------------------------------------------------------------
 # The writer does not reliably obey the "include every fact, invent nothing"
-# rules: individual records have been caught dropping a diagnosis name, flipping
-# an affected limb, genericising a named imaging modality, and (2026-08-16, on
-# a corpus-wide scale) losing whole trailing sections to a token cap. Every one
-# of those defects reached the pipeline unnoticed and was later mistaken for a
-# pipeline error, because nothing between the writer and the evaluation looked
-# at the generated text at all. These checks close that gap.
+# rules: records have been caught dropping a diagnosis name, flipping an
+# affected limb, genericising a named imaging modality, and losing whole
+# trailing sections to a token cap. Such defects otherwise reach the pipeline
+# unnoticed and look like pipeline errors, since nothing between the writer and
+# the evaluation ever inspects the generated text.
 #
-# SCOPE -- what this can and cannot catch. It verifies that decisive facts are
-# textually PRESENT and that the record is structurally complete. It cannot
-# judge whether they are used correctly: SYN_30's generated record contained
-# "380 ng/mL" but described it as "risultato positivo" while also editorialising
-# about the discordance with the ultrasound, which is a semantic violation this
-# check passes. Catching that class would need a second LLM as a judge --
-# deliberately not done here, to keep the check deterministic and fast.
+# SCOPE: these checks verify that decisive facts are textually PRESENT and that
+# the record is structurally complete. They cannot judge whether a fact is used
+# correctly -- a record stating a normal lab value and then calling it positive
+# passes. Catching that would need a second LLM as a judge, which is left out
+# to keep the check deterministic and fast.
 
-# Distinctive, hard-to-paraphrase markers extracted from a scenario's facts.
-# Names of specific procedures/tests are used rather than whole sentences: the
-# writer legitimately rewords sentences, but it cannot rename "flebografia" and
-# still be reporting the same study. Each entry maps a term as it appears in
-# the facts to the alternatives that count as the same thing in the record.
+# Distinctive, hard-to-paraphrase markers, keyed by the term as it appears in a
+# scenario's facts and mapped to the spellings that count as the same thing in
+# a record. Names of tests and procedures are used rather than whole sentences:
+# the writer legitimately rewords sentences, but it cannot rename "flebografia"
+# and still be reporting the same study.
 _FACT_MARKERS = {
     "d-dimero": ["d-dimero", "d dimero", "ddimero"],
     "ecocolordoppler": ["ecocolordoppler", "eco-color-doppler", "ecocolor doppler", "ecodoppler"],
@@ -1092,45 +1057,40 @@ _FACT_MARKERS = {
 
 
 def _expected_markers(scenario: dict) -> list[tuple[str, list[str]]]:
-    """(label, accepted_variants) for every decisive marker this scenario's
-    facts contain. Numeric values (lab results) are added verbatim: a dropped
-    or altered measurement is exactly the defect that made section C wrong on
-    three records, and a number is the one token the writer cannot paraphrase.
+    """Works out which facts a generated record must mention.
 
-    A scenario can override the auto-derived list with an explicit
-    "must_contain" key when the heuristic is not the right one for it.
+    Args:
+        scenario: an entry of SCENARIOS. A "must_contain" key overrides the
+            heuristic below with an explicit list of required terms.
+
+    Returns:
+        (label, accepted_variants) pairs. Lab values are required verbatim as
+        well: a number is the one token the writer cannot paraphrase, and a
+        dropped measurement silently changes the correct answer for section C.
     """
     if "must_contain" in scenario:
         return [(term, [term]) for term in scenario["must_contain"]]
 
     markers = []
     for term, variants in _FACT_MARKERS.items():
-        # Only require a marker the facts actually ASSERT. A NEGATIVE fact
-        # ("Nessun esame di imaging venoso ne' D-dimero eseguiti") is about
-        # something that did NOT happen, and a real record often just stays
-        # silent about it rather than spelling out its absence -- so demanding
-        # the word would reject records that are perfectly faithful to the
-        # scenario. The sections concerned are covered anyway: an absent test
-        # leads the evaluator to the "not done / unknown" option, which is
-        # what the ground truth says in these cases, and A1/A2/X additionally
-        # have keyword gates in criteria_rules.py for the hallucinated-positive
-        # direction.
+        # Only facts that ASSERT something are required. A negative fact
+        # ("Nessun D-dimero eseguito") describes something that did not
+        # happen, and a real record often simply stays silent about it, so
+        # demanding the word would reject faithful records. Nothing is lost:
+        # an absent test leads the evaluator to the "not done / unknown"
+        # option, which is what the ground truth says in those cases.
         #
-        # Each fact is tested on its own rather than on the concatenation of
-        # all of them: facts carry no trailing punctuation, so on a joined
-        # string the negation pattern below reached across a fact boundary,
-        # and a "Nessun intervento chirurgico eseguito" in one fact suppressed
-        # the requirement for "Riscontro autoptico" asserted in the next --
-        # which is how SYN_19's missing autopsy slipped past this check when
-        # it was first written.
+        # Each fact is tested on its own, not on all of them joined: facts
+        # carry no trailing punctuation, so on a joined string the negation
+        # pattern reaches across a fact boundary and one fact's "Nessun..."
+        # suppresses the requirement asserted by the next.
         asserted = any(
             term in fact.lower()
             and not re.search(rf"(nessun[ao]?|non\s+\w+\s+)[^,;]*{re.escape(term)}", fact.lower())
             for fact in scenario["facts"]
         )
-        # Deduplicated on the accepted-variants set: several keys deliberately
-        # map to the same synonyms ("autoptico" / "riscontro autoptico"), and
-        # without this a single missing finding would be reported twice.
+        # Deduplicated on the variants set, since several keys map to the same
+        # synonyms and would otherwise report one missing finding twice.
         if asserted and not any(set(v) == set(variants) for _, v in markers):
             markers.append((term, variants))
 
@@ -1143,16 +1103,23 @@ def _expected_markers(scenario: dict) -> list[tuple[str, list[str]]]:
 
 
 def check_record(text: str, scenario: dict) -> list[str]:
-    """Returns a list of problems found in a generated record; empty means OK."""
+    """Checks a generated record against the scenario it was written from.
+
+    Args:
+        text: the generated record.
+        scenario: an entry of SCENARIOS.
+
+    Returns:
+        A list of human-readable problems; empty means the record passed.
+    """
     problems = []
     stripped = text.strip()
 
     if not stripped:
         return ["empty record"]
 
-    # Truncation: a record cut off by the token cap ends mid-sentence. Checked
-    # first because it is the defect that silently invalidated a whole corpus,
-    # and because it usually causes the missing-marker failures below too.
+    # A record cut off by the token cap ends mid-sentence. Checked first
+    # because truncation is usually what causes the missing markers below.
     if not stripped.endswith((".", "!", "?")):
         problems.append(f"truncated mid-sentence (ends with {stripped[-40:]!r})")
 
@@ -1164,6 +1131,16 @@ def check_record(text: str, scenario: dict) -> list[str]:
 
 
 def generate_record(llm, scenario: dict, style: dict) -> str:
+    """Asks the writer for one record, without checking the result.
+
+    Args:
+        llm: the writer model.
+        scenario: an entry of SCENARIOS.
+        style: an entry of STYLE_VARIANTS.
+
+    Returns:
+        The generated record text.
+    """
     messages = [
         ("system", WRITER_SYSTEM_PROMPT),
         ("human", facts_to_prompt(scenario, style)),
@@ -1173,14 +1150,20 @@ def generate_record(llm, scenario: dict, style: dict) -> str:
 
 
 def generate_checked_record(llm, scenario: dict, style: dict, record_id: str) -> tuple[str, list[str]]:
-    """Generates a record, re-rolling while check_record() rejects it.
+    """Generates a record, regenerating while check_record rejects it.
 
-    Returns (best_text, remaining_problems). Retrying is worthwhile because the
-    writer runs at temperature 0.8, so each attempt is a genuine resample
-    rather than a repeat. After WRITER_MAX_ATTEMPTS the least-bad attempt is
-    returned WITH its problems, rather than raising: one stubborn scenario
-    should not abort a 30-record generation run, but it must not be saved
-    silently either -- main() reports it and the caller decides.
+    Args:
+        llm: the writer model.
+        scenario: an entry of SCENARIOS.
+        style: an entry of STYLE_VARIANTS.
+        record_id: used for progress output only.
+
+    Returns:
+        (text, problems). Problems is empty when an attempt passed; otherwise
+        the least-bad attempt is returned along with what is still wrong with
+        it. Returning rather than raising keeps one stubborn scenario from
+        aborting a whole generation run, while main() makes sure the failure
+        is reported instead of saved silently.
     """
     best_text, best_problems = None, None
 
@@ -1204,13 +1187,14 @@ def generate_checked_record(llm, scenario: dict, style: dict, record_id: str) ->
 
 
 def check_existing_records() -> int:
-    """Runs check_record() over the records already on disk, without
-    regenerating anything. Returns the number of defective records.
+    """Audits the records already on disk, regenerating nothing.
 
-    Same checks as the inline ones, exposed separately so an existing corpus
-    can be audited (or re-audited after a manual fix) without spending an
-    Ollama run -- and so a corpus generated before this check existed can be
-    triaged. Usage: python generate_synthetic_records.py --check
+    Same checks as the inline ones, exposed separately so a corpus can be
+    inspected -- or re-inspected after a manual fix -- without spending an
+    Ollama run.
+
+    Returns:
+        The number of records that are missing or defective.
     """
     defective = 0
     for scenario in SCENARIOS:
@@ -1234,6 +1218,13 @@ def check_existing_records() -> int:
 
 
 def main():
+    """Generates every scenario's record and ground truth, or audits an
+    existing corpus when called with --check.
+
+    Records that still fail the fidelity check after WRITER_MAX_ATTEMPTS are
+    saved anyway -- a partial record is still worth inspecting -- but are
+    listed at the end so none of them reaches the evaluation unnoticed.
+    """
     parser = argparse.ArgumentParser(
         description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter
     )
@@ -1271,9 +1262,6 @@ def main():
                 encoding="utf-8",
             )
             if problems:
-                # Saved anyway (a partial record is still inspectable), but
-                # recorded so the run ends with an explicit list instead of
-                # letting a defective record slip into the evaluation set.
                 still_defective.append((record_id, problems))
                 print(f"[{record_id}] SAVED WITH PROBLEMS -> {txt_path.name}", flush=True)
             else:

@@ -5,14 +5,11 @@ Drives both retrieval (RAG) parameters and LLM reasoning constraints.
 
 from pathlib import Path
 
-# Anchor point for every path constant below, so they resolve to the same
-# place regardless of the current working directory the interpreter was
-# launched from -- a bare "./vectorstores/..." string is relative to
-# whatever directory you happened to run `python ...` in, not to where
-# config.py lives on disk, and silently creates a fresh, empty vector store
-# folder outside the project if you run a script from anywhere else (this
-# bit a real run on 2026-08-06: synthetic-record vector stores ended up
-# outside the project entirely).
+# Anchor for every path constant below, so they resolve to the same place
+# whatever directory the interpreter was launched from. A bare
+# "./vectorstores/..." is relative to the current working directory, not to
+# this file, and silently creates an empty vector store outside the project
+# when a script is run from elsewhere.
 PROJECT_ROOT = Path(__file__).resolve().parent
 
 # --- Local LLM (via Ollama) ---

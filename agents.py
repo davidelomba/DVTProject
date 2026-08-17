@@ -24,22 +24,24 @@ def build_llm(model_name: str = None, temperature: float = None,
               num_predict: int = None) -> ChatOllama:
     """Builds a ChatOllama instance for a given pipeline role.
 
-    model_name defaults to config.LLM_MODEL_NAME (Agent 1, the extractor) if
-    not given. To use a different model for a role, pass the relevant config
-    constant explicitly -- e.g. build_llm(config.EVALUATOR_LLM_MODEL_NAME) for
-    Agent 2. This is the single factory for every non-tool-calling model in
-    the pipeline; adding a new role only requires a new config constant and a
-    call here, not a new function (see build_agentic_llm below for the one
-    exception, which needs Ollama's tool-calling API).
+    Single factory for every non-tool-calling model in the project, so adding
+    a role means adding a config constant and a call here, not a new function.
+    build_agentic_llm (agentic_graph.py) is the one exception, since it needs
+    Ollama's tool-calling API.
 
-    num_predict overrides config.LLM_NUM_PREDICT's token cap for this one
-    instance. Every pipeline role leaves it at the default; it exists for
-    generate_synthetic_records.py's writer, which emits a whole clinical
-    record in a single call. Leaving it at the default silently truncated 22
-    of 30 generated records mid-sentence on 2026-08-16, and because Italian
-    records put labs and imaging LAST, the cut systematically removed the
-    diagnostically decisive facts -- which then looked like pipeline errors
-    (measured accuracy dropped from 85.1% to 77.0%) rather than a data defect.
+    Args:
+        model_name: Ollama tag; defaults to config.LLM_MODEL_NAME (Agent 1).
+            Pass the relevant constant to select another role's model, e.g.
+            build_llm(config.EVALUATOR_LLM_MODEL_NAME) for Agent 2.
+        temperature: defaults to config.LLM_TEMPERATURE (0.0).
+        num_predict: token cap; defaults to config.LLM_NUM_PREDICT. That
+            default is sized for the pipeline's short structured answers and
+            is too low for callers that emit a whole document in one go --
+            generate_synthetic_records.py's writer overrides it, otherwise
+            records are silently truncated mid-sentence.
+
+    Returns:
+        A configured ChatOllama instance.
     """
     return ChatOllama(
         model=model_name if model_name is not None else config.LLM_MODEL_NAME,
@@ -75,20 +77,28 @@ INCORRECT: Here is the extracted relevant fragment: "Eseguito ecocolordoppler ve
 
 
 def extract_evidence(llm: ChatOllama, ehr_vectorstore, criterion_query: str) -> str:
+    """Extracts evidence via retrieval (config.EXTRACTOR_MODE == "rag").
+
+    Runs a fixed top-k similarity search over the chunked clinical record and
+    asks the LLM to copy the relevant fragments out of the retrieved chunks.
+    Intended for records too long to pass whole; extract_evidence_full_text is
+    the simpler default.
+
+    Args:
+        llm: the extractor model.
+        ehr_vectorstore: Chroma store holding the chunked record.
+        criterion_query: what to look for, from pipeline.SECTION_QUERIES.
+
+    Returns:
+        The extracted fragments, or a "no relevant fragment" message.
     """
-    RAG-based extraction: similarity search over a chunked/embedded clinical
-    record, then the LLM extracts the relevant fragments from the retrieved
-    chunks. NOT used by the default pipeline (see extract_evidence_full_text)
-    -- kept for clinical records too long to fit whole in the model's context
-    window, where chunked retrieval becomes necessary again.
-    """
-    # Fixed top-k similarity search against the EHR vector store (no
-    # autonomous decision-making by the model, unlike extract_evidence_agentic).
+    # Fixed k, unlike extract_evidence_agentic: the model makes no retrieval
+    # decisions in this mode.
     retriever = ehr_vectorstore.as_retriever(search_kwargs={"k": config.EHR_RETRIEVER_K})
     docs = retriever.invoke(criterion_query)
     context = "\n---\n".join(d.page_content for d in docs)
 
-    # Short-circuit: nothing retrieved, so skip the LLM call entirely.
+    # Nothing retrieved: skip the LLM call entirely.
     if not context.strip():
         return "No relevant fragment found in the clinical record for this criterion."
 
@@ -101,14 +111,21 @@ def extract_evidence(llm: ChatOllama, ehr_vectorstore, criterion_query: str) -> 
 
 
 def extract_evidence_full_text(llm: ChatOllama, full_ehr_text: str, criterion_query: str) -> str:
+    """Extracts evidence from the whole record (config.EXTRACTOR_MODE ==
+    "full_text").
+
+    Passes the entire record in the prompt instead of retrieving chunks, which
+    removes the "wrong chunk retrieved" failure mode altogether. Valid as long
+    as the record fits comfortably in the model's context window.
+
+    Args:
+        llm: the extractor model.
+        full_ehr_text: the complete clinical record.
+        criterion_query: what to look for, from pipeline.SECTION_QUERIES.
+
+    Returns:
+        The extracted fragments as returned by the model.
     """
-    Default extraction path: passes the entire clinical record to the LLM
-    instead of retrieving chunks. Simpler and avoids retrieval misses, and
-    is a reasonable default as long as the record comfortably fits in the
-    model's context window (see extract_evidence for the RAG alternative).
-    """
-    # Whole record embedded directly in the prompt -- no retrieval step,
-    # so there is no "wrong chunk retrieved" failure mode in this mode.
     messages = [
         ("system", EXTRACTOR_SYSTEM_PROMPT),
         ("human", f"Criterion to investigate: {criterion_query}\n\nFull Clinical Record:\n{full_ehr_text}"),
@@ -117,30 +134,17 @@ def extract_evidence_full_text(llm: ChatOllama, full_ehr_text: str, criterion_qu
     return response.content
 
 
-# Used only by extract_evidence_agentic below. EXTRACTOR_SYSTEM_PROMPT (shared
-# with extract_evidence/extract_evidence_full_text) assumes the record text is
-# already included in the human message -- true for those two, but NOT for the
-# agentic path, where the record is only reachable through search_patient_record.
-# Without an explicit instruction to call the tool first, a real-patient test
-# (10-section run against an actual EHR with unambiguous findings for most
-# criteria) showed the model just answered "NO RELEVANT EVIDENCE FOUND." on
-# EVERY section, without ever invoking the tool -- a total retrieval failure,
-# not a precision problem.
+# Extends the shared extractor prompt for the agentic path, which differs in
+# two ways that the base prompt does not cover.
 #
-# Second, separate issue found once retrieval started working: the agent's
-# final answer (the free-form chat turn after calling the tool) tends to
-# paraphrase/translate/summarize the tool's results instead of quoting them
-# verbatim, even though EXTRACTOR_SYSTEM_PROMPT already asks for raw fragments
-# only. Two concrete wrong downstream answers were traced back to this:
-# (1) section F flipped from correct ("No") to wrong ("Yes") because the
-# agent's "evidence" was a paraphrase ("La diagnosi... e' stata riferita dallo
-# specialista") that dropped clinical details present in the source text but
-# not carried into that paraphrase; (2) section A3_2 mislabeled the imaging
-# modality as "compression ultrasonography" because the agent's own English
-# rendering of "ecocolordoppler venoso" introduced that (incorrect) term --
-# Agent 2 then reasoned correctly over an already-corrupted quote. The
-# "TRANSCRIPTION" paragraph below re-states the no-paraphrasing rule more
-# forcefully, specific to this failure mode.
+# TOOL USE: the base prompt assumes the record is already in the human message.
+# Here it is only reachable through search_patient_record, and without an
+# explicit instruction to call it the model answers "NO RELEVANT EVIDENCE
+# FOUND." on every section without ever searching.
+#
+# TRANSCRIPTION: the agent's final chat turn tends to paraphrase, translate or
+# summarise what the tool returned. A corrupted quote makes Agent 2 reason
+# correctly over the wrong text, so the rule is restated forcefully here.
 AGENTIC_EXTRACTOR_SYSTEM_PROMPT = EXTRACTOR_SYSTEM_PROMPT + """
 
 TOOL USE: You have access to a tool called `search_patient_record` that searches
@@ -172,40 +176,33 @@ def extract_evidence_agentic(
     criterion_query: str,
     max_iterations: int = 3,
 ) -> str:
-    """
-    Agentic extraction: the model gets a retrieval tool and decides itself
-    whether/how many times to call it, instead of a single fixed-query call.
-    Requires the base `langchain` package (pip install langchain).
+    """Extracts evidence agentically (config.EXTRACTOR_MODE ==
+    "agentic_graph").
 
-    max_iterations caps how many tool calls the agent can make before being
-    forced to answer -- a safety net given this model's tendency (seen
-    during evaluator testing) to run away with generation when not tightly
-    constrained. NOT validated as reliable yet.
+    The model is given a retrieval tool and decides for itself whether and how
+    often to call it, and with which sub-queries, instead of running one fixed
+    query. Requires the base `langchain` package.
 
-    IMPORTANT: the returned evidence is built from the RAW chunks returned
-    by every tool call the agent made (result["intermediate_steps"]), NOT
-    from the agent's own final chat-turn text (previously returned as
-    result["output"]) -- the agent's final answer sometimes paraphrased/
-    translated/summarized what the tool found instead of quoting it
-    verbatim, corrupting downstream answers (traced to sections F and A3_2).
+    The evidence returned is assembled from the RAW chunks of every tool call
+    the agent made, not from its own final chat turn: that turn tends to
+    paraphrase or translate what the tool found, and a corrupted quote makes
+    the evaluator reason over the wrong text.
 
-    NOTE: this used to also union in a deterministic fixed-query retrieval
-    floor against ehr_vectorstore (the same top-k search "rag" mode uses),
-    added after the agent's own search was seen to occasionally rank an
-    irrelevant chunk above the relevant one and stop early (traced to
-    section B2 missing its symptom sentence). The floor was removed because
-    its chunks frequently overlapped near-verbatim with the agent's own
-    tool-call results without being caught by the exact-string dedup below
-    (likely minor formatting differences between the two sources), bloating
-    the prompt with duplicated text. ehr_vectorstore is kept as a parameter
-    for call-site compatibility but is no longer used here -- coverage now
-    depends entirely on the agent's own search decisions, so the original
-    B2 coverage-miss failure mode is a known, accepted risk of this change.
+    Args:
+        llm: a tool-calling-capable model (see agentic_graph.build_agentic_llm).
+        ehr_tool: the retriever wrapped as a tool, from
+            rag_setup.make_ehr_retriever_tool.
+        ehr_vectorstore: unused; kept for call-site compatibility. Coverage
+            depends entirely on the agent's own search decisions, so a query
+            that ranks an irrelevant chunk first can miss evidence a fixed
+            top-k search would have found.
+        criterion_query: what to look for, from pipeline.SECTION_QUERIES.
+        max_iterations: cap on tool calls before the agent is forced to
+            answer, bounding runaway generation.
 
-    Uses AGENTIC_EXTRACTOR_SYSTEM_PROMPT (not the shared EXTRACTOR_SYSTEM_PROMPT)
-    -- see that constant's comment: without an explicit instruction to call the
-    tool, the model was found to skip it entirely and default straight to the
-    negative fallback string on every section.
+    Returns:
+        The concatenated tool results, deduplicated, or "NO RELEVANT EVIDENCE
+        FOUND." if the agent never retrieved anything.
     """
 
     # {agent_scratchpad} is where LangChain injects the running history of
@@ -230,8 +227,8 @@ def extract_evidence_agentic(
         # instead of only the agent's own final chat-turn text.
         return_intermediate_steps=True,
     )
-    # Explicit reminder to use the tool, on top of the system prompt's TOOL
-    # USE paragraph -- belt-and-suspenders against the "never searches" bug.
+    # Reminder repeated here on top of the system prompt's TOOL USE paragraph:
+    # the model otherwise skips retrieval and answers from nothing.
     result = executor.invoke({
         "input": (
             f"Criterion to investigate: {criterion_query}\n\n"
@@ -286,15 +283,20 @@ confirmed by other means."""
 
 
 def _get_field_info(section_model):
-    """Returns (field_name, valid_options, is_multi_select) for a section's
-    Pydantic model, based on whether its field is Literal[...] or List[Literal[...]]."""
-    # Every section schema has exactly one field; grab it generically
-    # instead of hardcoding "answer" vs "studies" vs "symptoms" etc.
+    """Introspects a section's schema to find its field name and valid options.
+
+    Args:
+        section_model: a Pydantic class from models.SECTION_MODELS.
+
+    Returns:
+        (field_name, valid_options, is_multi_select). Multi-select sections are
+        typed List[Literal[...]], single-choice ones Literal[...] directly.
+    """
+    # Every section schema has exactly one field, read generically rather than
+    # hardcoding "answer" vs "studies" vs "symptoms".
     field_name = next(iter(section_model.model_fields.keys()))
     annotation = section_model.model_fields[field_name].annotation
 
-    # Multi-select fields are typed List[Literal[...]] -- unwrap the list
-    # to get at the inner Literal's options.
     if get_origin(annotation) is list:
         inner = get_args(annotation)[0]
         options = list(get_args(inner))
@@ -312,15 +314,29 @@ def _build_reasoning_prompt(
     multi_select: bool,
     extra_instructions: str = "",
 ) -> str:
+    """Builds the prompt Agent 2 answers for one section.
+
+    Options are numbered and the model replies with the number rather than the
+    text, which avoids fuzzy-matching a paraphrased answer onto the wrong
+    option when two options differ only by a negation ("confirmed DVT" vs
+    "didn't confirm DVT").
+
+    It is also asked to copy the option's exact text on a separate
+    FINAL_OPTION line. That gives evaluate_section a second, independently
+    derived answer to cross-check the number against: the model has been seen
+    naming the right option in its prose while writing a different option's
+    number, which no single-line format can detect.
+
+    Args:
+        evidence_text: what Agent 1 extracted for this section.
+        brighton_context: reference terminology retrieved from the guideline.
+        options: the section's valid options, in schema order.
+        multi_select: whether several options may apply.
+        extra_instructions: the section's hint from config.SECTION_HINTS.
+
+    Returns:
+        The prompt string.
     """
-    Builds the evaluator prompt. Options are numbered and the model answers
-    with the number(s), not the option text -- this avoids fuzzy-matching
-    a paraphrased answer onto the wrong option when two options are near-
-    identical except for a negation (e.g. "confirmed DVT" vs "didn't confirm DVT").
-    """
-    # Options numbered 1..N; the model answers with the NUMBER, not the
-    # option text (see docstring: avoids fuzzy-matching onto the wrong
-    # near-identical, negation-flipped option).
     options_block = "\n".join(f"{i}. {opt}" for i, opt in enumerate(options, start=1))
     prompt = f"Evidence: {evidence_text}"
     if brighton_context:
@@ -332,21 +348,8 @@ def _build_reasoning_prompt(
 
     base_instruction = "First explain your reasoning in a few sentences. Then, at the end of your response, write exactly two more lines, in this order:\n"
 
-    # Output format differs for multi-select (semicolon-separated) vs
-    # single-choice (one item) -- parsed back out by _extract_final_answer_line/
-    # _extract_labeled_line/_match_option below.
-    #
-    # FINAL_OPTION is asked for IN ADDITION to FINAL_ANSWER (not instead of):
-    # a real failure mode was traced where the model's own prose reasoning
-    # correctly identified the right option (e.g. "venous ultrasound"), but
-    # the NUMBER it wrote on the old single FINAL_ANSWER line pointed at a
-    # different, wrong option -- a mapping slip between reasoning and index,
-    # not a misunderstanding of the evidence (traced on section A3_2, where
-    # "Compression ultrasonography" and "Doppler/Duplex Ultrasound" both
-    # contain "ultrasound"/"ultrasonography" and are easy to conflate by
-    # index alone). Asking the model to also copy the option's exact text
-    # gives evaluate_section a second, independently-derived answer to
-    # cross-check the number against -- see evaluate_section below.
+    # Semicolon-separated for multi-select, a single item otherwise; parsed
+    # back out by _extract_final_answer_line/_extract_labeled_line/_match_option.
     if multi_select:
         prompt += (
             base_instruction +
@@ -380,12 +383,19 @@ def _build_reasoning_prompt(
 
 
 def _extract_final_answer_line(text: str) -> str:
-    """Returns the content after the LAST 'FINAL_ANSWER:' occurrence (not the
-    first, since the model sometimes references the instruction itself before
-    actually answering)."""
-    # findall (not search): the model sometimes echoes the instruction text
-    # itself before the real answer, so multiple matches can occur --
-    # matches[-1] below always takes the LAST one.
+    """Reads the FINAL_ANSWER line out of Agent 2's response.
+
+    Args:
+        text: the model's full response.
+
+    Returns:
+        The content after the LAST "FINAL_ANSWER:" occurrence. The last, not
+        the first, because the model sometimes echoes the instruction before
+        actually answering.
+
+    Raises:
+        ValueError: if no such line exists.
+    """
     matches = re.findall(r"FINAL_ANSWER:\s*(.+)", text)
     if not matches:
         raise ValueError(f"No FINAL_ANSWER line found in response: {text!r}")
@@ -393,11 +403,17 @@ def _extract_final_answer_line(text: str) -> str:
 
 
 def _extract_labeled_line(text: str, label: str) -> str | None:
-    """Same lookup as _extract_final_answer_line, generalized to any labeled
-    line (used for 'FINAL_OPTION:'). Returns None instead of raising when the
-    label is absent -- unlike FINAL_ANSWER, FINAL_OPTION is a best-effort
-    cross-check (see _build_reasoning_prompt), not a hard requirement, so its
-    absence should degrade gracefully rather than fail the whole evaluation."""
+    """Reads any labelled line out of Agent 2's response, e.g. FINAL_OPTION.
+
+    Args:
+        text: the model's full response.
+        label: the label to look for, without the colon.
+
+    Returns:
+        The content after the last occurrence, or None if the label is absent.
+        Unlike FINAL_ANSWER, FINAL_OPTION is a best-effort cross-check, so a
+        missing line degrades gracefully instead of failing the section.
+    """
     matches = re.findall(rf"{re.escape(label)}:\s*(.+)", text)
     if not matches:
         return None
@@ -405,20 +421,23 @@ def _extract_labeled_line(text: str, label: str) -> str | None:
 
 
 def _match_option(raw_value: str, valid_options: list[str], cutoff: float = 0.75) -> str:
+    """Maps one raw answer fragment onto a valid option of the section.
+
+    Args:
+        raw_value: a single item from FINAL_ANSWER or FINAL_OPTION.
+        valid_options: the section's options, in schema order.
+        cutoff: similarity threshold for the fuzzy fallback.
+
+    Returns:
+        The matching option, exactly as written in the schema.
+
+    Raises:
+        ValueError: if the value is an out-of-range index, or matches nothing.
     """
-    Maps the extracted value to a valid option. Primary path: numeric index
-    (what the prompt asks for). Fallback: exact text match, then fuzzy match
-    (logged, since a silent fuzzy match risks landing on a negation-opposite
-    option) -- only used if the model didn't answer with a bare number.
-    """
-    # Strip stray formatting the model sometimes adds around the number
-    # (leading "-", trailing "." or ";").
+    # Strip formatting the model adds around the value: a leading "-", a
+    # trailing "." or ";", and a "1." / "1)" list prefix it tends to keep when
+    # copying an option verbatim.
     cleaned = raw_value.strip().lstrip("-").strip().rstrip(".;").strip()
-    # Also strip a leading "<digits>." or "<digits>)" list-style prefix the
-    # model sometimes echoes when copying an option verbatim (e.g. "1. D-dimer
-    # exceeded..." instead of just "D-dimer exceeded..."), which would
-    # otherwise fail the exact-match check below and fall through to an
-    # unnecessary fuzzy match.
     cleaned = re.sub(r"^\d+[.)]\s*", "", cleaned).strip()
 
     # Primary path: the prompt asks for a bare 1-based index.
@@ -431,16 +450,10 @@ def _match_option(raw_value: str, valid_options: list[str], cutoff: float = 0.75
             f"Index {idx} out of range for {len(valid_options)} options: {valid_options}"
         )
 
-    # Fallback 1: model answered with the option text verbatim. Compared
-    # with trailing punctuation stripped from BOTH sides: the model often
-    # writes the option text on FINAL_OPTION mid-line, right before a
-    # newline into FINAL_ANSWER, and naturally omits a trailing period that
-    # IS part of the option's canonical text in models.py (e.g. section C's
-    # "...upper limit of normal." with a period) -- without this, an
-    # otherwise-correct verbatim answer would miss the exact-match check
-    # and fall through to a fuzzy match unnecessarily. Returns the
-    # ORIGINAL option text (with punctuation), not the normalized one, so
-    # the result still satisfies the schema's exact Literal values.
+    # Fallback 1: the option text, verbatim. Trailing punctuation is stripped
+    # from both sides before comparing, because some options end with a period
+    # in models.py that the model naturally omits. The ORIGINAL option is
+    # returned, so the result still satisfies the schema's exact Literal value.
     normalized = cleaned.rstrip(".").strip()
     for option in valid_options:
         if normalized == option.rstrip(".").strip():
@@ -470,13 +483,25 @@ def evaluate_section(
     extra_instructions: str = "",
     max_retries: int = 2,
 ):
+    """Fills in one section's schema from the evidence (Agent 2).
+
+    Args:
+        llm: the evaluator model.
+        section_model: the section's Pydantic class.
+        evidence_text: what Agent 1 extracted for this section.
+        brighton_context: reference terminology retrieved from the guideline.
+        extra_instructions: the section's hint from config.SECTION_HINTS.
+        max_retries: extra attempts allowed after a parse or validation
+            failure; each retry appends the error to the prompt.
+
+    Returns:
+        (section instance, reasoning_text). The full response is kept so a
+        wrong answer can be audited later without re-running the pipeline.
+
+    Raises:
+        RuntimeError: if no attempt produced a parseable, valid answer.
     """
-    Fills in one section's schema from the evidence. Returns
-    (section_model_instance, reasoning_text) -- reasoning_text is the
-    model's full response, kept so a wrong answer can later be audited
-    without re-running the pipeline (see pipeline.py's audit_log).
-    """
-    # Schema introspection + prompt built once, outside the retry loop.
+    # Introspection and prompt built once, outside the retry loop.
     field_name, options, multi_select = _get_field_info(section_model)
     prompt = _build_reasoning_prompt(evidence_text, brighton_context, options, multi_select, extra_instructions)
 
@@ -507,20 +532,15 @@ def evaluate_section(
                         matched_by_text = [_match_option(item, options) for item in text_items]
                     except Exception:
                         matched_by_text = None
-                    # Disagreement means the model's own number-mapping slipped
-                    # relative to the option text it just copied verbatim --
-                    # trust the copied text, but ONLY when both lines list the
-                    # SAME NUMBER of items. A real bug was traced (section
-                    # B1_2) where the model habitually pads FINAL_OPTION with
-                    # every category in the list ("Lower extremity DVT; Upper
-                    # extremity DVT;") while FINAL_ANSWER correctly names just
-                    # the one that actually applies ("1;") -- blindly trusting
-                    # the longer text list there silently turned a correct
-                    # single answer into a wrong double answer. When the
-                    # counts differ, that's a stronger signal one of the two
-                    # lines is padded/truncated than that the model made a
-                    # simple index-mapping slip, so the (shorter, more
-                    # conservative) number-based answer is kept instead.
+                    # Disagreement normally means the model's index slipped
+                    # relative to the text it just copied, so the text wins --
+                    # but only when both lines list the SAME number of items.
+                    # The model tends to pad FINAL_OPTION with every category
+                    # while FINAL_ANSWER names just the one that applies;
+                    # trusting the longer list there turns a correct single
+                    # answer into a wrong double one. Differing counts point to
+                    # padding rather than a slip, so the shorter, more
+                    # conservative number-based answer is kept.
                     if matched_by_text and matched_by_text != matched:
                         if len(matched_by_text) != len(matched):
                             print(
@@ -545,17 +565,13 @@ def evaluate_section(
                 seen = set()
                 matched = [m for m in matched if not (m in seen or seen.add(m))]  # dedupe, keep order
 
-                # "None of the above"-style options are mutually exclusive with
-                # every real finding (enforced by B2's none_is_exclusive
-                # validator in models.py). The model was observed selecting
-                # both at once (SYN_19: "Redness, warmth..." + "None of the
-                # above..."), which made section_model(...) below raise --
-                # and, since the retry only feeds back the raw Pydantic
-                # traceback, it kept failing all 3 attempts and left the whole
-                # section None (a total loss, worse than a partly-wrong
-                # answer). Resolved here instead: drop the "none" option and
-                # keep the specific findings, since naming a concrete symptom
-                # is the more informative of the two contradictory signals.
+                # "None of the above" is mutually exclusive with every real
+                # finding (enforced by B2's none_is_exclusive validator), and
+                # the model does sometimes select both. Left alone, that raises
+                # below and the retry -- which only feeds back the raw Pydantic
+                # traceback -- keeps failing until the section is lost entirely.
+                # Repaired here instead by keeping the specific findings, the
+                # more informative of the two contradictory signals.
                 if len(matched) > 1:
                     none_options = [m for m in matched if m.lower().startswith("none of the above")]
                     if none_options:

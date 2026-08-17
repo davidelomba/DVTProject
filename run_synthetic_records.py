@@ -43,6 +43,16 @@ OUTPUT_DIR = Path(__file__).parent / "output"
 
 
 def run_one(record_id: str, record_path: Path) -> Path:
+    """Runs the pipeline on one record and writes its two output files.
+
+    Args:
+        record_id: derived from the file name; must match the record_id in the
+            corresponding *_ground_truth.json for the evaluation to pair them.
+        record_path: the .txt clinical record.
+
+    Returns:
+        Path of the form JSON that was written.
+    """
     form, audit_log = run_pipeline(record_id, str(record_path), BRIGHTON_PDF_PATH)
     summary = form_to_json_summary(form)
 
@@ -59,6 +69,11 @@ def run_one(record_id: str, record_path: Path) -> Path:
 
 
 def main():
+    """Runs every synthetic record through the pipeline, in file-name order.
+
+    One record failing does not stop the batch: the error is reported and the
+    run continues, mirroring the per-section resilience in pipeline.py.
+    """
     OUTPUT_DIR.mkdir(exist_ok=True)
     record_paths = sorted(RECORDS_DIR.glob("*.txt"))
 
@@ -73,9 +88,8 @@ def main():
     for i, record_path in enumerate(record_paths, start=1):
         record_id = record_path.stem
 
-        # Light sanity check only -- doesn't block the run, just flags a
-        # likely setup mistake early (e.g. a stray .txt dropped in the
-        # folder without its matching ground truth).
+        # Non-blocking sanity check: flags a stray .txt with no matching
+        # ground truth, which would silently go unscored later.
         gt_path = RECORDS_DIR / f"{record_id}_ground_truth.json"
         if not gt_path.exists():
             print(f"[{i}/{len(record_paths)}] {record_id}: [WARNING] no matching "

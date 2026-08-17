@@ -16,13 +16,13 @@ from pathlib import Path
 from pipeline import run_pipeline
 from aggregation import form_to_json_summary
 
-# Anchored to this file's own location, not the current working directory --
-# see config.PROJECT_ROOT's docstring comment for why a bare "./..." string
-# is fragile (it broke a real run when launched from a different cwd).
+# Anchored to this file's location rather than the current working directory;
+# see config.PROJECT_ROOT for why a bare "./..." path is fragile.
 PROJECT_ROOT = Path(__file__).resolve().parent
 
 
 def main():
+    """Runs the pipeline on one record and writes its output and audit log."""
     # Replace these with the actual locations of your files.
     record_id = "PATIENT_001"
     patient_ehr_path = str(PROJECT_ROOT / "data" / "patient_001.txt")                                   # Plain .txt clinical record

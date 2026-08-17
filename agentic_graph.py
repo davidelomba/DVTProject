@@ -24,16 +24,14 @@ inside this module -- they run once, uniformly for every EXTRACTOR_MODE,
 in pipeline.run_pipeline after this graph returns. That keeps a single
 source of truth for both safety nets across all execution modes.
 
-Model note: config.LLM_MODEL_NAME ("llama3:8b-instruct-q4_0") does not
-support Ollama's native tool-calling API (confirmed: Ollama returns "model
-does not support tools", HTTP 400, when a tool is bound to it). Only
-Llama 3.1+ has tool-calling support in Ollama, not base Llama 3. So Agent
-1's search step here uses a separate model, config.AGENTIC_LLM_MODEL_NAME,
-while Agent 2 (evaluator, never binds a tool) uses config.EVALUATOR_LLM_MODEL_NAME
-via agents.build_llm(model_name=...) -- both models are built once in
-pipeline.py and passed in, see run_agentic_graph_pipeline below.
-Requires: ollama pull llama3.1:8b-instruct-q4_0 -- and the `langgraph` package.
+Model note: base Llama 3 does not support Ollama's tool-calling API (binding a
+tool to it returns HTTP 400, "model does not support tools"); only Llama 3.1+
+does. Agent 1's search step therefore uses config.AGENTIC_LLM_MODEL_NAME,
+while Agent 2 never binds a tool and uses config.EVALUATOR_LLM_MODEL_NAME.
+Both models are built once in pipeline.py and passed into
+run_agentic_graph_pipeline.
 
+Requires the `langgraph` package and a tool-calling model pulled in Ollama.
 """
 
 from typing import Optional, TypedDict
@@ -48,10 +46,15 @@ from criteria_rules import apply_keyword_gate, apply_details_gate, apply_absent_
 
 
 def build_agentic_llm() -> ChatOllama:
-    """Tool-calling-capable model, used only by the search_record node.
-    Agent 2 (answer_criterion) is built separately in pipeline.py via
-    agents.build_llm(config.EVALUATOR_LLM_MODEL_NAME), since it never binds
-    any tool. See config.AGENTIC_LLM_MODEL_NAME."""
+    """Builds the tool-calling model used by the search_record node.
+
+    Separate from agents.build_llm because this is the only role that binds a
+    tool, and therefore the only one that needs a model supporting Ollama's
+    tool-calling API (config.AGENTIC_LLM_MODEL_NAME).
+
+    Returns:
+        A configured ChatOllama instance.
+    """
     return ChatOllama(
         model=config.AGENTIC_LLM_MODEL_NAME,
         temperature=config.LLM_TEMPERATURE,
@@ -65,6 +68,13 @@ def build_agentic_llm() -> ChatOllama:
 # ---------------------------------------------------------------------------
 
 class GraphState(TypedDict):
+    """State threaded through every node of the graph.
+
+    remaining_sections is consumed one at a time by _select_next; form_data and
+    audit_log accumulate the results, keyed as pipeline.run_pipeline expects
+    them; done tells _route_after_select when to stop looping.
+    """
+
     record_id: str
     remaining_sections: list
     current_section: Optional[str]
@@ -78,13 +88,21 @@ class GraphState(TypedDict):
 # ---------------------------------------------------------------------------
 
 def _select_next(state: GraphState) -> GraphState:
+    """Takes the next section off the queue, or signals that none are left.
+
+    Args:
+        state: the current graph state.
+
+    Returns:
+        A new state with current_section set, or with done=True when the queue
+        is empty so _route_after_select ends the loop.
+    """
     remaining = state["remaining_sections"]
-    # No sections left: signal termination so routing sends us to "finalize".
     if not remaining:
         return {**state, "current_section": None, "done": True}
 
-    # Pop the next section off the queue without mutating the list in
-    # place (LangGraph state should be treated as immutable per step).
+    # Returned as a new list rather than popped in place: graph state is
+    # treated as immutable from one step to the next.
     next_section = remaining[0]
     print(f"\n=== Section {next_section} ===", flush=True)
     return {
@@ -96,32 +114,42 @@ def _select_next(state: GraphState) -> GraphState:
 
 
 def _route_after_select(state: GraphState) -> str:
+    """Routes to the next node after _select_next: another section or the end."""
     return "finalize" if state["done"] else "search_record"
 
 
 def _make_search_node(llm, ehr_tool, ehr_vectorstore, section_queries: dict):
+    """Builds the search_record node, closing over its dependencies.
+
+    A factory rather than a plain node because LangGraph nodes take only the
+    state, while this step also needs the model, the tool and the queries.
+
+    Args:
+        llm: the tool-calling model from build_agentic_llm.
+        ehr_tool: the retriever wrapped as a tool.
+        ehr_vectorstore: passed through to agents.extract_evidence_agentic.
+        section_queries: section key -> retrieval query.
+
+    Returns:
+        The node function.
+    """
+
     def search_record(state: GraphState) -> GraphState:
+        """Runs Agent 1 for the current section and records what it found."""
         section_key = state["current_section"]
         query = section_queries[section_key]
 
         print(f"[{section_key}] Agent 1 (agentic search) exploring the record...", flush=True)
         try:
-            # Agent 1 decides autonomously how/whether to call the search
-            # tool, UNION a deterministic fixed-query retrieval floor
-            # against ehr_vectorstore -- see agents.extract_evidence_agentic
-            # for why the floor was added (B2 repeatedly missing its
-            # symptom sentence despite the agent's own search).
             evidence = extract_evidence_agentic(
                 llm, ehr_tool, ehr_vectorstore, query, max_iterations=config.AGENTIC_MAX_ITERATIONS
             )
         except Exception as exc:
-            # A failed search shouldn't crash the whole graph -- the next
-            # node (answer_criterion) treats evidence=None as "no evidence".
+            # A failed search must not crash the graph: the next node treats
+            # a missing evidence value as "no evidence found".
             print(f"[{section_key}] Agent 1 FAILED: {exc}", flush=True)
             evidence = None
 
-        # Copy-then-mutate: LangGraph state updates should return a new
-        # dict rather than mutating the incoming one in place.
         audit_log = dict(state["audit_log"])
         audit_log[section_key] = {"query": query, "evidence": evidence}
         return {**state, "audit_log": audit_log}
@@ -130,7 +158,25 @@ def _make_search_node(llm, ehr_tool, ehr_vectorstore, section_queries: dict):
 
 
 def _make_answer_node(llm, brighton_kb, section_queries: dict):
+    """Builds the answer_criterion node, closing over its dependencies.
+
+    Args:
+        llm: the evaluator model (Agent 2).
+        brighton_kb: vector store of the reference guideline.
+        section_queries: section key -> retrieval query, reused here to fetch
+            the guideline context for the section.
+
+    Returns:
+        The node function, which runs Agent 2 and then the same deterministic
+        gates every other execution mode applies.
+    """
+
     def answer_criterion(state: GraphState) -> GraphState:
+        """Runs Agent 2 and the deterministic gates for the current section.
+
+        A section that fails is left as None and its error recorded, so one bad
+        section does not lose the work already done on the others.
+        """
         section_key = state["current_section"]
         section_model = SECTION_MODELS[section_key]
         query = section_queries[section_key]
@@ -140,8 +186,8 @@ def _make_answer_node(llm, brighton_kb, section_queries: dict):
         form_data = dict(state["form_data"])
         audit_log = dict(state["audit_log"])
 
-        # No evidence (search failed or found nothing): skip Agent 2
-        # entirely rather than asking it to evaluate an empty answer.
+        # Search failed or found nothing: skip Agent 2 rather than ask it to
+        # reason over an empty evidence string.
         if not evidence:
             print(f"[{section_key}] No evidence from Agent 1 -- leaving field as None.", flush=True)
             form_data[section_key.lower()] = None
@@ -150,9 +196,8 @@ def _make_answer_node(llm, brighton_kb, section_queries: dict):
             return {**state, "form_data": form_data, "audit_log": audit_log}
 
         try:
-            # Retrieve the Brighton reference context (synonyms/terminology)
-            # relevant to this section's query -- same retrieval used by
-            # every other EXTRACTOR_MODE.
+            # Guideline terminology for this section, retrieved exactly as in
+            # every other execution mode.
             brighton_docs = brighton_kb.as_retriever(
                 search_kwargs={"k": config.BRIGHTON_RETRIEVER_K}
             ).invoke(query)
@@ -160,25 +205,19 @@ def _make_answer_node(llm, brighton_kb, section_queries: dict):
             section_log["brighton_context"] = brighton_context
 
             print(f"[{section_key}] Agent 2 (evaluator) filling in the schema...", flush=True)
-            # Per-section prompt hints (config.SECTION_HINTS), if any exist
-            # for this section.
             extra_instructions = config.SECTION_HINTS.get(section_key, "")
             section_result, reasoning_text = evaluate_section(
                 llm, section_model, evidence, brighton_context, extra_instructions
             )
 
-            # Same deterministic keyword gate used by every other mode
-            # (see pipeline.py) -- single source of truth in criteria_rules.py.
+            # The same three gates pipeline.py applies, in the same order:
+            # criteria_rules.py is the single source of truth for all modes.
             section_result, reasoning_text = apply_keyword_gate(
                 section_key, section_result, evidence, reasoning_text
             )
-            # Same section-F details gate used by every other mode (see
-            # criteria_rules.apply_details_gate) -- single source of truth.
             section_result, reasoning_text = apply_details_gate(
                 section_key, section_result, reasoning_text
             )
-            # Same B2 "Absent pulses" gate used by every other mode (see
-            # criteria_rules.apply_absent_pulses_gate) -- single source of truth.
             section_result, reasoning_text = apply_absent_pulses_gate(
                 section_key, section_result, evidence, reasoning_text
             )
@@ -200,9 +239,12 @@ def _make_answer_node(llm, brighton_kb, section_queries: dict):
 
 
 def _finalize(state: GraphState) -> GraphState:
-    # Cross-section dependency rules are applied once, uniformly for every
-    # EXTRACTOR_MODE, in pipeline.run_pipeline after this graph returns --
-    # not here, so that logic has a single source of truth (criteria_rules.py).
+    """Terminal node: returns the state unchanged.
+
+    Deliberately a passthrough. Cross-section rules are applied once by
+    pipeline.run_pipeline after this graph returns, so every execution mode
+    goes through the same code rather than a copy of it.
+    """
     return state
 
 
@@ -211,14 +253,22 @@ def _finalize(state: GraphState) -> GraphState:
 # ---------------------------------------------------------------------------
 
 def build_graph(search_llm, answer_llm, ehr_tool, ehr_vectorstore, brighton_kb, section_queries: dict):
-    """search_llm: tool-calling-capable model, used by Agent 1 (search_record).
-    answer_llm: config.EVALUATOR_LLM_MODEL_NAME model, used by Agent 2
-    (answer_criterion), which needs no tool support. ehr_vectorstore: the same Chroma object
-    ehr_tool wraps, passed separately so search_record can also run the
-    deterministic retrieval floor (see agents.extract_evidence_agentic)."""
+    """Wires the four nodes into the state machine and compiles it.
+
+    Args:
+        search_llm: tool-calling model for Agent 1 (search_record).
+        answer_llm: model for Agent 2 (answer_criterion), needs no tools.
+        ehr_tool: the record retriever wrapped as a tool.
+        ehr_vectorstore: the store ehr_tool wraps, passed separately because
+            agents.extract_evidence_agentic takes it as its own argument.
+        brighton_kb: vector store of the reference guideline.
+        section_queries: section key -> retrieval query.
+
+    Returns:
+        The compiled graph, ready to invoke with an initial GraphState.
+    """
     graph = StateGraph(GraphState)
 
-    # Register the 4 nodes described in the module docstring.
     graph.add_node("select_next", _select_next)
     graph.add_node("search_record", _make_search_node(search_llm, ehr_tool, ehr_vectorstore, section_queries))
     graph.add_node("answer_criterion", _make_answer_node(answer_llm, brighton_kb, section_queries))
@@ -251,16 +301,23 @@ def run_agentic_graph_pipeline(
     brighton_kb,
     section_queries: dict,
 ):
-    """
-    Runs every section of config.SECTION_ORDER through the graph above.
+    """Runs every section of config.SECTION_ORDER through the graph.
 
-    Returns (form_data, audit_log) with the SAME shape produced by the
-    plain per-section loop in pipeline.py (form_data keyed by lowercased
-    section, audit_log keyed by the original casing) -- NOT yet wrapped
-    into a DVT_CriteriaForm and NOT yet passed through
-    criteria_rules.apply_cross_section_rules; pipeline.run_pipeline does
-    both of those once, uniformly, regardless of which mode produced
-    form_data.
+    Args:
+        record_id: identifier carried into the results.
+        evaluator_llm: model for Agent 2.
+        search_llm: tool-calling model for Agent 1.
+        ehr_tool: the record retriever wrapped as a tool.
+        ehr_vectorstore: the store ehr_tool wraps.
+        brighton_kb: vector store of the reference guideline.
+        section_queries: section key -> retrieval query.
+
+    Returns:
+        (form_data, audit_log), shaped exactly like the plain per-section loop
+        in pipeline.py: form_data keyed by lowercased section, audit_log by the
+        original casing. Neither the cross-section rules nor the final
+        DVT_CriteriaForm are applied here; pipeline.run_pipeline does both once
+        for whichever mode produced the data.
     """
     app = build_graph(search_llm, evaluator_llm, ehr_tool, ehr_vectorstore, brighton_kb, section_queries)
 

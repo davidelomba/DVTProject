@@ -1,8 +1,14 @@
 """
 Deterministic safety nets applied on top of the two LLM agents' output:
-per-section keyword gates, the section-F details gate, and cross-section
-dependency rules.
+per-section keyword gates, the section-F details gate, the B2 absent-pulses
+gate, and cross-section dependency rules.
 
+Every function here is a pure post-processing step: it takes what Agent 2
+answered and either returns it unchanged or replaces it with a value derived
+mechanically from the evidence or from another section's answer. Overrides are
+always recorded in the reasoning text (or the audit log) with a
+"[SYSTEM OVERRIDE]" note, so a forced answer is never indistinguishable from
+one the model produced on its own.
 """
 
 import re
@@ -11,40 +17,45 @@ import config
 
 
 def apply_keyword_gate(section_key: str, section_result, evidence: str, reasoning_text: str):
-    """
-    See config.SECTION_KEYWORD_GATES.
+    """Reverts a hallucinated positive answer when the evidence never mentions
+    the procedure the section asks about.
 
-    For sections gated on one specific procedure (autopsy, surgery), the LLM
-    can hallucinate a positive answer even when that procedure is never
-    mentioned. If Agent 2 answered positively but none of the section's
-    trigger keywords appear (case-insensitively) in Agent 1's evidence, the
-    answer is deterministically reverted to the section's negative default.
+    Applies only to the sections listed in config.SECTION_KEYWORD_GATES (A1,
+    A2, X), each of which asks about one specific procedure or finding. If
+    Agent 2 answered with anything other than the section's negative default
+    but none of the section's trigger keywords appear in Agent 1's evidence,
+    the answer is forced back to that default.
 
-    Returns (section_result, reasoning_text) -- section_result unchanged
-    unless the gate triggers, in which case it is rebuilt via the model's
-    own constructor (not setattr) so it still passes Pydantic validation,
-    and reasoning_text gets a "[SYSTEM OVERRIDE]" note appended.
+    One-directional by design: it can only remove an unsupported positive, not
+    add a missing one. Keyword presence alone does not imply a positive answer,
+    since the evidence could equally be negating the procedure.
+
+    Args:
+        section_key: section identifier, e.g. "A1".
+        section_result: the section's Pydantic model instance.
+        evidence: the text Agent 1 extracted for this section.
+        reasoning_text: Agent 2's full response.
+
+    Returns:
+        (section_result, reasoning_text), unchanged unless the gate fires.
     """
-    # Only A1/A2 have a gate defined; every other section skips this block.
     gate_info = config.SECTION_KEYWORD_GATES.get(section_key)
     if not gate_info:
         return section_result, reasoning_text
 
-    # Generic single-field lookup: works for both single-choice (str) and
-    # multi-select (list) section schemas without a per-section if/elif.
+    # Single-field lookup, so this works for both single-choice (str) and
+    # multi-select (list) schemas without a per-section branch.
     field_name = list(type(section_result).model_fields.keys())[0]
     llm_chosen_answer = getattr(section_result, field_name)
 
-    # "Positive" means Agent 2 picked something other than the section's
-    # negative default -- i.e. it's claiming the procedure DID happen.
+    # "Positive" = anything other than the section's negative default, i.e.
+    # Agent 2 is claiming the procedure did happen.
     if isinstance(llm_chosen_answer, list):
         is_positive = any(ans != gate_info["default_option_text"] for ans in llm_chosen_answer)
     else:
         is_positive = (llm_chosen_answer != gate_info["default_option_text"])
 
     if is_positive:
-        # Case-insensitive substring check: does ANY expected keyword show
-        # up anywhere in Agent 1's evidence for this section?
         evidence_lower = (evidence or "").lower()
         has_keyword = any(kw.lower() in evidence_lower for kw in gate_info["keywords"])
 
@@ -54,11 +65,11 @@ def apply_keyword_gate(section_key: str, section_result, evidence: str, reasonin
                 f"Reverting to default.",
                 flush=True,
             )
-            # Rebuilt via the model's own constructor (not setattr) so the
-            # forced value still passes Pydantic validation.
+            # Rebuilt through the model's constructor rather than setattr, so
+            # the forced value is re-validated against the schema.
             section_result = type(section_result)(**{field_name: gate_info["default_option_text"]})
-            # Appended (not replacing) reasoning_text, so the audit log keeps
-            # both the model's original reasoning and the override note.
+            # Appended, not replaced: the audit log keeps the model's original
+            # reasoning alongside the override note.
             reasoning_text += (
                 f"\n\n[SYSTEM OVERRIDE]: The LLM originally selected '{llm_chosen_answer}', "
                 f"but no triggering keywords {gate_info['keywords']} were found in the evidence. "
@@ -69,28 +80,32 @@ def apply_keyword_gate(section_key: str, section_result, evidence: str, reasonin
 
 
 def apply_details_gate(section_key: str, section_result, reasoning_text: str):
-    """
-    Section F only ("reported by specialist, without details"): a real bug
-    was traced where Agent 2's own reasoning correctly concluded that
-    specific clinical details WERE present in the evidence, but the
-    FINAL_OPTION/FINAL_ANSWER lines still answered 'Yes' (reported WITHOUT
-    details) anyway -- a self-contradiction between the reasoning prose and
-    the final lines that the FINAL_OPTION-vs-FINAL_ANSWER cross-check in
-    agents.evaluate_section cannot catch, since those two lines agreed with
-    each other (both wrong in the same direction).
+    """Derives section F's Yes/No answer from the model's own DETAILS_PRESENT
+    line instead of from the answer it selected.
 
-    Rather than trusting the model's own Yes/No mapping for F -- the step
-    where it was observed to flip -- SECTION_HINTS["F"] (config.py) asks the
-    model for an explicit 'DETAILS_PRESENT: yes/no' line, a factual judgment
-    it has reliably reported correctly. This function derives F's answer
-    MECHANICALLY from that line instead: the model still does the actual
-    clinical-language judgment (is a specific finding present?), only the
-    final Yes/No label -- not the underlying evidence -- is decided here.
+    F asks whether the diagnosis was reported WITHOUT details, so "Yes" means
+    no supporting detail was given and "No" means details were present (or the
+    diagnosis was not reported at all). That inversion is where Agent 2 was
+    observed to contradict itself: its prose could correctly identify specific
+    findings and its FINAL_OPTION/FINAL_ANSWER lines still answer "Yes". Both
+    lines agreeing with each other, the cross-check in agents.evaluate_section
+    cannot catch it.
 
-    Returns (section_result, reasoning_text), unchanged if section_key is
-    not "F" or the DETAILS_PRESENT line is missing/unparseable (e.g. the
-    model skipped it despite the instruction -- degrades gracefully rather
-    than failing the evaluation).
+    config.SECTION_HINTS["F"] therefore asks for an explicit
+    "DETAILS_PRESENT: yes/no" line -- a factual judgment, not a mapping onto
+    the schema's wording -- and this function does the mapping mechanically.
+    The clinical judgment stays with the model; only the label is decided here.
+
+    Args:
+        section_key: section identifier; anything other than "F" is a no-op.
+        section_result: the section's Pydantic model instance.
+        reasoning_text: Agent 2's full response, which should carry the
+            DETAILS_PRESENT line.
+
+    Returns:
+        (section_result, reasoning_text), unchanged for other sections and
+        when the DETAILS_PRESENT line is absent or unparseable -- a missing
+        line degrades to "trust the model" rather than failing the section.
     """
     if section_key != "F":
         return section_result, reasoning_text
@@ -100,8 +115,8 @@ def apply_details_gate(section_key: str, section_result, reasoning_text: str):
         return section_result, reasoning_text
 
     details_present = match.group(1).lower() == "yes"
-    # F's schema: "Yes" means reported WITHOUT details, "No" means reported
-    # WITH details (or not reported at all) -- see models.F_ReportedBySpecialist.
+    # See models.F_ReportedBySpecialist: the schema's "Yes"/"No" are inverted
+    # with respect to the presence of details.
     correct_answer = "No" if details_present else "Yes"
 
     field_name = list(type(section_result).model_fields.keys())[0]
@@ -114,8 +129,6 @@ def apply_details_gate(section_key: str, section_result, reasoning_text: str):
             f"FINAL_ANSWER was '{llm_chosen_answer}'. Overriding.",
             flush=True,
         )
-        # Rebuilt via the model's own constructor (not setattr), same
-        # reasoning as apply_keyword_gate: keeps Pydantic validation.
         section_result = type(section_result)(**{field_name: correct_answer})
         reasoning_text += (
             f"\n\n[SYSTEM OVERRIDE]: The LLM originally selected '{llm_chosen_answer}', "
@@ -127,31 +140,29 @@ def apply_details_gate(section_key: str, section_result, reasoning_text: str):
 
 
 def apply_absent_pulses_gate(section_key: str, section_result, evidence: str, reasoning_text: str):
-    """
-    B2 only, and only its 'Absent pulses in legs or arms' option: this exact
-    option was traced -- across three separate scenario runs (SYN_05,
-    2026-08-06/07/08), each after a different rewrite of SECTION_HINTS['B2']
-    -- to a single recurring failure: the model selects it purely from
-    imaging/Doppler language ("flusso assente" / "no flow"), with reasoning
-    that explicitly (and wrongly) equates the two, e.g. "no flow detected...
-    this implies pulses were absent". The hint already tells it these are
-    different things; that alone hasn't been reliable enough.
+    """Drops B2's "Absent pulses in legs or arms" when the evidence contains no
+    pulse examination at all.
 
-    Deliberately scoped to ONLY this one section/option pair, not a general
-    "is this option justified" check (that generic version was tried and
-    removed -- see project history). 'Absent pulses' was picked because its
-    distinguishing evidence is close to unambiguous (the words "polso"/
-    "polsi"/"pulse" either appear in the evidence or they don't), unlike
-    B2's other options (calf pain, redness/warmth) or A3_2's modalities,
-    whose phrasing varies too much for a short keyword list to be safe
-    without a real risk of dropping a correctly-selected option.
+    The model repeatedly selects this option on the strength of imaging
+    language alone, reasoning that absent blood flow on a Doppler study implies
+    absent pulses. The two are different findings: one is a vascular imaging
+    result, the other a physical examination.
 
-    If 'Absent pulses in legs or arms' is selected but none of those
-    keywords appear (case-insensitively) in Agent 1's evidence for this
-    section, the option is dropped -- any OTHER options already selected in
-    B2 are left untouched. Returns (section_result, reasoning_text)
-    unchanged for every other section, and unchanged for B2 itself unless
-    this specific option was selected without support.
+    Scoped to this single section/option pair rather than generalised to a
+    "was this option justified" check, because its distinguishing evidence is
+    close to unambiguous -- the words polso/polsi/pulse either appear or they
+    do not. B2's other options and A3_2's imaging modalities vary too much in
+    phrasing for a short keyword list to be safe.
+
+    Args:
+        section_key: section identifier; anything other than "B2" is a no-op.
+        section_result: the section's Pydantic model instance.
+        evidence: the text Agent 1 extracted for this section.
+        reasoning_text: Agent 2's full response.
+
+    Returns:
+        (section_result, reasoning_text). Only the offending option is
+        removed; any other options selected in B2 are left untouched.
     """
     if section_key != "B2":
         return section_result, reasoning_text
@@ -173,8 +184,6 @@ def apply_absent_pulses_gate(section_key: str, section_result, evidence: str, re
             flush=True,
         )
         new_selected = [s for s in selected if s != target]
-        # Rebuilt via the model's own constructor (not setattr), same
-        # reasoning as apply_keyword_gate: keeps Pydantic validation.
         section_result = type(section_result)(**{field_name: new_selected})
         reasoning_text += (
             f"\n\n[SYSTEM OVERRIDE]: Removed '{target}' from the selection -- no "
@@ -186,67 +195,66 @@ def apply_absent_pulses_gate(section_key: str, section_result, evidence: str, re
 
 
 def apply_cross_section_rules(form_data: dict, audit_log: dict) -> dict:
-    """
-    See config.CROSS_SECTION_RULES.
+    """Enforces the questionnaire's structural dependencies between sections.
 
-    Evaluated once, after every section has been independently filled in
-    (regardless of which execution mode produced form_data). Two trigger
-    styles (see config.CROSS_SECTION_RULES's own comment):
-      - rule["none_option"] set: fires if rule["if_section"]'s answer has any
-        value OTHER than none_option (a positive finding implies then_section).
-      - rule["trigger_value"] set: fires if rule["if_section"]'s answer
-        EQUALS trigger_value (that specific answer implies then_section
-        can't have one, e.g. A3.1 = "no imaging done" implies A3.2 is empty).
-    Either way, rule["then_section"]'s answer is forced to rule["forced_value"],
-    and an explanatory note is appended to that section's audit log entry.
+    Runs once after every section has been filled in independently, regardless
+    of which config.EXTRACTOR_MODE produced form_data, so all execution modes
+    share one implementation. Each rule in config.CROSS_SECTION_RULES fires in
+    one of two ways:
 
-    Mutates and returns form_data.
+      - "none_option": when the source section reports any real finding, i.e.
+        any value other than that option (a finding in B2 implies B1.1 is
+        positive).
+      - "trigger_value": when the source section's answer equals that value
+        (A3.1 reporting no imaging implies A3.2 cannot list any study).
+
+    Either way the target section is forced to the rule's "forced_value".
+
+    Args:
+        form_data: section key (lowercase) -> Pydantic instance or None.
+        audit_log: section key (original casing) -> per-section log dict;
+            overridden sections get a "[SYSTEM OVERRIDE]" note appended to
+            their reasoning, so the override is traceable without re-running.
+
+    Returns:
+        form_data, mutated in place.
     """
     for rule in config.CROSS_SECTION_RULES:
-        # Both sections must have been filled in successfully; skip the
-        # rule entirely if either one failed during its own evaluation.
+        # Skip the rule entirely if either section failed its own evaluation:
+        # a forced answer derived from a missing one would be unfounded.
         if_result = form_data.get(rule["if_section"])
         then_result = form_data.get(rule["then_section"])
 
         if if_result is None or then_result is None:
             continue
 
-        # Generic single-field lookup, same idiom as apply_keyword_gate.
         if_field = list(type(if_result).model_fields.keys())[0]
         then_field = list(type(then_result).model_fields.keys())[0]
 
-        # Normalize to a list so single-choice and multi-select "if"
-        # sections can be checked with the same any(...) expression below.
+        # Normalized to a list so single-choice and multi-select source
+        # sections share the same any(...) test below.
         if_answers = getattr(if_result, if_field)
         if not isinstance(if_answers, list):
             if_answers = [if_answers]
 
         if "trigger_value" in rule:
-            # Fires when the if_section's answer EQUALS trigger_value.
             should_trigger = any(ans == rule["trigger_value"] for ans in if_answers)
         else:
-            # Original polarity: fires when if_section reported at least one
-            # real finding (anything other than its "none/unknown" option).
             should_trigger = any(ans != rule["none_option"] for ans in if_answers)
 
         if should_trigger:
             current_value = getattr(then_result, then_field)
-            # Only override if the "then" section doesn't already match --
-            # avoids redundant log noise when Agent 2 already agreed on its own.
+            # Only override a value that actually differs, to keep the log
+            # free of entries where Agent 2 had already agreed.
             if current_value != rule["forced_value"]:
                 print(
                     f"[CROSS-SECTION RULE] '{rule['if_section']}' triggered. "
                     f"Forcing '{rule['then_section']}' to '{rule['forced_value']}'.",
                     flush=True,
                 )
-                # Rebuilt via the model's own constructor (not setattr), same
-                # reasoning as apply_keyword_gate: keeps Pydantic validation.
                 form_data[rule["then_section"]] = type(then_result)(
                     **{then_field: rule["forced_value"]}
                 )
-                # Note appended to the audit log entry of the OVERRIDDEN
-                # section, so the override is traceable without re-running
-                # the pipeline.
                 audit_key = rule["audit_key"]
                 if audit_key in audit_log:
                     audit_log[audit_key]["reasoning"] = (

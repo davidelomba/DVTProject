@@ -106,6 +106,17 @@ def _selected_set(value):
 
 
 def evaluate(ground_truth: dict, predictions: dict) -> dict:
+    """Scores predictions against ground truth, section by section.
+
+    Args:
+        ground_truth: record_id -> reference answers.
+        predictions: record_id -> pipeline output.
+
+    Returns:
+        A report dict with per-section and overall counts. TP/TN/FP/FN are
+        computed per OPTION rather than per section, which is what makes a
+        partially-correct multi-select answer measurable.
+    """
     section_names = list(SECTION_MODELS.keys())
     report = {
         "records_compared": 0,
@@ -166,6 +177,7 @@ def evaluate(ground_truth: dict, predictions: dict) -> dict:
 
 
 def print_report(report: dict):
+    """Prints the report from evaluate() as a per-section table."""
     print(f"\nRecords compared: {report['records_compared']}")
     missing = report["records_missing_prediction"]
     if missing:
@@ -187,6 +199,7 @@ def print_report(report: dict):
 
 
 def main():
+    """Compares one run's output against the ground truth and saves a report."""
     parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     parser.add_argument("predictions_dir", nargs="?", default=str(Path(__file__).parent / "output"),
                          help="Directory of pipeline output JSON files (default: ./output, "
