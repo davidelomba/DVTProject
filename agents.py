@@ -20,7 +20,8 @@ from langchain_ollama import ChatOllama
 import config
 
 
-def build_llm(model_name: str = None, temperature: float = None) -> ChatOllama:
+def build_llm(model_name: str = None, temperature: float = None,
+              num_predict: int = None) -> ChatOllama:
     """Builds a ChatOllama instance for a given pipeline role.
 
     model_name defaults to config.LLM_MODEL_NAME (Agent 1, the extractor) if
@@ -30,11 +31,20 @@ def build_llm(model_name: str = None, temperature: float = None) -> ChatOllama:
     the pipeline; adding a new role only requires a new config constant and a
     call here, not a new function (see build_agentic_llm below for the one
     exception, which needs Ollama's tool-calling API).
+
+    num_predict overrides config.LLM_NUM_PREDICT's token cap for this one
+    instance. Every pipeline role leaves it at the default; it exists for
+    generate_synthetic_records.py's writer, which emits a whole clinical
+    record in a single call. Leaving it at the default silently truncated 22
+    of 30 generated records mid-sentence on 2026-08-16, and because Italian
+    records put labs and imaging LAST, the cut systematically removed the
+    diagnostically decisive facts -- which then looked like pipeline errors
+    (measured accuracy dropped from 85.1% to 77.0%) rather than a data defect.
     """
     return ChatOllama(
         model=model_name if model_name is not None else config.LLM_MODEL_NAME,
         temperature=temperature if temperature is not None else config.LLM_TEMPERATURE,
-        num_predict=config.LLM_NUM_PREDICT,
+        num_predict=num_predict if num_predict is not None else config.LLM_NUM_PREDICT,
         request_timeout=config.LLM_REQUEST_TIMEOUT,
     )
 

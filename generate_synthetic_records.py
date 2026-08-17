@@ -107,12 +107,21 @@ then reverted on 2026-08-16: real clinical records are expected from
 collaborators, and Davide prefers to run the mode comparison on those rather
 than on synthetically-lengthened text. Revisit when those arrive.
 
+FIDELITY CHECK: every generated record is verified before being saved (see
+check_record and generate_checked_record) and re-rolled if it fails, because
+the writer has repeatedly been caught dropping or altering supplied facts.
+The same checks can be run over an already-generated corpus, without calling
+any LLM, via:  python generate_synthetic_records.py --check
+
 Usage: python generate_synthetic_records.py
 Output: data/synthetic_records/<scenario_id>_<style_id>.txt (the record) and
         data/synthetic_records/<scenario_id>_<style_id>_ground_truth.json (answers).
 """
 
+import argparse
 import json
+import re
+import sys
 from pathlib import Path
 
 from agents import build_llm
@@ -123,6 +132,16 @@ from agents import build_llm
 # use, in either mode, now or after future config changes.
 WRITER_MODEL_NAME = "qwen2.5:7b-instruct"
 WRITER_TEMPERATURE = 0.8
+# Overrides config.LLM_NUM_PREDICT (512 tokens, sized for the pipeline's short
+# structured answers) for the writer only -- see agents.build_llm's num_predict
+# parameter for the incident this prevents. 512 tokens is about 1750 Italian
+# characters, i.e. just under the length this generator asks for, so the cap
+# was cutting records off mid-sentence instead of visibly failing.
+WRITER_NUM_PREDICT = 3072
+# Regeneration attempts per record when check_record() rejects the output.
+# The writer runs at temperature 0.8, so a retry genuinely resamples rather
+# than reproducing the same defective text.
+WRITER_MAX_ATTEMPTS = 3
 
 OUTPUT_DIR = Path(__file__).parent / "data" / "synthetic_records"
 
@@ -1033,6 +1052,117 @@ def build_ground_truth(record_id: str, scenario: dict) -> dict:
     return gt
 
 
+# ---------------------------------------------------------------------------
+# Fidelity check
+# ---------------------------------------------------------------------------
+# The writer does not reliably obey the "include every fact, invent nothing"
+# rules: individual records have been caught dropping a diagnosis name, flipping
+# an affected limb, genericising a named imaging modality, and (2026-08-16, on
+# a corpus-wide scale) losing whole trailing sections to a token cap. Every one
+# of those defects reached the pipeline unnoticed and was later mistaken for a
+# pipeline error, because nothing between the writer and the evaluation looked
+# at the generated text at all. These checks close that gap.
+#
+# SCOPE -- what this can and cannot catch. It verifies that decisive facts are
+# textually PRESENT and that the record is structurally complete. It cannot
+# judge whether they are used correctly: SYN_30's generated record contained
+# "380 ng/mL" but described it as "risultato positivo" while also editorialising
+# about the discordance with the ultrasound, which is a semantic violation this
+# check passes. Catching that class would need a second LLM as a judge --
+# deliberately not done here, to keep the check deterministic and fast.
+
+# Distinctive, hard-to-paraphrase markers extracted from a scenario's facts.
+# Names of specific procedures/tests are used rather than whole sentences: the
+# writer legitimately rewords sentences, but it cannot rename "flebografia" and
+# still be reporting the same study. Each entry maps a term as it appears in
+# the facts to the alternatives that count as the same thing in the record.
+_FACT_MARKERS = {
+    "d-dimero": ["d-dimero", "d dimero", "ddimero"],
+    "ecocolordoppler": ["ecocolordoppler", "eco-color-doppler", "ecocolor doppler", "ecodoppler"],
+    "ecografia compressiva": ["ecografia compressiva", "compressiva", "compressione ecografica"],
+    "flebografia": ["flebografia", "flebografico"],
+    "venografia": ["venografia", "venografico"],
+    "tc total body": ["tc total body", "tc totale", "total body"],
+    "pletismografia": ["pletismografia", "pletismografico"],
+    "trombectomia": ["trombectomia", "trombectomico"],
+    "filtro cavale": ["filtro cavale", "filtro in cava"],
+    "autoptico": ["autopsia", "autoptic", "riscontro autoptico"],
+    "riscontro autoptico": ["autopsia", "autoptic", "riscontro autoptico"],
+}
+
+
+def _expected_markers(scenario: dict) -> list[tuple[str, list[str]]]:
+    """(label, accepted_variants) for every decisive marker this scenario's
+    facts contain. Numeric values (lab results) are added verbatim: a dropped
+    or altered measurement is exactly the defect that made section C wrong on
+    three records, and a number is the one token the writer cannot paraphrase.
+
+    A scenario can override the auto-derived list with an explicit
+    "must_contain" key when the heuristic is not the right one for it.
+    """
+    if "must_contain" in scenario:
+        return [(term, [term]) for term in scenario["must_contain"]]
+
+    markers = []
+    for term, variants in _FACT_MARKERS.items():
+        # Only require a marker the facts actually ASSERT. A NEGATIVE fact
+        # ("Nessun esame di imaging venoso ne' D-dimero eseguiti") is about
+        # something that did NOT happen, and a real record often just stays
+        # silent about it rather than spelling out its absence -- so demanding
+        # the word would reject records that are perfectly faithful to the
+        # scenario. The sections concerned are covered anyway: an absent test
+        # leads the evaluator to the "not done / unknown" option, which is
+        # what the ground truth says in these cases, and A1/A2/X additionally
+        # have keyword gates in criteria_rules.py for the hallucinated-positive
+        # direction.
+        #
+        # Each fact is tested on its own rather than on the concatenation of
+        # all of them: facts carry no trailing punctuation, so on a joined
+        # string the negation pattern below reached across a fact boundary,
+        # and a "Nessun intervento chirurgico eseguito" in one fact suppressed
+        # the requirement for "Riscontro autoptico" asserted in the next --
+        # which is how SYN_19's missing autopsy slipped past this check when
+        # it was first written.
+        asserted = any(
+            term in fact.lower()
+            and not re.search(rf"(nessun[ao]?|non\s+\w+\s+)[^,;]*{re.escape(term)}", fact.lower())
+            for fact in scenario["facts"]
+        )
+        # Deduplicated on the accepted-variants set: several keys deliberately
+        # map to the same synonyms ("autoptico" / "riscontro autoptico"), and
+        # without this a single missing finding would be reported twice.
+        if asserted and not any(set(v) == set(variants) for _, v in markers):
+            markers.append((term, variants))
+
+    for number in re.findall(r"\b\d{1,3}(?:[.,]\d{3})*\s*ng/mL", " ".join(scenario["facts"])):
+        digits = re.sub(r"\s*ng/mL", "", number)
+        # Accept either separator: the writer freely switches "2.100"/"2,100".
+        markers.append((number, [digits, digits.replace(".", ","), digits.replace(",", ".")]))
+
+    return markers
+
+
+def check_record(text: str, scenario: dict) -> list[str]:
+    """Returns a list of problems found in a generated record; empty means OK."""
+    problems = []
+    stripped = text.strip()
+
+    if not stripped:
+        return ["empty record"]
+
+    # Truncation: a record cut off by the token cap ends mid-sentence. Checked
+    # first because it is the defect that silently invalidated a whole corpus,
+    # and because it usually causes the missing-marker failures below too.
+    if not stripped.endswith((".", "!", "?")):
+        problems.append(f"truncated mid-sentence (ends with {stripped[-40:]!r})")
+
+    for label, variants in _expected_markers(scenario):
+        if not any(v.lower() in stripped.lower() for v in variants):
+            problems.append(f"decisive fact missing from the record: {label!r}")
+
+    return problems
+
+
 def generate_record(llm, scenario: dict, style: dict) -> str:
     messages = [
         ("system", WRITER_SYSTEM_PROMPT),
@@ -1042,16 +1172,95 @@ def generate_record(llm, scenario: dict, style: dict) -> str:
     return response.content.strip()
 
 
-def main():
-    OUTPUT_DIR.mkdir(exist_ok=True)
-    llm = build_llm(WRITER_MODEL_NAME, temperature=WRITER_TEMPERATURE)
+def generate_checked_record(llm, scenario: dict, style: dict, record_id: str) -> tuple[str, list[str]]:
+    """Generates a record, re-rolling while check_record() rejects it.
 
+    Returns (best_text, remaining_problems). Retrying is worthwhile because the
+    writer runs at temperature 0.8, so each attempt is a genuine resample
+    rather than a repeat. After WRITER_MAX_ATTEMPTS the least-bad attempt is
+    returned WITH its problems, rather than raising: one stubborn scenario
+    should not abort a 30-record generation run, but it must not be saved
+    silently either -- main() reports it and the caller decides.
+    """
+    best_text, best_problems = None, None
+
+    for attempt in range(1, WRITER_MAX_ATTEMPTS + 1):
+        text = generate_record(llm, scenario, style)
+        problems = check_record(text, scenario)
+
+        if not problems:
+            return text, []
+
+        if best_problems is None or len(problems) < len(best_problems):
+            best_text, best_problems = text, problems
+
+        print(
+            f"[{record_id}] attempt {attempt}/{WRITER_MAX_ATTEMPTS} rejected: "
+            f"{'; '.join(problems)}",
+            flush=True,
+        )
+
+    return best_text, best_problems
+
+
+def check_existing_records() -> int:
+    """Runs check_record() over the records already on disk, without
+    regenerating anything. Returns the number of defective records.
+
+    Same checks as the inline ones, exposed separately so an existing corpus
+    can be audited (or re-audited after a manual fix) without spending an
+    Ollama run -- and so a corpus generated before this check existed can be
+    triaged. Usage: python generate_synthetic_records.py --check
+    """
+    defective = 0
+    for scenario in SCENARIOS:
+        for style in STYLE_VARIANTS:
+            record_id = f"{scenario['id']}_{style['id']}"
+            path = OUTPUT_DIR / f"{record_id}.txt"
+            if not path.exists():
+                print(f"[{record_id}] MISSING: {path.name} does not exist", flush=True)
+                defective += 1
+                continue
+            problems = check_record(path.read_text(encoding="utf-8"), scenario)
+            if problems:
+                defective += 1
+                print(f"[{record_id}] DEFECTIVE:", flush=True)
+                for p in problems:
+                    print(f"    - {p}", flush=True)
+
+    total = len(SCENARIOS) * len(STYLE_VARIANTS)
+    print(f"\n{total - defective}/{total} records pass the fidelity check.", flush=True)
+    return defective
+
+
+def main():
+    parser = argparse.ArgumentParser(
+        description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter
+    )
+    parser.add_argument(
+        "--check", action="store_true",
+        help="Only re-check the records already in data/synthetic_records/ "
+             "against check_record(); generate nothing and call no LLM.",
+    )
+    args = parser.parse_args()
+
+    if args.check:
+        sys.exit(1 if check_existing_records() else 0)
+
+    OUTPUT_DIR.mkdir(exist_ok=True)
+    llm = build_llm(
+        WRITER_MODEL_NAME,
+        temperature=WRITER_TEMPERATURE,
+        num_predict=WRITER_NUM_PREDICT,
+    )
+
+    still_defective = []
     for scenario in SCENARIOS:
         for style in STYLE_VARIANTS:
             record_id = f"{scenario['id']}_{style['id']}"
             print(f"[{record_id}] generating ({scenario['description']})...", flush=True)
 
-            record_text = generate_record(llm, scenario, style)
+            record_text, problems = generate_checked_record(llm, scenario, style, record_id)
 
             txt_path = OUTPUT_DIR / f"{record_id}.txt"
             json_path = OUTPUT_DIR / f"{record_id}_ground_truth.json"
@@ -1061,7 +1270,28 @@ def main():
                 json.dumps(build_ground_truth(record_id, scenario), indent=2, ensure_ascii=False),
                 encoding="utf-8",
             )
-            print(f"[{record_id}] saved -> {txt_path.name}, {json_path.name}", flush=True)
+            if problems:
+                # Saved anyway (a partial record is still inspectable), but
+                # recorded so the run ends with an explicit list instead of
+                # letting a defective record slip into the evaluation set.
+                still_defective.append((record_id, problems))
+                print(f"[{record_id}] SAVED WITH PROBLEMS -> {txt_path.name}", flush=True)
+            else:
+                print(f"[{record_id}] saved -> {txt_path.name}, {json_path.name}", flush=True)
+
+    if still_defective:
+        print(
+            f"\n!! {len(still_defective)} record(s) still failed the fidelity check "
+            f"after {WRITER_MAX_ATTEMPTS} attempts:",
+            flush=True,
+        )
+        for record_id, problems in still_defective:
+            print(f"  {record_id}: {'; '.join(problems)}", flush=True)
+        print(
+            "Review them (and fix them by hand if needed) BEFORE running the "
+            "pipeline on this set.",
+            flush=True,
+        )
 
     print(f"\nDone: {len(SCENARIOS) * len(STYLE_VARIANTS)} records in {OUTPUT_DIR}", flush=True)
 
