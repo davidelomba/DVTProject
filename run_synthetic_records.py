@@ -29,6 +29,7 @@ Usage:
 """
 
 import json
+import time
 import traceback
 from datetime import datetime
 from pathlib import Path
@@ -84,7 +85,8 @@ def main():
     print(f"Found {len(record_paths)} synthetic records. Running pipeline "
           f"(EXTRACTOR_MODE={config.EXTRACTOR_MODE!r})...\n", flush=True)
 
-    succeeded, failed = [], []
+    succeeded, failed, durations = [], [], []
+    batch_start = time.time()
     for i, record_path in enumerate(record_paths, start=1):
         record_id = record_path.stem
 
@@ -97,16 +99,30 @@ def main():
                   f"be able to score this record.", flush=True)
 
         print(f"[{i}/{len(record_paths)}] {record_id} ...", flush=True)
+        t0 = time.time()
         try:
             output_path = run_one(record_id, record_path)
             succeeded.append(record_id)
-            print(f"  -> saved {output_path.name}", flush=True)
+            elapsed = time.time() - t0
+            durations.append(elapsed)
+            # Remaining time estimated from the mean so far rather than the
+            # last record: per-record duration varies with how many tool calls
+            # the agentic extractor decides to make.
+            remaining = (len(record_paths) - i) * (sum(durations) / len(durations))
+            print(f"  -> saved {output_path.name} in {elapsed / 60:.1f} min "
+                  f"(ETA {remaining / 60:.0f} min for the remaining "
+                  f"{len(record_paths) - i})", flush=True)
         except Exception as exc:
             failed.append(record_id)
-            print(f"  -> FAILED: {exc}", flush=True)
+            print(f"  -> FAILED after {(time.time() - t0) / 60:.1f} min: {exc}", flush=True)
             traceback.print_exc()
 
-    print(f"\nDone: {len(succeeded)} succeeded, {len(failed)} failed.", flush=True)
+    total = time.time() - batch_start
+    print(f"\nDone: {len(succeeded)} succeeded, {len(failed)} failed "
+          f"in {total / 60:.0f} min total.", flush=True)
+    if durations:
+        print(f"Per record: mean {sum(durations) / len(durations) / 60:.1f} min, "
+              f"min {min(durations) / 60:.1f}, max {max(durations) / 60:.1f}.", flush=True)
     if failed:
         print(f"Failed records: {', '.join(failed)}", flush=True)
     print(f"\nNow run: python evaluate_synthetic_records.py", flush=True)

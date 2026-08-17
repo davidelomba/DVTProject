@@ -157,8 +157,10 @@ def run_pipeline(record_id: str, patient_ehr_path: str, brighton_pdf_path: str):
                     evidence = extract_evidence(llm, ehr_kb, query)
                 else:
                     evidence = extract_evidence_full_text(llm, patient_ehr_text, query)
-                print(f"[{section_key}] Agent 1 done in {time.time() - t0:.1f}s", flush=True)
+                elapsed = time.time() - t0
+                print(f"[{section_key}] Agent 1 done in {elapsed:.1f}s", flush=True)
                 section_log["evidence"] = evidence
+                section_log["agent1_seconds"] = round(elapsed, 1)
 
                 # Brighton context (synonyms) relevant to this section
                 brighton_docs = brighton_kb.as_retriever(search_kwargs={"k": config.BRIGHTON_RETRIEVER_K}).invoke(query)
@@ -172,7 +174,9 @@ def run_pipeline(record_id: str, patient_ehr_path: str, brighton_pdf_path: str):
                 section_result, reasoning_text = evaluate_section(
                     evaluator_llm, section_model, evidence, brighton_context, extra_instructions
                 )
-                print(f"[{section_key}] Agent 2 done in {time.time() - t0:.1f}s", flush=True)
+                elapsed = time.time() - t0
+                print(f"[{section_key}] Agent 2 done in {elapsed:.1f}s", flush=True)
+                section_log["agent2_seconds"] = round(elapsed, 1)
 
                 # Per-section deterministic gates, individually switchable in
                 # config.SECTION_GATES_ENABLED and shared with agentic_graph.py.

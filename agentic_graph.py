@@ -33,6 +33,7 @@ run_agentic_graph_pipeline.
 Requires the `langgraph` package and a tool-calling model pulled in Ollama.
 """
 
+import time
 from typing import Optional, TypedDict
 
 from langgraph.graph import StateGraph, END
@@ -139,6 +140,7 @@ def _make_search_node(llm, ehr_tool, ehr_vectorstore, section_queries: dict):
         query = section_queries[section_key]
 
         print(f"[{section_key}] Agent 1 (agentic search) exploring the record...", flush=True)
+        t0 = time.time()
         try:
             evidence = extract_evidence_agentic(
                 llm, ehr_tool, ehr_vectorstore, query, max_iterations=config.AGENTIC_MAX_ITERATIONS
@@ -148,9 +150,17 @@ def _make_search_node(llm, ehr_tool, ehr_vectorstore, section_queries: dict):
             # a missing evidence value as "no evidence found".
             print(f"[{section_key}] Agent 1 FAILED: {exc}", flush=True)
             evidence = None
+        # Timed even on failure, so a section that is slow because it kept
+        # retrying is still visible in the log.
+        elapsed = time.time() - t0
+        print(f"[{section_key}] Agent 1 done in {elapsed:.1f}s", flush=True)
 
         audit_log = dict(state["audit_log"])
-        audit_log[section_key] = {"query": query, "evidence": evidence}
+        audit_log[section_key] = {
+            "query": query,
+            "evidence": evidence,
+            "agent1_seconds": round(elapsed, 1),
+        }
         return {**state, "audit_log": audit_log}
 
     return search_record
@@ -204,10 +214,14 @@ def _make_answer_node(llm, brighton_kb, section_queries: dict):
             section_log["brighton_context"] = brighton_context
 
             print(f"[{section_key}] Agent 2 (evaluator) filling in the schema...", flush=True)
+            t0 = time.time()
             extra_instructions = config.SECTION_HINTS.get(section_key, "")
             section_result, reasoning_text = evaluate_section(
                 llm, section_model, evidence, brighton_context, extra_instructions
             )
+            elapsed = time.time() - t0
+            print(f"[{section_key}] Agent 2 done in {elapsed:.1f}s", flush=True)
+            section_log["agent2_seconds"] = round(elapsed, 1)
 
             # The same per-section gates pipeline.py applies: criteria_rules.py
             # is the single source of truth for every mode.
