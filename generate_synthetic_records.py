@@ -1249,10 +1249,16 @@ def main():
     )
     parser.add_argument(
         "--only", nargs="+", metavar="ID",
-        help="Regenerate only the scenarios whose id contains one of these "
+        help="Restrict the run to the scenarios whose id contains one of these "
              "strings (e.g. --only SYN_20 SYN_30). Every other record is left "
              "untouched, so a single defective one can be re-rolled without "
              "spending a full generation run or disturbing the rest of the set.",
+    )
+    parser.add_argument(
+        "--force", action="store_true",
+        help="Overwrite records that already exist. Without it only missing "
+             "ones are written, so an accidental run cannot destroy records "
+             "that were edited or authored by hand.",
     )
     args = parser.parse_args()
 
@@ -1264,10 +1270,40 @@ def main():
         scenarios = [s for s in SCENARIOS if any(frag in s["id"] for frag in args.only)]
         if not scenarios:
             sys.exit(f"No scenario id matches {args.only}.")
-        print(f"Regenerating {len(scenarios)} of {len(SCENARIOS)} scenarios: "
+        print(f"Restricting the run to {len(scenarios)} of {len(SCENARIOS)} scenarios: "
               f"{', '.join(s['id'] for s in scenarios)}\n", flush=True)
 
     OUTPUT_DIR.mkdir(exist_ok=True)
+
+    # Ground truth is derived from SCENARIOS with no model involved, so it is
+    # always rewritten: that keeps the reference answers in step with the
+    # scenarios even when no record is regenerated.
+    for scenario in scenarios:
+        for style in STYLE_VARIANTS:
+            record_id = f"{scenario['id']}_{style['id']}"
+            (OUTPUT_DIR / f"{record_id}_ground_truth.json").write_text(
+                json.dumps(build_ground_truth(record_id, scenario), indent=2, ensure_ascii=False),
+                encoding="utf-8",
+            )
+
+    # Records are only written when missing, unless --force. Records edited or
+    # written by hand are indistinguishable from generated ones on disk, and
+    # regenerating one silently replaces work that took real effort to get
+    # right -- which has already happened more than once in this project.
+    pending = [
+        (scenario, style)
+        for scenario in scenarios
+        for style in STYLE_VARIANTS
+        if args.force or not (OUTPUT_DIR / f"{scenario['id']}_{style['id']}.txt").exists()
+    ]
+    skipped = len(scenarios) * len(STYLE_VARIANTS) - len(pending)
+    if skipped:
+        print(f"{skipped} record(s) already exist and are left untouched "
+              f"(use --force to regenerate them).", flush=True)
+    if not pending:
+        print("Nothing to generate. Ground truth files refreshed.", flush=True)
+        return
+
     llm = build_llm(
         WRITER_MODEL_NAME,
         temperature=WRITER_TEMPERATURE,
@@ -1275,26 +1311,20 @@ def main():
     )
 
     still_defective = []
-    for scenario in scenarios:
-        for style in STYLE_VARIANTS:
-            record_id = f"{scenario['id']}_{style['id']}"
-            print(f"[{record_id}] generating ({scenario['description']})...", flush=True)
+    for scenario, style in pending:
+        record_id = f"{scenario['id']}_{style['id']}"
+        print(f"[{record_id}] generating ({scenario['description']})...", flush=True)
 
-            record_text, problems = generate_checked_record(llm, scenario, style, record_id)
+        record_text, problems = generate_checked_record(llm, scenario, style, record_id)
 
-            txt_path = OUTPUT_DIR / f"{record_id}.txt"
-            json_path = OUTPUT_DIR / f"{record_id}_ground_truth.json"
+        txt_path = OUTPUT_DIR / f"{record_id}.txt"
+        txt_path.write_text(record_text, encoding="utf-8")
 
-            txt_path.write_text(record_text, encoding="utf-8")
-            json_path.write_text(
-                json.dumps(build_ground_truth(record_id, scenario), indent=2, ensure_ascii=False),
-                encoding="utf-8",
-            )
-            if problems:
-                still_defective.append((record_id, problems))
-                print(f"[{record_id}] SAVED WITH PROBLEMS -> {txt_path.name}", flush=True)
-            else:
-                print(f"[{record_id}] saved -> {txt_path.name}, {json_path.name}", flush=True)
+        if problems:
+            still_defective.append((record_id, problems))
+            print(f"[{record_id}] SAVED WITH PROBLEMS -> {txt_path.name}", flush=True)
+        else:
+            print(f"[{record_id}] saved -> {txt_path.name}", flush=True)
 
     if still_defective:
         print(
