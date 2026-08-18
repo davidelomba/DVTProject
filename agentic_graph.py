@@ -43,6 +43,7 @@ import config
 from models import SECTION_MODELS
 from agents import extract_evidence_agentic, evaluate_section
 from criteria_rules import apply_section_gates
+from rag_setup import clean_brighton_context
 
 
 def build_agentic_llm() -> ChatOllama:
@@ -205,12 +206,14 @@ def _make_answer_node(llm, brighton_kb, section_queries: dict):
             return {**state, "form_data": form_data, "audit_log": audit_log}
 
         try:
-            # Guideline terminology for this section, retrieved exactly as in
-            # every other execution mode.
+            # Guideline terminology for this section, retrieved and cleaned
+            # exactly as in every other execution mode.
             brighton_docs = brighton_kb.as_retriever(
                 search_kwargs={"k": config.BRIGHTON_RETRIEVER_K}
             ).invoke(query)
-            brighton_context = "\n".join(d.page_content for d in brighton_docs)
+            brighton_context = clean_brighton_context(
+                "\n".join(d.page_content for d in brighton_docs)
+            )
             section_log["brighton_context"] = brighton_context
 
             print(f"[{section_key}] Agent 2 (evaluator) filling in the schema...", flush=True)

@@ -1,17 +1,1 @@
-La paziente è una donna di 58 anni con nessuna storia medica significativa, tranne un volo intercontinentale di 9 ore che ha avuto luogo 5 giorni prima dell'inizio dei sintomi. Negli ultimi 3 giorni, ha notato un dolore costante e progressivo al polpaccio destro, accompagnato da un edema leggermente progressivo dell'arto inferiore. L'esame cutaneo ha evidenziato un aumento della temperatura locale al polpaccio destro. 
-
-I parametri vitali nel momento dell'esame sono: pressione arteriosa 120/80 mmHg, frequenza cardiaca 72 batt./min, frequenza respiratoria 16 respir./min, temperatura corporeale 36.8°C, aspetto generale eutermico e non febbrile.
-
-L'esame fisico ha evidenziato un'area di dolore localizzata al polpaccio destro, con evidente edema e aumento della temperatura cutanea. Non si sono notati sintomi di periferia cianotica o di alterazione della sensibilità.
-
-I risultati del D-dimero sono risultati elevate a 2.100 ng/mL, superiore al limite di laboratorio. L'ecocolordoppler venoso dell'arto inferiore destro ha rilevato la presenza di una trombosi venosa poplitea destra, con flusso assente nel segmento trombizzato.
-
-L'osservazione è stata confermata con l'ECG e il TAC dell'arto inferiore destro, che hanno fornito un\'immagine concordante con la presenza di una trombosi venosa popposta.
-
-La paziente è stata inoltre interrogata su eventuali altri sintomi non correlati, riferendo la presenza di allergie a certi farmaci e negando la presenza di dolori toracici, vertigini o disturbi cardiovasculari.
-
-Il trattamento iniziale include l'administrazione di un anticoagulante parenterale con ulteriori istruzioni per la terapia domiciliare con un farmaco orale anti-aggregante plaquetario e un anticoagulante orale.
-
-La paziente è stata avvertita sul seguire una dieta ipocalorica e fluidi abbondanti, con l'obiettivo di mantenere una buona hydration. È stata inoltre consigliata l'attività fisica leggera, con l'obiettivo di prevenire ulteriori complicanze.
-
-Il paziente è stata inoltre avvertita sul seguire un\'osservazione stretta dei sintomi e la necessità di un controllo iniziale in terapia, con un controllo di seguito in seguito.
+Anamnesi patologica remota: Donna di 58 anni. Non allergie farmacologiche note. Nessun intervento chirurgico recente. Anamnesi farmacologica: levotiroxina 50 mcg, pantoprazolo 20 mg al bisogno. Riferisce volo intercontinentale di 9 ore effettuato 5 giorni prima dell'esordio della sintomatologia. Anamnesi Prossima: Da circa 3 giorni comparsa di dolore al polpaccio destro, associato a edema progressivo dell'arto inferiore omolaterale. Nega trauma, dolore toracico, dispnea o emottisi. Si presenta in ambulatorio per il peggioramento della tumefazione. Esame obiettivo all'ingresso: Paziente vigile, orientata e collaborante. Parametri vitali stabili: PA 124/76 mmHg, FC 72 bpm, FR 15 atti/min, SpO2 99% in aria ambiente, TC 36,6°C. Arto inferiore destro con edema del polpaccio e aumento della temperatura cutanea locale in sede omolaterale; dolorabilita' alla palpazione del polpaccio. Addome trattabile, non dolente. Esami di laboratorio: D-dimero 2.100 ng/mL, superiore al limite superiore di riferimento del laboratorio. Eseguito ecocolordoppler venoso dell'arto inferiore destro: trombosi venosa a carico della vena poplitea destra, con flusso assente nel segmento trombizzato.

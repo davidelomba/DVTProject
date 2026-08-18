@@ -5,6 +5,7 @@ Builds the two vector stores required by the plan:
 """
 
 import os
+import re
 import shutil
 
 from langchain_chroma import Chroma
@@ -104,6 +105,44 @@ def build_ehr_kb(patient_record_text: str, patient_id: str, embeddings=None) -> 
     )
 
 
+# Lines of the Brighton paper that carry no clinical meaning: numbered
+# bibliography entries, DOIs, URLs and journal citations. The PDF is chunked
+# whole, so a retrieved chunk routinely contains a run of references, and they
+# reach Agent 2 as if they were reference terminology.
+_BIBLIOGRAPHY_LINE = re.compile(
+    r"^\s*\[\d+\]"          # "[83] Goodman LR, Stein PD, ..."
+    r"|https?://"           # bare URLs
+    r"|doi\.org"            # DOI links
+    r"|\bdoi:\s*10\."       # inline DOIs
+    r"|^\s*10\.\d{4}/"      # a DOI on a line of its own
+    r"|\b\d{4};\s*\d+"      # journal volume citations: "2007;189(5):1071-6"
+    r"|Last accessed",
+    re.IGNORECASE,
+)
+
+
+def clean_brighton_context(context: str) -> str:
+    """Strips bibliographic noise from retrieved guideline context.
+
+    Measured over a full 30-record run, roughly a quarter of the retrieved
+    Brighton text was references rather than clinical content, while the
+    context as a whole took up about twice as many characters as the patient's
+    own evidence. Those lines cannot help Agent 2 answer a criterion, and they
+    compete with the evidence for the model's attention.
+
+    Args:
+        context: the concatenated page content of the retrieved chunks.
+
+    Returns:
+        The same text without bibliography lines. Falls back to the original
+        if filtering would remove everything, so a chunk that happens to be
+        all references still yields something rather than an empty context.
+    """
+    kept = [ln for ln in context.splitlines() if not _BIBLIOGRAPHY_LINE.search(ln)]
+    cleaned = "\n".join(kept).strip()
+    return cleaned if cleaned else context
+
+
 def make_ehr_retriever_tool(ehr_vectorstore: Chroma):
     """
     Wraps the EHR retriever as a LangChain Tool, used by the agentic
@@ -138,12 +177,44 @@ def make_ehr_retriever_tool(ehr_vectorstore: Chroma):
     )
 
 
-def load_brighton_pdf_text(pdf_path: str) -> str:
-    """
-    Extracts text from the Brighton paper PDF using pypdf.
+# Start of the paper's reference list: the word on a line of its own, which in
+# the Brighton PDF occurs exactly once and only as the section heading.
+# Deliberately NOT keyed on the first "[N]" citation, since those also appear
+# inline in the body text from about a fifth of the way into the document.
+_REFERENCES_HEADING = re.compile(r"(?im)^[ \t]*references[ \t]*$")
+
+
+def load_brighton_pdf_text(pdf_path: str, drop_references: bool = True) -> str:
+    """Extracts the guideline text from the PDF, without its reference list.
+
+    The reference list is roughly the last 40% of this paper and is pure noise
+    for the pipeline: chunks falling in it are indexed and retrieved like any
+    other, and reach Agent 2 as if they were reference terminology. Dropping it
+    before chunking removes it wholesale -- including entries split across
+    several lines, which a line-level filter cannot fully catch -- and keeps
+    the vector store limited to clinical content, so the retrieved chunks are
+    chosen among useful text only.
+
+    Args:
+        pdf_path: path to the guideline PDF.
+        drop_references: set False to keep the full text, e.g. to compare
+            retrieval with and without the reference list.
+
+    Returns:
+        The extracted text, truncated at the reference heading when one is
+        found. If no heading matches the whole text is returned unchanged, so
+        a differently-structured paper degrades to the previous behaviour
+        rather than losing content.
     """
     reader = PdfReader(pdf_path)
-    return "\n".join(page.extract_text() or "" for page in reader.pages)
+    text = "\n".join(page.extract_text() or "" for page in reader.pages)
+
+    if drop_references:
+        match = _REFERENCES_HEADING.search(text)
+        if match:
+            text = text[:match.start()].rstrip()
+
+    return text
 
 
 def load_ehr_text(txt_path: str) -> str:

@@ -1,11 +1,1 @@
-Il paziente, uomo di 55 anni, al consultazione di primo accesso si presenta con un fastidio alla gamba sinistra, segnalato come un generico “fastidio” senza specificare ulteriormente la sede o l'intensità, né la presenza di ulteriori caratteristiche come emorragia, cedimento o sensazione di calore. L'anamnesi prossima non riporta la presenza di febbre, emorragie cutanee, o gonfiore diffuso; non si è segnalato alcun episodio di arrossamento cutaneo o dolori diversi, né l'uso di farmaci anticoagolanti o corticosteroidi.
-
-Nel contesto della vita quotidiania, il paziente segue una terapia domiciliare per l'artrite reumatoide, con un regime di analgesici non steroidei (NSAIDs) a dosi quotidiane. Non manifesta né allergie né sensibilità a farmaci specifici, né nega l'uso di droghe, alcol o nicotina. Nel corso dell'ultima settimana, non si è segnalato la presenza di sintomi di tipo respiratorio, digestivo o cutaneo, né l'assunzione di nuovi farmaci o la variazione di quelli in uso.
-
-Nel campo degli esami di laboratorio, non è stato eseguito un D-dimero per il momento. Non è stato effettuato alcun esame di imaging, come ecografia di arti inferiori o tomografia computazionale, né viene segnalato l'uso di dispositivi interventi chirurgici recenti.
-
-Nell'esame fisico, la paziente si trova in buone condizioni generali, con una temperatura corporea normale (36,6°C), pressione arteriosa di 120/80 mmHg, frequenza cardiaca di 72 battiti al minuto e respiratoria di 16 respirazioni al minuto. Il peso corporeo è di 78 kg, con una corporatura in media.
-
-Nel corso dell'esame obiettivo, viene effettuata una valutazione delle gambe, notando un lieve gonfiore della gamba sinistra, ma senza evidenza di cedimento cutaneo o emorragia. Nella gamba sinistra, si evidenzia un leggero aumento del volume, ma senza emorragie cutanee o calore. La circolazione è normale, senza evidenza di artériocele o ulcere.
-
-Il paziente viene riferito in osservazione per la sospetta trombosi venosa profonda (TVP), in attesa di ulteriori esami di laboratorio e di imaging per confermare la diagnosi.
+Anamnesi patologica remota: Uomo di 55 anni. Non disponibile. Anamnesi Prossima: Riferisce un generico fastidio alla gamba da qualche giorno, senza ulteriori dettagli su sede, intensita' o caratteristiche. Esame obiettivo all'ingresso: Non riportato in cartella alcun esame obiettivo dettagliato. Esami di laboratorio: Nessun esame di imaging eseguito. D-dimero non eseguito. In cartella non risulta alcuna nota di diagnosi da parte di uno specialista.

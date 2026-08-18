@@ -218,17 +218,26 @@ SECTION_HINTS = {
         "(e.g. 'D-dimero superiore al limite di laboratorio') is sufficient evidence on its own. "
     ),
     "F": (
-        "CRITICAL: This criterion asks if the diagnosis was reported 'WITHOUT details'. "
-        "If the evidence provides specific clinical details about the diagnostic tests used "
-        "-- such as an imaging finding (even a NEGATIVE one, e.g. 'no evidence of thrombosis'), "
-        "a lab value (e.g. leukocytosis, CRP, D-dimer), or a named anatomical site -- you MUST "
-        "select 'No', even if that finding is not itself about DVT or the final diagnosis is a "
-        "different condition (e.g. cellulitis). Select 'Yes' ONLY if the diagnosis is stated as "
-        "a bare conclusion with absolutely no supporting clinical details. "
-        "NOTE: judge this by whether a specific finding is present -- NOT by whether the evidence "
-        "fragment also repeats the NAME of the test that produced it; the fragment may omit the "
-        "test's name even when a finding is present. "
-        "Immediately before FINAL_OPTION, write: 'DETAILS_PRESENT: yes' or 'DETAILS_PRESENT: no'."
+        # The DETAILS_PRESENT line is requested FIRST, before any reasoning.
+        # criteria_rules.apply_details_gate derives F's answer from it, so the
+        # line has to be reliably present -- and asking for it at the end made
+        # the model skip it on most records once prompts grew longer. A first
+        # line is written before there is anything to lose track of, and the
+        # judgment itself needs no reasoning to precede it.
+        "FIRST LINE OF YOUR RESPONSE, before any reasoning, write exactly: "
+        "'DETAILS_PRESENT: yes' or 'DETAILS_PRESENT: no'. Write 'yes' if the evidence "
+        "contains ANY specific clinical finding -- an imaging result (even a NEGATIVE "
+        "one, e.g. 'no evidence of thrombosis'), a lab value (e.g. leukocytosis, CRP, "
+        "D-dimer), or a named anatomical site -- and 'no' only if the diagnosis is "
+        "stated as a bare conclusion with no supporting finding of any kind. Then "
+        "continue with your reasoning as instructed below.\n"
+        "This criterion asks if the diagnosis was reported 'WITHOUT details'. If such "
+        "details are present you MUST select 'No', even when the finding is not itself "
+        "about DVT or the final diagnosis is a different condition (e.g. cellulitis). "
+        "Select 'Yes' ONLY for a bare conclusion with no supporting detail. "
+        "NOTE: judge this by whether a specific finding is present -- NOT by whether the "
+        "evidence fragment also repeats the NAME of the test that produced it; the "
+        "fragment may omit the test's name even when a finding is present."
     ),
     "X": (
         "CRITICAL ERROR PREVENTION: Symptoms (like pain, swelling, edema) are NOT alternative diagnoses. "

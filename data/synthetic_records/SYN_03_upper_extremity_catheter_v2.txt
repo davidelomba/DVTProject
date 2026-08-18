@@ -1,13 +1,1 @@
-La paziente, una donna di 62 anni, è ricoverata con anamnesi di dolore e arrossamento al braccio destro, sede del catetere venoso centrale per chemioterapia, da quattro giorni. La paziente, a parte questa condizione, non menziona storia di autopsia o interventi chirurgici recenti. Il suo stato allergologico non rilevante. Nella terapia domiciliare in corso si trova in ossigenoterapia per sindrome dell'ago per 1 litro al giorno.
-
-L'anamnesi prossima mostra un’insorgenza di dolore iniziato quattro giorni fa, progressivo e localizzato nel braccio destro. Il paziente menziona una sensazione di calore in quella zona, ma nega la presenza di edema. Inoltre, non ha evidenziato alterazioni della sensibilità né del movimento del braccio.
-
-L’esame obiettivo del braccio destro evidenzia un arrossamento localizzato, con un’area di calore notevole, ma senza evidenza di edema o gonfiore. Non sono noti altri segni locali di infiammazione o infezione.
-
-I parametri vitali al momento dell'esame sono: pressione arteriosa 120/80 mmHg, frequenza cardiaca 72 battiti al minuto, frequenza respiratoria 16 respiri al minuto, temperatura corporea 36.8°C.
-
-Gli esami di laboratorio mostrano un D-dimero elevato a 1.800 ng/mL, superiore al limite del laboratorio, suggerendo una situazione trombologica.
-
-L’esame strumentale di riferimento, una CT venografia del braccio destro, evidenzia la presenza di un trombosi della vena succlavia destra, associato al catetere venoso centrale. 
-
-Il paziente è stato informato della natura della diagnosi e ha compreso le implicazioni. Si procederà con una terapia anticoagulante e controllo clinico e laboratory regolare.
+Anamnesi patologica remota: Donna di 62 anni, portatrice di catetere venoso centrale posizionato per chemioterapia. Nessun intervento chirurgico recente diverso dal posizionamento del catetere. Non allergie note. Anamnesi farmacologica: terapia antiemetica al bisogno, omeprazolo 20 mg. Anamnesi Prossima: Da 4 giorni dolore e arrossamento al braccio destro, in corrispondenza della sede del catetere, con sensazione di calore locale. Non riferito edema dell'arto. Nega febbre, dispnea e dolore toracico. Esame obiettivo all'ingresso: Paziente vigile, orientata, eupnoica a riposo. PA 122/78 mmHg, FC 80 bpm, FR 16 atti/min, SpO2 98% in aria ambiente, TC 36,8°C. Braccio destro con arrossamento e aumento della temperatura cutanea in sede di catetere, dolorabilita' alla palpazione. Non rilevato edema dell'arto. Esami di laboratorio: D-dimero 1.800 ng/mL, superiore al limite superiore di riferimento del laboratorio. Eseguita CT venografia dell'arto superiore destro: trombosi della vena succlavia destra, associata al catetere venoso centrale.

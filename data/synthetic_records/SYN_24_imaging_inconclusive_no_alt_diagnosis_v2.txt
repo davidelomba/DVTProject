@@ -1,17 +1,1 @@
-Il paziente è una donna di 37 anni, senza storia di autopsia o intervento chirurgico recente. Da circa due giorni si lamenta di dolore localizzato nel polpaccio sinistro, senza segni evidenti di edema o arrossamento. Nelle prime ore non si è notata un aumento della temperatura alla zona dolorosa.
-
-**Anamnesi prossima**:
-Il paziente ha iniziato a notare il dolore nel polpaccio sinistro il giorno prima della visita, che si è mantenuto costante e non ha seguito una progressione. Non ha notato nessuna intromissione fisica o trauma recente che possa averla causato. Non ha intrecciato il dolore con movimenti o con il camminare, rimanendo comunque attiva nella vita quotidiana. 
-
-**Esame obiettivo**:
-Il paziente è in buone condizioni generali. Pesi e misure corporee all'interno dei limiti normali. Parametri vitali: pressione sanguigna 120/80 mmHg, frequenza cardiaca 72 battiti/minuti, respiro 18 battiti/minuti, temperatura corporea 36,8°C. In termini di sintomi, il paziente denuncia un dolore localizzato nel polpaccio sinistro, senza manifestazione di edema o arrossamento. 
-
-**Esami di laboratorio e strumentali**:
-Il d-dimero, tracciato oggi, è risultato elevato con un valore di 890 ng/mL, superiore al limite di laboratorio. Inoltre, l'ecografia compressiva venosa dell'arto inferiore sinistro non ha evidenziato nessuna trombosi, avendo identificato solo vene comprimibili.
-
-**Considerazioni diagnostiche**:
-Il d-dimero elevato, associato al dolore localizzato, suggerisce una sospetta trombosi venosa profonda (TVP). Tuttavia, l'assenza di edema, arrossamento e l'esclusione trombosi mediante l'ecografia compressiva, hanno portato alla diagnosi incerta. Non sono state identificate diagnosi alternative, e la paziente è stata consigliata un controllo clinico a distanza di pochi giorni.
-
-Nel corso del periodo di osservazione, la paziente ha svolto alcune attività normali, compresa una breve passeggiata. Non ha seguito alcuna terapia domiciliare specifica fino ad oggi. Nella terapia per problemi cutanei, l'unico farmaco in uso è il corticosteroidi in forma locale per problemi di dermatite. In quanto allergologa, la paziente ha una negazione per farmaci a base di aspirina e simili, ma non ha mai avuto reazioni allergiche significative.
-
-Il paziente ha rifiutato l'ossigenoterapia e l'uso di supporti termici, preferendo mantenere un regime di movimento con una passeggiata di circa 30 minuti al giorno. Non ha mostrato segni di claustrofobia o rifiuto verso procedure diagnostiche future, anche se ha espresso la preferenza per un controllo medico in casa se possibile.
+Anamnesi patologica remota: Donna di 37 anni. Nessun intervento chirurgico recente. Non allergie farmacologiche note. Anamnesi farmacologica: nessuna terapia cronica in atto. Anamnesi Prossima: Da 2 giorni dolore al polpaccio sinistro, senza edema ne' arrossamento evidenti. Nega trauma, febbre, dolore toracico e dispnea. Esame obiettivo all'ingresso: Paziente vigile, orientata e collaborante, eupnoica a riposo. PA 118/74 mmHg, FC 72 bpm, FR 15 atti/min, SpO2 99% in aria ambiente, TC 36,5°C. Dolorabilita' alla palpazione del polpaccio sinistro; non rilevato edema ne' alterazione del colorito cutaneo. Esami di laboratorio: D-dimero 890 ng/mL, superiore al limite superiore di riferimento del laboratorio. Eseguita ecografia compressiva venosa dell'arto inferiore sinistro: vene comprimibili, nessuna evidenza di trombosi. La paziente e' stata dimessa con diagnosi incerta, senza che sia stata identificata alcuna diagnosi alternativa; consigliato controllo clinico a distanza di pochi giorni.

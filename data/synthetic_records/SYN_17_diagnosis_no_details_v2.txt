@@ -1,3 +1,1 @@
-Segnalazione ospedaliera:
-
-Paziente donna, 60 anni, riferita dal medico di base con diagnosi di sospetta trombosi venosa profonda dell'arto inferiore sinistro. Nessun dettaglio clinico, esame obiettivo, di laboratorio o di imaging disponibile in questa sede oltre alla diagnosi riferita. Nessuna autopsia o intervento chirurgico recente.
+Segnalazione ambulatoriale. Paziente donna di 60 anni, inviata dal medico di medicina generale con diagnosi di trombosi venosa profonda dell'arto inferiore sinistro. Nessun intervento chirurgico recente. Non e' disponibile in questa sede alcun dettaglio clinico, esame obiettivo, esame di laboratorio o referto di imaging oltre alla diagnosi riferita nella nota di invio.

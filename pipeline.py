@@ -12,7 +12,15 @@ import traceback
 
 import config
 from models import DVT_CriteriaForm, SECTION_MODELS
-from rag_setup import get_embeddings, build_brighton_kb, build_ehr_kb, make_ehr_retriever_tool, load_brighton_pdf_text, load_ehr_text
+from rag_setup import (
+    get_embeddings,
+    build_brighton_kb,
+    build_ehr_kb,
+    make_ehr_retriever_tool,
+    load_brighton_pdf_text,
+    load_ehr_text,
+    clean_brighton_context,
+)
 from agents import build_llm, evaluate_section, extract_evidence, extract_evidence_full_text
 from criteria_rules import apply_section_gates, apply_cross_section_rules
 from agentic_graph import build_agentic_llm, run_agentic_graph_pipeline
@@ -162,9 +170,12 @@ def run_pipeline(record_id: str, patient_ehr_path: str, brighton_pdf_path: str):
                 section_log["evidence"] = evidence
                 section_log["agent1_seconds"] = round(elapsed, 1)
 
-                # Brighton context (synonyms) relevant to this section
+                # Brighton context (synonyms) relevant to this section, with
+                # bibliography stripped (see rag_setup.clean_brighton_context).
                 brighton_docs = brighton_kb.as_retriever(search_kwargs={"k": config.BRIGHTON_RETRIEVER_K}).invoke(query)
-                brighton_context = "\n".join(d.page_content for d in brighton_docs)
+                brighton_context = clean_brighton_context(
+                    "\n".join(d.page_content for d in brighton_docs)
+                )
                 section_log["brighton_context"] = brighton_context
 
                 # Agent 2: evaluation constrained to the section's Pydantic schema
