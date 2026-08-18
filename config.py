@@ -171,10 +171,7 @@ SECTION_HINTS = {
         "-> 'Contrast venography'\n"
         "- CT or MR venography / 'TC venografia' / 'RM venografia' -> 'CT or MR venography'\n"
         "- any other named imaging test that is none of the four above (e.g. impedance "
-        "plethysmography, a whole-body CT done for another purpose) -> 'Other'\n"
-        "If the evidence describes an imaging test but you cannot tell which of the four "
-        "specific modalities it was, select 'Other' -- do NOT guess 'Doppler/Duplex "
-        "Ultrasound'."
+        "plethysmography, a whole-body CT done for another purpose) -> 'Other'"
     ),
     "B1_1": (
         "CRITICAL DISTINCTION FOR NEGATIONS: "
