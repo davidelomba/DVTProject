@@ -377,6 +377,18 @@ def _build_reasoning_prompt(
             "just because it is listed first -- every option you list on FINAL_OPTION must "
             "be traceable to a specific sentence in your reasoning."
         )
+        # Sections with no "none of the above" option among their choices (A3.2,
+        # B1.2) still accept an empty answer in the schema, but the numbered list
+        # gives the model no way to express one -- and when nothing applied it was
+        # observed selecting every option instead. Spelled out only where the
+        # section actually needs it, so B2 keeps using its own option 5.
+        if not _has_none_option(options):
+            prompt += (
+                "\nIf NONE of the numbered options applies, write exactly "
+                "'FINAL_OPTION: none' and 'FINAL_ANSWER: none'. Leaving this section "
+                "empty is a valid answer; listing every option is NOT how to say that "
+                "nothing applies."
+            )
     else:
         prompt += (
             base_instruction +
@@ -388,6 +400,54 @@ def _build_reasoning_prompt(
             "text, FINAL_ANSWER must be 2)."
         )
     return prompt
+
+
+# Opening words of the explicit "nothing applies" option, where a section has
+# one (only B2 does). Used to tell apart the sections that can express an empty
+# answer through an option of their own from those that cannot.
+_NONE_OPTION_PREFIX = "none of the above"
+
+# What the model may write on FINAL_ANSWER/FINAL_OPTION to say that no option
+# applies, in the sections that have no "none of the above" option to select.
+# Both languages are accepted because the evaluator answers in English but the
+# clinical records may be in any language, and it occasionally follows theirs.
+_NO_SELECTION_ANSWERS = {
+    "none", "no option", "no options", "nothing", "empty",
+    "nessuna", "nessuno", "nessuna opzione",
+    "n/a", "na", "-", "--", "0",
+}
+
+
+def _has_none_option(options: list[str]) -> bool:
+    """Whether a section offers an explicit 'none of the above' option.
+
+    Args:
+        options: the section's options, in schema order.
+
+    Returns:
+        True if one of them is the catch-all negative option.
+    """
+    return any(opt.lower().startswith(_NONE_OPTION_PREFIX) for opt in options)
+
+
+def _is_no_selection(raw_value: str) -> bool:
+    """Whether an answer line means 'no option applies' rather than naming one.
+
+    A3.2 and B1.2 are multi-select sections whose schema allows an empty answer
+    but whose option list offers no way to say so. Asked to pick from a numbered
+    list with nothing to pick, the model was observed reasoning correctly that
+    no option applied and then selecting EVERY option -- an answer that is not
+    only wrong but the maximally wrong one. Giving it a token to write instead
+    turns that failure into the empty list the schema already supports.
+
+    Args:
+        raw_value: the whole content of a FINAL_ANSWER or FINAL_OPTION line.
+
+    Returns:
+        True if the line is one of the recognised "nothing applies" tokens.
+    """
+    cleaned = raw_value.strip().lower().strip("\"'.;:,[]() ")
+    return cleaned in _NO_SELECTION_ANSWERS
 
 
 def _extract_final_answer_line(text: str) -> str:
@@ -530,6 +590,12 @@ def evaluate_section(
             raw_option_text = _extract_labeled_line(content, "FINAL_OPTION")
 
             if multi_select:
+                # "nothing applies", as offered by _build_reasoning_prompt to the
+                # sections that have no "none of the above" option to select.
+                # Checked before matching, since the token matches no option.
+                if not _has_none_option(options) and _is_no_selection(raw_final):
+                    return section_model(**{field_name: []}), content
+
                 # Each ';'-separated item mapped to a valid option independently.
                 raw_items = [item.strip() for item in raw_final.split(";") if item.strip()]
                 matched = [_match_option(item, options) for item in raw_items]
@@ -581,7 +647,7 @@ def evaluate_section(
                 # Repaired here instead by keeping the specific findings, the
                 # more informative of the two contradictory signals.
                 if len(matched) > 1:
-                    none_options = [m for m in matched if m.lower().startswith("none of the above")]
+                    none_options = [m for m in matched if m.lower().startswith(_NONE_OPTION_PREFIX)]
                     if none_options:
                         print(
                             f"[WARNING] Model selected {none_options} together with real "
