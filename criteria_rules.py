@@ -1,14 +1,15 @@
 """
 Deterministic safety nets applied on top of the two LLM agents' output:
 per-section keyword gates, the section-F details gate, the B2 absent-pulses
-gate, and cross-section dependency rules.
+gate and cross-section dependency rules.
 
-Every function here is a pure post-processing step: it takes what Agent 2
-answered and either returns it unchanged or replaces it with a value derived
-mechanically from the evidence or from another section's answer. Overrides are
-always recorded in the reasoning text (or the audit log) with a
-"[SYSTEM OVERRIDE]" note, so a forced answer is never indistinguishable from
-one the model produced on its own.
+No function here calls a model: each one either keeps Agent 2's answer or
+replaces it with a value derived mechanically from the evidence or from
+another section's answer. The per-section gates return a new answer and leave
+their arguments untouched; apply_cross_section_rules edits form_data and
+audit_log in place. Overrides always carry a "[SYSTEM OVERRIDE]" note in the
+reasoning text, so a forced answer is never indistinguishable from one the
+model produced on its own.
 """
 
 import re
@@ -48,8 +49,7 @@ def apply_keyword_gate(section_key: str, section_result, evidence: str, reasonin
     field_name = list(type(section_result).model_fields.keys())[0]
     llm_chosen_answer = getattr(section_result, field_name)
 
-    # "Positive" = anything other than the section's negative default, i.e.
-    # Agent 2 is claiming the procedure did happen.
+    # "Positive" = anything other than the section's negative default
     if isinstance(llm_chosen_answer, list):
         is_positive = any(ans != gate_info["default_option_text"] for ans in llm_chosen_answer)
     else:
@@ -92,8 +92,8 @@ def apply_details_gate(section_key: str, section_result, reasoning_text: str):
     cannot catch it.
 
     config.SECTION_HINTS["F"] therefore asks for an explicit
-    "DETAILS_PRESENT: yes/no" line -- a factual judgment, not a mapping onto
-    the schema's wording -- and this function does the mapping mechanically.
+    "DETAILS_PRESENT: yes/no" line (a factual judgment, not a mapping onto
+    the schema's wording) and this function does the mapping mechanically.
     The clinical judgment stays with the model; only the label is decided here.
 
     Args:
@@ -104,7 +104,7 @@ def apply_details_gate(section_key: str, section_result, reasoning_text: str):
 
     Returns:
         (section_result, reasoning_text), unchanged for other sections and
-        when the DETAILS_PRESENT line is absent or unparseable -- a missing
+        when the DETAILS_PRESENT line is absent or unparseable; a missing
         line degrades to "trust the model" rather than failing the section.
     """
     if section_key != "F":
@@ -115,7 +115,7 @@ def apply_details_gate(section_key: str, section_result, reasoning_text: str):
         return section_result, reasoning_text
 
     details_present = match.group(1).lower() == "yes"
-    # See models.F_ReportedBySpecialist: the schema's "Yes"/"No" are inverted
+    # The schema's "Yes"/"No" are inverted
     # with respect to the presence of details.
     correct_answer = "No" if details_present else "Yes"
 
@@ -150,8 +150,8 @@ def apply_absent_pulses_gate(section_key: str, section_result, evidence: str, re
 
     Scoped to this single section/option pair rather than generalised to a
     "was this option justified" check, because its distinguishing evidence is
-    close to unambiguous -- the words polso/polsi/pulse either appear or they
-    do not. B2's other options and A3_2's imaging modalities vary too much in
+    close to unambiguous (the words polso/polsi/pulse either appear or they
+    do not). B2's other options and A3_2's imaging modalities vary too much in
     phrasing for a short keyword list to be safe.
 
     Args:
@@ -180,13 +180,13 @@ def apply_absent_pulses_gate(section_key: str, section_result, evidence: str, re
     if not has_pulse_keyword:
         print(
             f"[B2] ABSENT PULSES GATE TRIGGERED: '{target}' selected but no pulse-exam "
-            f"keyword ('polso'/'polsi'/'pulse') found in the evidence -- dropping it.",
+            f"keyword ('polso'/'polsi'/'pulse') found in the evidence -> dropping it.",
             flush=True,
         )
         new_selected = [s for s in selected if s != target]
         section_result = type(section_result)(**{field_name: new_selected})
         reasoning_text += (
-            f"\n\n[SYSTEM OVERRIDE]: Removed '{target}' from the selection -- no "
+            f"\n\n[SYSTEM OVERRIDE]: Removed '{target}' from the selection: no "
             f"pulse-exam keyword found in the evidence; absent flow on an imaging "
             f"study alone is not sufficient justification for this option."
         )
@@ -197,10 +197,10 @@ def apply_absent_pulses_gate(section_key: str, section_result, evidence: str, re
 def apply_section_gates(section_key: str, section_result, evidence: str, reasoning_text: str):
     """Applies every enabled per-section gate, in order.
 
-    Single entry point used by all execution modes, so a section's answer goes
-    through the same post-processing whichever way the evidence was gathered.
-    Each gate is skipped when switched off in config.SECTION_GATES_ENABLED,
-    which is what makes an ablation a config change rather than a code change.
+    Called by every extraction mode, so an answer is post-processed the same
+    way however the evidence was gathered. A gate switched off in
+    config.SECTION_GATES_ENABLED is skipped, so an ablation needs no code
+    change.
 
     Args:
         section_key: section identifier, e.g. "B2".
