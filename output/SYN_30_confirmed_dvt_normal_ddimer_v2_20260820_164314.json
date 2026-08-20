@@ -1,0 +1,40 @@
+{
+  "record_id": "SYN_30_confirmed_dvt_normal_ddimer_v2",
+  "a1": {
+    "answer": "No autopsy done, unknown if done, or done but results unavailable"
+  },
+  "a2": {
+    "answer": "No surgical procedure done; or, done but either did not confirm presence of DVT or findings unknown; or unknown if done"
+  },
+  "a3_1": {
+    "answer": "≥1 imaging study was done and confirmed DVT"
+  },
+  "a3_2": {
+    "studies": [
+      "Compression ultrasonography"
+    ]
+  },
+  "b1_1": {
+    "answer": "≥1 symptom or sign of DVT was reported"
+  },
+  "b1_2": {
+    "types": [
+      "Lower extremity DVT"
+    ]
+  },
+  "b2": {
+    "symptoms": [
+      "Calf pain or tenderness",
+      "Leg swelling or pitting oedema"
+    ]
+  },
+  "c": {
+    "answer": "D-dimer tested and was within test lab's range of normal"
+  },
+  "f": {
+    "answer": "No"
+  },
+  "x": {
+    "answer": "No alternative diagnosis was found to explain the acute illness"
+  }
+}

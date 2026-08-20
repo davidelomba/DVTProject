@@ -1,0 +1,242 @@
+{
+  "records_compared": 30,
+  "sections": {
+    "A1": {
+      "compared": 30,
+      "changed": 0,
+      "correct_a": 30,
+      "correct_b": 30,
+      "stability": 1.0
+    },
+    "A2": {
+      "compared": 30,
+      "changed": 0,
+      "correct_a": 26,
+      "correct_b": 26,
+      "stability": 1.0
+    },
+    "A3_1": {
+      "compared": 30,
+      "changed": 0,
+      "correct_a": 25,
+      "correct_b": 25,
+      "stability": 1.0
+    },
+    "A3_2": {
+      "compared": 30,
+      "changed": 13,
+      "correct_a": 13,
+      "correct_b": 14,
+      "stability": 0.5666666666666667
+    },
+    "B1_1": {
+      "compared": 30,
+      "changed": 0,
+      "correct_a": 27,
+      "correct_b": 27,
+      "stability": 1.0
+    },
+    "B1_2": {
+      "compared": 30,
+      "changed": 0,
+      "correct_a": 22,
+      "correct_b": 22,
+      "stability": 1.0
+    },
+    "B2": {
+      "compared": 30,
+      "changed": 0,
+      "correct_a": 20,
+      "correct_b": 20,
+      "stability": 1.0
+    },
+    "C": {
+      "compared": 30,
+      "changed": 0,
+      "correct_a": 30,
+      "correct_b": 30,
+      "stability": 1.0
+    },
+    "F": {
+      "compared": 30,
+      "changed": 0,
+      "correct_a": 28,
+      "correct_b": 28,
+      "stability": 1.0
+    },
+    "X": {
+      "compared": 30,
+      "changed": 0,
+      "correct_a": 28,
+      "correct_b": 28,
+      "stability": 1.0
+    }
+  },
+  "differences": [
+    {
+      "record_id": "SYN_05_absent_flow_not_pulses_trap_v2",
+      "section": "A3_2",
+      "run_a": [
+        "Doppler/Duplex Ultrasound",
+        "Other"
+      ],
+      "run_b": [
+        "Doppler/Duplex Ultrasound"
+      ]
+    },
+    {
+      "record_id": "SYN_07_thrombectomy_positive_v2",
+      "section": "A3_2",
+      "run_a": [
+        "Doppler/Duplex Ultrasound"
+      ],
+      "run_b": [
+        "Contrast venography",
+        "Doppler/Duplex Ultrasound"
+      ]
+    },
+    {
+      "record_id": "SYN_08_autopsy_positive_v2",
+      "section": "A3_2",
+      "run_a": [
+        "Doppler/Duplex Ultrasound",
+        "Other"
+      ],
+      "run_b": [
+        "CT or MR venography",
+        "Compression ultrasonography",
+        "Contrast venography",
+        "Doppler/Duplex Ultrasound",
+        "Other"
+      ]
+    },
+    {
+      "record_id": "SYN_12_other_procedure_positive_v2",
+      "section": "A3_2",
+      "run_a": [
+        "Compression ultrasonography",
+        "Doppler/Duplex Ultrasound"
+      ],
+      "run_b": [
+        "Contrast venography",
+        "Doppler/Duplex Ultrasound"
+      ]
+    },
+    {
+      "record_id": "SYN_14_other_imaging_incidental_v2",
+      "section": "A3_2",
+      "run_a": [
+        "Compression ultrasonography"
+      ],
+      "run_b": [
+        "Compression ultrasonography",
+        "Doppler/Duplex Ultrasound"
+      ]
+    },
+    {
+      "record_id": "SYN_17_diagnosis_no_details_v2",
+      "section": "A3_2",
+      "run_a": [
+        "Compression ultrasonography",
+        "Other"
+      ],
+      "run_b": [
+        "Compression ultrasonography"
+      ]
+    },
+    {
+      "record_id": "SYN_19_autopsy_positive_upper_extremity_v2",
+      "section": "A3_2",
+      "run_a": [
+        "Doppler/Duplex Ultrasound",
+        "Other"
+      ],
+      "run_b": [
+        "CT or MR venography",
+        "Compression ultrasonography",
+        "Contrast venography",
+        "Doppler/Duplex Ultrasound",
+        "Other"
+      ]
+    },
+    {
+      "record_id": "SYN_22_upper_extremity_effort_thrombosis_v2",
+      "section": "A3_2",
+      "run_a": [
+        "Doppler/Duplex Ultrasound"
+      ],
+      "run_b": [
+        "Contrast venography",
+        "Doppler/Duplex Ultrasound"
+      ]
+    },
+    {
+      "record_id": "SYN_23_other_procedure_ivc_filter_v2",
+      "section": "A3_2",
+      "run_a": [
+        "Compression ultrasonography",
+        "Contrast venography"
+      ],
+      "run_b": [
+        "Compression ultrasonography",
+        "Doppler/Duplex Ultrasound"
+      ]
+    },
+    {
+      "record_id": "SYN_26_ct_venography_pregnancy_pelvic_v2",
+      "section": "A3_2",
+      "run_a": [
+        "Compression ultrasonography",
+        "Other"
+      ],
+      "run_b": [
+        "CT or MR venography",
+        "Compression ultrasonography",
+        "Contrast venography",
+        "Doppler/Duplex Ultrasound"
+      ]
+    },
+    {
+      "record_id": "SYN_27_contrast_venography_absent_pulses_v2",
+      "section": "A3_2",
+      "run_a": [
+        "Compression ultrasonography",
+        "Doppler/Duplex Ultrasound",
+        "Other"
+      ],
+      "run_b": [
+        "Contrast venography"
+      ]
+    },
+    {
+      "record_id": "SYN_28_other_modality_plethysmography_v2",
+      "section": "A3_2",
+      "run_a": [
+        "Compression ultrasonography",
+        "Doppler/Duplex Ultrasound"
+      ],
+      "run_b": [
+        "Contrast venography",
+        "Doppler/Duplex Ultrasound"
+      ]
+    },
+    {
+      "record_id": "SYN_30_confirmed_dvt_normal_ddimer_v2",
+      "section": "A3_2",
+      "run_a": [
+        "Doppler/Duplex Ultrasound",
+        "Other"
+      ],
+      "run_b": [
+        "Doppler/Duplex Ultrasound"
+      ]
+    }
+  ],
+  "overall": {
+    "compared": 300,
+    "changed": 13,
+    "correct_a": 249,
+    "correct_b": 250,
+    "stability": 0.9566666666666667
+  }
+}
