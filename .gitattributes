@@ -1,0 +1,13 @@
+# Normalize line endings in the repository to LF, converting back to the
+# platform's convention on checkout. Without this, running the pipeline on
+# Windows rewrites every generated .json and .csv with CRLF, so git reports
+# hundreds of files as fully modified when no content has changed.
+* text=auto
+
+# Binary formats: never touched, so git does not try to convert them.
+*.pdf binary
+*.png binary
+*.jpg binary
+*.xlsx binary
+*.docx binary
+*.pptx binary
