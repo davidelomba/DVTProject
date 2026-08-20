@@ -147,7 +147,7 @@ def make_ehr_retriever_tool(ehr_vectorstore: Chroma):
     """
     Wraps the EHR retriever as a LangChain Tool, used by the agentic
     extractor (agents.extract_evidence_agentic) when config.EXTRACTOR_MODE
-    is "agentic_graph" -- see pipeline.py for where this is called.
+    is "agentic_graph".
 
     Requires the base `langchain` package (not just langchain-core/
     langchain-community/langchain-ollama).
@@ -222,7 +222,7 @@ def load_ehr_text(txt_path: str) -> str:
     Reads the patient's clinical record from a plain .txt file.
     If you later switch to PDF or DOCX clinical records, add an equivalent
     loader here (e.g. reuse load_brighton_pdf_text's approach for PDF, or
-    python-docx for Word files) and call the right one from pipeline.py.
+    python-docx for Word files) and call the right one from the caller.
     """
     with open(txt_path, "r", encoding="utf-8") as f:
         return f.read()

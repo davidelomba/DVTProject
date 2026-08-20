@@ -79,8 +79,9 @@ def load_ground_truth() -> dict:
 def load_predictions(predictions_dir: Path) -> dict:
     """record_id -> prediction dict, read from every *.json file in
     predictions_dir EXCEPT *_audit_log.json (not a form output). Files are
-    processed in sorted (chronological, given main.py's timestamp naming)
-    order, so a later re-run of the same record_id overwrites an earlier one."""
+    processed in sorted order, which is chronological given the timestamped
+    filenames, so a later re-run of the same record_id overwrites an earlier
+    one."""
     preds = {}
     if not predictions_dir.is_dir():
         return preds
