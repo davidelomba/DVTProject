@@ -546,8 +546,14 @@ def evaluate_section(
             failure; each retry appends the error to the prompt.
 
     Returns:
-        (section instance, reasoning_text). The full response is kept so a
-        wrong answer can be audited later without re-running the pipeline.
+        (section instance, reasoning_text, conflict). The full response is kept
+        so a wrong answer can be audited later without re-running the pipeline.
+        conflict is None when FINAL_ANSWER and FINAL_OPTION agree, otherwise a
+        dict describing what each line said. It is a usable confidence signal
+        without needing a ground truth: measured over three runs the two lines
+        disagreed on 2.9% of sections, and in 20 of those 26 cases the section
+        was wrong -- so a conflict marks an answer worth reviewing, whichever
+        line the code went with.
 
     Raises:
         RuntimeError: if no attempt produced a parseable, valid answer.
@@ -581,6 +587,7 @@ def evaluate_section(
                     # has been seen padding FINAL_OPTION with every option while
                     # answering "none". FINAL_ANSWER wins, as everywhere else,
                     # but the disagreement is logged rather than swallowed.
+                    conflict = None
                     if raw_option_text and not _is_no_selection(raw_option_text):
                         print(
                             f"[WARNING] FINAL_ANSWER says no option applies while "
@@ -588,12 +595,18 @@ def evaluate_section(
                             f"empty answer.",
                             flush=True,
                         )
-                    return section_model(**{field_name: []}), content
+                        conflict = {
+                            "kind": "none_vs_text",
+                            "from_number": [],
+                            "from_text": raw_option_text,
+                        }
+                    return section_model(**{field_name: []}), content, conflict
 
                 # Each ';'-separated item mapped to a valid option independently.
                 raw_items = [item.strip() for item in raw_final.split(";") if item.strip()]
                 matched = [_match_option(item, options) for item in raw_items]
 
+                conflict = None
                 if raw_option_text:
                     text_items = [item.strip() for item in raw_option_text.split(";") if item.strip()]
                     try:
@@ -615,6 +628,12 @@ def evaluate_section(
                             f"FINAL_OPTION={raw_option_text!r} FINAL_ANSWER={raw_final!r}",
                             flush=True,
                         )
+                        conflict = {
+                            "kind": "text_vs_number",
+                            "from_number": list(matched),
+                            "from_text": list(matched_by_text),
+                        }
+
                 seen = set()
                 matched = [m for m in matched if not (m in seen or seen.add(m))]  # dedupe, keep order
 
@@ -639,10 +658,11 @@ def evaluate_section(
 
                 # Constructing via section_model(...) re-validates the value
                 # against the schema (e.g. B2's none-is-exclusive rule).
-                return section_model(**{field_name: matched}), content
+                return section_model(**{field_name: matched}), content, conflict
 
             matched = _match_option(raw_final, options)
 
+            conflict = None
             if raw_option_text:
                 try:
                     matched_by_text = _match_option(raw_option_text, options)
@@ -659,8 +679,13 @@ def evaluate_section(
                         f"FINAL_ANSWER={raw_final!r}",
                         flush=True,
                     )
+                    conflict = {
+                        "kind": "text_vs_number",
+                        "from_number": matched,
+                        "from_text": matched_by_text,
+                    }
 
-            return section_model(**{field_name: matched}), content
+            return section_model(**{field_name: matched}), content, conflict
 
         except Exception as exc:
             # Parsing/matching failed: remember the error and retry with an

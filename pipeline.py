@@ -182,12 +182,15 @@ def run_pipeline(record_id: str, patient_ehr_path: str, brighton_pdf_path: str):
                 print(f"[{section_key}] Agent 2 (evaluator) filling in the schema...", flush=True)
                 t0 = time.time()
                 extra_instructions = config.SECTION_HINTS.get(section_key, "")
-                section_result, reasoning_text = evaluate_section(
+                section_result, reasoning_text, answer_conflict = evaluate_section(
                     evaluator_llm, section_model, evidence, brighton_context, extra_instructions
                 )
                 elapsed = time.time() - t0
                 print(f"[{section_key}] Agent 2 done in {elapsed:.1f}s", flush=True)
                 section_log["agent2_seconds"] = round(elapsed, 1)
+                # None unless the model's two answer lines disagreed; kept as a
+                # review flag for this section (see agents.evaluate_section).
+                section_log["answer_conflict"] = answer_conflict
 
                 # Per-section deterministic gates, individually switchable in
                 # config.SECTION_GATES_ENABLED and shared with agentic_graph.py.
