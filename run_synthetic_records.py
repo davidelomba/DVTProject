@@ -73,7 +73,7 @@ def main():
     """Runs every synthetic record through the pipeline, in file-name order.
 
     One record failing does not stop the batch: the error is reported and the
-    run continues, mirroring the per-section resilience in pipeline.py.
+    run continues.
     """
     OUTPUT_DIR.mkdir(exist_ok=True)
     record_paths = sorted(RECORDS_DIR.glob("*.txt"))
