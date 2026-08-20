@@ -594,6 +594,17 @@ def evaluate_section(
                 # sections that have no "none of the above" option to select.
                 # Checked before matching, since the token matches no option.
                 if not _has_none_option(options) and _is_no_selection(raw_final):
+                    # The two lines can still contradict each other: the model
+                    # has been seen padding FINAL_OPTION with every option while
+                    # answering "none". FINAL_ANSWER wins, as everywhere else,
+                    # but the disagreement is logged rather than swallowed.
+                    if raw_option_text and not _is_no_selection(raw_option_text):
+                        print(
+                            f"[WARNING] FINAL_ANSWER says no option applies while "
+                            f"FINAL_OPTION lists {raw_option_text!r} -- taking the "
+                            f"empty answer.",
+                            flush=True,
+                        )
                     return section_model(**{field_name: []}), content
 
                 # Each ';'-separated item mapped to a valid option independently.
