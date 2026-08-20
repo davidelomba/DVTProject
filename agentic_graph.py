@@ -3,7 +3,7 @@ Agentic extraction pipeline orchestrated as an explicit LangGraph state
 machine, used when config.EXTRACTOR_MODE == "agentic_graph" (see
 pipeline.run_pipeline for the dispatch).
 
-Agent 1 autonomously decides how many times, and with which sub-queries,
+Agent 1 autonomously decides how many times and with which sub-queries,
 to call the EHR search tool for each section (see
 agents.extract_evidence_agentic). Control flow itself is expressed as an
 explicit graph of nodes/edges instead of a plain Python loop, which makes
@@ -23,12 +23,6 @@ rules are NOT applied here: they run once in pipeline.run_pipeline after this
 graph returns, so both safety nets have a single source of truth across all
 execution modes.
 
-Model note: base Llama 3 does not support Ollama's tool-calling API (binding a
-tool to it returns HTTP 400, "model does not support tools"); only Llama 3.1+
-does. Agent 1's search step therefore uses config.AGENTIC_LLM_MODEL_NAME,
-while Agent 2 never binds a tool and uses config.EVALUATOR_LLM_MODEL_NAME.
-Both models are built once in pipeline.py and passed into
-run_agentic_graph_pipeline.
 
 Requires the `langgraph` package and a tool-calling model pulled in Ollama.
 """
@@ -50,7 +44,7 @@ def build_agentic_llm() -> ChatOllama:
     """Builds the tool-calling model used by the search_record node.
 
     Separate from agents.build_llm because this is the only role that binds a
-    tool, and therefore the only one that needs a model supporting Ollama's
+    tool and therefore the only one that needs a model supporting Ollama's
     tool-calling API (config.AGENTIC_LLM_MODEL_NAME).
 
     Returns:
@@ -64,9 +58,7 @@ def build_agentic_llm() -> ChatOllama:
     )
 
 
-# ---------------------------------------------------------------------------
 # Graph state
-# ---------------------------------------------------------------------------
 
 class GraphState(TypedDict):
     """State threaded through every node of the graph.
@@ -84,18 +76,16 @@ class GraphState(TypedDict):
     done: bool
 
 
-# ---------------------------------------------------------------------------
 # Graph nodes
-# ---------------------------------------------------------------------------
 
 def _select_next(state: GraphState) -> GraphState:
-    """Takes the next section off the queue, or signals that none are left.
+    """Takes the next section off the queue or signals that none are left.
 
     Args:
         state: the current graph state.
 
     Returns:
-        A new state with current_section set, or with done=True when the queue
+        A new state with current_section set or with done=True when the queue
         is empty so _route_after_select ends the loop.
     """
     remaining = state["remaining_sections"]
@@ -226,8 +216,7 @@ def _make_answer_node(llm, brighton_kb, section_queries: dict):
             print(f"[{section_key}] Agent 2 done in {elapsed:.1f}s", flush=True)
             section_log["agent2_seconds"] = round(elapsed, 1)
 
-            # The same per-section gates pipeline.py applies: criteria_rules.py
-            # is the single source of truth for every mode.
+            # Apply section-specific gates (criteria_rules) to the result and reasoning text
             section_result, reasoning_text = apply_section_gates(
                 section_key, section_result, evidence, reasoning_text
             )
@@ -258,9 +247,7 @@ def _finalize(state: GraphState) -> GraphState:
     return state
 
 
-# ---------------------------------------------------------------------------
 # Graph assembly
-# ---------------------------------------------------------------------------
 
 def build_graph(search_llm, answer_llm, ehr_tool, ehr_vectorstore, brighton_kb, section_queries: dict):
     """Wires the four nodes into the state machine and compiles it.
@@ -298,9 +285,7 @@ def build_graph(search_llm, answer_llm, ehr_tool, ehr_vectorstore, brighton_kb, 
     return graph.compile()
 
 
-# ---------------------------------------------------------------------------
 # Entry point used by pipeline.run_pipeline
-# ---------------------------------------------------------------------------
 
 def run_agentic_graph_pipeline(
     record_id: str,
@@ -341,9 +326,9 @@ def run_agentic_graph_pipeline(
         "done": False,
     }
 
-    # 3 graph steps per section (select_next, search_record, answer_criterion)
-    # plus entry/finalize overhead; default langgraph limit (25) is too low
-    # for 10 sections.
+    # The graph is recursive, so the recursion limit must be high enough to
+    # accommodate the number of sections. Each section takes 3 nodes (select, search, answer) plus finalize at the end, plus a few extra for the
+    # initial call and the final return. This is a conservative estimate to avoid hitting Python's recursion limit.
     recursion_limit = len(config.SECTION_ORDER) * 3 + 10
     final_state = app.invoke(initial_state, config={"recursion_limit": recursion_limit})
 
