@@ -308,15 +308,12 @@ def _build_reasoning_prompt(
 ) -> str:
     """Builds the prompt Agent 2 answers for one section.
 
-    Options are numbered and the model is asked for two answers: the option's
-    NUMBER on a FINAL_ANSWER line and its exact TEXT on a FINAL_OPTION line.
-    Two independently derived answers make a disagreement detectable, which no
-    single-line format can do: the model has been seen naming the right option
-    in its prose while writing a different option's number.
+    Options are numbered, and the model answers twice: the option's NUMBER on a
+    FINAL_ANSWER line and its exact TEXT on a FINAL_OPTION line. Two answers
+    instead of one make a mismatch visible, since the model sometimes names one
+    option and writes another one's number.
 
-    On disagreement evaluate_section keeps the number and logs the conflict:
-    over three full runs the two lines disagreed on 2.9% of sections, and the
-    number matched the ground truth more often than the text.
+    The number is the answer; evaluate_section keeps it and logs any mismatch.
 
     Args:
         evidence_text: what Agent 1 extracted for this section.
@@ -332,7 +329,7 @@ def _build_reasoning_prompt(
     prompt = f"Evidence: {evidence_text}"
     if brighton_context:
         prompt += f"\n\nReference synonyms/terminology (Brighton):\n{brighton_context}"
-    # Per-section hint (config.SECTION_HINTS), if this section has one.
+    # Per-section hint (config.SECTION_HINTS), if this section has one
     if extra_instructions:
         prompt += f"\n\n{extra_instructions}"
     prompt += f"\n\nOptions:\n{options_block}\n\n"
@@ -350,7 +347,7 @@ def _build_reasoning_prompt(
             "by semicolons.\n"
             "FINAL_ANSWER: <number>; <number>; ...\n"
             "with the NUMBER of every option that applies, separated by semicolons, in "
-            "the SAME order as the FINAL_OPTION line -- each number must correspond to "
+            "the SAME order as the FINAL_OPTION line: each number must correspond to "
             "the same option you just named there (e.g. \"FINAL_OPTION: Leg swelling or "
             "pitting oedema\" must be followed by \"FINAL_ANSWER: 2\" if that option is "
             "listed as 2. above). If only one applies, write just that one option/number "
@@ -362,7 +359,7 @@ def _build_reasoning_prompt(
         )
         # Sections with no "none of the above" option among their choices (A3.2,
         # B1.2) still accept an empty answer in the schema, but the numbered list
-        # gives the model no way to express one -- and when nothing applied it was
+        # gives the model no way to express one and when nothing applied it was
         # observed selecting every option instead. Spelled out only where the
         # section actually needs it, so B2 keeps using its own option 5.
         if not _has_none_option(options):
@@ -393,11 +390,11 @@ _NONE_OPTION_PREFIX = "none of the above"
 # What the model may write on FINAL_ANSWER/FINAL_OPTION to say that no option
 # applies, in the sections that have no "none of the above" option to select.
 # Both languages are accepted because the evaluator answers in English but the
-# clinical records may be in any language, and it occasionally follows theirs.
+# clinical records may be in any language and it occasionally follows theirs.
 _NO_SELECTION_ANSWERS = {
     "none", "no option", "no options", "nothing", "empty",
     "nessuna", "nessuno", "nessuna opzione",
-    "n/a", "na", "-", "--", "0",
+    "n/a", "na", "-", "--",
 }
 
 
@@ -416,12 +413,9 @@ def _has_none_option(options: list[str]) -> bool:
 def _is_no_selection(raw_value: str) -> bool:
     """Whether an answer line means 'no option applies' rather than naming one.
 
-    A3.2 and B1.2 are multi-select sections whose schema allows an empty answer
-    but whose option list offers no way to say so. Asked to pick from a numbered
-    list with nothing to pick, the model was observed reasoning correctly that
-    no option applied and then selecting EVERY option -- an answer that is not
-    only wrong but the maximally wrong one. Giving it a token to write instead
-    turns that failure into the empty list the schema already supports.
+    A3.2 and B1.2 accept an empty answer, but their option lists offer nothing
+    to select to say so. Left without a way to answer "none", the model used to
+    select every option instead. This token gives it one.
 
     Args:
         raw_value: the whole content of a FINAL_ANSWER or FINAL_OPTION line.
@@ -462,8 +456,8 @@ def _extract_labeled_line(text: str, label: str) -> str | None:
 
     Returns:
         The content after the last occurrence, or None if the label is absent.
-        Unlike FINAL_ANSWER, FINAL_OPTION is a best-effort cross-check, so a
-        missing line degrades gracefully instead of failing the section.
+        Missing FINAL_OPTION only costs the cross-check, so the caller skips it
+        instead of failing the section, unlike a missing FINAL_ANSWER.
     """
     matches = re.findall(rf"{re.escape(label)}:\s*(.+)", text)
     if not matches:
@@ -483,7 +477,7 @@ def _match_option(raw_value: str, valid_options: list[str], cutoff: float = 0.75
         The matching option, exactly as written in the schema.
 
     Raises:
-        ValueError: if the value is an out-of-range index, or matches nothing.
+        ValueError: if the value is an out-of-range index or matches nothing.
     """
     # Strip formatting the model adds around the value: a leading "-", a
     # trailing "." or ";", and a "1." / "1)" list prefix it tends to keep when
@@ -501,7 +495,7 @@ def _match_option(raw_value: str, valid_options: list[str], cutoff: float = 0.75
             f"Index {idx} out of range for {len(valid_options)} options: {valid_options}"
         )
 
-    # Fallback 1: the option text, verbatim. Trailing punctuation is stripped
+    # Fallback 1: the option text, verbatim. Trailing punctuation is discarded
     # from both sides before comparing, because some options end with a period
     # in models.py that the model naturally omits. The ORIGINAL option is
     # returned, so the result still satisfies the schema's exact Literal value.
@@ -510,7 +504,7 @@ def _match_option(raw_value: str, valid_options: list[str], cutoff: float = 0.75
         if normalized == option.rstrip(".").strip():
             return option
 
-    # Fallback 2: fuzzy match, logged explicitly -- a silent fuzzy match
+    # Fallback 2: fuzzy match, logged explicitly. A silent fuzzy match
     # risks landing on a negation-opposite option (e.g. "confirmed DVT" vs
     # "didn't confirm DVT" are textually close but semantically opposite).
     close = difflib.get_close_matches(cleaned, valid_options, n=1, cutoff=cutoff)
@@ -548,12 +542,10 @@ def evaluate_section(
     Returns:
         (section instance, reasoning_text, conflict). The full response is kept
         so a wrong answer can be audited later without re-running the pipeline.
-        conflict is None when FINAL_ANSWER and FINAL_OPTION agree, otherwise a
-        dict describing what each line said. It is a usable confidence signal
-        without needing a ground truth: measured over three runs the two lines
-        disagreed on 2.9% of sections, and in 20 of those 26 cases the section
-        was wrong -- so a conflict marks an answer worth reviewing, whichever
-        line the code went with.
+        conflict is None when the two answer lines agree, otherwise a dict
+        holding what each of them said. Rare and a good predictor of a wrong
+        section, so it is worth reviewing even though the code has already
+        picked an answer.
 
     Raises:
         RuntimeError: if no attempt produced a parseable, valid answer.
@@ -573,21 +565,19 @@ def evaluate_section(
 
         try:
             raw_final = _extract_final_answer_line(content)
-            # Best-effort second signal (see _build_reasoning_prompt): the
-            # option text the model copied verbatim, independent of the
-            # number it wrote on FINAL_ANSWER. None if the model skipped it.
+
+            # None if the model omitted the line.
             raw_option_text = _extract_labeled_line(content, "FINAL_OPTION")
 
+            # Sections where several options may apply; the single-choice ones
+            # are handled after this block.
             if multi_select:
-                # "nothing applies", as offered by _build_reasoning_prompt to the
-                # sections that have no "none of the above" option to select.
-                # Checked before matching, since the token matches no option.
+                # True when the section offers no "none of the above" option
+                # (A3.2, B1.2) and the model answered with the "none" token.
                 if not _has_none_option(options) and _is_no_selection(raw_final):
-                    # The two lines can still contradict each other: the model
-                    # has been seen padding FINAL_OPTION with every option while
-                    # answering "none". FINAL_ANSWER wins, as everywhere else,
-                    # but the disagreement is logged rather than swallowed.
                     conflict = None
+                    # Logged only: FINAL_OPTION still naming options contradicts
+                    # the "none" just given.
                     if raw_option_text and not _is_no_selection(raw_option_text):
                         print(
                             f"[WARNING] FINAL_ANSWER says no option applies while "
@@ -613,13 +603,8 @@ def evaluate_section(
                         matched_by_text = [_match_option(item, options) for item in text_items]
                     except Exception:
                         matched_by_text = None
-                    # The number wins: measured over three full runs, the two
-                    # lines disagreed on 2.9% of sections, and on those the
-                    # number matched the ground truth more often than the text
-                    # (5 times against 1). The disagreement is mostly a symptom
-                    # rather than a recoverable slip -- in 20 of 26 cases both
-                    # lines were wrong -- so it is logged for auditing and the
-                    # answer the prompt actually asks for is kept.
+                    # On disagreement the number is kept and the conflict is
+                    # recorded.
                     if matched_by_text and matched_by_text != matched:
                         print(
                             f"[WARNING] FINAL_OPTION text {matched_by_text} disagrees "
@@ -637,13 +622,10 @@ def evaluate_section(
                 seen = set()
                 matched = [m for m in matched if not (m in seen or seen.add(m))]  # dedupe, keep order
 
-                # "None of the above" is mutually exclusive with every real
-                # finding (enforced by B2's none_is_exclusive validator), and
-                # the model does sometimes select both. Left alone, that raises
-                # below and the retry -- which only feeds back the raw Pydantic
-                # traceback -- keeps failing until the section is lost entirely.
-                # Repaired here instead by keeping the specific findings, the
-                # more informative of the two contradictory signals.
+                # The model sometimes selects "None of the above" alongside real
+                # findings, which B2's none_is_exclusive validator rejects.
+                # Keeping the findings repairs it; leaving it would cost the
+                # whole section once the retries run out.
                 if len(matched) > 1:
                     none_options = [m for m in matched if m.lower().startswith(_NONE_OPTION_PREFIX)]
                     if none_options:
@@ -656,8 +638,8 @@ def evaluate_section(
                         )
                         matched = [m for m in matched if m not in none_options]
 
-                # Constructing via section_model(...) re-validates the value
-                # against the schema (e.g. B2's none-is-exclusive rule).
+                # Building the instance is also a check: Pydantic validates the
+                # list here, so the edits made above cannot slip through.
                 return section_model(**{field_name: matched}), content, conflict
 
             matched = _match_option(raw_final, options)
