@@ -124,11 +124,10 @@ _BIBLIOGRAPHY_LINE = re.compile(
 def clean_brighton_context(context: str) -> str:
     """Strips bibliographic noise from retrieved guideline context.
 
-    Measured over a full 30-record run, roughly a quarter of the retrieved
-    Brighton text was references rather than clinical content, while the
-    context as a whole took up about twice as many characters as the patient's
-    own evidence. Those lines cannot help Agent 2 answer a criterion, and they
-    compete with the evidence for the model's attention.
+    A second line of defence: load_brighton_pdf_text already drops the whole
+    reference list before indexing, so on this paper nothing is left to remove.
+    It still matters for a PDF whose reference section has no heading to
+    truncate at.
 
     Args:
         context: the concatenated page content of the retrieved chunks.

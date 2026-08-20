@@ -16,8 +16,8 @@ from pathlib import Path
 from pipeline import run_pipeline
 from aggregation import form_to_json_summary
 
-# Anchored to this file's location rather than the current working directory;
-# see config.PROJECT_ROOT for why a bare "./..." path is fragile.
+# Anchored to this file's location, so the paths below do not depend on the
+# directory the script is launched from.
 PROJECT_ROOT = Path(__file__).resolve().parent
 
 
