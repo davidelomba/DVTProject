@@ -1,28 +1,20 @@
 """
-Runs the extraction pipeline once for every synthetic clinical record in
-data/synthetic_records/ (see generate_synthetic_records.py), saving output +
-audit log to ./output/ in the same format/naming convention main.py uses
-for a single record -- so evaluate_predictions.py can pick up the
-results directly with its default predictions directory (./output).
+Runs the pipeline over every synthetic record in data/synthetic_records/,
+writing each result and audit log to ./output/ under the same names main.py
+uses, so evaluate_predictions.py finds them with its default paths.
 
-Uses whichever config.EXTRACTOR_MODE is currently set in config.py, exactly
-like main.py -- to compare modes, run this script once per mode (edit
-config.py, rerun; timestamped filenames mean nothing gets overwritten, so
-results from different modes/runs can coexist in ./output).
+record_id is the file name without .txt, which is also the record_id inside
+the matching *_ground_truth.json -- that pairing is what lets the evaluation
+match predictions to reference answers.
 
-record_id is derived from each file's name (without .txt). This is exactly
-the record_id generate_synthetic_records.py already baked into the matching
-*_ground_truth.json, which is what lets evaluate_predictions.py match
-predictions back to ground truth later -- no manual bookkeeping needed.
+Uses whatever config.EXTRACTOR_MODE is set to. Filenames are timestamped, so
+runs of different modes accumulate in ./output instead of overwriting.
 
-One record failing does not stop the batch: the error is printed and the
-script moves on to the next record, same resilience pattern as pipeline.py's
-own per-section loop.
+A record that fails is reported and the batch continues.
 
-Note: this calls pipeline.run_pipeline() once per record, so the per-record
-setup is repeated every time: the Brighton PDF is re-parsed and the EHR vector
-store rebuilt from scratch (the Brighton store is reloaded from disk, not
-re-embedded). Inherited from pipeline.py's current design, not changed here.
+Note: run_pipeline() is called once per record, so its setup repeats every
+time -- the Brighton PDF is re-parsed and the EHR vector store rebuilt (the
+Brighton store is reloaded from disk, not re-embedded).
 
 Usage:
     python run_synthetic_records.py
@@ -54,6 +46,7 @@ def run_one(record_id: str, record_path: Path) -> Path:
     Returns:
         Path of the form JSON that was written.
     """
+
     form, audit_log = run_pipeline(record_id, str(record_path), BRIGHTON_PDF_PATH)
     summary = form_to_json_summary(form)
 
@@ -75,6 +68,7 @@ def main():
     One record failing does not stop the batch: the error is reported and the
     run continues.
     """
+
     OUTPUT_DIR.mkdir(exist_ok=True)
     record_paths = sorted(RECORDS_DIR.glob("*.txt"))
 
@@ -87,6 +81,7 @@ def main():
 
     succeeded, failed, durations = [], [], []
     batch_start = time.time()
+
     for i, record_path in enumerate(record_paths, start=1):
         record_id = record_path.stem
 
@@ -105,6 +100,7 @@ def main():
             succeeded.append(record_id)
             elapsed = time.time() - t0
             durations.append(elapsed)
+            
             # Remaining time estimated from the mean so far rather than the
             # last record: per-record duration varies with how many tool calls
             # the agentic extractor decides to make.
@@ -125,7 +121,7 @@ def main():
               f"min {min(durations) / 60:.1f}, max {max(durations) / 60:.1f}.", flush=True)
     if failed:
         print(f"Failed records: {', '.join(failed)}", flush=True)
-    print(f"\nNow run: python evaluate_predictions.py", flush=True)
+    print("\nNow run: python evaluate_predictions.py", flush=True)
 
 
 if __name__ == "__main__":
