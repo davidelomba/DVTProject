@@ -1,9 +1,10 @@
 """
-Main pipeline: for each section of the form,
+Main pipeline.
+For each section of the form:
   1. Agent 1 extracts the relevant evidence from the clinical record (full text by default)
   2. Agent 2 reasons over the evidence and fills in the checkbox
 Independent per-section results are then merged, cross-section dependency
-rules are applied, and the final DVT_CriteriaForm is returned together with
+rules are applied and the final DVT_CriteriaForm is returned together with
 a full audit log.
 """
 
@@ -59,6 +60,7 @@ def _run_config_snapshot() -> dict:
     Returns:
         A JSON-serialisable dict of the relevant config values.
     """
+
     return {
         "extractor_mode": config.EXTRACTOR_MODE,
         "section_gates_enabled": dict(config.SECTION_GATES_ENABLED),
@@ -99,12 +101,10 @@ def run_pipeline(record_id: str, patient_ehr_path: str, brighton_pdf_path: str):
         diagnosable without re-running. It also carries a RUN_CONFIG_KEY entry
         describing the settings the run was produced with.
     """
-    # Embedding model and per-role LLMs: built once and reused across every
-    # section, instead of being recreated on each loop iteration. Two
-    # separate models by default (config.LLM_MODEL_NAME for Agent 1,
-    # config.EVALUATOR_LLM_MODEL_NAME for Agent 2) -- change either constant
-    # in config.py to try a different model for that role, no code changes
-    # needed here.
+    # Built once and reused across every section, not per loop iteration.
+    # The two roles read separate constants (config.LLM_MODEL_NAME,
+    # config.EVALUATOR_LLM_MODEL_NAME), so either can be swapped from
+    # config.py alone; both currently name the same model.
     embeddings = get_embeddings()
     llm = build_llm()
     evaluator_llm = build_llm(config.EVALUATOR_LLM_MODEL_NAME)
@@ -113,6 +113,7 @@ def run_pipeline(record_id: str, patient_ehr_path: str, brighton_pdf_path: str):
     # this run's patient record.
     brighton_text = load_brighton_pdf_text(brighton_pdf_path)
     patient_ehr_text = load_ehr_text(patient_ehr_path)
+
     # Brighton KB is always needed (every mode consults it for synonyms/context).
     brighton_kb = build_brighton_kb(brighton_text, embeddings=embeddings)
 
@@ -131,6 +132,7 @@ def run_pipeline(record_id: str, patient_ehr_path: str, brighton_pdf_path: str):
         # Separate tool-calling-capable model, used only for Agent 1's
         # autonomous search step (see config.AGENTIC_LLM_MODEL_NAME).
         search_llm = build_agentic_llm()
+
         # Delegates the whole per-section loop to the LangGraph state
         # machine; returns the same (form_data, audit_log) shape as the
         # plain loop below, just not yet passed through the cross-section
@@ -159,7 +161,8 @@ def run_pipeline(record_id: str, patient_ehr_path: str, brighton_pdf_path: str):
                 # Agent 1: extraction mode per config.EXTRACTOR_MODE (see config.py)
                 print(f"[{section_key}] Agent 1 (extractor, mode={config.EXTRACTOR_MODE}) searching the clinical record...", flush=True)
                 t0 = time.time()
-                # Only "rag" and "full_text" reach this loop -- "agentic_graph"
+
+                # Only "rag" and "full_text" reach this loop; "agentic_graph"
                 # is dispatched separately, above, before this loop runs.
                 if config.EXTRACTOR_MODE == "rag":
                     evidence = extract_evidence(llm, ehr_kb, query)
@@ -170,7 +173,7 @@ def run_pipeline(record_id: str, patient_ehr_path: str, brighton_pdf_path: str):
                 section_log["evidence"] = evidence
                 section_log["agent1_seconds"] = round(elapsed, 1)
 
-                # Brighton context (synonyms) relevant to this section, with
+                # Brighton context relevant to this section, with
                 # bibliography stripped (see rag_setup.clean_brighton_context).
                 brighton_docs = brighton_kb.as_retriever(search_kwargs={"k": config.BRIGHTON_RETRIEVER_K}).invoke(query)
                 brighton_context = clean_brighton_context(
@@ -188,6 +191,7 @@ def run_pipeline(record_id: str, patient_ehr_path: str, brighton_pdf_path: str):
                 elapsed = time.time() - t0
                 print(f"[{section_key}] Agent 2 done in {elapsed:.1f}s", flush=True)
                 section_log["agent2_seconds"] = round(elapsed, 1)
+
                 # None unless the model's two answer lines disagreed; kept as a
                 # review flag for this section (see agents.evaluate_section).
                 section_log["answer_conflict"] = answer_conflict
@@ -205,8 +209,9 @@ def run_pipeline(record_id: str, patient_ehr_path: str, brighton_pdf_path: str):
                 print(f"[{section_key}] filled in: {section_result}", flush=True)
 
             except Exception as exc:
+
                 # One section failing shouldn't lose work already done on others.
-                print(f"[{section_key}] FAILED -- leaving this field as None. Traceback:", flush=True)
+                print(f"[{section_key}] FAILED -> leaving this field as None. Traceback:", flush=True)
                 traceback.print_exc()
                 form_data[section_key.lower()] = None
                 section_log["error"] = str(exc)
@@ -214,7 +219,7 @@ def run_pipeline(record_id: str, patient_ehr_path: str, brighton_pdf_path: str):
             audit_log[section_key] = section_log
 
     # Cross-section dependency rules (see config.CROSS_SECTION_RULES), applied
-    # once here regardless of which EXTRACTOR_MODE produced form_data --
+    # once here regardless of which EXTRACTOR_MODE produced form_data;
     # shared with agentic_graph.py via criteria_rules.py.
     form_data = apply_cross_section_rules(form_data, audit_log)
 
