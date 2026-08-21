@@ -201,10 +201,8 @@ def make_ehr_retriever_tool(ehr_vectorstore: Chroma):
     )
 
 
-# Start of the paper's reference list: the word on a line of its own, which in
-# the Brighton PDF occurs exactly once and only as the section heading.
-# Deliberately NOT keyed on the first "[N]" citation, since those also appear
-# inline in the body text from about a fifth of the way into the document.
+# The reference list's heading: the word alone on a line, which in this paper
+# occurs exactly once. load_brighton_pdf_text truncates the text here.
 _REFERENCES_HEADING = re.compile(r"(?im)^[ \t]*references[ \t]*$")
 
 
@@ -213,23 +211,22 @@ def load_brighton_pdf_text(pdf_path: str, drop_references: bool = True) -> str:
 
     The reference list is roughly the last 40% of this paper and is pure noise
     for the pipeline: chunks falling in it are indexed and retrieved like any
-    other, and reach Agent 2 as if they were reference terminology. Dropping it
-    before chunking removes it wholesale -- including entries split across
-    several lines, which a line-level filter cannot fully catch -- and keeps
+    other and reach Agent 2 as if they were reference terminology. Dropping it
+    before chunking removes it wholesale (including entries split across
+    several lines, which a line-level filter cannot fully catch) and keeps
     the vector store limited to clinical content, so the retrieved chunks are
     chosen among useful text only.
 
     Args:
         pdf_path: path to the guideline PDF.
-        drop_references: set False to keep the full text, e.g. to compare
-            retrieval with and without the reference list.
+        drop_references: set False to keep the full text.
 
     Returns:
         The extracted text, truncated at the reference heading when one is
-        found. If no heading matches the whole text is returned unchanged, so
-        a differently-structured paper degrades to the previous behaviour
-        rather than losing content.
+        found. A paper without such a heading yields the full text, keeping
+        the reference list rather than losing content.
     """
+
     reader = PdfReader(pdf_path)
     text = "\n".join(page.extract_text() or "" for page in reader.pages)
 
@@ -242,11 +239,7 @@ def load_brighton_pdf_text(pdf_path: str, drop_references: bool = True) -> str:
 
 
 def load_ehr_text(txt_path: str) -> str:
-    """
-    Reads the patient's clinical record from a plain .txt file.
-    If you later switch to PDF or DOCX clinical records, add an equivalent
-    loader here (e.g. reuse load_brighton_pdf_text's approach for PDF, or
-    python-docx for Word files) and call the right one from the caller.
-    """
+    """Reads the patient's clinical record from a plain .txt file."""
+
     with open(txt_path, "r", encoding="utf-8") as f:
         return f.read()
