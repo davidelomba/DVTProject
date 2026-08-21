@@ -4,7 +4,7 @@ Scores a pipeline run against a set of reference answers.
 Does NOT run the pipeline: the records must already have been processed. Both
 the predictions and the reference answers are read from directories given on
 the command line, so the same script serves the synthetic corpus and any other
-annotated set -- real records included, once reference answers exist for them.
+annotated set (real records included, once reference answers exist for them).
 
 Predictions are matched to their reference by the "record_id" field inside the
 JSON rather than by filename, so timestamped outputs need no renaming; when a
@@ -22,12 +22,12 @@ METRICS, per section and overall:
     for multi-select sections, where a prediction is a set rather than a class
     and the matrix is not defined.
 
-Precision, recall and F1 deliberately ignore true negatives -- the options
-correctly left unselected. They are the majority of every count, since most
+Precision, recall and F1 deliberately ignore true negatives (the options
+correctly left unselected). They are the majority of every count, since most
 options do not apply to most records, so any metric including them is dominated
 by the easy cases and reads far higher than the real performance.
 
-A section the pipeline left as None, or a record with no output at all, is
+A section the pipeline left as None or a record with no output at all, is
 reported as "missing" and left out of the metrics instead of being counted as
 an error.
 
@@ -62,6 +62,7 @@ def _field_info(section_name: str):
     Re-implemented here rather than imported from agents.py, which would pull
     in langchain; it only needs to introspect models.py's Pydantic schema.
     """
+
     model = SECTION_MODELS[section_name]
     field_name = next(iter(model.model_fields.keys()))
     annotation = model.model_fields[field_name].annotation
@@ -74,6 +75,7 @@ def _field_info(section_name: str):
 def load_ground_truth(directory: Path) -> dict:
     """record_id -> reference answers, from every *_ground_truth.json in a
     directory."""
+
     gt = {}
     for path in sorted(directory.glob("*_ground_truth.json")):
         data = json.loads(path.read_text(encoding="utf-8"))
@@ -87,6 +89,7 @@ def load_predictions(predictions_dir: Path) -> dict:
     processed in sorted order, which is chronological given the timestamped
     filenames, so a later re-run of the same record_id overwrites an earlier
     one."""
+
     preds = {}
     if not predictions_dir.is_dir():
         return preds
@@ -105,6 +108,7 @@ def _selected_set(value):
     or a list) into a set of selected option strings, so single-choice and
     multi-select sections can be compared identically. None if the section
     itself is missing (pipeline left it None)."""
+
     if value is None:
         return None
     inner = next(iter(value.values()))
@@ -125,6 +129,7 @@ def _binary_rows(pairs, options):
     Returns:
         (y_true, y_pred), each a list of 0/1 lists.
     """
+
     y_true = [[int(opt in gt) for opt in options] for gt, _ in pairs]
     y_pred = [[int(opt in pred) for opt in options] for _, pred in pairs]
     return y_true, y_pred
@@ -143,14 +148,13 @@ def _score_section(pairs, options, is_multi_select) -> dict:
         A dict of counts and metrics, with "confusion_matrix" present only for
         single-choice sections.
     """
+
     y_true, y_pred = _binary_rows(pairs, options)
 
-    # One 2x2 table per option; summing them gives the section's totals.
+    # One 2x2 table per option; summing them gives the section's totals
     per_option = multilabel_confusion_matrix(y_true, y_pred, labels=list(range(len(options))))
     tn, fp, fn, tp = (int(per_option[:, i, j].sum()) for i, j in ((0, 0), (0, 1), (1, 0), (1, 1)))
 
-    # "micro" pools the options before dividing, so the result matches the
-    # tp/fp/fn totals above rather than averaging per-option rates.
     precision, recall, f1, _ = precision_recall_fscore_support(
         y_true, y_pred, average="micro", zero_division=0
     )
@@ -161,7 +165,7 @@ def _score_section(pairs, options, is_multi_select) -> dict:
     }
 
     if not is_multi_select:
-        # Every answer is exactly one option, so it can be treated as a class.
+        # Every answer is exactly one option, so it can be treated as a class
         labels = list(range(len(options)))
         true_idx = [options.index(next(iter(gt))) for gt, _ in pairs]
         pred_idx = [options.index(next(iter(pred))) for _, pred in pairs]
@@ -181,6 +185,7 @@ def evaluate(ground_truth: dict, predictions: dict) -> dict:
         A report dict with per-section and overall metrics, plus the lists of
         records and sections that had no prediction to score.
     """
+
     section_names = list(SECTION_MODELS.keys())
     report = {
         "records_compared": 0,
@@ -232,6 +237,7 @@ def evaluate(ground_truth: dict, predictions: dict) -> dict:
             overall[key] += sec[key]
 
     overall["accuracy"] = overall["exact_matches"] / overall["compared"] if overall["compared"] else None
+
     # Recomputed from the pooled totals rather than averaged across sections,
     # so a section with more options does not weigh the same as a smaller one.
     tp, fp, fn = overall["tp"], overall["fp"], overall["fn"]
@@ -246,6 +252,7 @@ def evaluate(ground_truth: dict, predictions: dict) -> dict:
 
 def _pct(value):
     """A ratio as a percentage, or n/a when it is undefined."""
+
     return f"{value*100:.1f}%" if value is not None else "n/a"
 
 
@@ -257,6 +264,7 @@ def print_report(report: dict, show_matrices: bool = True):
         show_matrices: also print one confusion matrix per single-choice
             section, under the table.
     """
+
     print(f"\nRecords compared: {report['records_compared']}")
     missing = report["records_missing_prediction"]
     if missing:
@@ -283,6 +291,7 @@ def print_report(report: dict, show_matrices: bool = True):
 
 def print_confusion_matrices(report: dict):
     """Prints one reference-vs-predicted matrix per single-choice section."""
+
     for name, sec in report["sections"].items():
         matrix = sec.get("confusion_matrix")
         if not matrix:
@@ -298,6 +307,7 @@ def print_confusion_matrices(report: dict):
 
 def main():
     """Compares one run's output against reference answers and saves a report."""
+    
     parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     parser.add_argument("predictions_dir", nargs="?", default=str(DEFAULT_PREDICTIONS_DIR),
                         help="directory of pipeline output JSON files (default: ./output)")
