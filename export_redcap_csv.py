@@ -2,44 +2,26 @@
 Converts the pipeline's questionnaire output into a CSV that REDCap can import,
 so the Level of Certainty (LOC) can be computed by the REDCap project itself.
 
-WHICH REDCap EXPORT FORMAT THIS TARGETS: REDCap can export the same data either
-with the question text as headers and "Checked"/"Unchecked" as values (the
-"labels" export, meant to be read by a human), or with the variable names as
-headers and numeric codes as values (the "raw" export). Only the raw form can
-be fed back in: the Data Import Tool matches columns by VARIABLE NAME, and
-checkbox fields must arrive as <field>___<code> holding 0 or 1. This module
-writes the raw form.
+Writes the format REDCap's Data Import Tool expects: variable names as headers,
+numeric codes as values, and checkboxes as <field>___<code> holding 0 or 1.
 
 WHAT IS AND IS NOT WRITTEN
-  - The ten questionnaire criteria the pipeline answers (A1..X) are written as
-    numeric codes, derived from each section's own schema so the two cannot
-    drift apart (see _option_code).
-  - Free-text and date fields (descriptions, DVT location, D-dimer value,
-    admission data) are written as EMPTY columns: they are part of the form but
-    outside what the pipeline extracts.
-  - REDCap's calculated fields (sum_*, calc_*, text_*, colors_*, level*) are
-    NOT written at all. They are what the LOC computation produces; REDCap
-    derives them from the imported answers.
+  - The ten criteria the pipeline answers, as numeric codes read from each
+    section's schema (see _option_code).
+  - Free-text and date fields, as empty columns.
+  - Nothing for REDCap's calculated fields (sum_*, calc_*, text_*, colors_*,
+    level*), which the LOC computation produces from the imported answers.
 
-IMPORTANT -- EMPTY COLUMNS OVERWRITE: a blank cell in an imported CSV clears
-that field for an EXISTING record. This is harmless when importing new records
-(the normal case here, one per clinical record processed), but if these rows
-are ever re-imported over records already filled in by a human annotator, drop
-the free-text columns first (--skip-empty-fields) so their work is preserved.
+A blank cell clears that field on import; --skip-empty-fields writes only the
+criteria columns.
 
 USAGE
-    # Most recent result per record, from ./output, into ./redcap_import.csv
-    python export_redcap_csv.py
+    python export_redcap_csv.py                                  # ./output -> ./redcap_import.csv
+    python export_redcap_csv.py ./output ./redcap_import.csv     # explicit paths
+    python export_redcap_csv.py --skip-empty-fields              # criteria columns only
 
-    # Explicit input directory and destination
-    python export_redcap_csv.py ./output ./redcap_import.csv
-
-    # Only the criteria columns the pipeline actually fills
-    python export_redcap_csv.py --skip-empty-fields
-
-Deliberately standalone: imports only models.py (pydantic + typing), like
-evaluate_predictions.py and compare_runs.py, so it needs no
-langchain/Ollama installation to run.
+Standalone by design: imports models.py only, so it needs no langchain or
+Ollama installation.
 """
 
 import argparse
@@ -53,7 +35,7 @@ from typing import get_args, get_origin
 
 from models import SECTION_MODELS
 
-# Same output naming convention as compare_runs.py: "<record_id>_<YYYYMMDD>_
+# Output naming convention: "<record_id>_<YYYYMMDD>_
 # <HHMMSS>.json", with the timestamp anchored to the END because record_id
 # itself contains underscores and digits.
 _OUTPUT_NAME_RE = re.compile(r"^(?P<record_id>.+)_(?P<timestamp>\d{8}_\d{6})\.json$")
@@ -121,8 +103,10 @@ def _section_options(section_key: str) -> list[str]:
     Returns:
         The option strings, in schema order.
     """
+
     field = next(iter(SECTION_MODELS[section_key].model_fields.values()))
     annotation = field.annotation
+
     # Multi-select sections are list[Literal[...]], single-choice ones are a
     # bare Literal[...]; unwrap the list before reading the literal's values.
     if get_origin(annotation) is list:
@@ -144,6 +128,7 @@ def _option_code(section_key: str, answer: str) -> str:
         ValueError: if the answer is not one of the section's options, which
             means the results file and models.py disagree.
     """
+
     options = _section_options(section_key)
     try:
         return str(options.index(answer) + 1)
@@ -164,6 +149,7 @@ def build_column_order(skip_empty_fields: bool = False) -> list[str]:
     Returns:
         The column names.
     """
+
     columns = ["record_id"]
 
     for section_key, (field, kind) in SECTION_FIELDS.items():
@@ -197,6 +183,7 @@ def row_from_result(result: dict, skip_empty_fields: bool = False) -> dict:
         default, so a missing answer stays visibly missing instead of being
         silently entered as a real one.
     """
+
     row = {column: "" for column in build_column_order(skip_empty_fields)}
     row["record_id"] = result.get("record_id", "")
     row["criteria_form_complete"] = FORM_COMPLETE_VALUE
@@ -206,6 +193,7 @@ def row_from_result(result: dict, skip_empty_fields: bool = False) -> dict:
         options = _section_options(section_key)
 
         if section is None:
+
             # Checkbox columns stay empty too: writing 0 everywhere would
             # assert that every option was considered and rejected.
             continue
@@ -213,10 +201,13 @@ def row_from_result(result: dict, skip_empty_fields: bool = False) -> dict:
         value = next(iter(section.values()))
 
         if kind == "checkbox":
+
+            # Verify that the pipeline's answer is a subset of the schema's options
             selected = set(value)
             unknown = selected - set(options)
             if unknown:
                 raise ValueError(f"{section_key}: unknown option(s) {sorted(unknown)}")
+            
             # Every box is written explicitly, including the unticked ones:
             # REDCap reads a blank checkbox cell as "leave unchanged", so an
             # answer of "none of these" has to be sent as an actual row of 0s.
@@ -245,11 +236,13 @@ def load_latest_results(directory: Path) -> list[dict]:
     Returns:
         The parsed result dicts, sorted by record_id.
     """
+
     if not directory.is_dir():
         sys.exit(f"Not a directory: {directory}")
 
     newest = defaultdict(list)
     for path in sorted(directory.glob("*.json")):
+
         # Audit logs share the prefix but are not form outputs; files without a
         # parseable timestamp are skipped rather than guessed at.
         if path.name.endswith("_audit_log.json"):
@@ -277,6 +270,7 @@ def write_csv(results: list[dict], destination: Path, skip_empty_fields: bool = 
             answer that is not in the schema; nothing is written in that case,
             so a partially converted file cannot be imported by mistake.
     """
+    
     columns = build_column_order(skip_empty_fields)
     rows = [row_from_result(result, skip_empty_fields) for result in results]
 
