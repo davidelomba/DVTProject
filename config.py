@@ -124,6 +124,11 @@ SECTION_HINTS = {
         "whether one was done, or one was done but its result is not reported. If the "
         "evidence states that no imaging was performed, or says nothing at all about "
         "imaging, the correct answer is option 3, NOT option 2.\n"
+        "WATCH OUT: a NEGATIVE result is still a result. An imaging study reporting "
+        "compressible veins, no thrombosis, absence of DVT or DVT ruled out WAS "
+        "performed and did not confirm DVT -> option 2. Option 3's 'result not "
+        "reported' means the report is missing or unavailable, NOT that the report "
+        "says there is no DVT.\n"
         "An autopsy is not an imaging study. A DVT diagnosis reported without any "
         "imaging report does not by itself mean that imaging was done."
     ),
