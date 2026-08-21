@@ -38,7 +38,7 @@ USAGE
     python export_redcap_csv.py --skip-empty-fields
 
 Deliberately standalone: imports only models.py (pydantic + typing), like
-evaluate_synthetic_records.py and compare_runs.py, so it needs no
+evaluate_predictions.py and compare_runs.py, so it needs no
 langchain/Ollama installation to run.
 """
 

@@ -6,12 +6,12 @@ WHY THIS EXISTS: config.LLM_TEMPERATURE is 0.0, so the pipeline is nominally
 deterministic -- but Ollama does not guarantee bit-identical generations across
 calls (GPU non-determinism, batching, KV-cache reuse), so "temperature 0" is
 not by itself evidence that a measured accuracy is reproducible. Every metric
-produced by evaluate_synthetic_records.py currently comes from a SINGLE run.
+produced by evaluate_predictions.py currently comes from a SINGLE run.
 This script quantifies the noise floor underneath those metrics: if two
 identical runs already disagree on N% of sections, then any accuracy
 difference smaller than N% between two configurations is not a result.
 
-NOT the same thing as evaluate_synthetic_records.py, which compares ONE run
+NOT the same thing as evaluate_predictions.py, which compares ONE run
 against the hand-authored ground truth. This compares two runs against EACH
 OTHER (and, additionally, reports each run's own accuracy so a stability
 difference can be read next to any accuracy difference).
@@ -33,7 +33,7 @@ between the two runs makes the comparison measure that edit instead of the
 noise floor.
 
 Deliberately standalone: imports only models.py (pydantic + typing), like
-evaluate_synthetic_records.py, so it has no langchain/Ollama dependency.
+evaluate_predictions.py, so it has no langchain/Ollama dependency.
 """
 
 import argparse

@@ -2,7 +2,7 @@
 Runs the extraction pipeline once for every synthetic clinical record in
 data/synthetic_records/ (see generate_synthetic_records.py), saving output +
 audit log to ./output/ in the same format/naming convention main.py uses
-for a single record -- so evaluate_synthetic_records.py can pick up the
+for a single record -- so evaluate_predictions.py can pick up the
 results directly with its default predictions directory (./output).
 
 Uses whichever config.EXTRACTOR_MODE is currently set in config.py, exactly
@@ -12,7 +12,7 @@ results from different modes/runs can coexist in ./output).
 
 record_id is derived from each file's name (without .txt). This is exactly
 the record_id generate_synthetic_records.py already baked into the matching
-*_ground_truth.json, which is what lets evaluate_synthetic_records.py match
+*_ground_truth.json, which is what lets evaluate_predictions.py match
 predictions back to ground truth later -- no manual bookkeeping needed.
 
 One record failing does not stop the batch: the error is printed and the
@@ -95,7 +95,7 @@ def main():
         gt_path = RECORDS_DIR / f"{record_id}_ground_truth.json"
         if not gt_path.exists():
             print(f"[{i}/{len(record_paths)}] {record_id}: [WARNING] no matching "
-                  f"{gt_path.name} found -- evaluate_synthetic_records.py won't "
+                  f"{gt_path.name} found -- evaluate_predictions.py won't "
                   f"be able to score this record.", flush=True)
 
         print(f"[{i}/{len(record_paths)}] {record_id} ...", flush=True)
@@ -125,7 +125,7 @@ def main():
               f"min {min(durations) / 60:.1f}, max {max(durations) / 60:.1f}.", flush=True)
     if failed:
         print(f"Failed records: {', '.join(failed)}", flush=True)
-    print(f"\nNow run: python evaluate_synthetic_records.py", flush=True)
+    print(f"\nNow run: python evaluate_predictions.py", flush=True)
 
 
 if __name__ == "__main__":
