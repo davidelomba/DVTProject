@@ -1,7 +1,18 @@
 """
-Builds the two vector stores required by the plan:
-1. Static KB: Brighton paper (DVT synonyms) -- never changes between patients.
-2. Dynamic KB: the single patient's clinical record (EHR) -- rebuilt each run.
+Prepares the retrieval side of the pipeline: the embedding model, the two
+vector stores, the loaders that feed them and the retriever tool the agentic
+extractor calls.
+
+STORES
+1. Brighton KB: the guideline paper, identical for every patient, so it is
+   built once and reloaded from disk unless force_rebuild.
+2. EHR KB: one patient's clinical record, wiped and rebuilt on every run.
+   Built only for the "rag" and "agentic_graph" extraction modes; "full_text"
+   passes the record in the prompt instead.
+
+Both source texts are cleaned before reaching Agent 2: the paper's reference
+list is dropped at load time, and bibliography lines surviving into a
+retrieved chunk are stripped from the context.
 """
 
 import os
@@ -17,15 +28,19 @@ import config
 
 
 def get_embeddings():
-    """Lightweight, local embedding model; does not impact the LLM's RAM budget.
+    """Builds the embedding model shared by every vector store.
 
-    intfloat/multilingual-e5-small is trained to expect a "query: "/"passage: "
-    prefix on every input depending on its role (its own model card warns of a
-    performance degradation without it) -- verified against the installed
-    langchain-huggingface: embed_documents() uses encode_kwargs, embed_query()
-    uses query_encode_kwargs (falling back to encode_kwargs if empty), both
-    passed straight through to sentence-transformers' encode(prompt=...).
+    Multilingual by necessity: the retrieval queries are in English while the
+    records are in Italian.
+
+    intfloat/multilingual-e5-small expects a role prefix on each input
+    ("query: " for a search query, "passage: " for a stored chunk) and its
+    model card reports degraded retrieval without it. langchain-huggingface
+    routes the two separately: embed_documents() applies encode_kwargs,
+    embed_query() applies query_encode_kwargs (falling back to encode_kwargs
+    when empty), both forwarded to sentence-transformers' encode(prompt=...).
     """
+
     return HuggingFaceEmbeddings(
         model_name=config.EMBEDDING_MODEL_NAME,
         # Applied when embedding stored chunks (embed_documents()).
@@ -42,6 +57,7 @@ def build_brighton_kb(brighton_pdf_text: str, embeddings=None, force_rebuild: bo
     on disk and force_rebuild=False, it is reloaded instead of recomputing
     embeddings.
     """
+
     embeddings = embeddings or get_embeddings()
 
     # Reuse the existing index instead of recomputing embeddings: the
@@ -72,12 +88,13 @@ def build_ehr_kb(patient_record_text: str, patient_id: str, embeddings=None) -> 
     Dynamic KB: the single patient's clinical record, chunked and embedded.
     Only needed when config.EXTRACTOR_MODE is "rag" (agents.extract_evidence)
     or "agentic_graph" (agents.extract_evidence_agentic, via the retriever
-    tool built by make_ehr_retriever_tool below) -- not used when
+    tool built by make_ehr_retriever_tool below); not used when
     EXTRACTOR_MODE is "full_text" (the default), which passes the record
     directly instead.
     Persisted in a dedicated per-patient subfolder, so different runs
     don't overwrite one another.
     """
+
     embeddings = embeddings or get_embeddings()
 
     splitter = RecursiveCharacterTextSplitter(
@@ -107,10 +124,14 @@ def build_ehr_kb(patient_record_text: str, patient_id: str, embeddings=None) -> 
 
 # Lines of the Brighton paper that carry no clinical meaning: numbered
 # bibliography entries, DOIs, URLs and journal citations. The PDF is chunked
-# whole, so a retrieved chunk routinely contains a run of references, and they
+# whole, so a retrieved chunk routinely contains a run of references and they
 # reach Agent 2 as if they were reference terminology.
 _BIBLIOGRAPHY_LINE = re.compile(
-    r"^\s*\[\d+\]"          # "[83] Goodman LR, Stein PD, ..."
+    # A citation marker starting the line counts only when an author name
+    # follows it. Without that condition the pattern also matched body text
+    # wrapped after a closing citation ("[69]. TTS is characterized by
+    # thrombosis..."), deleting a clinically meaningful line.
+    r"^\s*\[\d+\]\s+[A-Z]"  # "[83] Goodman LR, Stein PD, ..."
     r"|https?://"           # bare URLs
     r"|doi\.org"            # DOI links
     r"|\bdoi:\s*10\."       # inline DOIs
@@ -125,9 +146,9 @@ def clean_brighton_context(context: str) -> str:
     """Strips bibliographic noise from retrieved guideline context.
 
     A second line of defence: load_brighton_pdf_text already drops the whole
-    reference list before indexing, so on this paper nothing is left to remove.
-    It still matters for a PDF whose reference section has no heading to
-    truncate at.
+    reference list before indexing, so on this paper only a handful of stray
+    DOI lines remain for this filter to catch. It matters more for a PDF whose
+    reference section has no heading to truncate at.
 
     Args:
         context: the concatenated page content of the retrieved chunks.
@@ -137,6 +158,7 @@ def clean_brighton_context(context: str) -> str:
         if filtering would remove everything, so a chunk that happens to be
         all references still yields something rather than an empty context.
     """
+
     kept = [ln for ln in context.splitlines() if not _BIBLIOGRAPHY_LINE.search(ln)]
     cleaned = "\n".join(kept).strip()
     return cleaned if cleaned else context
@@ -153,14 +175,17 @@ def make_ehr_retriever_tool(ehr_vectorstore: Chroma):
     """
 
     ehr_retriever = ehr_vectorstore.as_retriever(search_kwargs={"k": config.EHR_RETRIEVER_K})
+
     # Wraps the retriever as a LangChain Tool object the agent can call by
     # name ("search_patient_record") with a free-text query of its choosing.
+
     return create_retriever_tool(
         ehr_retriever,
         "search_patient_record",
+
         # Deliberately spells out every clinical domain touched by the 10
-        # questionnaire criteria (A1, A2, A3_1/A3_2, B1_1/B1_2/B2, C, F, X) --
-        # the same description is reused unchanged across all sections, so a
+        # questionnaire criteria (A1, A2, A3_1/A3_2, B1_1/B1_2/B2, C, F, X).
+        # The same description is reused unchanged across all sections, so a
         # narrower one risks the model not thinking to search for a domain
         # (e.g. autopsy, imaging modality, specialist diagnosis) it doesn't
         # explicitly mention.

@@ -19,10 +19,10 @@ One record failing does not stop the batch: the error is printed and the
 script moves on to the next record, same resilience pattern as pipeline.py's
 own per-section loop.
 
-Note: this calls pipeline.run_pipeline() once per record, which rebuilds the
-Brighton/EHR vector stores from scratch every time (inherited from
-pipeline.py's current design, not changed here) -- expect this to be slower
-per-record than main.py's single run, scaled by the number of records.
+Note: this calls pipeline.run_pipeline() once per record, so the per-record
+setup is repeated every time: the Brighton PDF is re-parsed and the EHR vector
+store rebuilt from scratch (the Brighton store is reloaded from disk, not
+re-embedded). Inherited from pipeline.py's current design, not changed here.
 
 Usage:
     python run_synthetic_records.py
