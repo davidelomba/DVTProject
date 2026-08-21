@@ -14,9 +14,7 @@ from typing import List, Literal
 from pydantic import BaseModel, Field, model_validator
 
 
-# ---------------------------------------------------------------------------
 # Criterion A: Confirmation of DVT
-# ---------------------------------------------------------------------------
 
 class A1_Autopsy(BaseModel):
     """A1. Pathologic findings from autopsy."""
@@ -65,9 +63,7 @@ class A3_2_ImagingStudies(BaseModel):
     ]] = Field(default_factory=list, description="A3.2. Which studies confirmed DVT — check all that apply")
 
 
-# ---------------------------------------------------------------------------
 # Criterion B: Clinical evidence for presence of DVT
-# ---------------------------------------------------------------------------
 
 class B1_1_SymptomsReported(BaseModel):
     """B1.1. Whether signs or symptoms of DVT were reported."""
@@ -116,9 +112,7 @@ class B2_NewSymptoms(BaseModel):
         return self
 
 
-# ---------------------------------------------------------------------------
 # Criterion C: D-Dimer
-# ---------------------------------------------------------------------------
 
 class C_DDimer(BaseModel):
     """C. D-Dimer result."""
@@ -130,9 +124,7 @@ class C_DDimer(BaseModel):
     ] = Field(description="C. D-Dimer — one best answer")
 
 
-# ---------------------------------------------------------------------------
 # Criterion F
-# ---------------------------------------------------------------------------
 
 class F_ReportedBySpecialist(BaseModel):
     """F. Reported as a case of DVT by a specialist, without details.
@@ -147,9 +139,7 @@ class F_ReportedBySpecialist(BaseModel):
     )
 
 
-# ---------------------------------------------------------------------------
 # Criterion X: Alternative diagnosis
-# ---------------------------------------------------------------------------
 
 class X_AlternativeDiagnosis(BaseModel):
     """X. Whether an alternative diagnosis explained the acute illness."""
@@ -160,9 +150,7 @@ class X_AlternativeDiagnosis(BaseModel):
     ] = Field(description="X. Alternative diagnosis — one best answer")
 
 
-# ---------------------------------------------------------------------------
 # Container for the full form (union of all sections)
-# ---------------------------------------------------------------------------
 
 class DVT_CriteriaForm(BaseModel):
     """The complete filled-in questionnaire for one clinical record.
