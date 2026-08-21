@@ -23,6 +23,7 @@ PROJECT_ROOT = Path(__file__).resolve().parent
 
 def main():
     """Runs the pipeline on one record and writes its output and audit log."""
+
     # Replace these with the actual locations of your files.
     record_id = "PATIENT_001"
     patient_ehr_path = str(PROJECT_ROOT / "data" / "patient_001.txt")                                   # Plain .txt clinical record
@@ -34,7 +35,7 @@ def main():
     # Serialize the populated schema
     summary = form_to_json_summary(form)
 
-    print("\n--- Filled-in JSON (checkboxes) ---")
+    print("\nFilled-in JSON (checkboxes)")
     print(json.dumps(summary, indent=2))
 
     # Ensure output directory exists
@@ -42,7 +43,7 @@ def main():
     os.makedirs(output_dir, exist_ok=True)
 
     # Timestamp shared by both files of this run, so a JSON and its matching
-    # audit log can always be paired up, and re-running never overwrites a
+    # audit log can always be paired up and re-running never overwrites a
     # previous run's output.
     timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
 
