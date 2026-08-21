@@ -18,8 +18,17 @@ Brighton store is reloaded from disk, not re-embedded).
 
 Usage:
     python run_synthetic_records.py
+    python run_synthetic_records.py --only SYN_02 SYN_21
+
+--only restricts the batch to the records whose id contains one of the given
+strings, for re-checking a handful after a prompt change without paying for
+the whole set. The results it writes are a partial run: evaluate_predictions
+keeps the newest file per record, so scoring afterwards mixes them with
+whatever the other records produced earlier, which is fine for a targeted
+check but is not a run and should not be reported as one.
 """
 
+import argparse
 import json
 import time
 import traceback
@@ -69,12 +78,31 @@ def main():
     run continues.
     """
 
+    parser = argparse.ArgumentParser(description="Run the pipeline over the synthetic records.")
+    parser.add_argument(
+        "--only", nargs="+", metavar="ID",
+        help="restrict the batch to the records whose id contains one of these "
+             "strings (e.g. --only SYN_02 SYN_21)",
+    )
+    args = parser.parse_args()
+
     OUTPUT_DIR.mkdir(exist_ok=True)
     record_paths = sorted(RECORDS_DIR.glob("*.txt"))
 
     if not record_paths:
         print(f"No .txt records found in {RECORDS_DIR} -- run generate_synthetic_records.py first.", flush=True)
         return
+
+    if args.only:
+        total = len(record_paths)
+        record_paths = [p for p in record_paths if any(frag in p.stem for frag in args.only)]
+        # Exit instead of running nothing: a mistyped id would otherwise look
+        # like a successful run that scored zero records.
+        if not record_paths:
+            print(f"No record id matches {args.only}.", flush=True)
+            return
+        print(f"Restricting the batch to {len(record_paths)} of {total} records: "
+              f"{', '.join(p.stem for p in record_paths)}", flush=True)
 
     print(f"Found {len(record_paths)} synthetic records. Running pipeline "
           f"(EXTRACTOR_MODE={config.EXTRACTOR_MODE!r})...\n", flush=True)
