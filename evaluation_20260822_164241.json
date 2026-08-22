@@ -1,0 +1,306 @@
+{
+  "records_compared": 30,
+  "records_missing_prediction": [],
+  "sections": {
+    "A1": {
+      "compared": 30,
+      "missing": 0,
+      "exact_matches": 30,
+      "options": [
+        "Autopsy showed presence of DVT",
+        "Autopsy done but showed no evidence of DVT",
+        "No autopsy done, unknown if done, or done but results unavailable"
+      ],
+      "accuracy": 1.0,
+      "tp": 30,
+      "tn": 60,
+      "fp": 0,
+      "fn": 0,
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0,
+      "confusion_matrix": [
+        [
+          2,
+          0,
+          0
+        ],
+        [
+          0,
+          2,
+          0
+        ],
+        [
+          0,
+          0,
+          26
+        ]
+      ]
+    },
+    "A2": {
+      "compared": 30,
+      "missing": 0,
+      "exact_matches": 26,
+      "options": [
+        "Thrombectomy related to DVT performed",
+        "Other procedure done that confirmed presence of DVT",
+        "No surgical procedure done; or, done but either did not confirm presence of DVT or findings unknown; or unknown if done"
+      ],
+      "accuracy": 0.8666666666666667,
+      "tp": 26,
+      "tn": 56,
+      "fp": 4,
+      "fn": 4,
+      "precision": 0.8666666666666667,
+      "recall": 0.8666666666666667,
+      "f1": 0.8666666666666667,
+      "confusion_matrix": [
+        [
+          0,
+          0,
+          2
+        ],
+        [
+          0,
+          0,
+          2
+        ],
+        [
+          0,
+          0,
+          26
+        ]
+      ]
+    },
+    "A3_1": {
+      "compared": 30,
+      "missing": 0,
+      "exact_matches": 27,
+      "options": [
+        "≥1 imaging study was done and confirmed DVT",
+        "≥1 imaging study was done but didn't confirm DVT",
+        "No imaging studies done, unknown if done, or done but results unknown"
+      ],
+      "accuracy": 0.9,
+      "tp": 27,
+      "tn": 57,
+      "fp": 3,
+      "fn": 3,
+      "precision": 0.9,
+      "recall": 0.9,
+      "f1": 0.9,
+      "confusion_matrix": [
+        [
+          16,
+          1,
+          0
+        ],
+        [
+          0,
+          1,
+          2
+        ],
+        [
+          0,
+          0,
+          10
+        ]
+      ]
+    },
+    "A3_2": {
+      "compared": 30,
+      "missing": 0,
+      "exact_matches": 16,
+      "options": [
+        "Compression ultrasonography",
+        "CT or MR venography",
+        "Contrast venography",
+        "Doppler/Duplex Ultrasound",
+        "Other"
+      ],
+      "accuracy": 0.5333333333333333,
+      "tp": 16,
+      "tn": 116,
+      "fp": 13,
+      "fn": 5,
+      "precision": 0.5517241379310345,
+      "recall": 0.7619047619047619,
+      "f1": 0.64
+    },
+    "B1_1": {
+      "compared": 30,
+      "missing": 0,
+      "exact_matches": 27,
+      "options": [
+        "≥1 symptom or sign of DVT was reported",
+        "There was no report of a recognized DVT syndrome",
+        "It is unknown if there was a report of a DVT syndrome"
+      ],
+      "accuracy": 0.9,
+      "tp": 27,
+      "tn": 57,
+      "fp": 3,
+      "fn": 3,
+      "precision": 0.9,
+      "recall": 0.9,
+      "f1": 0.9,
+      "confusion_matrix": [
+        [
+          24,
+          0,
+          0
+        ],
+        [
+          0,
+          3,
+          0
+        ],
+        [
+          1,
+          2,
+          0
+        ]
+      ]
+    },
+    "B1_2": {
+      "compared": 30,
+      "missing": 0,
+      "exact_matches": 24,
+      "options": [
+        "Lower extremity DVT",
+        "Upper extremity DVT"
+      ],
+      "accuracy": 0.8,
+      "tp": 22,
+      "tn": 31,
+      "fp": 5,
+      "fn": 2,
+      "precision": 0.8148148148148148,
+      "recall": 0.9166666666666666,
+      "f1": 0.8627450980392157
+    },
+    "B2": {
+      "compared": 30,
+      "missing": 0,
+      "exact_matches": 18,
+      "options": [
+        "Calf pain or tenderness",
+        "Leg swelling or pitting oedema",
+        "Absent pulses in legs or arms",
+        "Redness, warmth, or pain in one or more extremities",
+        "None of the above were present or it is unknown if any of 1-4 were present"
+      ],
+      "accuracy": 0.6,
+      "tp": 48,
+      "tn": 87,
+      "fp": 13,
+      "fn": 2,
+      "precision": 0.7868852459016393,
+      "recall": 0.96,
+      "f1": 0.8648648648648649
+    },
+    "C": {
+      "compared": 30,
+      "missing": 0,
+      "exact_matches": 30,
+      "options": [
+        "D-dimer exceeded test lab's upper limit of normal.",
+        "D-dimer tested and was within test lab's range of normal",
+        "D-dimer not tested, or tested but results unknown or not available"
+      ],
+      "accuracy": 1.0,
+      "tp": 30,
+      "tn": 60,
+      "fp": 0,
+      "fn": 0,
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0,
+      "confusion_matrix": [
+        [
+          18,
+          0,
+          0
+        ],
+        [
+          0,
+          3,
+          0
+        ],
+        [
+          0,
+          0,
+          9
+        ]
+      ]
+    },
+    "F": {
+      "compared": 30,
+      "missing": 0,
+      "exact_matches": 28,
+      "options": [
+        "Yes",
+        "No"
+      ],
+      "accuracy": 0.9333333333333333,
+      "tp": 28,
+      "tn": 28,
+      "fp": 2,
+      "fn": 2,
+      "precision": 0.9333333333333333,
+      "recall": 0.9333333333333333,
+      "f1": 0.9333333333333333,
+      "confusion_matrix": [
+        [
+          0,
+          2
+        ],
+        [
+          0,
+          28
+        ]
+      ]
+    },
+    "X": {
+      "compared": 30,
+      "missing": 0,
+      "exact_matches": 30,
+      "options": [
+        "An alternative diagnosis was found that explained the acute illness",
+        "No alternative diagnosis was found to explain the acute illness"
+      ],
+      "accuracy": 1.0,
+      "tp": 30,
+      "tn": 30,
+      "fp": 0,
+      "fn": 0,
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0,
+      "confusion_matrix": [
+        [
+          2,
+          0
+        ],
+        [
+          0,
+          28
+        ]
+      ]
+    }
+  },
+  "overall": {
+    "compared": 300,
+    "exact_matches": 256,
+    "tp": 284,
+    "tn": 582,
+    "fp": 43,
+    "fn": 21,
+    "accuracy": 0.8533333333333334,
+    "precision": 0.8685015290519877,
+    "recall": 0.9311475409836065,
+    "f1": 0.8987341772151899
+  },
+  "ground_truth_dir": "c:\\Users\\davil\\OneDrive\\Documenti\\DVTProject\\data\\synthetic_records",
+  "predictions_dir": "c:\\Users\\davil\\OneDrive\\Documenti\\DVTProject\\output"
+}
