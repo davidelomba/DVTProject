@@ -541,8 +541,10 @@ def evaluate_section(
     Returns:
         (section instance, reasoning_text, conflict). The full response is kept
         so a wrong answer can be audited later without re-running the pipeline.
-        conflict is None when the two answer lines agree, otherwise a dict
-        holding what each of them said.
+        conflict is None when the answer lines agree, otherwise a dict holding
+        what each of them said, under a "kind" naming the disagreement:
+        "text_vs_number", "none_vs_text" or "none_with_options". Only one is
+        returned, the last one found.
 
     Raises:
         RuntimeError: if no attempt produced a parseable, valid answer.
@@ -595,14 +597,30 @@ def evaluate_section(
 
                 # "none" also arrives as one item among several, which the
                 # whole-line check above does not see.
+                none_with_options = None
                 if not _has_none_option(options):
+                    dropped = [item for item in raw_items if _is_no_selection(item)]
                     raw_items = [item for item in raw_items if not _is_no_selection(item)]
                     if not raw_items:
                         return section_model(**{field_name: []}), content, None
+                    # The model named an option and said "none" in the same
+                    # line. The named options are kept; the contradiction is
+                    # recorded so it can be counted across a run.
+                    if dropped:
+                        print(
+                            f"[WARNING] FINAL_ANSWER lists {raw_items} together with "
+                            f"{dropped} -- keeping the named options.",
+                            flush=True,
+                        )
+                        none_with_options = {
+                            "kind": "none_with_options",
+                            "from_number": list(raw_items),
+                            "from_text": list(dropped),
+                        }
 
                 matched = [_match_option(item, options) for item in raw_items]
 
-                conflict = None
+                conflict = none_with_options
                 if raw_option_text:
                     text_items = [item.strip() for item in raw_option_text.split(";") if item.strip()]
                     try:
