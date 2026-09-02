@@ -60,20 +60,39 @@ behaviour or to project history. Numbers quoted in prose must match the code.
 
 ```bash
 python main.py                                    # one record, paths edited by hand
-python run_synthetic_records.py                   # all 30 records, about 6 hours
-python run_synthetic_records.py --only SYN_02     # a subset, about 12 min each
+python run_synthetic_records.py                   # all 30 records
+python run_synthetic_records.py --only SYN_02     # a subset
 python evaluate_predictions.py                    # score ./output against the corpus
+python compare_runs.py                            # two runs against each other
 python generate_synthetic_records.py --check      # fidelity audit, no LLM call
 python export_redcap_csv.py                       # results -> REDCap import CSV
 ```
+
+A record costs about 56 seconds on mari (2 x RTX 2080 Ti), so a full run is
+half an hour there. The same run took 715 seconds per record on the laptop,
+about six hours.
 
 A partial run is not a run: `evaluate_predictions` keeps the newest file per
 record, so scoring after `--only` mixes runs. Fine for a targeted check, not a
 number to report.
 
+## Machines
+
+Results are not comparable across machines. The same three records, same
+models, same temperature 0, gave three different sections out of thirty on
+the laptop and on mari, against a generation noise floor of 1 in 300 measured
+on the laptop and 0 in 30 measured on mari. Each machine is deterministic; the
+two disagree with each other. Ollama 0.33.2 on the laptop against 0.32.1 on
+mari is the most likely cause, GPU architecture the other candidate.
+
+Every run's audit log records `hostname` and `ollama_version` under
+`_run_config.environment`. Check them before comparing two result files.
+
 ## What the measurements say
 
-Run of 2026-08-22, 30 records: micro accuracy 85.3%, macro kappa 0.597.
+Run of 2026-08-22 on the laptop, 30 records: micro accuracy 85.3%, macro kappa
+0.597. Superseded as a reference point by the first full run on mari, since
+the two machines do not agree (see Machines above).
 
 - **Generation noise is settled.** `compare_runs.py` on 2026-08-22 found 1
   section changed out of 300 between two identical runs (stability 99.7%), so a
