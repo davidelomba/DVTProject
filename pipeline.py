@@ -252,6 +252,8 @@ def run_pipeline(record_id: str, patient_ehr_path: str, brighton_pdf_path: str):
                 traceback.print_exc()
                 form_data[section_key.lower()] = None
                 section_log["error"] = str(exc)
+                # Kept so the answer that could not be parsed stays readable.
+                section_log["reasoning"] = getattr(exc, "last_response", None)
 
             audit_log[section_key] = section_log
 

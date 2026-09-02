@@ -552,6 +552,7 @@ def evaluate_section(
     prompt = _build_reasoning_prompt(evidence_text, brighton_context, options, multi_select, extra_instructions)
 
     last_error = None
+    last_content = None
     # Up to max_retries + 1 attempts total (1 initial + retries on parse failure).
     for attempt in range(max_retries + 1):
         response = llm.invoke([
@@ -591,6 +592,14 @@ def evaluate_section(
 
                 # Each ';'-separated item mapped to a valid option independently.
                 raw_items = [item.strip() for item in raw_final.split(";") if item.strip()]
+
+                # "none" also arrives as one item among several, which the
+                # whole-line check above does not see.
+                if not _has_none_option(options):
+                    raw_items = [item for item in raw_items if not _is_no_selection(item)]
+                    if not raw_items:
+                        return section_model(**{field_name: []}), content, None
+
                 matched = [_match_option(item, options) for item in raw_items]
 
                 conflict = None
@@ -670,6 +679,7 @@ def evaluate_section(
             # Parsing/matching failed: remember the error and retry with an
             # extended prompt, instead of giving up on the first bad response.
             last_error = exc
+            last_content = content
             prompt += (
                 f"\n\n(Your previous attempt failed: {exc}. Remember: end your "
                 f"response with a 'FINAL_OPTION: <option text>' line copying the "
@@ -678,5 +688,9 @@ def evaluate_section(
                 f"for a multi-select question).)"
             )
 
-    # All attempts exhausted without a parseable/valid answer.
-    raise RuntimeError(f"Evaluation failed after {max_retries + 1} attempts: {last_error}")
+    # All attempts exhausted without a parseable/valid answer. The last response
+    # travels on the exception: a failed section is the one case where the
+    # caller has no other copy of what the model wrote.
+    error = RuntimeError(f"Evaluation failed after {max_retries + 1} attempts: {last_error}")
+    error.last_response = last_content
+    raise error

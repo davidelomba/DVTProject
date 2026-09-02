@@ -232,6 +232,8 @@ def _make_answer_node(llm, brighton_kb, section_queries: dict):
             print(f"[{section_key}] Agent 2 FAILED -- leaving field as None: {exc}", flush=True)
             form_data[section_key.lower()] = None
             section_log["error"] = str(exc)
+            # Kept so the answer that could not be parsed stays readable.
+            section_log["reasoning"] = getattr(exc, "last_response", None)
 
         audit_log[section_key] = section_log
         return {**state, "form_data": form_data, "audit_log": audit_log}
