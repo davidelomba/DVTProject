@@ -71,14 +71,39 @@ A partial run is not a run: `evaluate_predictions` keeps the newest file per
 record, so scoring after `--only` mixes runs. Fine for a targeted check, not a
 number to report.
 
+## What the measurements say
+
+Run of 2026-08-22, 30 records: micro accuracy 85.3%, macro kappa 0.597.
+
+- **Generation noise is settled.** `compare_runs.py` on 2026-08-22 found 1
+  section changed out of 300 between two identical runs (stability 99.7%), so a
+  difference between runs is attributable to whatever was edited between them.
+- **Sampling uncertainty is not.** With 30 records the 95% interval on a
+  section's accuracy is 15 to 18 points wide. That, not generation noise, is
+  what limits how small a difference can be read.
+- **F and A2 have Cohen kappa of exactly 0.000** at 93.3% and 86.7% accuracy:
+  they answer the majority class everywhere and miss every minority case. Their
+  accuracy equals their majority baseline. F's two positive records are
+  SYN_17 and SYN_29, the only two scenarios written to test it, and both fail.
+- Read the metrics in this order: majority baseline and gain, then kappa, then
+  accuracy with its interval. Accuracy alone ranked F above A3_2, which has
+  half the accuracy and does far more work (gain +20.0 against +0.0).
+
 ## Open items
 
-- `compare_runs.py` has never been run. Every metric so far comes from a single
-  run, so there is no noise floor and small differences are not interpretable.
-  This blocks the interpretation of everything else.
+- **The Level of Certainty is never measured.** REDCap computes it from the
+  answers and it is the only number a clinician acts on, but every metric here
+  is section-level. Getting it needs the REDCap Data Dictionary, or one import
+  and export cycle through the project itself. It is ordinal, so weighted kappa
+  rather than plain kappa.
+- **The corpus cannot measure some sections.** F has 2 positive records out of
+  30, A2 has 4, X has 2. No model can be evaluated on those counts; the fix is
+  more scenarios, not a better prompt.
 - September 2026, once a 16 GB GPU is available: re-run the gate ablation with a
-  larger model, and test whether the TRANSCRIPTION RULE in
-  `AGENTIC_EXTRACTOR_SYSTEM_PROMPT` still does anything (it governs a string the
-  code discards).
-- Known weak sections: A3_2 (0.533) and B2 (0.600). B2 over-selects; its two
-  overlapping options are a wording problem, not only a model problem.
+  larger model, starting with F's details gate, which fires on 23 of 30 records
+  and may be doing nothing but reproducing the majority answer. Also test
+  whether the TRANSCRIPTION RULE in `AGENTIC_EXTRACTOR_SYSTEM_PROMPT` still does
+  anything (it governs a string the code discards).
+- Known weak sections: A3_2 (0.533) and B2 (0.600). B2 over-selects, with
+  precision 78.7% against recall 96.0%; its two overlapping options are a
+  wording problem, not only a model problem.
