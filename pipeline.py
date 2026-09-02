@@ -8,6 +8,8 @@ rules are applied and the final DVT_CriteriaForm is returned together with
 a full audit log.
 """
 
+import socket
+import subprocess
 import time
 import traceback
 
@@ -49,6 +51,28 @@ SECTION_QUERIES = {
 RUN_CONFIG_KEY = "_run_config"
 
 
+def _ollama_version() -> str:
+    """The version string of the Ollama binary on PATH.
+
+    Recorded because two Ollama versions ship two versions of llama.cpp, and
+    with them different quantisation kernels: at temperature 0 that is enough
+    to flip a token the model had nearly tied, so runs produced under different
+    versions are not directly comparable.
+
+    Returns:
+        The version, or a short marker when the binary is absent or does not
+        answer. Never raises: a missing version costs provenance, not a run.
+    """
+
+    try:
+        out = subprocess.run(
+            ["ollama", "--version"], capture_output=True, text=True, timeout=10
+        )
+        return out.stdout.strip() or out.stderr.strip() or "unknown"
+    except Exception:
+        return "unavailable"
+
+
 def _run_config_snapshot() -> dict:
     """Captures the settings that determine what a run produces.
 
@@ -77,6 +101,12 @@ def _run_config_snapshot() -> dict:
             ),
             "evaluator": config.EVALUATOR_LLM_MODEL_NAME,
             "embeddings": config.EMBEDDING_MODEL_NAME,
+        },
+        # Two runs of the same records on different machines have been observed
+        # to differ, so a result is only comparable to another produced here.
+        "environment": {
+            "hostname": socket.gethostname(),
+            "ollama_version": _ollama_version(),
         },
         "generation": {
             "temperature": config.LLM_TEMPERATURE,
