@@ -67,9 +67,8 @@ def _run_config_snapshot() -> dict:
         # Always applied, never switchable: recorded so a reader does not have
         # to know that to interpret the run.
         "cross_section_rules_applied": True,
-        # The model that actually extracted, not the constant: in
-        # "agentic_graph" Agent 1 runs on AGENTIC_LLM_MODEL_NAME and
-        # LLM_MODEL_NAME is never queried.
+        # In "agentic_graph" Agent 1 runs on AGENTIC_LLM_MODEL_NAME; the other
+        # two modes reach the record through LLM_MODEL_NAME.
         "models": {
             "extractor": (
                 config.AGENTIC_LLM_MODEL_NAME
@@ -108,11 +107,9 @@ def run_pipeline(record_id: str, patient_ehr_path: str, brighton_pdf_path: str):
         describing the settings the run was produced with.
     """
     # Built once and reused across every section, not per loop iteration.
-    # Each role reads its own constant, so any one of them can be swapped from
-    # config.py alone. The extractor is built further down, only in the branch
-    # that uses it: "agentic_graph" reaches the record through
-    # config.AGENTIC_LLM_MODEL_NAME instead, and loading a model Ollama then
-    # never queries costs several GB of VRAM.
+    # Each role reads its own constant, so any one can be swapped from
+    # config.py alone. Agent 1's model is built in the branch that uses it, so
+    # a mode that never queries it does not load it into VRAM.
     embeddings = get_embeddings()
     evaluator_llm = build_llm(config.EVALUATOR_LLM_MODEL_NAME)
 
@@ -150,7 +147,7 @@ def run_pipeline(record_id: str, patient_ehr_path: str, brighton_pdf_path: str):
             section_queries=SECTION_QUERIES,
         )
     else:
-        # Agent 1's model for the two non-agentic modes.
+        # Agent 1's model for rag and full_text.
         llm = build_llm()
 
         form_data = {"record_id": record_id}
