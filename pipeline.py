@@ -67,10 +67,16 @@ def _run_config_snapshot() -> dict:
         # Always applied, never switchable: recorded so a reader does not have
         # to know that to interpret the run.
         "cross_section_rules_applied": True,
+        # The model that actually extracted, not the constant: in
+        # "agentic_graph" Agent 1 runs on AGENTIC_LLM_MODEL_NAME and
+        # LLM_MODEL_NAME is never queried.
         "models": {
-            "extractor": config.LLM_MODEL_NAME,
+            "extractor": (
+                config.AGENTIC_LLM_MODEL_NAME
+                if config.EXTRACTOR_MODE == "agentic_graph"
+                else config.LLM_MODEL_NAME
+            ),
             "evaluator": config.EVALUATOR_LLM_MODEL_NAME,
-            "agentic_search": config.AGENTIC_LLM_MODEL_NAME,
             "embeddings": config.EMBEDDING_MODEL_NAME,
         },
         "generation": {
@@ -102,11 +108,12 @@ def run_pipeline(record_id: str, patient_ehr_path: str, brighton_pdf_path: str):
         describing the settings the run was produced with.
     """
     # Built once and reused across every section, not per loop iteration.
-    # The two roles read separate constants (config.LLM_MODEL_NAME,
-    # config.EVALUATOR_LLM_MODEL_NAME), so either can be swapped from
-    # config.py alone; both currently name the same model.
+    # Each role reads its own constant, so any one of them can be swapped from
+    # config.py alone. The extractor is built further down, only in the branch
+    # that uses it: "agentic_graph" reaches the record through
+    # config.AGENTIC_LLM_MODEL_NAME instead, and loading a model Ollama then
+    # never queries costs several GB of VRAM.
     embeddings = get_embeddings()
-    llm = build_llm()
     evaluator_llm = build_llm(config.EVALUATOR_LLM_MODEL_NAME)
 
     # Load both source texts once: the static Brighton reference paper and
@@ -143,6 +150,9 @@ def run_pipeline(record_id: str, patient_ehr_path: str, brighton_pdf_path: str):
             section_queries=SECTION_QUERIES,
         )
     else:
+        # Agent 1's model for the two non-agentic modes.
+        llm = build_llm()
+
         form_data = {"record_id": record_id}
         audit_log = {}
         # Section keys map to DVT_CriteriaForm fields via lower-casing
