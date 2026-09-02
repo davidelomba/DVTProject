@@ -11,7 +11,16 @@ JSON rather than by filename, so timestamped outputs need no renaming; when a
 record has several files, the most recent one wins.
 
 METRICS, per section and overall:
-  - Exact-match accuracy: the predicted answer equals the reference.
+  - Exact-match accuracy: the predicted answer equals the reference, with a
+    95% Wilson confidence interval. On 30 records that interval is wide, which
+    is the point: it says how much of a difference between two runs the sample
+    can carry.
+  - Majority baseline: the accuracy of always answering the section's most
+    frequent reference answer, and the gain over it. Sections where one answer
+    dominates score high on accuracy alone.
+  - Cohen's kappa: agreement corrected for the agreement expected by chance.
+    Zero means the predictions agree no more than a constant answer would,
+    however high the accuracy.
   - TP/TN/FP/FN, precision, recall and F1, counted per OPTION rather than per
     section: every option of every section is scored as selected or not, in
     the prediction and in the reference. Without this, a multi-select section
@@ -26,6 +35,10 @@ Precision, recall and F1 deliberately ignore true negatives (the options
 correctly left unselected). They are the majority of every count, since most
 options do not apply to most records, so any metric including them is dominated
 by the easy cases and reads far higher than the real performance.
+
+The overall row is reported twice. MICRO pools every option of every section,
+so a section with more options weighs more. MACRO averages the per-section
+figures, so each section counts once.
 
 A section the pipeline left as None or a record with no output at all, is
 reported as "missing" and left out of the metrics instead of being counted as
@@ -43,12 +56,19 @@ Writes evaluation_<timestamp>.json next to the printed report.
 
 import argparse
 import json
+import math
 import sys
+from collections import Counter
 from datetime import datetime
 from pathlib import Path
 from typing import get_args, get_origin
 
-from sklearn.metrics import confusion_matrix, multilabel_confusion_matrix, precision_recall_fscore_support
+from sklearn.metrics import (
+    cohen_kappa_score,
+    confusion_matrix,
+    multilabel_confusion_matrix,
+    precision_recall_fscore_support,
+)
 
 from models import SECTION_MODELS
 
@@ -135,6 +155,52 @@ def _binary_rows(pairs, options):
     return y_true, y_pred
 
 
+def _wilson_interval(successes: int, total: int, z: float = 1.96) -> tuple:
+    """A 95% confidence interval for an observed proportion.
+
+    Wilson rather than the textbook normal interval: with 30 records the normal
+    one runs past 1.0 on the sections scoring near-perfect, and collapses to
+    zero width at exactly 1.0.
+
+    Args:
+        successes: how many records were answered correctly.
+        total: how many were compared.
+        z: normal quantile; 1.96 gives 95%.
+
+    Returns:
+        (low, high), or (None, None) when nothing was compared.
+    """
+
+    if total == 0:
+        return None, None
+    p = successes / total
+    denominator = 1 + z * z / total
+    centre = (p + z * z / (2 * total)) / denominator
+    spread = z * math.sqrt(p * (1 - p) / total + z * z / (4 * total * total)) / denominator
+    return centre - spread, centre + spread
+
+
+def _majority_baseline(pairs) -> float:
+    """The accuracy of always answering the most frequent reference answer.
+
+    The floor a section's accuracy has to clear to carry information. Sections
+    where one answer dominates score high on accuracy alone, so without this
+    number an accuracy cannot be read.
+
+    Args:
+        pairs: list of (gt_set, pred_set) for one section.
+
+    Returns:
+        The share of records holding the single most frequent answer, or None
+        when nothing was compared.
+    """
+
+    if not pairs:
+        return None
+    counts = Counter(frozenset(gt) for gt, _ in pairs)
+    return counts.most_common(1)[0][1] / len(pairs)
+
+
 def _score_section(pairs, options, is_multi_select) -> dict:
     """Computes every metric for one section from its collected answer pairs.
 
@@ -163,6 +229,15 @@ def _score_section(pairs, options, is_multi_select) -> dict:
         "tp": tp, "tn": tn, "fp": fp, "fn": fn,
         "precision": float(precision), "recall": float(recall), "f1": float(f1),
     }
+
+    # Agreement corrected for the agreement expected by chance. Each whole
+    # answer is treated as one label, so a multi-select section is scored on
+    # the exact set it produced, matching the accuracy above. Zero means the
+    # predictions agree no more than a constant answer would.
+    gt_labels = [repr(sorted(gt)) for gt, _ in pairs]
+    pred_labels = [repr(sorted(pred)) for _, pred in pairs]
+    kappa = cohen_kappa_score(gt_labels, pred_labels)
+    scored["cohens_kappa"] = None if math.isnan(kappa) else float(kappa)
 
     if not is_multi_select:
         # Every answer is exactly one option, so it can be treated as a class
@@ -225,18 +300,24 @@ def evaluate(ground_truth: dict, predictions: dict) -> dict:
             "options": list(options),
         }
         sec["accuracy"] = sec["exact_matches"] / len(pairs) if pairs else None
+        sec["majority_baseline"] = _majority_baseline(pairs)
+        low, high = _wilson_interval(sec["exact_matches"], len(pairs))
+        sec["accuracy_ci95"] = [low, high]
 
         if pairs:
             sec.update(_score_section(pairs, options, is_multi_select))
         else:
             sec.update({"tp": 0, "tn": 0, "fp": 0, "fn": 0,
-                        "precision": None, "recall": None, "f1": None})
+                        "precision": None, "recall": None, "f1": None,
+                        "cohens_kappa": None})
 
         report["sections"][section_name] = sec
         for key in overall:
             overall[key] += sec[key]
 
     overall["accuracy"] = overall["exact_matches"] / overall["compared"] if overall["compared"] else None
+    low, high = _wilson_interval(overall["exact_matches"], overall["compared"])
+    overall["accuracy_ci95"] = [low, high]
 
     # Recomputed from the pooled totals rather than averaged across sections,
     # so a section with more options does not weigh the same as a smaller one.
@@ -245,6 +326,21 @@ def evaluate(ground_truth: dict, predictions: dict) -> dict:
     overall["recall"] = tp / (tp + fn) if (tp + fn) else None
     p, r = overall["precision"], overall["recall"]
     overall["f1"] = 2 * p * r / (p + r) if (p and r) else None
+
+    # Macro averages: every section counts once, whatever its number of options
+    # or records. Reported next to the micro figures above because the two
+    # answer different questions, and they diverge here: the micro ones are
+    # dominated by the sections with the most options.
+    def _macro(key):
+        values = [s[key] for s in report["sections"].values() if s.get(key) is not None]
+        return sum(values) / len(values) if values else None
+
+    overall["macro_precision"] = _macro("precision")
+    overall["macro_recall"] = _macro("recall")
+    overall["macro_f1"] = _macro("f1")
+    overall["macro_accuracy"] = _macro("accuracy")
+    overall["macro_kappa"] = _macro("cohens_kappa")
+    overall["macro_majority_baseline"] = _macro("majority_baseline")
     report["overall"] = overall
 
     return report
@@ -254,6 +350,30 @@ def _pct(value):
     """A ratio as a percentage, or n/a when it is undefined."""
 
     return f"{value*100:.1f}%" if value is not None else "n/a"
+
+
+def _num(value):
+    """A signed three-decimal number, or n/a when it is undefined."""
+
+    return f"{value:.3f}" if value is not None else "n/a"
+
+
+def _ci(bounds):
+    """A confidence interval as [low, high] percentages."""
+
+    low, high = bounds
+    if low is None:
+        return "n/a"
+    return f"[{low*100:.0f}, {high*100:.0f}]"
+
+
+def _gain(section):
+    """Accuracy minus the majority baseline, signed."""
+
+    accuracy, baseline = section["accuracy"], section["majority_baseline"]
+    if accuracy is None or baseline is None:
+        return "n/a"
+    return f"{(accuracy - baseline)*100:+.1f}"
 
 
 def print_report(report: dict, show_matrices: bool = True):
@@ -270,20 +390,31 @@ def print_report(report: dict, show_matrices: bool = True):
     if missing:
         print(f"Records with NO prediction found ({len(missing)}): {', '.join(missing)}")
 
-    header = (f"{'Section':<8} {'Acc':>7} {'Compared':>9} {'Missing':>8} "
+    header = (f"{'Section':<8} {'Acc':>7} {'CI95':>14} {'Base':>7} {'Gain':>7} {'Kappa':>7} "
               f"{'TP':>5} {'TN':>5} {'FP':>5} {'FN':>5} {'Prec':>7} {'Rec':>7} {'F1':>7}")
     print("\n" + header)
     print("-" * len(header))
     for name, sec in report["sections"].items():
-        print(f"{name:<8} {_pct(sec['accuracy']):>7} {sec['compared']:>9} {sec['missing']:>8} "
+        print(f"{name:<8} {_pct(sec['accuracy']):>7} {_ci(sec['accuracy_ci95']):>14} "
+              f"{_pct(sec['majority_baseline']):>7} {_gain(sec):>7} {_num(sec['cohens_kappa']):>7} "
               f"{sec['tp']:>5} {sec['tn']:>5} {sec['fp']:>5} {sec['fn']:>5} "
               f"{_pct(sec['precision']):>7} {_pct(sec['recall']):>7} {_pct(sec['f1']):>7}")
 
     o = report["overall"]
     print("-" * len(header))
-    print(f"{'TOTAL':<8} {_pct(o['accuracy']):>7} {o['compared']:>9} {'':>8} "
+    print(f"{'MICRO':<8} {_pct(o['accuracy']):>7} {_ci(o['accuracy_ci95']):>14} "
+          f"{'':>7} {'':>7} {'':>7} "
           f"{o['tp']:>5} {o['tn']:>5} {o['fp']:>5} {o['fn']:>5} "
           f"{_pct(o['precision']):>7} {_pct(o['recall']):>7} {_pct(o['f1']):>7}")
+    print(f"{'MACRO':<8} {_pct(o['macro_accuracy']):>7} {'':>14} "
+          f"{_pct(o['macro_majority_baseline']):>7} "
+          f"{_pct(o['macro_accuracy'] - o['macro_majority_baseline']):>7} "
+          f"{_num(o['macro_kappa']):>7} {'':>5} {'':>5} {'':>5} {'':>5} "
+          f"{_pct(o['macro_precision']):>7} {_pct(o['macro_recall']):>7} {_pct(o['macro_f1']):>7}")
+
+    print("\nBase: accuracy of always answering the most frequent reference answer.")
+    print("Gain: accuracy minus that baseline. Kappa: agreement above chance, 0 = none.")
+    print("MICRO pools every option of every section; MACRO counts each section once.")
 
     if show_matrices:
         print_confusion_matrices(report)
