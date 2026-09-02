@@ -37,12 +37,14 @@ def build_llm(model_name: str = None, temperature: float = None,
         num_predict: token cap; defaults to config.LLM_NUM_PREDICT.
 
     Returns:
-        A configured ChatOllama instance.
+        A configured ChatOllama instance, with config.LLM_NUM_GPU layers on
+        the GPU.
     """
     return ChatOllama(
         model=model_name if model_name is not None else config.LLM_MODEL_NAME,
         temperature=temperature if temperature is not None else config.LLM_TEMPERATURE,
         num_predict=num_predict if num_predict is not None else config.LLM_NUM_PREDICT,
+        num_gpu=config.LLM_NUM_GPU,
         request_timeout=config.LLM_REQUEST_TIMEOUT,
     )
 

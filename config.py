@@ -17,6 +17,10 @@ LLM_TEMPERATURE = 0.0  # deterministic output for all agents
 LLM_NUM_PREDICT = 1024  # token cap: prevents runaway generation. The two
                         # answer lines close the response, so a cap the model
                         # reaches first costs the whole section.
+# How many layers to place on the GPU. 999 means all of them: Ollama's own
+# split left a model 7% on CPU with 5 GB of VRAM still free, and layers on
+# CPU dominate the time per token.
+LLM_NUM_GPU = 999
 LLM_REQUEST_TIMEOUT = 180  # seconds; allows time for reasoning on slower hardware
 
 # Multilingual embedding model. Used in every mode: the Brighton store is

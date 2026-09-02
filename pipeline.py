@@ -111,6 +111,7 @@ def _run_config_snapshot() -> dict:
         "generation": {
             "temperature": config.LLM_TEMPERATURE,
             "num_predict": config.LLM_NUM_PREDICT,
+            "num_gpu": config.LLM_NUM_GPU,
         },
         "retrieval": {
             "ehr_chunk_size": config.EHR_CHUNK_SIZE,
