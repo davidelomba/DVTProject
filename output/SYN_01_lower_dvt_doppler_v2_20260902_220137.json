@@ -1,0 +1,12 @@
+{
+  "record_id": "SYN_01_lower_dvt_doppler_v2",
+  "a1": {
+    "answer": "No autopsy done, unknown if done, or done but results unavailable"
+  },
+  "c": {
+    "answer": "D-dimer exceeded test lab's upper limit of normal."
+  },
+  "f": {
+    "answer": "No"
+  }
+}
