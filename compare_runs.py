@@ -2,19 +2,18 @@
 Run-to-run stability check: compares TWO pipeline runs over the same records
 and reports how many answers changed between them.
 
-WHY THIS EXISTS: config.LLM_TEMPERATURE is 0.0, so the pipeline is nominally
-deterministic -- but Ollama does not guarantee bit-identical generations across
-calls (GPU non-determinism, batching, KV-cache reuse), so "temperature 0" is
-not by itself evidence that a measured accuracy is reproducible. Every metric
+config.LLM_TEMPERATURE is 0.0, so the pipeline is nominally deterministic,
+but Ollama does not guarantee bit-identical generations across calls (GPU
+non-determinism, batching, KV-cache reuse), so temperature 0 is not by
+itself evidence that a measured accuracy is reproducible. Every metric
 produced by evaluate_predictions.py currently comes from a SINGLE run.
 This script quantifies the noise floor underneath those metrics: if two
 identical runs already disagree on N% of sections, then any accuracy
 difference smaller than N% between two configurations is not a result.
 
-NOT the same thing as evaluate_predictions.py, which compares ONE run
-against the hand-authored ground truth. This compares two runs against EACH
-OTHER (and, additionally, reports each run's own accuracy so a stability
-difference can be read next to any accuracy difference).
+Compares two runs against EACH OTHER, and reports each run's own accuracy so
+a stability difference can be read next to an accuracy difference.
+evaluate_predictions.py instead compares ONE run against the ground truth.
 
 USAGE
     # Two runs whose output files sit in the same directory (the normal case:
@@ -32,8 +31,8 @@ NOTHING in between -- same config.py, same model tags, same records. Any edit
 between the two runs makes the comparison measure that edit instead of the
 noise floor.
 
-Deliberately standalone: imports only models.py (pydantic + typing), like
-evaluate_predictions.py, so it has no langchain/Ollama dependency.
+Deliberately standalone: imports only models.py, so it runs without
+langchain or Ollama installed.
 """
 
 import argparse

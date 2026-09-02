@@ -1,6 +1,7 @@
 """
-Central configuration for the clinical extraction pipeline.
-Drives both retrieval (RAG) parameters and LLM reasoning constraints.
+Central configuration for the clinical extraction pipeline: model names and
+parameters, retrieval settings, section order, the deterministic gates and
+the per-section prompt hints.
 """
 
 from pathlib import Path
@@ -16,7 +17,8 @@ LLM_TEMPERATURE = 0.0  # deterministic output for all agents
 LLM_NUM_PREDICT = 512   # token cap: prevents runaway generation
 LLM_REQUEST_TIMEOUT = 180  # seconds; allows time for reasoning on slower hardware
 
-# Multilingual embedding model for RAG retrieval and EHR vector stores
+# Multilingual embedding model. Used in every mode: the Brighton store is
+# always built, the EHR one only for rag and agentic_graph.
 EMBEDDING_MODEL_NAME = "intfloat/multilingual-e5-small"
 
 # Extractor mode (Agent 1):
@@ -25,7 +27,7 @@ EMBEDDING_MODEL_NAME = "intfloat/multilingual-e5-small"
 # "agentic_graph": tool-calling extraction
 #   Agent 1 explores the record autonomously, orchestrated as an explicit
 #   LangGraph state machine (agentic_graph.py), using a separate tool-
-#   calling-capable model for the search step (AGENTIC_LLM_MODEL_NAME)ù.
+#   calling-capable model for the search step (AGENTIC_LLM_MODEL_NAME).
 EXTRACTOR_MODE = "agentic_graph"  # "full_text", "rag", or "agentic_graph"
 AGENTIC_MAX_ITERATIONS = 5  # cap on tool calls per section, used by "agentic_graph" mode
 
@@ -49,7 +51,7 @@ SECTION_ORDER = [
     "C", "F", "X",
 ]
 
-# Per-section deterministic gates: on/off switches 
+# Per-section deterministic gates: on/off switches
 # Switches the post-processing applied to each section's answer (see
 # criteria_rules.apply_section_gates); setting one to False skips that
 # gate, leaving the model's answer unchanged.
@@ -66,12 +68,12 @@ SECTION_GATES_ENABLED = {
 }
 
 # Deterministic keyword gates
-# For criteria asking about ONE specific method (autopsy, surgery), small LLM
-# can hallucinate a positive answer even when the method is never mentioned.
-# If none of the keywords appear in Agent 1's evidence, the section is
-# forced to its negative default without an LLM call; if a keyword IS
-# present, the LLM still evaluates normally (presence alone doesn't imply
-# a positive answer).
+# Sections asking whether one specific thing is present (A1 autopsy, A2
+# surgery, X an alternative diagnosis): a small model can answer positively
+# even when the evidence never names it. If none of the keywords appear in
+# Agent 1's evidence the section is forced to its negative default, without
+# an LLM call. A keyword being present changes nothing on its own: the
+# evidence could be negating it, so the model still evaluates normally.
 # TODO: consider deleting this gates when a big LLM is used.
 SECTION_KEYWORD_GATES = {
     "A1": {

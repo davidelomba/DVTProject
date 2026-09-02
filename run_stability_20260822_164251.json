@@ -1,0 +1,94 @@
+{
+  "records_compared": 30,
+  "sections": {
+    "A1": {
+      "compared": 30,
+      "changed": 0,
+      "correct_a": 30,
+      "correct_b": 30,
+      "stability": 1.0
+    },
+    "A2": {
+      "compared": 30,
+      "changed": 0,
+      "correct_a": 26,
+      "correct_b": 26,
+      "stability": 1.0
+    },
+    "A3_1": {
+      "compared": 30,
+      "changed": 1,
+      "correct_a": 28,
+      "correct_b": 27,
+      "stability": 0.9666666666666667
+    },
+    "A3_2": {
+      "compared": 30,
+      "changed": 0,
+      "correct_a": 16,
+      "correct_b": 16,
+      "stability": 1.0
+    },
+    "B1_1": {
+      "compared": 30,
+      "changed": 0,
+      "correct_a": 27,
+      "correct_b": 27,
+      "stability": 1.0
+    },
+    "B1_2": {
+      "compared": 30,
+      "changed": 0,
+      "correct_a": 24,
+      "correct_b": 24,
+      "stability": 1.0
+    },
+    "B2": {
+      "compared": 30,
+      "changed": 0,
+      "correct_a": 18,
+      "correct_b": 18,
+      "stability": 1.0
+    },
+    "C": {
+      "compared": 30,
+      "changed": 0,
+      "correct_a": 30,
+      "correct_b": 30,
+      "stability": 1.0
+    },
+    "F": {
+      "compared": 30,
+      "changed": 0,
+      "correct_a": 28,
+      "correct_b": 28,
+      "stability": 1.0
+    },
+    "X": {
+      "compared": 30,
+      "changed": 0,
+      "correct_a": 30,
+      "correct_b": 30,
+      "stability": 1.0
+    }
+  },
+  "differences": [
+    {
+      "record_id": "SYN_26_ct_venography_pregnancy_pelvic_v2",
+      "section": "A3_1",
+      "run_a": [
+        "≥1 imaging study was done and confirmed DVT"
+      ],
+      "run_b": [
+        "≥1 imaging study was done but didn't confirm DVT"
+      ]
+    }
+  ],
+  "overall": {
+    "compared": 300,
+    "changed": 1,
+    "correct_a": 257,
+    "correct_b": 256,
+    "stability": 0.9966666666666667
+  }
+}

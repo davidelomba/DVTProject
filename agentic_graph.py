@@ -3,12 +3,12 @@ Agentic extraction pipeline orchestrated as an explicit LangGraph state
 machine, used when config.EXTRACTOR_MODE == "agentic_graph" (see
 pipeline.run_pipeline for the dispatch).
 
-Agent 1 autonomously decides how many times and with which sub-queries,
-to call the EHR search tool for each section (see
-agents.extract_evidence_agentic). Control flow itself is expressed as an
-explicit graph of nodes/edges instead of a plain Python loop, which makes
-each step (select next section / search / answer / finalize) independently
-inspectable and testable.
+Agent 1 autonomously decides how many times and with which sub-queries to
+call the EHR search tool for each section (see
+agents.extract_evidence_agentic). Control flow is an explicit graph of
+nodes and edges rather than a plain Python loop, so each step (select next
+section / search / answer / finalize) is a separate function with its own
+state in and out.
 
 Section ORDER is kept fixed (config.SECTION_ORDER), same as every other
 mode: the only thing that varies across modes is how Agent 1 gathers
@@ -22,7 +22,6 @@ answer_criterion, exactly as in every other mode. Cross-section dependency
 rules are NOT applied here: they run once in pipeline.run_pipeline after this
 graph returns, so both safety nets have a single source of truth across all
 execution modes.
-
 
 Requires the `langgraph` package and a tool-calling model pulled in Ollama.
 """

@@ -115,8 +115,7 @@ def apply_details_gate(section_key: str, section_result, reasoning_text: str):
         return section_result, reasoning_text
 
     details_present = match.group(1).lower() == "yes"
-    # The schema's "Yes"/"No" are inverted
-    # with respect to the presence of details.
+    # The schema's "Yes"/"No" are inverted with respect to the presence of details.
     correct_answer = "No" if details_present else "Yes"
 
     field_name = list(type(section_result).model_fields.keys())[0]

@@ -29,16 +29,12 @@ def main():
     patient_ehr_path = str(PROJECT_ROOT / "data" / "patient_001.txt")                                   # Plain .txt clinical record
     brighton_pdf_path = str(PROJECT_ROOT / "data" / "reference" / "1-s2.0-S0264410X22010854-main.pdf")  # Brighton guidelines PDF
 
-    # Run the extraction and evaluation pipeline
     form, audit_log = run_pipeline(record_id, patient_ehr_path, brighton_pdf_path)
-
-    # Serialize the populated schema
     summary = form_to_json_summary(form)
 
     print("\nFilled-in JSON (checkboxes)")
     print(json.dumps(summary, indent=2))
 
-    # Ensure output directory exists
     output_dir = str(PROJECT_ROOT / "output")
     os.makedirs(output_dir, exist_ok=True)
 
@@ -47,7 +43,6 @@ def main():
     # previous run's output.
     timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
 
-    # Save the final structured output
     output_path = os.path.join(output_dir, f"{record_id}_{timestamp}.json")
     with open(output_path, "w", encoding="utf-8") as f:
         json.dump(summary, f, indent=2, ensure_ascii=False)

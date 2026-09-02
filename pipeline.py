@@ -146,7 +146,7 @@ def run_pipeline(record_id: str, patient_ehr_path: str, brighton_pdf_path: str):
         form_data = {"record_id": record_id}
         audit_log = {}
         # Section keys map to DVT_CriteriaForm fields via lower-casing
-        # (e.g. "A3_1" -> "a3_1"); no explicit mapping dict needed.
+        # (e.g. "A3_1" -> "a3_1").
 
         # Sequentially fill in every section of the questionnaire, in the
         # fixed order defined by config.SECTION_ORDER.
@@ -158,7 +158,7 @@ def run_pipeline(record_id: str, patient_ehr_path: str, brighton_pdf_path: str):
             section_log = {"query": query}
 
             try:
-                # Agent 1: extraction mode per config.EXTRACTOR_MODE (see config.py)
+                # Agent 1: extraction mode per config.EXTRACTOR_MODE
                 print(f"[{section_key}] Agent 1 (extractor, mode={config.EXTRACTOR_MODE}) searching the clinical record...", flush=True)
                 t0 = time.time()
 
