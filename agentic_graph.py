@@ -49,12 +49,14 @@ def build_agentic_llm() -> ChatOllama:
     Returns:
         A configured ChatOllama instance.
     """
+    reasoning = {} if config.LLM_REASONING is None else {"reasoning": config.LLM_REASONING}
     return ChatOllama(
         model=config.AGENTIC_LLM_MODEL_NAME,
         temperature=config.LLM_TEMPERATURE,
         num_predict=config.LLM_NUM_PREDICT,
         num_gpu=config.LLM_NUM_GPU,
         request_timeout=config.LLM_REQUEST_TIMEOUT,
+        **reasoning,
     )
 
 

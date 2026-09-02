@@ -21,6 +21,11 @@ LLM_NUM_PREDICT = 1024  # token cap: prevents runaway generation. The two
 # split left a model 7% on CPU with 5 GB of VRAM still free, and layers on
 # CPU dominate the time per token.
 LLM_NUM_GPU = 999
+# Thinking mode. False turns it off on models that have one: with it on the
+# model can spend the whole token cap reasoning and return empty content,
+# since the reasoning does not travel in the response body. None sends
+# nothing to Ollama, leaving the model's own default.
+LLM_REASONING = False
 LLM_REQUEST_TIMEOUT = 180  # seconds; allows time for reasoning on slower hardware
 
 # Multilingual embedding model. Used in every mode: the Brighton store is

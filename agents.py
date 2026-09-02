@@ -40,12 +40,16 @@ def build_llm(model_name: str = None, temperature: float = None,
         A configured ChatOllama instance, with config.LLM_NUM_GPU layers on
         the GPU.
     """
+    # Sent only when set, so a model without a thinking mode never receives
+    # the parameter.
+    reasoning = {} if config.LLM_REASONING is None else {"reasoning": config.LLM_REASONING}
     return ChatOllama(
         model=model_name if model_name is not None else config.LLM_MODEL_NAME,
         temperature=temperature if temperature is not None else config.LLM_TEMPERATURE,
         num_predict=num_predict if num_predict is not None else config.LLM_NUM_PREDICT,
         num_gpu=config.LLM_NUM_GPU,
         request_timeout=config.LLM_REQUEST_TIMEOUT,
+        **reasoning,
     )
 
 
