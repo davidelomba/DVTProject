@@ -2,9 +2,10 @@
 Agent 1 (Extractor) and Agent 2 (Evaluator).
 
 Agent 1 pulls the relevant fragment(s) from the clinical record for a given
-criterion. Agent 2 reasons over that evidence in plain text and ends its
-response with a fixed-format line ("FINAL_ANSWER: <number>"), which is
-parsed and mapped to the schema's valid options.
+criterion. Agent 2 reasons over that evidence in plain text and ends with two
+fixed-format lines, FINAL_OPTION naming an option and FINAL_ANSWER giving its
+number. The number is the answer; a disagreement between the two is recorded
+as a conflict.
 """
 
 import difflib
@@ -74,8 +75,7 @@ def extract_evidence(llm: ChatOllama, ehr_vectorstore, criterion_query: str) -> 
 
     Runs a fixed top-k similarity search over the chunked clinical record and
     asks the LLM to copy the relevant fragments out of the retrieved chunks.
-    Intended for records too long to pass whole; extract_evidence_full_text is
-    the simpler default.
+    Intended for records too long to pass whole.
 
     Args:
         llm: the extractor model.
@@ -136,9 +136,9 @@ def extract_evidence_full_text(llm: ChatOllama, full_ehr_text: str, criterion_qu
 # explicit instruction to call it the model reports no evidence on every
 # section without ever searching.
 #
-# TRANSCRIPTION: the agent's final chat turn tends to paraphrase, translate or
-# summarise what the tool returned. A corrupted quote makes Agent 2 reason
-# correctly over the wrong text, so the rule is restated forcefully here.
+# TRANSCRIPTION: governs the agent's final chat turn, which
+# extract_evidence_agentic does not read. It returns the raw tool output
+# instead, so the paragraph is generated and discarded.
 AGENTIC_EXTRACTOR_SYSTEM_PROMPT = EXTRACTOR_SYSTEM_PROMPT + f"""
 
 TOOL USE: You have access to a tool called `search_patient_record` that searches
@@ -182,14 +182,14 @@ def extract_evidence_agentic(
     paraphrase or translate what the tool found and a corrupted quote makes
     the evaluator reason over the wrong text.
 
+    Coverage depends on the agent's own search decisions: a section where it
+    chooses a poor query, or does not search at all, yields NO_EVIDENCE.
+
     Args:
         llm: a tool-calling-capable model (see agentic_graph.build_agentic_llm).
         ehr_tool: the retriever wrapped as a tool, from
             rag_setup.make_ehr_retriever_tool.
-        ehr_vectorstore: unused; kept for call-site compatibility. Coverage
-            depends entirely on the agent's own search decisions, so a query
-            that ranks an irrelevant chunk first can miss evidence a fixed
-            top-k search would have found.
+        ehr_vectorstore: unused; kept for call-site compatibility.
         criterion_query: what to look for, from pipeline.SECTION_QUERIES.
         max_iterations: cap on tool calls before the agent is forced to
             answer, bounding runaway generation.
@@ -413,9 +413,8 @@ def _has_none_option(options: list[str]) -> bool:
 def _is_no_selection(raw_value: str) -> bool:
     """Whether an answer line means 'no option applies' rather than naming one.
 
-    A3.2 and B1.2 accept an empty answer, but their option lists offer nothing
-    to select to say so. Left without a way to answer "none", the model used to
-    select every option instead. This token gives it one.
+    A3.2 and B1.2 accept an empty answer but list no option that expresses one.
+    These tokens are what the prompt asks the model to write instead.
 
     Args:
         raw_value: the whole content of a FINAL_ANSWER or FINAL_OPTION line.
@@ -543,9 +542,7 @@ def evaluate_section(
         (section instance, reasoning_text, conflict). The full response is kept
         so a wrong answer can be audited later without re-running the pipeline.
         conflict is None when the two answer lines agree, otherwise a dict
-        holding what each of them said. Rare and a good predictor of a wrong
-        section, so it is worth reviewing even though the code has already
-        picked an answer.
+        holding what each of them said.
 
     Raises:
         RuntimeError: if no attempt produced a parseable, valid answer.
