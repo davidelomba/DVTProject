@@ -111,6 +111,8 @@ SECTION_KEYWORD_GATES = {
             "muscle tear", "strappo muscolare", "hematoma", "ematoma",
             "septic arthritis", "artrite settica", "fistula", "fistola",
             "dependent edema", "edema declive",
+            "achilles", "achille", "external compression", "compressione esterna",
+            "congenital vascular", "malformazione vascolare",
         ],
         "default_option_text": "No alternative diagnosis was found to explain the acute illness"
     }
