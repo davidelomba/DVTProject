@@ -38,10 +38,16 @@ but performs no evidence selection.
 
 ## Domain constraints
 
-- **Do not touch `SECTION_KEYWORD_GATES["X"]`** until the clinicians supply the
-  complete list of alternative diagnoses.
+- **`SECTION_KEYWORD_GATES["X"]` follows Table 2 of the Brighton paper**, the
+  DVT row. Add a term only when that row names it; the clinicians have still to
+  confirm Table 2 is the intended source.
 - **Do not add schema-level "none of the above" options** for A3_2 or B1_2: the
   printed questionnaire does not have them.
+- **B1.1 and B1.2 record the presumed diagnosis of a specific syndrome**, DVT of
+  lower or upper limbs in Brighton Table 3. The non-specific extremity signs
+  (swelling, pain, redness, warmth, absent pulses) are the other branch of that
+  table and belong to B2. A syndrome ruled out by imaging leaves B1.2 empty; a
+  reported diagnosis with no documented symptom still fills it.
 - **Cross-section rules are always on**, deliberately outside the
   `config.SECTION_GATES_ENABLED` ablation switches: they encode the form's
   structure, not a workaround for a model weakness.
@@ -90,23 +96,27 @@ Every run's audit log records `hostname` and `ollama_version` under
 
 ## What the measurements say
 
-Run of 2026-08-22 on the laptop, 30 records: micro accuracy 85.3%, macro kappa
-0.597. Superseded as a reference point by the first full run on mari, since
-the two machines do not agree (see Machines above).
+Two evaluators on mari, 30 records each, everything else identical:
 
-- **Generation noise is settled.** `compare_runs.py` on 2026-08-22 found 1
-  section changed out of 300 between two identical runs (stability 99.7%), so a
-  difference between runs is attributable to whatever was edited between them.
-- **Sampling uncertainty is not.** With 30 records the 95% interval on a
-  section's accuracy is 15 to 18 points wide. That, not generation noise, is
-  what limits how small a difference can be read.
-- **F and A2 have Cohen kappa of exactly 0.000** at 93.3% and 86.7% accuracy:
-  they answer the majority class everywhere and miss every minority case. Their
-  accuracy equals their majority baseline. F's two positive records are
-  SYN_17 and SYN_29, the only two scenarios written to test it, and both fail.
+```
+llama3:8b     micro 85.0%   macro kappa 0.628
+qwen3.6:27b   micro 96.7%   macro kappa 0.906
+```
+
+- **The model was the binding constraint, not the prompts.** A3_2 went from
+  46.7% to 83.3% and B2 from 63.3% to 96.7%, with non-overlapping confidence
+  intervals. F had kappa 0.000 on every run since August, answering the majority
+  class everywhere; it now answers both of its positive records correctly.
+  Text-vs-number answer conflicts went from 27 to 0.
+- **Sampling uncertainty binds.** With 30 records the 95% interval on a
+  section's accuracy is 10 to 18 points wide. Generation noise does not:
+  two identical runs on mari changed 0 sections out of 300.
+- **A3_2's residual errors are all over-selection**, precision 80.8% against
+  recall 100%: the answer contains the right modality plus one more.
 - Read the metrics in this order: majority baseline and gain, then kappa, then
-  accuracy with its interval. Accuracy alone ranked F above A3_2, which has
-  half the accuracy and does far more work (gain +20.0 against +0.0).
+  accuracy with its interval. Accuracy alone ranked F above A3_2 under the 8B
+  model, where F gained nothing over a constant answer and A3_2 gained 13
+  points.
 
 ## Open items
 
@@ -115,14 +125,21 @@ the two machines do not agree (see Machines above).
   is section-level. Getting it needs the REDCap Data Dictionary, or one import
   and export cycle through the project itself. It is ordinal, so weighted kappa
   rather than plain kappa.
-- **The corpus cannot measure some sections.** F has 2 positive records out of
-  30, A2 has 4, X has 2. No model can be evaluated on those counts; the fix is
-  more scenarios, not a better prompt.
-- September 2026, once a 16 GB GPU is available: re-run the gate ablation with a
-  larger model, starting with F's details gate, which fires on 23 of 30 records
-  and may be doing nothing but reproducing the majority answer. Also test
-  whether the TRANSCRIPTION RULE in `AGENTIC_EXTRACTOR_SYSTEM_PROMPT` still does
-  anything (it governs a string the code discards).
-- Known weak sections: A3_2 (0.533) and B2 (0.600). B2 over-selects, with
-  precision 78.7% against recall 96.0%; its two overlapping options are a
-  wording problem, not only a model problem.
+- **Some sections rest on very few records.** F has 2 positive records out of
+  30, A2 has 4, X has 2. qwen3.6:27b answers them correctly, but two cases
+  cannot establish that a section works; the fix is more scenarios.
+- **Questions for the clinicians.** Whether Table 2 of the Brighton paper is the
+  intended source for X's alternative diagnoses; which procedures count as A2's
+  "other procedure done that confirmed presence of DVT", given that Brighton
+  asks for a procedure that confirms a thrombus; whether B2 option 4 applies
+  when only calf pain is documented.
+- **The gates lose their purpose under qwen3.6:27b.** F's details gate fired on
+  23 of 30 records with the 8B model and on none with the 27B: the model's
+  answer already matches its own DETAILS_PRESENT line. The keyword gate fired
+  6 times, correcting 4 and breaking 2. A run with
+  `SECTION_GATES_ENABLED` all False would measure what they are still worth.
+- Test whether the TRANSCRIPTION RULE in `AGENTIC_EXTRACTOR_SYSTEM_PROMPT` does
+  anything: it governs a string the code discards.
+- Weakest section left: A3_2 at 83.3%, whose five errors are all one modality
+  too many. Its two ultrasound options are a wording problem inherited from the
+  Brighton table, which bundles them as one modality.
