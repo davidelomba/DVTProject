@@ -1,0 +1,83 @@
+{
+  "records_compared": 30,
+  "sections": {
+    "A1": {
+      "compared": 30,
+      "changed": 0,
+      "correct_a": 30,
+      "correct_b": 30,
+      "stability": 1.0
+    },
+    "A2": {
+      "compared": 30,
+      "changed": 0,
+      "correct_a": 29,
+      "correct_b": 29,
+      "stability": 1.0
+    },
+    "A3_1": {
+      "compared": 30,
+      "changed": 0,
+      "correct_a": 30,
+      "correct_b": 30,
+      "stability": 1.0
+    },
+    "A3_2": {
+      "compared": 30,
+      "changed": 0,
+      "correct_a": 25,
+      "correct_b": 25,
+      "stability": 1.0
+    },
+    "B1_1": {
+      "compared": 30,
+      "changed": 0,
+      "correct_a": 29,
+      "correct_b": 29,
+      "stability": 1.0
+    },
+    "B1_2": {
+      "compared": 30,
+      "changed": 0,
+      "correct_a": 30,
+      "correct_b": 30,
+      "stability": 1.0
+    },
+    "B2": {
+      "compared": 30,
+      "changed": 0,
+      "correct_a": 29,
+      "correct_b": 29,
+      "stability": 1.0
+    },
+    "C": {
+      "compared": 30,
+      "changed": 0,
+      "correct_a": 30,
+      "correct_b": 30,
+      "stability": 1.0
+    },
+    "F": {
+      "compared": 30,
+      "changed": 0,
+      "correct_a": 29,
+      "correct_b": 29,
+      "stability": 1.0
+    },
+    "X": {
+      "compared": 30,
+      "changed": 0,
+      "correct_a": 30,
+      "correct_b": 30,
+      "stability": 1.0
+    }
+  },
+  "differences": [],
+  "overall": {
+    "compared": 300,
+    "changed": 0,
+    "correct_a": 291,
+    "correct_b": 291,
+    "stability": 1.0
+  }
+}
