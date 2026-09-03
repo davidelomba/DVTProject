@@ -85,6 +85,8 @@ SECTION_GATES_ENABLED = {
 # Agent 1's evidence the section is forced to its negative default, without
 # an LLM call. A keyword being present changes nothing on its own: the
 # evidence could be negating it, so the model still evaluates normally.
+# An optional "gated_options" names the answers the keywords can speak for.
+# Without it every answer other than the default is checked against them.
 # TODO: consider deleting this gates when a big LLM is used.
 SECTION_KEYWORD_GATES = {
     "A1": {
@@ -93,7 +95,12 @@ SECTION_KEYWORD_GATES = {
     },
     "A2": {
         "keywords": ["thrombectom", "trombectom", "embolectom"],
-        "default_option_text": "No surgical procedure done; or, done but either did not confirm presence of DVT or findings unknown; or unknown if done"
+        "default_option_text": "No surgical procedure done; or, done but either did not confirm presence of DVT or findings unknown; or unknown if done",
+        # The keywords name one procedure, so they can only speak for the option
+        # that names it. "Other procedure done that confirmed presence of DVT"
+        # is an open category with no keyword list of its own, and checking it
+        # against these words rejects it on every record.
+        "gated_options": ["Thrombectomy related to DVT performed"],
     },
     "X": {
         # Names of competing conditions from Brighton Table 2. Most share a
