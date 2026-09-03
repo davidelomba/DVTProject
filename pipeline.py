@@ -42,7 +42,12 @@ SECTION_QUERIES = {
     "B2": "calf pain, swelling, oedema, redness, warmth, absent pulses",
     "C": "D-dimer value, test date, laboratory upper limit of normal",
     "F": "diagnosis of deep vein thrombosis reported by specialist",
-    "X": "alternative diagnosis explaining the acute clinical picture",
+    # Worded after Table 2 of the guideline, which lists these conditions under
+    # the symptoms they mimic. The earlier wording sent that table to B2, whose
+    # query names the same symptoms.
+    "X": "possible alternative etiologies; clinical syndromes to be differentiated "
+         "from thrombosis; conditions explaining calf pain, redness, warmth or "
+         "ankle edema other than DVT",
 }
 
 # Key under which run_pipeline records the settings a run was produced with.
