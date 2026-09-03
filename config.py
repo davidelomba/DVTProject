@@ -96,10 +96,8 @@ SECTION_KEYWORD_GATES = {
     "A2": {
         "keywords": ["thrombectom", "trombectom", "embolectom"],
         "default_option_text": "No surgical procedure done; or, done but either did not confirm presence of DVT or findings unknown; or unknown if done",
-        # The keywords name one procedure, so they can only speak for the option
-        # that names it. "Other procedure done that confirmed presence of DVT"
-        # is an open category with no keyword list of its own, and checking it
-        # against these words rejects it on every record.
+        # These words name thrombectomy only. Checking the "Other procedure"
+        # option against them rejects it on every record.
         "gated_options": ["Thrombectomy related to DVT performed"],
     },
     "X": {

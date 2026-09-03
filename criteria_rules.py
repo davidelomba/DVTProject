@@ -26,9 +26,8 @@ def apply_keyword_gate(section_key: str, section_result, evidence: str, reasonin
     check, and none of those keywords appear in Agent 1's evidence, the answer
     is forced back to the section's negative default.
 
-    Which answers they are entitled to check comes from the section's optional
-    "gated_options": with it, only the answers listed there; without it, every
-    answer other than the default.
+    The section's optional "gated_options" lists those answers; without it,
+    every answer other than the default is checked.
 
     One-directional by design: it can only remove an unsupported positive, not
     add a missing one. Keyword presence alone does not imply a positive answer,
@@ -54,9 +53,6 @@ def apply_keyword_gate(section_key: str, section_result, evidence: str, reasonin
 
     answers = llm_chosen_answer if isinstance(llm_chosen_answer, list) else [llm_chosen_answer]
 
-    # Which answers the keywords are entitled to check. With "gated_options"
-    # only those; without it, every answer other than the section's negative
-    # default.
     gated_options = gate_info.get("gated_options")
     if gated_options is None:
         is_positive = any(ans != gate_info["default_option_text"] for ans in answers)
