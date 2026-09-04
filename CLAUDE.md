@@ -103,6 +103,10 @@ llama3:8b     micro 85.0%   macro kappa 0.628
 qwen3.6:27b   micro 96.7%   macro kappa 0.906
 ```
 
+On the extended 40-record corpus, qwen3.6:27b scores micro 97.2%, macro kappa
+0.938. The ten scenarios added in September score 97 of 100 sections, the same
+as the original thirty, so the sections that had been unmeasurable hold up.
+
 - **The model was the binding constraint, not the prompts.** A3_2 went from
   46.7% to 83.3% and B2 from 63.3% to 96.7%, with non-overlapping confidence
   intervals. F had kappa 0.000 on every run since August, answering the majority
@@ -125,21 +129,29 @@ qwen3.6:27b   micro 96.7%   macro kappa 0.906
   is section-level. Getting it needs the REDCap Data Dictionary, or one import
   and export cycle through the project itself. It is ordinal, so weighted kappa
   rather than plain kappa.
-- **Some sections rest on very few records.** F has 2 positive records out of
-  30, A2 has 4, X has 2. qwen3.6:27b answers them correctly, but two cases
-  cannot establish that a section works; the fix is more scenarios.
-- **Questions for the clinicians.** Whether Table 2 of the Brighton paper is the
-  intended source for X's alternative diagnoses; which procedures count as A2's
-  "other procedure done that confirmed presence of DVT", given that Brighton
-  asks for a procedure that confirms a thrombus; whether B2 option 4 applies
-  when only calf pain is documented.
-- **The gates lose their purpose under qwen3.6:27b.** F's details gate fired on
-  23 of 30 records with the 8B model and on none with the 27B: the model's
-  answer already matches its own DETAILS_PRESENT line. The keyword gate fired
-  6 times, correcting 4 and breaking 2. A run with
-  `SECTION_GATES_ENABLED` all False would measure what they are still worth.
+- **A2 and X still rest on few records**, 4 and 6 of 40. F went from 2 positives
+  to 7 with the September expansion and now scores kappa 0.918.
+- **Questions for the clinicians.**
+  - Does X mean an alternative diagnosis for the acute illness in general, or
+    one of the Table 2 conditions that mimic a DVT? The model reads it broadly
+    and the keyword gate overrides it on three records; the answer decides
+    whether that gate saves three answers or destroys three.
+  - Which procedures count as A2's "other procedure done that confirmed
+    presence of DVT", given that Brighton asks for a procedure that confirms a
+    thrombus?
+  - In B1.1, is a DVT listed among several discharge or active diagnoses "no
+    report of a recognized DVT syndrome" or "unknown if there was a report"?
+    The model answers the first exactly on the two records where the diagnosis
+    appears in a list, and the second where it is the reason for referral.
+  - Does B2 option 4 apply when only calf pain is documented?
+  - Is Table 2 of the Brighton paper the intended source for X's list?
+- **The gates lose their purpose under qwen3.6:27b.** Reconstructed from the
+  audit logs: all gates on 290/300, no gates at all 288/300. The details gate
+  fired on 23 of 30 records with the 8B and on none with the 27B. All the
+  remaining value sits in the X keyword gate, worth 3 sections, and those are
+  the three records the clinicians' answer above decides.
 - Test whether the TRANSCRIPTION RULE in `AGENTIC_EXTRACTOR_SYSTEM_PROMPT` does
   anything: it governs a string the code discards.
-- Weakest section left: A3_2 at 83.3%, whose five errors are all one modality
+- Weakest section left: A3_2 at 87.5%, whose five errors are all one modality
   too many. Its two ultrasound options are a wording problem inherited from the
   Brighton table, which bundles them as one modality.

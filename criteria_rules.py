@@ -15,6 +15,7 @@ model produced on its own.
 import re
 
 import config
+from models import SECTION_MODELS
 
 
 def apply_keyword_gate(section_key: str, section_result, evidence: str, reasoning_text: str):
@@ -257,16 +258,19 @@ def apply_cross_section_rules(form_data: dict, audit_log: dict) -> dict:
         form_data, mutated in place.
     """
     for rule in config.CROSS_SECTION_RULES:
-        # Skip the rule entirely if either section failed its own evaluation:
-        # a forced answer derived from a missing one would be unfounded.
+        # Only the source section has to be present: a forced answer derived
+        # from a missing one would be unfounded. The target may be None, since
+        # forced_value comes from the rule and not from what the target holds.
         if_result = form_data.get(rule["if_section"])
-        then_result = form_data.get(rule["then_section"])
-
-        if if_result is None or then_result is None:
+        if if_result is None:
             continue
 
+        then_result = form_data.get(rule["then_section"])
+        then_model = (type(then_result) if then_result is not None
+                      else SECTION_MODELS[rule["then_section"].upper()])
+
         if_field = list(type(if_result).model_fields.keys())[0]
-        then_field = list(type(then_result).model_fields.keys())[0]
+        then_field = list(then_model.model_fields.keys())[0]
 
         # Normalized to a list so single-choice and multi-select source
         # sections share the same any(...) test below.
@@ -280,16 +284,17 @@ def apply_cross_section_rules(form_data: dict, audit_log: dict) -> dict:
             should_trigger = any(ans != rule["none_option"] for ans in if_answers)
 
         if should_trigger:
-            current_value = getattr(then_result, then_field)
+            current_value = getattr(then_result, then_field) if then_result is not None else None
             # Only override a value that actually differs, to keep the log
-            # free of entries where Agent 2 had already agreed.
-            if current_value != rule["forced_value"]:
+            # free of entries where Agent 2 had already agreed. A section left
+            # None by a failed evaluation is always filled.
+            if then_result is None or current_value != rule["forced_value"]:
                 print(
                     f"[CROSS-SECTION RULE] '{rule['if_section']}' triggered. "
                     f"Forcing '{rule['then_section']}' to '{rule['forced_value']}'.",
                     flush=True,
                 )
-                form_data[rule["then_section"]] = type(then_result)(
+                form_data[rule["then_section"]] = then_model(
                     **{then_field: rule["forced_value"]}
                 )
                 audit_key = rule["audit_key"]
