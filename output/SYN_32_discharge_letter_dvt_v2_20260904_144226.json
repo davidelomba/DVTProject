@@ -1,0 +1,37 @@
+{
+  "record_id": "SYN_32_discharge_letter_dvt_v2",
+  "a1": {
+    "answer": "No autopsy done, unknown if done, or done but results unavailable"
+  },
+  "a2": {
+    "answer": "No surgical procedure done; or, done but either did not confirm presence of DVT or findings unknown; or unknown if done"
+  },
+  "a3_1": {
+    "answer": "No imaging studies done, unknown if done, or done but results unknown"
+  },
+  "a3_2": {
+    "studies": []
+  },
+  "b1_1": {
+    "answer": "There was no report of a recognized DVT syndrome"
+  },
+  "b1_2": {
+    "types": [
+      "Lower extremity DVT"
+    ]
+  },
+  "b2": {
+    "symptoms": [
+      "None of the above were present or it is unknown if any of 1-4 were present"
+    ]
+  },
+  "c": {
+    "answer": "D-dimer not tested, or tested but results unknown or not available"
+  },
+  "f": {
+    "answer": "Yes"
+  },
+  "x": {
+    "answer": "No alternative diagnosis was found to explain the acute illness"
+  }
+}
