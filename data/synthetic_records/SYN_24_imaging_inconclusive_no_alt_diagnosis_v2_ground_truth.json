@@ -10,9 +10,7 @@
     "answer": "≥1 imaging study was done but didn't confirm DVT"
   },
   "a3_2": {
-    "studies": [
-      "Compression ultrasonography"
-    ]
+    "studies": []
   },
   "b1_1": {
     "answer": "≥1 symptom or sign of DVT was reported"

@@ -278,4 +278,18 @@ CROSS_SECTION_RULES = [
             "was performed)."
         ),
     },
+    {
+        # A3.2 asks which studies CONFIRMED DVT, so a study that was performed
+        # and did not confirm it belongs to no answer here.
+        "if_section": "a3_1",
+        "trigger_value": "≥1 imaging study was done but didn't confirm DVT",
+        "then_section": "a3_2",
+        "forced_value": [],
+        "audit_key": "A3_2",
+        "override_message": (
+            "A3.2 was automatically cleared because Section A3.1 reported that the "
+            "imaging study did not confirm DVT, and A3.2 records only the studies "
+            "that confirmed it."
+        ),
+    },
 ]
