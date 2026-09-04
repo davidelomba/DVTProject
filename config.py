@@ -118,6 +118,12 @@ SECTION_KEYWORD_GATES = {
     }
 }
 
+# Master switch for SECTION_HINTS, the counterpart of SECTION_GATES_ENABLED.
+# False sends no hint with any section, so a run measures the model without the
+# per-section guidance. The hint for F asks for the DETAILS_PRESENT line that
+# apply_details_gate reads, so turning hints off also disables that gate.
+SECTION_HINTS_ENABLED = True
+
 # Section-specific prompt hints
 # These sentences are injected into the prompt for each section, in order to help the model
 # avoid common pitfalls and focus on the most important reasoning points.

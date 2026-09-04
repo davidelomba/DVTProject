@@ -93,6 +93,7 @@ def _run_config_snapshot() -> dict:
     return {
         "extractor_mode": config.EXTRACTOR_MODE,
         "section_gates_enabled": dict(config.SECTION_GATES_ENABLED),
+        "section_hints_enabled": config.SECTION_HINTS_ENABLED,
         # Always applied, never switchable: recorded so a reader does not have
         # to know that to interpret the run.
         "cross_section_rules_applied": True,
@@ -228,7 +229,8 @@ def run_pipeline(record_id: str, patient_ehr_path: str, brighton_pdf_path: str):
                 # Agent 2: evaluation constrained to the section's Pydantic schema
                 print(f"[{section_key}] Agent 2 (evaluator) filling in the schema...", flush=True)
                 t0 = time.time()
-                extra_instructions = config.SECTION_HINTS.get(section_key, "")
+                extra_instructions = (config.SECTION_HINTS.get(section_key, "")
+                                      if config.SECTION_HINTS_ENABLED else "")
                 section_result, reasoning_text, answer_conflict = evaluate_section(
                     evaluator_llm, section_model, evidence, brighton_context, extra_instructions
                 )
