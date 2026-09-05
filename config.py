@@ -124,6 +124,12 @@ SECTION_KEYWORD_GATES = {
 # apply_details_gate reads, so turning hints off also disables that gate.
 SECTION_HINTS_ENABLED = True
 
+# Sections whose hint is suppressed while SECTION_HINTS_ENABLED is True, so one
+# hint can be measured without removing the rest. Measured on 2026-09-04, 40
+# records: dropping every hint costs 53.9 points on F and 12.5 on B1.1 but
+# gains 5.3 on A3.2 and 2.5 on B2, and changes nothing on the other five.
+SECTION_HINTS_DISABLED = set()
+
 # Section-specific prompt hints
 # These sentences are injected into the prompt for each section, in order to help the model
 # avoid common pitfalls and focus on the most important reasoning points.
@@ -299,3 +305,19 @@ CROSS_SECTION_RULES = [
         ),
     },
 ]
+
+
+def section_hint(section_key: str) -> str:
+    """The hint to send with a section, honouring both ablation switches.
+
+    Args:
+        section_key: section identifier, e.g. "B2".
+
+    Returns:
+        The section's hint, or the empty string when SECTION_HINTS_ENABLED is
+        False or the section is listed in SECTION_HINTS_DISABLED.
+    """
+
+    if not SECTION_HINTS_ENABLED or section_key in SECTION_HINTS_DISABLED:
+        return ""
+    return SECTION_HINTS.get(section_key, "")

@@ -210,8 +210,7 @@ def _make_answer_node(llm, brighton_kb, section_queries: dict):
 
             print(f"[{section_key}] Agent 2 (evaluator) filling in the schema...", flush=True)
             t0 = time.time()
-            extra_instructions = (config.SECTION_HINTS.get(section_key, "")
-                                  if config.SECTION_HINTS_ENABLED else "")
+            extra_instructions = config.section_hint(section_key)
             section_result, reasoning_text, answer_conflict = evaluate_section(
                 llm, section_model, evidence, brighton_context, extra_instructions
             )
