@@ -119,15 +119,12 @@ SECTION_KEYWORD_GATES = {
 }
 
 # Master switch for SECTION_HINTS, the counterpart of SECTION_GATES_ENABLED.
-# False sends no hint with any section, so a run measures the model without the
-# per-section guidance. The hint for F asks for the DETAILS_PRESENT line that
-# apply_details_gate reads, so turning hints off also disables that gate.
+# The hint for F asks for the DETAILS_PRESENT line that apply_details_gate
+# reads, so turning hints off also disables that gate.
 SECTION_HINTS_ENABLED = True
 
 # Sections whose hint is suppressed while SECTION_HINTS_ENABLED is True, so one
-# hint can be measured without removing the rest. Measured on 2026-09-04, 40
-# records: dropping every hint costs 53.9 points on F and 12.5 on B1.1 but
-# gains 5.3 on A3.2 and 2.5 on B2, and changes nothing on the other five.
+# hint can be measured without removing the rest.
 SECTION_HINTS_DISABLED = set()
 
 # Section-specific prompt hints

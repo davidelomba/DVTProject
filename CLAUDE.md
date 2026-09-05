@@ -117,6 +117,15 @@ as the original thirty, so the sections that had been unmeasurable hold up.
   two identical runs on mari changed 0 sections out of 300.
 - **A3_2's residual errors are all over-selection**, precision 80.8% against
   recall 100%: the answer contains the right modality plus one more.
+- **The hints help and hurt, section by section.** Dropping all of them takes
+  micro accuracy from 97.2% to 91.5%, but the total hides opposite effects: F
+  loses 53.9 points and inverts, kappa -0.324, since without the instruction the
+  model reads "reported without details" the intuitive way; B1.1 loses 12.5;
+  A3.2 gains 5.3 and B2 gains 2.5, both hints having been written against
+  llama3:8b failures; A1, A2, A3.1, C and X do not move, so about 3300 of the
+  7182 injected characters do nothing. Audit them one at a time, not as a block.
+- **The details gate contributes nothing to F.** With hints on it produces zero
+  overrides on 40 records, so F's 97.5% is the hint alone.
 - Read the metrics in this order: majority baseline and gain, then kappa, then
   accuracy with its interval. Accuracy alone ranked F above A3_2 under the 8B
   model, where F gained nothing over a constant answer and A3_2 gained 13
