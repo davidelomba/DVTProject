@@ -124,8 +124,9 @@ SECTION_KEYWORD_GATES = {
 SECTION_HINTS_ENABLED = True
 
 # Sections whose hint is suppressed while SECTION_HINTS_ENABLED is True, so one
-# hint can be measured without removing the rest.
-SECTION_HINTS_DISABLED = set()
+# hint can be measured without removing the rest. B2 is listed because its hint
+# lowers B2's accuracy; the text is kept so the ablation can be repeated.
+SECTION_HINTS_DISABLED = {"B2"}
 
 # Section-specific prompt hints
 # These sentences are injected into the prompt for each section, in order to help the model
@@ -133,54 +134,22 @@ SECTION_HINTS_DISABLED = set()
 #TODO: try to make these hints more concise when a big LLM will be used.
 SECTION_HINTS = {
     "A1": (
-        "CRITICAL: This question refers EXCLUSIVELY to post-mortem autopsy findings. "
-        "Imaging studies (ultrasound, Doppler, CT, MRI) performed on a living patient "
-        "are NOT autopsies. If the patient is alive or no post-mortem autopsy is mentioned, "
-        "you MUST select: 'No autopsy done, unknown if done, or done but results unavailable'."
+        "Only post-mortem findings count here. Imaging performed on a living patient "
+        "is not an autopsy."
     ),
     "A2": (
-        "CRITICAL FOR A2: Pay extreme attention to ANY negations preceding surgical terms. "
-        "If the clinical record explicitly states that a surgical procedure was denied, "
-        "not performed, or is absent, you MUST NOT select options 1 or 2. "
+        "A procedure the record states was not performed, or denies, cannot be "
+        "options 1 or 2."
     ),
     "A3_1": (
-        "CRITICAL FOR A3.1: the options differ on ONE question -- was an imaging study "
-        "actually PERFORMED on this patient?\n"
-        "- Option 2 requires BOTH that an imaging study was actually carried out AND "
-        "that its result did not show DVT. Select it only if the evidence names an "
-        "imaging test that was really done.\n"
-        "- Option 3 covers every other case: no imaging test was done, it is not known "
-        "whether one was done, or one was done but its result is not reported. If the "
-        "evidence states that no imaging was performed, or says nothing at all about "
-        "imaging, the correct answer is option 3, NOT option 2.\n"
-        "WATCH OUT: a NEGATIVE result is still a result. An imaging study reporting "
-        "compressible veins, no thrombosis, absence of DVT or DVT ruled out WAS "
-        "performed and did not confirm DVT -> option 2. Option 3's 'result not "
-        "reported' means the report is missing or unavailable, NOT that the report "
-        "says there is no DVT.\n"
-        "An autopsy is not an imaging study. A DVT diagnosis reported without any "
-        "imaging report does not by itself mean that imaging was done."
+        "A NEGATIVE result is still a result: a study reporting compressible veins, "
+        "no thrombosis, or DVT ruled out was performed and did not confirm DVT. "
+        "Option 3's 'result not reported' means the report is missing, not that it "
+        "says there is no DVT. An autopsy is not an imaging study."
     ),
     "A3_2": (
-        "CRITICAL FOR A3.2: select every imaging modality the evidence itself states was "
-        "performed on THIS patient, and only those. The Brighton context lists modalities "
-        "that CAN confirm a DVT in general: it is terminology, not a record of what was "
-        "done here.\n"
-        "WATCH OUT: the Brighton table names a single bundled modality, 'Compression "
-        "ultrasonography with and without Doppler'. This questionnaire SPLITS it into two "
-        "separate options, so that phrase is never an answer on its own. Decide by what "
-        "the exam actually did.\n"
-        "Match the modality the evidence names, not the one most commonly used for DVT:\n"
-        "- ultrasound assessing blood flow (color Doppler, duplex, echo-color-Doppler, "
-        "ecocolordoppler, flow or velocity study, absent/present flow signal) -> "
-        "'Doppler/Duplex Ultrasound', NOT 'Compression ultrasonography', even when the "
-        "evidence does not mention compression\n"
-        "- ultrasound that only tests whether the vein collapses under the probe, with no "
-        "mention of flow -> 'Compression ultrasonography'\n"
-        "- contrast venography / phlebography / 'flebografia' -> 'Contrast venography'\n"
-        "- CT or MR venography / 'TC venografia' / 'RM venografia' -> 'CT or MR venography'\n"
-        "- any other named imaging test (e.g. impedance plethysmography, a whole-body CT "
-        "done for another purpose) -> 'Other'"
+        "An imaging test that is none of the four named modalities, such as impedance "
+        "plethysmography or a CT performed for another purpose, is 'Other'."
     ),
     "B1_1": (
         "CRITICAL DISTINCTION FOR NEGATIONS: "
@@ -210,18 +179,11 @@ SECTION_HINTS = {
         "thing; never select this merely because an imaging study reports no flow in a vein."
     ),
     "C": (
-        "D-DIMER REFERENCE RANGE RULE: "
-        "To determine if the D-Dimer value is normal or exceeded, use the laboratory-specific "
-        "upper limit if it is explicitly mentioned in the text. "
-        "If the lab's reference range is NOT available in the text, you MUST use 500 ng/mL "
-        "as the default upper limit of normal (i.e., a value < 500 is normal, >= 500 exceeds the limit). "
-        "IMPORTANT: only apply this rule to a result that explicitly refers to the D-Dimer test by "
-        "name (e.g. 'D-dimero', 'D-Dimer'). Other lab findings, such as leukocytosis, elevated CRP/PCR, "
-        "white blood cell count, etc. are NOT D-Dimer and must NOT be used to infer a D-Dimer "
-        "result. If the D-Dimer test itself is never mentioned in the evidence, select 'D-dimer not "
-        "tested, or tested but results unknown or not available', even if other lab abnormalities are "
-        "present. A qualitative statement that the D-Dimer exceeded (or was within) the lab's limit "
-        "(e.g. 'D-dimero superiore al limite di laboratorio') is sufficient evidence on its own. "
+        "Use the laboratory's upper limit when the text states it, otherwise 500 ng/mL. "
+        "Apply this only to a result named as D-dimer: leukocytosis, CRP and other "
+        "abnormal labs are not a D-dimer, and if the test is never mentioned the answer "
+        "is 'not tested'. A qualitative statement that it exceeded or stayed within the "
+        "limit is sufficient on its own."
     ),
     "F": (
         "FIRST LINE OF YOUR RESPONSE, before any reasoning, write exactly: "
@@ -240,17 +202,10 @@ SECTION_HINTS = {
         "fragment may omit the test's name even when a finding is present."
     ),
     "X": (
-        "CRITICAL FOR X: ask yourself ONE question -- does the record name a disease other "
-        "than DVT as the cause of this illness?\n"
-        "- If yes, THAT disease is the alternative diagnosis (e.g. cellulitis, Baker's "
-        "cyst, muscle tear): select 'An alternative diagnosis was found that explained the "
-        "acute illness'. This holds even when the record presents it as the final confirmed "
-        "diagnosis rather than as one hypothesis among several; 'alternative' means "
-        "alternative to DVT, not alternative to the record's own conclusion.\n"
-        "- If no, select 'No alternative diagnosis was found to explain the acute illness'.\n"
-        "Symptoms (pain, swelling, edema) are not diagnoses. Risk factors that make DVT more "
-        "likely (immobilization, recent surgery, pregnancy, active cancer) are not competing "
-        "explanations either."
+        "A disease other than DVT named as the cause of this illness is the alternative "
+        "diagnosis, including when the record presents it as its own final diagnosis. "
+        "Symptoms are not diagnoses, and a risk factor that makes DVT more likely is not "
+        "a competing explanation."
     ),
 }
 
