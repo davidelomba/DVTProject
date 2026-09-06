@@ -137,9 +137,12 @@ SECTION_HINTS = {
         "Only post-mortem findings count here. Imaging performed on a living patient "
         "is not an autopsy."
     ),
+    # Shortening this one cost 7.5 points: without the emphasis the model stops
+    # treating an explicit negation as binding.
     "A2": (
-        "A procedure the record states was not performed, or denies, cannot be "
-        "options 1 or 2."
+        "CRITICAL FOR A2: Pay extreme attention to ANY negations preceding surgical terms. "
+        "If the clinical record explicitly states that a surgical procedure was denied, "
+        "not performed, or is absent, you MUST NOT select options 1 or 2. "
     ),
     "A3_1": (
         "A NEGATIVE result is still a result: a study reporting compressible veins, "
