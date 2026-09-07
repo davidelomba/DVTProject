@@ -155,12 +155,14 @@ SECTION_HINTS = {
         "plethysmography or a CT performed for another purpose, is 'Other'."
     ),
     "B1_1": (
-        "CRITICAL DISTINCTION FOR NEGATIONS: "
-        "Select the second option ('There was no report of a recognized DVT syndrome') "
-        "ONLY IF the clinical record EXPLICITLY states that there are no signs or symptoms "
-        "(e.g., 'no leg swelling', 'no calf pain'). "
-        "Select the third option ('It is unknown...') IF there is NO information at all "
-        "regarding the presence or absence of DVT signs/symptoms in the extracted text."
+        "The difference between the last two options is what you know about the "
+        "PATIENT, not about the document. Choose 'There was no report of a "
+        "recognized DVT syndrome' when the record tells you the patient did NOT "
+        "have signs or symptoms, for example 'no leg swelling', 'no calf pain'. "
+        "Choose 'It is unknown' when the record leaves you not knowing whether "
+        "the patient had them: a note stating that it contains no symptom "
+        "section, or silent on the matter, is this case. The absence of a report "
+        "is not a report of absence."
     ),
     "B2": (
         "CRITICAL FOR B2: Select every option EXPLICITLY documented in the evidence for "

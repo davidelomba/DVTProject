@@ -148,12 +148,30 @@ as the original thirty, so the sections that had been unmeasurable hold up.
   - Which procedures count as A2's "other procedure done that confirmed
     presence of DVT", given that Brighton asks for a procedure that confirms a
     thrombus?
-  - In B1.1, is a DVT listed among several discharge or active diagnoses "no
-    report of a recognized DVT syndrome" or "unknown if there was a report"?
-    The model answers the first exactly on the two records where the diagnosis
-    appears in a list, and the second where it is the reason for referral.
   - Does B2 option 4 apply when only calf pain is documented?
   - Is Table 2 of the Brighton paper the intended source for X's list?
+  - Does a vague, uncharacterised symptom, "a generic discomfort in the leg"
+    with no site or intensity, count as B1.1's "at least one symptom or sign
+    was reported", or does the section stay unknown? SYN_10 turns on this: the
+    ground truth says unknown, the model reads the discomfort as a symptom.
+
+## Settled by the clinicians
+
+Answers received 2026-09-07. They close three of the questions above.
+
+- **B1.1, second option against third.** The distinction is epistemic and is
+  about the patient, not the document. The second option means the record tells
+  you the patient did not have signs or symptoms; the third means the record
+  leaves you not knowing. A note stating that it contains no symptom section is
+  the third: the absence of a report is not a report of absence. The ground
+  truth was right on SYN_32 and SYN_35 and the model wrong, and the B1.1 hint
+  now carries the reason rather than the rule alone.
+- **B2 implies B1.1.** Selecting any of B2's first four options implies B1.1's
+  first option. This is the cross-section rule already in
+  `config.CROSS_SECTION_RULES`, now confirmed from outside the project.
+- **C's normal range.** Use the laboratory's own reference range when the record
+  gives one, otherwise 500 ng/mL. This is what the C hint already says, and C
+  has scored 100% on every run under qwen3.6:27b.
 - **The gates lose their purpose under qwen3.6:27b.** Reconstructed from the
   audit logs: all gates on 290/300, no gates at all 288/300. The details gate
   fired on 23 of 30 records with the 8B and on none with the 27B. All the
