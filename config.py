@@ -73,7 +73,9 @@ SECTION_GATES_ENABLED = {
     # (A1, A2, X: see SECTION_KEYWORD_GATES below).
     "keyword": True,
     # Derives section F's Yes/No from the model's own DETAILS_PRESENT line.
-    "details": True,
+    # The mapping treats absent details as a bare conclusion, which is wrong
+    # when no diagnosis was reported at all.
+    "details": False,
     # Drops B2's "Absent pulses" when no pulse examination is in the evidence.
     "absent_pulses": True,
 }

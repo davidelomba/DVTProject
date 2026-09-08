@@ -116,7 +116,9 @@ symptom, citing the guideline's own list of non-specific signs, which is the
 open B1.1 question. The third, SYN_10's F, is a model error: the record reports
 no diagnosis at all and the model answered the counterfactual, reasoning that a
 diagnosis based on this text would be a bare conclusion. The F hint now states
-the precondition that the criterion needs a reported diagnosis.
+the precondition that the criterion needs a reported diagnosis, which fixed the
+model's answer; the details gate then reverted it, so that gate is off. F is 40
+of 40 without it, not yet confirmed by a run.
 
 - **The model was the binding constraint, not the prompts.** A3_2 went from
   46.7% to 83.3% and B2 from 63.3% to 96.7%, with non-overlapping confidence
@@ -139,8 +141,14 @@ the precondition that the criterion needs a reported diagnosis.
   A3.2 gains 5.3 and B2 gains 2.5, both hints having been written against
   llama3:8b failures; A1, A2, A3.1, C and X do not move, so about 3300 of the
   7182 injected characters do nothing. Audit them one at a time, not as a block.
-- **The details gate contributes nothing to F.** With hints on it produces zero
-  overrides on 40 records, so F's 97.5% is the hint alone.
+- **An ablation is only valid for the configuration it was run in.** The details
+  gate was measured inert under qwen3.6:27b, zero overrides on 40 records. After
+  the F hint gained the precondition that the criterion needs a reported
+  diagnosis, the same gate fired once and reverted the one answer the hint had
+  fixed: the model answered No on SYN_10 and the gate forced Yes. Its mapping,
+  DETAILS_PRESENT=no implies Yes, assumes a diagnosis exists. `details` is now
+  False, which takes F to 40 of 40. Second independent instance of the same
+  lesson, after the A2 hint and its keyword gate.
 - Read the metrics in this order: majority baseline and gain, then kappa, then
   accuracy with its interval. Accuracy alone ranked F above A3_2 under the 8B
   model, where F gained nothing over a constant answer and A3_2 gained 13
@@ -189,9 +197,9 @@ Answers received 2026-09-07. They close three of the questions above.
   has scored 100% on every run under qwen3.6:27b.
 - **The gates lose their purpose under qwen3.6:27b.** Reconstructed from the
   audit logs: all gates on 290/300, no gates at all 288/300. The details gate
-  fired on 23 of 30 records with the 8B and on none with the 27B. All the
-  remaining value sits in the X keyword gate, worth 3 sections, and those are
-  the three records the clinicians' answer above decides.
+  fired on 23 of 30 records with the 8B and on none with the 27B, and is now
+  off. All the remaining value sits in the X keyword gate, worth 3 sections, and
+  those are the three records the clinicians' answer above decides.
 - Test whether the TRANSCRIPTION RULE in `AGENTIC_EXTRACTOR_SYSTEM_PROMPT` does
   anything: it governs a string the code discards.
 - **Three wrong sections in 400 is past what 40 records can resolve.** Each
