@@ -103,9 +103,20 @@ llama3:8b     micro 85.0%   macro kappa 0.628
 qwen3.6:27b   micro 96.7%   macro kappa 0.906
 ```
 
-On the extended 40-record corpus, qwen3.6:27b scores micro 97.2%, macro kappa
-0.938. The ten scenarios added in September score 97 of 100 sections, the same
-as the original thirty, so the sections that had been unmeasurable hold up.
+On the extended 40-record corpus, qwen3.6:27b scores micro 99.2%, macro kappa
+0.974, three wrong sections out of 400. Seven sections of ten are at 100%; A2,
+B1.1 and F each miss one record. The ten scenarios added in September score at
+the same rate as the original thirty, so the sections that had been unmeasurable
+hold up.
+
+Two of the three residual errors wait on the clinicians rather than on the
+pipeline. SYN_03 reads a CT venography as A2's "other procedure", which is the
+open A2 question; SYN_10 reads an uncharacterised leg discomfort as a B1.1
+symptom, citing the guideline's own list of non-specific signs, which is the
+open B1.1 question. The third, SYN_10's F, is a model error: the record reports
+no diagnosis at all and the model answered the counterfactual, reasoning that a
+diagnosis based on this text would be a bare conclusion. The F hint now states
+the precondition that the criterion needs a reported diagnosis.
 
 - **The model was the binding constraint, not the prompts.** A3_2 went from
   46.7% to 83.3% and B2 from 63.3% to 96.7%, with non-overlapping confidence
@@ -115,8 +126,12 @@ as the original thirty, so the sections that had been unmeasurable hold up.
 - **Sampling uncertainty binds.** With 30 records the 95% interval on a
   section's accuracy is 10 to 18 points wide. Generation noise does not:
   two identical runs on mari changed 0 sections out of 300.
-- **A3_2's residual errors are all over-selection**, precision 80.8% against
-  recall 100%: the answer contains the right modality plus one more.
+- **A hint can carry a criterion rather than a rule.** Rewriting B1.1's hint
+  around the clinicians' epistemic distinction changed 2 sections out of 400
+  between two otherwise identical runs, both the intended ones. The model then
+  reconstructed the distinction in its own words on both, writing that the
+  document notes the absence of reported symptoms rather than documenting their
+  clinical absence in the patient.
 - **The hints help and hurt, section by section.** Dropping all of them takes
   micro accuracy from 97.2% to 91.5%, but the total hides opposite effects: F
   loses 53.9 points and inverts, kappa -0.324, since without the instruction the
@@ -179,6 +194,7 @@ Answers received 2026-09-07. They close three of the questions above.
   the three records the clinicians' answer above decides.
 - Test whether the TRANSCRIPTION RULE in `AGENTIC_EXTRACTOR_SYSTEM_PROMPT` does
   anything: it governs a string the code discards.
-- Weakest section left: A3_2 at 87.5%, whose five errors are all one modality
-  too many. Its two ultrasound options are a wording problem inherited from the
-  Brighton table, which bundles them as one modality.
+- **Three wrong sections in 400 is past what 40 records can resolve.** Each
+  record is worth 0.25 points and the 95% interval on the total is [98, 100],
+  so a one-section change is not a measurable difference. What is still worth
+  reading is which category an error falls into, not the total.
