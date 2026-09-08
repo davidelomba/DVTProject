@@ -8,6 +8,7 @@ rules are applied and the final DVT_CriteriaForm is returned together with
 a full audit log.
 """
 
+import hashlib
 import socket
 import subprocess
 import time
@@ -78,6 +79,32 @@ def _ollama_version() -> str:
         return "unavailable"
 
 
+def _hint_fingerprint() -> dict:
+    """Identifies the hint text each section was answered with.
+
+    `section_hints_enabled` and `section_hints_disabled` say which hints were
+    sent, not what they said, so two runs whose hints were rewritten between
+    them carry the same signature. Hashing the text tells them apart without
+    copying the hints into every audit log.
+
+    Returns:
+        Section key -> "<chars> <first 12 hex of sha256>", for the sections
+        that received a non-empty hint. `all` digests the whole set, so two
+        runs can be compared on one string.
+    """
+
+    digest = hashlib.sha256()
+    per_section = {}
+    for section_key in config.SECTION_ORDER:
+        hint = config.section_hint(section_key)
+        digest.update(f"{section_key}:{hint}\n".encode("utf-8"))
+        if hint:
+            own = hashlib.sha256(hint.encode("utf-8")).hexdigest()[:12]
+            per_section[section_key] = f"{len(hint)} {own}"
+    per_section["all"] = digest.hexdigest()[:12]
+    return per_section
+
+
 def _run_config_snapshot() -> dict:
     """Captures the settings that determine what a run produces.
 
@@ -95,6 +122,7 @@ def _run_config_snapshot() -> dict:
         "section_gates_enabled": dict(config.SECTION_GATES_ENABLED),
         "section_hints_enabled": config.SECTION_HINTS_ENABLED,
         "section_hints_disabled": sorted(config.SECTION_HINTS_DISABLED),
+        "section_hints_fingerprint": _hint_fingerprint(),
         # Always applied, never switchable: recorded so a reader does not have
         # to know that to interpret the run.
         "cross_section_rules_applied": True,
