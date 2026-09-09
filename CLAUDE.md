@@ -80,7 +80,27 @@ about six hours.
 
 A partial run is not a run: `evaluate_predictions` keeps the newest file per
 record, so scoring after `--only` mixes runs. Fine for a targeted check, not a
-number to report.
+number to report. `export_redcap_csv` selects the same way, so an experimental
+run left in `output/` becomes the CSV that goes to REDCap. Check
+`_run_config.models.evaluator` on the newest file before either command.
+
+The ground-truth files hold the same section keys as the pipeline's output, so
+`export_redcap_csv` converts them once they carry a name it parses. That is what
+makes the Level of Certainty measurable:
+
+```bash
+mkdir /tmp/gt
+for f in data/synthetic_records/*_ground_truth.json; do
+  cp "$f" "/tmp/gt/$(basename "${f%_ground_truth.json}")_20260101_000000.json"
+done
+python export_redcap_csv.py /tmp/gt gt_import.csv --skip-empty-fields
+python export_redcap_csv.py output pred_import.csv --skip-empty-fields
+```
+
+`load_latest_results` reads the timestamp from the filename, hence the rename;
+any value works, since there is one ground-truth file per record. Two imports
+and two exports through REDCap give 40 pairs of LOC, which is ordinal, so
+quadratic weighted kappa and a 5 x 5 confusion matrix rather than plain kappa.
 
 ## Machines
 
@@ -151,6 +171,25 @@ Only an outside authority settles the difference.
   DETAILS_PRESENT=no implies Yes, assumes a diagnosis exists. `details` is now
   False and F is 40 of 40. Second independent instance of the same lesson, after
   the A2 hint and its keyword gate.
+- **The hint and gate configuration is tuned to one model.** Swapping the
+  evaluator for `medgemma:27b`, everything else identical and the hint
+  fingerprint proving it, takes micro accuracy from 99.5% to 93.2% and macro
+  kappa from 0.982 to 0.837. The errors are systematically over-selection, 31
+  false positives against 8 false negatives, and they land where the
+  configuration was pruned against qwen: A3.2 drops to 67.5%, nine of its
+  thirteen errors being the ultrasound pairing the removed contrastive clause
+  used to prevent; B2, whose hint is disabled, gains three false positives; F
+  falls to 87.5% and errs in both directions despite its 1216-character hint.
+  MedGemma answers both of qwen's residual errors correctly, so it is not worse
+  everywhere, it is differently wrong. The prompts are compensations for one
+  model's failure modes, not transferable domain knowledge.
+- **A schema faithful to the paper form can cost sections under another model.**
+  B1.2 has no "none of the above" option because the printed questionnaire has
+  none. Under qwen that is free, B1.2 scores 100%. Under medgemma it produces
+  six errors: four records answered `Lower extremity DVT` where the truth is
+  empty, and two sections that failed outright with `FINAL_ANSWER: 5` for a
+  two-option field, the model having reasoned correctly that DVT was ruled out
+  and having nowhere to put it.
 - **The score is not the instrument any more; the audit log is.** The run that
   added that F precondition scored 99.2% with zero sections changed out of 400,
   which reads as a change that did nothing. The log showed the model had in fact
@@ -167,9 +206,11 @@ Only an outside authority settles the difference.
 
 - **The Level of Certainty is never measured.** REDCap computes it from the
   answers and it is the only number a clinician acts on, but every metric here
-  is section-level. Getting it needs the REDCap Data Dictionary, or one import
-  and export cycle through the project itself. It is ordinal, so weighted kappa
-  rather than plain kappa.
+  is section-level, and the LOC is not a linear function of the sections: one
+  wrong answer can leave it unchanged or move it a whole level. The Commands
+  section above gives the two CSVs to compare. Only two of the 40 rows differ
+  from the ground truth, `criteria_a2` on SYN_03 and `criteria_b1_1` on SYN_10,
+  so the whole comparison turns on those.
 - **A2 and X still rest on few records**, 4 and 6 of 40. F went from 2 positives
   to 7 with the September expansion and now scores kappa 0.918.
 - **Questions for the clinicians.** The first two decide the only two wrong

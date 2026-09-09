@@ -11,7 +11,7 @@ PROJECT_ROOT = Path(__file__).resolve().parent
 
 # LLM model names and parameters
 LLM_MODEL_NAME = "llama3:8b-instruct-q4_0"  # Agent 1 (extractor), all modes
-EVALUATOR_LLM_MODEL_NAME = "medgemma:27b"  # Agent 2 (evaluator), all modes
+EVALUATOR_LLM_MODEL_NAME = "qwen3.6:27b"  # Agent 2 (evaluator), all modes
 AGENTIC_LLM_MODEL_NAME = "llama3.1:8b-instruct-q4_0"  # Agent 1's search step, "agentic_graph" mode only
 LLM_TEMPERATURE = 0.0  # deterministic output for all agents
 LLM_NUM_PREDICT = 1024  # token cap: prevents runaway generation. The two
@@ -25,7 +25,7 @@ LLM_NUM_GPU = 999
 # model can spend the whole token cap reasoning and return empty content,
 # since the reasoning does not travel in the response body. None sends
 # nothing to Ollama, leaving the model's own default.
-LLM_REASONING = None
+LLM_REASONING = False
 LLM_REQUEST_TIMEOUT = 180  # seconds; allows time for reasoning on slower hardware
 
 # Multilingual embedding model. Used in every mode: the Brighton store is
