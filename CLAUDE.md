@@ -94,6 +94,11 @@ mari is the most likely cause, GPU architecture the other candidate.
 Every run's audit log records `hostname` and `ollama_version` under
 `_run_config.environment`. Check them before comparing two result files.
 
+`_run_config.section_hints_fingerprint` records the length and a sha256 prefix
+of the hint each section actually received, plus an `all` digest of the whole
+set, so two runs whose hints were rewritten between them no longer carry the
+same signature. Runs before 2026-09-08 lack it and are told apart by their date.
+
 ## What the measurements say
 
 Two evaluators on mari, 30 records each, everything else identical:
@@ -103,22 +108,19 @@ llama3:8b     micro 85.0%   macro kappa 0.628
 qwen3.6:27b   micro 96.7%   macro kappa 0.906
 ```
 
-On the extended 40-record corpus, qwen3.6:27b scores micro 99.2%, macro kappa
-0.974, three wrong sections out of 400. Seven sections of ten are at 100%; A2,
-B1.1 and F each miss one record. The ten scenarios added in September score at
-the same rate as the original thirty, so the sections that had been unmeasurable
+On the extended 40-record corpus, qwen3.6:27b scores micro 99.5%, macro kappa
+0.982, two wrong sections out of 400. Eight sections of ten are at 100%; A2 and
+B1.1 miss one record each. The ten scenarios added in September score at the
+same rate as the original thirty, so the sections that had been unmeasurable
 hold up.
 
-Two of the three residual errors wait on the clinicians rather than on the
-pipeline. SYN_03 reads a CT venography as A2's "other procedure", which is the
-open A2 question; SYN_10 reads an uncharacterised leg discomfort as a B1.1
-symptom, citing the guideline's own list of non-specific signs, which is the
-open B1.1 question. The third, SYN_10's F, is a model error: the record reports
-no diagnosis at all and the model answered the counterfactual, reasoning that a
-diagnosis based on this text would be a bare conclusion. The F hint now states
-the precondition that the criterion needs a reported diagnosis, which fixed the
-model's answer; the details gate then reverted it, so that gate is off. F is 40
-of 40 without it, not yet confirmed by a run.
+**Neither residual error is attributable to the model.** Both are readings of
+the questionnaire that differ from the ground truth, argued from the guideline
+text the model was given. SYN_03 calls a CT venography A2's "other procedure";
+SYN_10 counts an uncharacterised leg discomfort as a B1.1 symptom, citing the
+guideline's own list of non-specific signs. Both are open questions for the
+clinicians, so the pipeline has stopped making mistakes and started disagreeing.
+Only an outside authority settles the difference.
 
 - **The model was the binding constraint, not the prompts.** A3_2 went from
   46.7% to 83.3% and B2 from 63.3% to 96.7%, with non-overlapping confidence
@@ -147,8 +149,15 @@ of 40 without it, not yet confirmed by a run.
   diagnosis, the same gate fired once and reverted the one answer the hint had
   fixed: the model answered No on SYN_10 and the gate forced Yes. Its mapping,
   DETAILS_PRESENT=no implies Yes, assumes a diagnosis exists. `details` is now
-  False, which takes F to 40 of 40. Second independent instance of the same
-  lesson, after the A2 hint and its keyword gate.
+  False and F is 40 of 40. Second independent instance of the same lesson, after
+  the A2 hint and its keyword gate.
+- **The score is not the instrument any more; the audit log is.** The run that
+  added that F precondition scored 99.2% with zero sections changed out of 400,
+  which reads as a change that did nothing. The log showed the model had in fact
+  answered correctly and the gate had reverted it. Reconstructing a gate's
+  effect from the log is exact, since gates are pure post-processing and every
+  override records the pre-gate answer: it predicted F 40 of 40 and micro 99.5%,
+  and the confirming run returned both, changing exactly the one section.
 - Read the metrics in this order: majority baseline and gain, then kappa, then
   accuracy with its interval. Accuracy alone ranked F above A3_2 under the 8B
   model, where F gained nothing over a constant answer and A3_2 gained 13
@@ -163,24 +172,38 @@ of 40 without it, not yet confirmed by a run.
   rather than plain kappa.
 - **A2 and X still rest on few records**, 4 and 6 of 40. F went from 2 positives
   to 7 with the September expansion and now scores kappa 0.918.
-- **Questions for the clinicians.**
-  - Does X mean an alternative diagnosis for the acute illness in general, or
-    one of the Table 2 conditions that mimic a DVT? The model reads it broadly
-    and the keyword gate overrides it on three records; the answer decides
-    whether that gate saves three answers or destroys three.
+- **Questions for the clinicians.** The first two decide the only two wrong
+  sections left.
   - Which procedures count as A2's "other procedure done that confirmed
     presence of DVT", given that Brighton asks for a procedure that confirms a
-    thrombus?
-  - Does B2 option 4 apply when only calf pain is documented?
-  - Is Table 2 of the Brighton paper the intended source for X's list?
+    thrombus? SYN_03 turns on this: the model calls a CT venography one, the
+    ground truth puts imaging in A3.
   - Does a vague, uncharacterised symptom, "a generic discomfort in the leg"
     with no site or intensity, count as B1.1's "at least one symptom or sign
     was reported", or does the section stay unknown? SYN_10 turns on this: the
     ground truth says unknown, the model reads the discomfort as a symptom.
+  - Does X mean an alternative diagnosis for the acute illness in general, or
+    one of the Table 2 conditions that mimic a DVT? The model reads it broadly
+    and the keyword gate overrides it on three records; the answer decides
+    whether that gate saves three answers or destroys three.
+  - Does B2 option 4 apply when only calf pain is documented?
+  - Is Table 2 of the Brighton paper the intended source for X's list?
+- **The gates have almost no purpose left under qwen3.6:27b.** Reconstructed
+  from the audit logs: all gates on 290/300, no gates at all 288/300. The
+  details gate is off. The absent-pulses gate never fires. All the remaining
+  value sits in the X keyword gate, worth 3 sections, and those are the three
+  records the X question above decides.
+- Test whether the TRANSCRIPTION RULE in `AGENTIC_EXTRACTOR_SYSTEM_PROMPT` does
+  anything: it governs a string the code discards.
+- **Two wrong sections in 400 is past what 40 records can resolve.** Each record
+  is worth 0.25 points and the 95% interval on the total is [98, 100], so a
+  one-section change is not a measurable difference. What is still worth reading
+  is which category an error falls into, not the total. Further tuning on this
+  corpus is fitting 40 records written by their own evaluator.
 
 ## Settled by the clinicians
 
-Answers received 2026-09-07. They close three of the questions above.
+Received 2026-09-07, and no longer listed among the questions above.
 
 - **B1.1, second option against third.** The distinction is epistemic and is
   about the patient, not the document. The second option means the record tells
@@ -195,14 +218,3 @@ Answers received 2026-09-07. They close three of the questions above.
 - **C's normal range.** Use the laboratory's own reference range when the record
   gives one, otherwise 500 ng/mL. This is what the C hint already says, and C
   has scored 100% on every run under qwen3.6:27b.
-- **The gates lose their purpose under qwen3.6:27b.** Reconstructed from the
-  audit logs: all gates on 290/300, no gates at all 288/300. The details gate
-  fired on 23 of 30 records with the 8B and on none with the 27B, and is now
-  off. All the remaining value sits in the X keyword gate, worth 3 sections, and
-  those are the three records the clinicians' answer above decides.
-- Test whether the TRANSCRIPTION RULE in `AGENTIC_EXTRACTOR_SYSTEM_PROMPT` does
-  anything: it governs a string the code discards.
-- **Three wrong sections in 400 is past what 40 records can resolve.** Each
-  record is worth 0.25 points and the 95% interval on the total is [98, 100],
-  so a one-section change is not a measurable difference. What is still worth
-  reading is which category an error falls into, not the total.
