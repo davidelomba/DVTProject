@@ -66,8 +66,8 @@ from agents import build_llm
 WRITER_MODEL_NAME = "qwen2.5:7b-instruct"
 WRITER_TEMPERATURE = 0.8
 
-# config.LLM_NUM_PREDICT (512) is about 1750 Italian characters, just under the
-# length asked for here: it cuts records off mid-sentence without any error.
+# Well above the length the prompt asks for: a cap reached mid-record
+# truncates it without raising anything.
 WRITER_NUM_PREDICT = 3072
 
 # Regeneration attempts when check_record() rejects the output. Each is a real

@@ -169,8 +169,10 @@ Only an outside authority settles the difference.
   diagnosis, the same gate fired once and reverted the one answer the hint had
   fixed: the model answered No on SYN_10 and the gate forced Yes. Its mapping,
   DETAILS_PRESENT=no implies Yes, assumes a diagnosis exists. `details` is now
-  False and F is 40 of 40. Second independent instance of the same lesson, after
-  the A2 hint and its keyword gate.
+  False and F is 40 of 40. Second independent instance of the same lesson: the
+  first was A2, whose hint the full ablation had classified neutral because the
+  keyword gate covered it, and which turned out to be worth 7.5 points once that
+  gate was scoped to the thrombectomy option.
 - **The hint and gate configuration is tuned to one model.** Swapping the
   evaluator for `medgemma:27b`, everything else identical and the hint
   fingerprint proving it, takes micro accuracy from 99.5% to 93.2% and macro

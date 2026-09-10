@@ -5,9 +5,8 @@ and reports how many answers changed between them.
 config.LLM_TEMPERATURE is 0.0, so the pipeline is nominally deterministic,
 but Ollama does not guarantee bit-identical generations across calls (GPU
 non-determinism, batching, KV-cache reuse), so temperature 0 is not by
-itself evidence that a measured accuracy is reproducible. Every metric
-produced by evaluate_predictions.py currently comes from a SINGLE run.
-This script quantifies the noise floor underneath those metrics: if two
+itself evidence that a measured accuracy is reproducible. This script
+quantifies the noise floor underneath a metric produced from one run: if two
 identical runs already disagree on N% of sections, then any accuracy
 difference smaller than N% between two configurations is not a result.
 

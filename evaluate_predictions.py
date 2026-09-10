@@ -12,9 +12,9 @@ record has several files, the most recent one wins.
 
 METRICS, per section and overall:
   - Exact-match accuracy: the predicted answer equals the reference, with a
-    95% Wilson confidence interval. On 30 records that interval is wide, which
-    is the point: it says how much of a difference between two runs the sample
-    can carry.
+    95% Wilson confidence interval. On a corpus this size the interval is wide,
+    which is the point: it says how much of a difference between two runs the
+    sample can carry.
   - Majority baseline: the accuracy of always answering the section's most
     frequent reference answer, and the gain over it. Sections where one answer
     dominates score high on accuracy alone.
@@ -158,9 +158,9 @@ def _binary_rows(pairs, options):
 def _wilson_interval(successes: int, total: int, z: float = 1.96) -> tuple:
     """A 95% confidence interval for an observed proportion.
 
-    Wilson rather than the textbook normal interval: with 30 records the normal
-    one runs past 1.0 on the sections scoring near-perfect, and collapses to
-    zero width at exactly 1.0.
+    Wilson rather than the textbook normal interval: on a sample this size the
+    normal one runs past 1.0 on the sections scoring near-perfect, and collapses
+    to zero width at exactly 1.0.
 
     Args:
         successes: how many records were answered correctly.

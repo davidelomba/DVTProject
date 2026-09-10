@@ -181,7 +181,7 @@ def extract_evidence_agentic(
 
     The model is given a retrieval tool and decides for itself whether and how
     often to call it and with which sub-queries, instead of running one fixed
-    query. Requires the base `langchain` package.
+    query. Requires the `langchain_classic` package.
 
     The evidence returned is assembled from the RAW chunks of every tool call
     the agent made, not from its own final chat turn: that turn tends to

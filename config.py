@@ -67,7 +67,6 @@ SECTION_ORDER = [
 # criteria_rules.apply_section_gates); setting one to False skips that
 # gate, leaving the model's answer unchanged.
 # CROSS_SECTION_RULES below are excluded on purpose and always apply.
-# TODO: consider setting all gates to False when a big LLM is used.
 SECTION_GATES_ENABLED = {
     # Reverts a positive answer when the evidence never names the procedure
     # (A1, A2, X: see SECTION_KEYWORD_GATES below).
@@ -89,7 +88,9 @@ SECTION_GATES_ENABLED = {
 # evidence could be negating it, so the model still evaluates normally.
 # An optional "gated_options" names the answers the keywords can speak for.
 # Without it every answer other than the default is checked against them.
-# TODO: consider deleting this gates when a big LLM is used.
+# TODO: X's gate overrides the model on the records where it reads the section
+# more broadly than the ground truth. Whether it saves those answers or
+# destroys them depends on how broadly the clinicians say X should be read.
 SECTION_KEYWORD_GATES = {
     "A1": {
         "keywords": ["autops", "autoptic", "postmortem", "post-mortem", "necrosc"],
@@ -130,17 +131,19 @@ SECTION_HINTS_ENABLED = True
 # lowers B2's accuracy; the text is kept so the ablation can be repeated.
 SECTION_HINTS_DISABLED = {"B2"}
 
-# Section-specific prompt hints
-# These sentences are injected into the prompt for each section, in order to help the model
-# avoid common pitfalls and focus on the most important reasoning points.
-#TODO: try to make these hints more concise when a big LLM will be used.
+# Section-specific prompt hints, appended to the section's prompt by
+# agents._build_reasoning_prompt. Each addresses a point where the evaluator
+# reads the section's question differently from the questionnaire. A section
+# absent from this dict is answered from the options and the guideline context
+# alone.
 SECTION_HINTS = {
     "A1": (
         "Only post-mortem findings count here. Imaging performed on a living patient "
         "is not an autopsy."
     ),
-    # Shortening this one cost 7.5 points: without the emphasis the model stops
-    # treating an explicit negation as binding.
+    # Without the capitals and the repetition the model stops treating an
+    # explicit negation as binding, and the keyword gate does not cover the
+    # option it then chooses.
     "A2": (
         "CRITICAL FOR A2: Pay extreme attention to ANY negations preceding surgical terms. "
         "If the clinical record explicitly states that a surgical procedure was denied, "

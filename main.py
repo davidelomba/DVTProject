@@ -47,7 +47,6 @@ def main():
     with open(output_path, "w", encoding="utf-8") as f:
         json.dump(summary, f, indent=2, ensure_ascii=False)
 
-    # Save the Audit log.
     # Contains extracted evidence, guideline context and full model reasoning for
     # every section (including failed ones). Kept as a separate file (not merged
     # into the clean output JSON) so it doesn't need to be shared downstream,

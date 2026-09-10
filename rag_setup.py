@@ -51,11 +51,18 @@ def get_embeddings():
 
 
 def build_brighton_kb(brighton_pdf_text: str, embeddings=None, force_rebuild: bool = False) -> Chroma:
-    """
-    Static KB of DVT synonyms (Brighton Collaboration paper).
-    Should be built once and reused for all patients: if it already exists
-    on disk and force_rebuild=False, it is reloaded instead of recomputing
-    embeddings.
+    """Builds or reloads the guideline vector store.
+
+    The paper is identical for every patient, so an index already on disk is
+    reloaded rather than re-embedded.
+
+    Args:
+        brighton_pdf_text: the guideline text, from load_brighton_pdf_text.
+        embeddings: the embedding model; built here when not given.
+        force_rebuild: rebuild even when an index exists on disk.
+
+    Returns:
+        The Chroma store, persisted at config.BRIGHTON_KB_PERSIST_DIR.
     """
 
     embeddings = embeddings or get_embeddings()
@@ -84,15 +91,21 @@ def build_brighton_kb(brighton_pdf_text: str, embeddings=None, force_rebuild: bo
 
 
 def build_ehr_kb(patient_record_text: str, patient_id: str, embeddings=None) -> Chroma:
-    """
-    Dynamic KB: the single patient's clinical record, chunked and embedded.
+    """Chunks and embeds one patient's clinical record.
+
     Only needed when config.EXTRACTOR_MODE is "rag" (agents.extract_evidence)
-    or "agentic_graph" (agents.extract_evidence_agentic, via the retriever
-    tool built by make_ehr_retriever_tool below); not used when
-    EXTRACTOR_MODE is "full_text" (the default), which passes the record
-    directly instead.
-    Persisted in a dedicated per-patient subfolder, so different runs
-    don't overwrite one another.
+    or "agentic_graph" (agents.extract_evidence_agentic, via the retriever tool
+    built by make_ehr_retriever_tool below); not used when EXTRACTOR_MODE is
+    "full_text", which passes the record directly instead.
+
+    Args:
+        patient_record_text: the complete clinical record.
+        patient_id: names the store's own directory, so two records never
+            share one.
+        embeddings: the embedding model; built here when not given.
+
+    Returns:
+        The Chroma store, rebuilt from scratch on every call.
     """
 
     embeddings = embeddings or get_embeddings()
@@ -165,19 +178,20 @@ def clean_brighton_context(context: str) -> str:
 
 
 def make_ehr_retriever_tool(ehr_vectorstore: Chroma):
-    """
-    Wraps the EHR retriever as a LangChain Tool, used by the agentic
-    extractor (agents.extract_evidence_agentic) when config.EXTRACTOR_MODE
-    is "agentic_graph".
+    """Wraps the EHR retriever as the tool the agentic extractor calls.
 
-    Requires the base `langchain` package (not just langchain-core/
-    langchain-community/langchain-ollama).
+    Used by agents.extract_evidence_agentic when config.EXTRACTOR_MODE is
+    "agentic_graph".
+
+    Args:
+        ehr_vectorstore: the store built by build_ehr_kb.
+
+    Returns:
+        The tool, named "search_patient_record", which the agent calls with a
+        free-text query of its own choosing.
     """
 
     ehr_retriever = ehr_vectorstore.as_retriever(search_kwargs={"k": config.EHR_RETRIEVER_K})
-
-    # Wraps the retriever as a LangChain Tool object the agent can call by
-    # name ("search_patient_record") with a free-text query of its choosing.
 
     return create_retriever_tool(
         ehr_retriever,
