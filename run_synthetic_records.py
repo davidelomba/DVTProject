@@ -1,7 +1,10 @@
 """
 Runs the pipeline over every synthetic record in data/synthetic_records/,
-writing each result and audit log to ./output/ under the same names main.py
-uses, so evaluate_predictions.py finds them with its default paths.
+writing each result and audit log under the same names main.py uses, so
+evaluate_predictions.py finds them with its default paths. The destination is
+./output unless --output-dir names another one, which is how two extraction
+modes are kept apart: both commands select the newest file per record, so two
+arms sharing a directory would overwrite each other's results.
 
 record_id is the file name without .txt, which is also the record_id inside
 the matching *_ground_truth.json -- that pairing is what lets the evaluation
@@ -19,6 +22,7 @@ Brighton store is reloaded from disk, not re-embedded).
 Usage:
     python run_synthetic_records.py
     python run_synthetic_records.py --only SYN_02 SYN_21
+    python run_synthetic_records.py --output-dir ./output_full_text
 
 --only restricts the batch to the records whose id contains one of the given
 strings, for re-checking a handful after a prompt change without paying for
@@ -41,16 +45,17 @@ from aggregation import form_to_json_summary
 
 RECORDS_DIR = Path(__file__).parent / "data" / "synthetic_records"
 BRIGHTON_PDF_PATH = str(Path(__file__).parent / "data" / "reference" / "1-s2.0-S0264410X22010854-main.pdf")
-OUTPUT_DIR = Path(__file__).parent / "output"
+DEFAULT_OUTPUT_DIR = Path(__file__).parent / "output"
 
 
-def run_one(record_id: str, record_path: Path) -> Path:
+def run_one(record_id: str, record_path: Path, output_dir: Path) -> Path:
     """Runs the pipeline on one record and writes its two output files.
 
     Args:
         record_id: derived from the file name; must match the record_id in the
             corresponding *_ground_truth.json for the evaluation to pair them.
         record_path: the .txt clinical record.
+        output_dir: where to write the result and its audit log.
 
     Returns:
         Path of the form JSON that was written.
@@ -62,8 +67,8 @@ def run_one(record_id: str, record_path: Path) -> Path:
     # Same shared-timestamp-per-run convention as main.py, so a JSON and its
     # audit log always pair up and re-running never overwrites a prior run.
     timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-    output_path = OUTPUT_DIR / f"{record_id}_{timestamp}.json"
-    audit_path = OUTPUT_DIR / f"{record_id}_{timestamp}_audit_log.json"
+    output_path = output_dir / f"{record_id}_{timestamp}.json"
+    audit_path = output_dir / f"{record_id}_{timestamp}_audit_log.json"
 
     output_path.write_text(json.dumps(summary, indent=2, ensure_ascii=False), encoding="utf-8")
     audit_path.write_text(json.dumps(audit_log, indent=2, ensure_ascii=False), encoding="utf-8")
@@ -84,9 +89,17 @@ def main():
         help="restrict the batch to the records whose id contains one of these "
              "strings (e.g. --only SYN_02 SYN_21)",
     )
+    parser.add_argument(
+        "--output-dir", type=Path, default=DEFAULT_OUTPUT_DIR, metavar="DIR",
+        help="where to write the results (default: ./output). Give each "
+             "experimental arm its own directory: evaluate_predictions and "
+             "export_redcap_csv both keep the newest file per record, so two "
+             "arms in one directory hide each other",
+    )
     args = parser.parse_args()
 
-    OUTPUT_DIR.mkdir(exist_ok=True)
+    output_dir = args.output_dir
+    output_dir.mkdir(parents=True, exist_ok=True)
     record_paths = sorted(RECORDS_DIR.glob("*.txt"))
 
     if not record_paths:
@@ -105,7 +118,9 @@ def main():
               f"{', '.join(p.stem for p in record_paths)}", flush=True)
 
     print(f"Found {len(record_paths)} synthetic records. Running pipeline "
-          f"(EXTRACTOR_MODE={config.EXTRACTOR_MODE!r})...\n", flush=True)
+          f"(EXTRACTOR_MODE={config.EXTRACTOR_MODE!r}, "
+          f"evaluator={config.EVALUATOR_LLM_MODEL_NAME!r}) "
+          f"into {output_dir}...\n", flush=True)
 
     succeeded, failed, durations = [], [], []
     batch_start = time.time()
@@ -124,7 +139,7 @@ def main():
         print(f"[{i}/{len(record_paths)}] {record_id} ...", flush=True)
         t0 = time.time()
         try:
-            output_path = run_one(record_id, record_path)
+            output_path = run_one(record_id, record_path, output_dir)
             succeeded.append(record_id)
             elapsed = time.time() - t0
             durations.append(elapsed)
@@ -149,7 +164,7 @@ def main():
               f"min {min(durations) / 60:.1f}, max {max(durations) / 60:.1f}.", flush=True)
     if failed:
         print(f"Failed records: {', '.join(failed)}", flush=True)
-    print("\nNow run: python evaluate_predictions.py", flush=True)
+    print(f"\nNow run: python evaluate_predictions.py {output_dir}", flush=True)
 
 
 if __name__ == "__main__":
