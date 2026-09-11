@@ -14,7 +14,7 @@ answers.
 apply it. This holds for code, comments, docstrings and configuration alike.
 
 **Commit messages**: English, short subject line, no double quotes anywhere in
-the message. Body explains why, not just what.
+the message. The body states what changed, not why.
 
 **Report measurements, not impressions.** Claims about the pipeline's behaviour
 should be checked against the audit logs or the evaluation before being stated.
@@ -31,6 +31,11 @@ When something is unverified, say so.
   section options and their order. Other modules introspect it rather than
   repeating the options.
 - Deterministic post-processing lives in `criteria_rules.py`.
+- `docs/DOCUMENTAZIONE_CODICE.md` describes the code module by module,
+  `docs/RISULTATI_SPERIMENTALI.md` holds every measurement with the
+  configuration that produced it, and `docs/SCALETTA_TESI.md` the thesis
+  outline. All three are in Italian and are the source the thesis is written
+  from; keep them in step with this file.
 
 In `agentic_graph` mode the extractor returns the raw retriever chunks
 (`intermediate_steps`), not its own final answer, so it chooses search queries
@@ -66,23 +71,29 @@ behaviour or to project history. Numbers quoted in prose must match the code.
 
 ```bash
 python main.py                                    # one record, paths edited by hand
-python run_synthetic_records.py                   # all 30 records
+python run_synthetic_records.py                   # every record in the corpus
 python run_synthetic_records.py --only SYN_02     # a subset
+python run_synthetic_records.py --output-dir ./output_full_text   # its own arm
 python evaluate_predictions.py                    # score ./output against the corpus
 python compare_runs.py                            # two runs against each other
 python generate_synthetic_records.py --check      # fidelity audit, no LLM call
 python export_redcap_csv.py                       # results -> REDCap import CSV
 ```
 
-A record costs about 56 seconds on mari (2 x RTX 2080 Ti), so a full run is
-half an hour there. The same run took 715 seconds per record on the laptop,
-about six hours.
+A record costs about 265 seconds on mari (2 x RTX 2080 Ti) under the 27B
+evaluator, so a full run over the 40 records is close to three hours. The 8B
+evaluator took 56 seconds a record there, and 715 on the laptop.
 
 A partial run is not a run: `evaluate_predictions` keeps the newest file per
 record, so scoring after `--only` mixes runs. Fine for a targeted check, not a
 number to report. `export_redcap_csv` selects the same way, so an experimental
 run left in `output/` becomes the CSV that goes to REDCap. Check
 `_run_config.models.evaluator` on the newest file before either command.
+
+Give every experimental arm its own directory with `--output-dir`, and pass that
+directory to `evaluate_predictions`. `compare_runs ./output ./output_other`
+reports both arms' accuracy side by side and lists the sections where they
+differ, which is the comparison worth reading when only one component changed.
 
 The ground-truth files hold the same section keys as the pipeline's output, so
 `export_redcap_csv` converts them once they carry a name it parses. That is what

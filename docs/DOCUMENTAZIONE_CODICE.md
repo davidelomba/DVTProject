@@ -1,214 +1,704 @@
 # Documentazione del codice — DVTProject
 
-Descrizione approfondita, file per file e funzione per funzione, di tutto il codice del progetto: `config.py`, `models.py`, `rag_setup.py`, `agents.py`, `pipeline.py`, `criteria_rules.py`, `agentic_graph.py`, `aggregation.py`, `main.py`.
+Descrizione modulo per modulo del codice del progetto. Rispecchia lo stato
+attuale: i valori di configurazione citati sono quelli in `config.py`, e le
+descrizioni delle funzioni quelle del codice corrente.
 
-Nota: `agentic_graph.py` era in origine un file sperimentale standalone (`experimental_agentic_graph_pipeline.py`), non collegato al resto della pipeline. È stato successivamente integrato come quarta modalità ufficiale (`config.EXTRACTOR_MODE == "agentic_graph"`), e il SOFT GATE / le regole cross-section — prima duplicate identiche sia in `pipeline.py` sia nel file experimental — sono state estratte in `criteria_rules.py`, unica fonte condivisa da entrambi i percorsi di esecuzione.
+Le misure che giustificano molte delle scelte descritte qui stanno in
+`docs/RISULTATI_SPERIMENTALI.md`, tenuto separato di proposito: questo documento
+dice **cosa fa** il codice, quello dice **cosa è stato misurato**.
+
+## Mappa dei moduli
+
+| modulo | ruolo |
+|---|---|
+| `config.py` | costanti, prompt hint, gate, regole cross-section |
+| `models.py` | schema Pydantic delle 10 sezioni, unica fonte di verità sulle opzioni |
+| `rag_setup.py` | embedding, vector store, loader, tool di ricerca |
+| `agents.py` | i due agenti e il parsing delle risposte |
+| `criteria_rules.py` | post-processing deterministico |
+| `agentic_graph.py` | macchina a stati LangGraph della modalità agentica |
+| `pipeline.py` | orchestrazione di un referto |
+| `aggregation.py` | serializzazione del form |
+| `main.py` | entry point su un singolo referto |
+| `run_synthetic_records.py` | esecuzione batch sul corpus |
+| `generate_synthetic_records.py` | generazione e audit del corpus sintetico |
+| `evaluate_predictions.py` | valutazione contro la ground truth |
+| `compare_runs.py` | confronto tra due run, misura del rumore |
+| `export_redcap_csv.py` | conversione dei risultati in CSV per REDCap |
 
 ---
 
 ## 1. `config.py`
 
-Nessuna funzione: è un modulo di sole costanti, letto da tutti gli altri file. Va inteso come il "pannello di controllo" centrale della pipeline.
+Modulo di sole costanti, letto da tutti gli altri. È il pannello di controllo
+della pipeline: ogni esperimento fatto finora è stato una modifica a questo file.
 
-**Blocco LLM locale.** `LLM_MODEL_NAME = "llama3:8b-instruct-q4_0"` fissa il modello Ollama usato da Agent 2 (evaluator, in ogni modalità) e da Agent 1 nelle modalità `full_text`/`rag`. Il commento sopra spiega la motivazione: modelli medici specializzati (es. OpenBioLLM) sono stati scartati perché, con prompt di sistema complessi, tendevano a non rispettare i vincoli di formato (JSON, frasi trigger fisse), mentre un modello generico instruction-tuned si è dimostrato più affidabile. `LLM_TEMPERATURE = 0.0` rende l'output deterministico (stesso input → stessa risposta, niente campionamento casuale). `LLM_NUM_PREDICT = 512` è il tetto massimo di token generabili per risposta, per evitare che il modello continui a generare testo indefinitamente. `LLM_REQUEST_TIMEOUT = 180` (secondi) dà margine su hardware locale più lento prima di considerare la richiesta fallita.
+### Modelli e generazione
 
-`AGENTIC_LLM_MODEL_NAME = "llama3.1:8b-instruct-q4_0"` (aggiunta con l'integrazione della modalità a grafo): modello separato, usato **solo** dal nodo di ricerca di `agentic_graph.py`. Il commento spiega perché serve: `LLM_MODEL_NAME` (Llama 3 base) non supporta il tool-calling nativo di Ollama (Ollama risponde "model does not support tools", HTTP 400, se le si prova a legare un tool) — solo Llama 3.1+ lo supporta. Agent 2 non lega mai un tool, quindi continua a usare `LLM_MODEL_NAME` indipendentemente da `EXTRACTOR_MODE`. Prima dell'integrazione questa costante viveva come variabile locale nel file experimental; ora è parte della configurazione centrale.
+Tre ruoli, tre costanti separate, così ognuno si cambia indipendentemente:
 
-**Blocco embeddings.** `EMBEDDING_MODEL_NAME = "intfloat/multilingual-e5-small"`: modello di embedding leggero e multilingue, scelto perché i referti sono in italiano e — spiega il commento — non vengono tradotti automaticamente in inglese prima dell'elaborazione, per evitare che una traduzione automatica distorca negazioni o terminologia clinica in modo non verificabile.
+- `LLM_MODEL_NAME = "llama3:8b-instruct-q4_0"` — Agent 1 nelle modalità
+  `full_text` e `rag`.
+- `EVALUATOR_LLM_MODEL_NAME = "qwen3.6:27b"` — Agent 2, in ogni modalità.
+- `AGENTIC_LLM_MODEL_NAME = "llama3.1:8b-instruct-q4_0"` — il solo passo di
+  ricerca in modalità `agentic_graph`. Serve un modello separato perché Llama 3
+  base non supporta il tool calling nativo di Ollama, che risponde
+  `model does not support tools` se gli si lega un tool; Llama 3.1 sì.
 
-**Blocco modalità estrattore.** `EXTRACTOR_MODE = "full_text"` seleziona quale strategia di estrazione usa `pipeline.run_pipeline` (vedi sezione 5), tra tre possibili:
-- `"full_text"`: passa l'intero referto al modello (default, il più testato).
-- `"rag"`: retrieval a chunk fissi via `agents.extract_evidence`.
-- `"agentic_graph"`: Agent 1 esplora il referto autonomamente con un tool di ricerca (`agents.extract_evidence_agentic`), orchestrato come macchina a stati esplicita con **LangGraph** (`agentic_graph.py`), e con un modello separato (`AGENTIC_LLM_MODEL_NAME`) per il solo passo di ricerca, dato che `LLM_MODEL_NAME` non supporta il tool-calling.
+Parametri di generazione:
 
-`"agentic_graph"` non è ancora validata come affidabile quanto `full_text`: la qualità/copertura del retrieval può variare da un'esecuzione all'altra perché è il modello stesso a decidere autonomamente come/quanto cercare. `AGENTIC_MAX_ITERATIONS = 5` limita quante volte l'agente può richiamare il tool prima di essere forzato a rispondere. (Una precedente modalità `"agentic"` — stessa ricerca autonoma ma dentro il semplice ciclo `for` di `pipeline.py`, senza LangGraph — è stata rimossa: `"agentic_graph"` la sostituisce interamente.)
+- `LLM_TEMPERATURE = 0.0` — output deterministico.
+- `LLM_NUM_PREDICT = 1024` — tetto di token. Le due righe di risposta chiudono
+  la generazione, quindi un tetto raggiunto prima costa l'intera sezione.
+- `LLM_NUM_GPU = 999` — tutti i layer su GPU. La ripartizione automatica di
+  Ollama lasciava parte del modello su CPU con VRAM ancora libera, e un layer su
+  CPU domina il tempo per token.
+- `LLM_REASONING = False` — modalità di ragionamento. Va spenta sui modelli che
+  la possiedono: con essa attiva il modello può consumare l'intero tetto di token
+  dentro il blocco di ragionamento, che non viaggia nel corpo della risposta,
+  restituendo un `content` vuoto. `None` non invia nulla a Ollama e lascia il
+  default del modello, che è la scelta corretta per un modello privo di quella
+  modalità.
+- `LLM_REQUEST_TIMEOUT = 180` secondi.
 
-**Blocco chunking EHR.** `EHR_CHUNK_SIZE = 800` e `EHR_CHUNK_OVERLAP = 150` sono i parametri di `RecursiveCharacterTextSplitter` usati per spezzare il referto in frammenti quando serve una vector store (modalità `rag`/`agentic_graph`); `EHR_RETRIEVER_K = 5` indica quanti chunk recuperare per query; `EHR_KB_PERSIST_DIR = "./chroma_ehr_kb"` è la cartella base dove Chroma salva l'indice (poi suffissata per paziente, vedi `rag_setup.build_ehr_kb`).
+### Embedding e modalità di estrazione
 
-**Blocco chunking Brighton.** Stessa logica ma per il paper Brighton (`BRIGHTON_CHUNK_SIZE = 800`, `BRIGHTON_CHUNK_OVERLAP = 150`, `BRIGHTON_RETRIEVER_K = 5`, `BRIGHTON_KB_PERSIST_DIR = "./chroma_brighton_kb"`), knowledge base statica che non cambia tra pazienti.
+`EMBEDDING_MODEL_NAME = "intfloat/multilingual-e5-small"`: multilingue per
+necessità, dato che le query di retrieval sono in inglese e i referti in
+italiano, e i referti non vengono tradotti automaticamente per non rischiare che
+una traduzione distorca negazioni o terminologia in modo non verificabile.
 
-**`SECTION_ORDER`.** Lista ordinata delle 10 sezioni del questionario da compilare: `["A1", "A2", "A3_1", "A3_2", "B1_1", "B1_2", "B2", "C", "F", "X"]`. Determina sia l'ordine di esecuzione nel ciclo di `pipeline.run_pipeline`, sia (in modalità `agentic_graph`) l'ordine di consumo della coda `remaining_sections`.
+`EXTRACTOR_MODE = "agentic_graph"` seleziona la strategia di Agent 1:
 
-**`SECTION_KEYWORD_GATES`.** Dizionario con due voci, `A1` e `A2`. Ognuna definisce una lista di `keywords` (es. per A1: `["autops", "autoptic", "postmortem", "post-mortem", "necrosc"]`) e un `default_option_text` (la risposta negativa di quella sezione). È il "guardrail" deterministico applicato tramite `criteria_rules.apply_keyword_gate` (vedi sezione 6): se Agent 2 sceglie una risposta diversa dal default ma nel testo dell'evidenza non compare nessuna delle parole chiave, la risposta viene forzata al default, perché si presume un'allucinazione del modello (es. dedurre un'autopsia mai menzionata).
+- `"full_text"` — passa l'intero referto nel prompt. Nessun rischio di retrieval
+  sbagliato, valido finché il referto sta nella finestra di contesto.
+- `"rag"` — retrieval a `k` fisso sul referto chunkato.
+- `"agentic_graph"` — Agent 1 decide autonomamente quante volte e con quali
+  sotto-query interrogare il tool di ricerca, orchestrato come macchina a stati
+  esplicita. È la modalità di riferimento; le altre due sono le baseline.
+  `AGENTIC_MAX_ITERATIONS = 5` limita le chiamate al tool per sezione.
 
-**`SECTION_HINTS`.** Dizionario di istruzioni extra in linguaggio naturale, iniettate nel prompt di Agent 2 solo per la sezione corrispondente, per correggere errori sistematici osservati empiricamente:
-- `A1`: ribadisce che la domanda riguarda *solo* l'autopsia post-mortem, non l'imaging su paziente vivo.
-- `A2`: richiama l'attenzione sulle negazioni prima di termini chirurgici.
-- `A3_2`: impone di selezionare solo le modalità di imaging esplicitamente citate per *questo* paziente, senza farsi condizionare dall'elenco generico di modalità nel contesto Brighton. Nota storica: sono state provate diverse formulazioni aggiuntive per correggere un errore ricorrente (il modello sceglie "Compression ultrasonography" anche quando il referto descrive esplicitamente un'ecocolordoppler/Doppler), inclusa un'istruzione a distinguere le due tecniche in base alla proprietà fisica misurata (flusso vs comprimibilità). Nessuna variante testata ha risolto l'errore in modo affidabile — l'errore persiste anche con l'hint originale, quindi non sembra causato dal testo dell'hint ma da un bias del modello stesso (rinforzato dal `brighton_context`, che nomina "Compression ultrasonography" come test di prima linea) combinato a non-determinismo run-to-run. **A3_2 resta un limite noto, non risolto**, e l'hint è tornato alla formulazione originale (sopra), senza note aggiuntive.
-- `B1_1`: distingue quando selezionare "nessun sintomo riportato" (negazione esplicita) da "sconosciuto" (assenza totale di informazione).
-- `B2`: impone di selezionare solo i sintomi esplicitamente documentati per *questo* paziente (non quelli elencati genericamente nel contesto Brighton), e distingue esplicitamente "flusso assente" (reperto di imaging sul flusso venoso) da "polsi assenti" (reperto d'esame obiettivo arterioso, non equivalente).
-- `C`: fissa la soglia di default del D-dimero a 500 ng/mL quando il referto non specifica il limite del laboratorio.
-- `F`: chiarisce che la sezione richiede "Sì" solo se la diagnosi è riportata *senza* alcun dettaglio clinico di supporto, e che "dettagli clinici" va giudicato dalla presenza di un reperto specifico (anatomia, misura, risultato), non dal fatto che il nome del test/procedura compaia nel frammento di evidenza estratto da Agent 1. Chiede inoltre esplicitamente una riga aggiuntiva `DETAILS_PRESENT: yes/no` (giudizio fattuale, indipendente dalla risposta finale) — usata poi da `criteria_rules.apply_details_gate` (vedi sezione 6) per derivare meccanicamente la risposta corretta, dato che il modello si era mostrato capace di giudicare correttamente la presenza di dettagli ma non sempre di tradurla nella risposta Sì/No coerente.
-- `X`: avverte di non confondere sintomi (dolore, edema) con una diagnosi alternativa vera e propria.
+### Chunking
 
-**`CROSS_SECTION_RULES`.** Lista di regole applicate *dopo* che tutte le sezioni sono state compilate indipendentemente, tramite `criteria_rules.apply_cross_section_rules` (vedi sezione 6). Attualmente una sola regola: se in `b2` (chiave minuscola, cioè il campo del form) è presente qualunque valore diverso da `"None of the above were present or it is unknown if any of 1-4 were present"`, allora `b1_1` viene forzato al valore `"≥1 symptom or sign of DVT was reported"`. Ogni regola ha anche `audit_key` (per scrivere una nota nell'audit log) e `override_message` (testo human-readable spiegato nel log).
+`EHR_CHUNK_SIZE = 800`, `EHR_CHUNK_OVERLAP = 150`, `EHR_RETRIEVER_K = 5` per il
+referto; `BRIGHTON_CHUNK_SIZE`, `BRIGHTON_CHUNK_OVERLAP`, `BRIGHTON_RETRIEVER_K`
+con gli stessi valori per il paper. `EHR_KB_PERSIST_DIR` e
+`BRIGHTON_KB_PERSIST_DIR` sono le cartelle di Chroma.
+
+### `SECTION_ORDER`
+
+`["A1", "A2", "A3_1", "A3_2", "B1_1", "B1_2", "B2", "C", "F", "X"]`. Determina
+l'ordine di esecuzione in entrambi i percorsi, il ciclo di `pipeline.py` e la
+coda del grafo.
+
+### `SECTION_GATES_ENABLED`
+
+Tre interruttori per il post-processing deterministico, così un'ablazione non
+richiede modifiche al codice:
+
+```python
+{"keyword": True, "details": False, "absent_pulses": True}
+```
+
+`details` è spento: la sua mappatura tratta l'assenza di dettagli come una
+conclusione nuda, il che è falso quando nessuna diagnosi è stata riportata.
+
+Le regole cross-section sono deliberatamente **fuori** da questi interruttori e
+si applicano sempre: codificano la struttura del modulo, non una debolezza del
+modello.
+
+### `SECTION_KEYWORD_GATES`
+
+Tre voci, `A1`, `A2` e `X`. Ognuna ha una lista di `keywords` e un
+`default_option_text`, cioè la risposta negativa della sezione. Se Agent 2 dà una
+risposta che le parole chiave sono autorizzate a controllare e nessuna di quelle
+parole compare nell'evidenza, la risposta viene riportata al default.
+
+Il campo opzionale `gated_options` nomina le risposte su cui le parole chiave
+hanno voce. `A2` lo usa per elencare la sola opzione "thrombectomy": senza,
+l'opzione "Other procedure done that confirmed presence of DVT" veniva respinta
+su ogni referto perché non conteneva parole di trombectomia.
+
+Il gate è **unidirezionale per costruzione**: può solo rimuovere un positivo non
+supportato, mai aggiungerne uno mancante. La presenza di una parola chiave non
+implica una risposta positiva, dato che l'evidenza potrebbe negare la procedura.
+
+`X` elenca le condizioni concorrenti della Tabella 2 del paper. La maggior parte
+condivide una radice greco-latina tra italiano e inglese (`cellulit-`,
+`vasculit-`, `cirrosi`/`cirrhosis`); dove non accade sono elencati entrambi i
+termini.
+
+### `SECTION_HINTS` e i suoi interruttori
+
+`SECTION_HINTS` associa a una sezione un testo aggiunto al prompt di Agent 2.
+Ogni hint affronta un punto in cui il valutatore legge la domanda diversamente
+dal questionario. Le sezioni assenti dal dizionario vengono risposte con le sole
+opzioni e il contesto della linea guida.
+
+Due interruttori permettono l'ablazione senza toccare il codice:
+
+- `SECTION_HINTS_ENABLED = True` — interruttore generale. Nota che l'hint di F
+  chiede la riga `DETAILS_PRESENT` che il details gate legge, quindi spegnere
+  gli hint disattiva di fatto anche quel gate.
+- `SECTION_HINTS_DISABLED = {"B2"}` — sezioni sospese individualmente. B2 è
+  elencata perché il suo hint abbassa l'accuratezza di B2; il testo è conservato
+  così l'ablazione è ripetibile.
+
+`section_hint(section_key)` è l'unico accesso e rispetta entrambi gli
+interruttori, restituendo stringa vuota quando l'hint non va inviato.
+
+Contenuto attuale, in sintesi:
+
+| sezione | cosa dice |
+|---|---|
+| A1 | contano solo i reperti post-mortem; l'imaging su vivente non è un'autopsia |
+| A2 | attenzione estrema alle negazioni prima di termini chirurgici |
+| A3_1 | come leggere l'esito dell'imaging |
+| A3_2 | un esame che non è nessuna delle quattro modalità nominate è "Other" |
+| B1_1 | la differenza tra seconda e terza opzione riguarda ciò che sai del paziente, non del documento: l'assenza di un referto non è un referto di assenza |
+| B2 | *disattivato* |
+| C | usa l'intervallo del laboratorio se il referto lo indica, altrimenti 500 ng/mL |
+| F | la sezione richiede una diagnosi effettivamente riportata; chiede inoltre la riga `DETAILS_PRESENT: yes/no` |
+| X | i sintomi non sono diagnosi, e un fattore di rischio non è una spiegazione alternativa |
+
+### `CROSS_SECTION_RULES`
+
+Tre regole applicate dopo che ogni sezione è stata risposta indipendentemente.
+Ognuna scatta in uno di due modi:
+
+- `none_option` — scatta quando la sezione sorgente contiene qualunque valore
+  diverso da quell'opzione. Un sintomo in B2 implica che B1.1 sia positiva.
+- `trigger_value` — scatta su corrispondenza esatta. A3.1 che riporta nessun
+  imaging azzera A3.2; A3.1 che riporta imaging non confermativo azzera A3.2
+  anch'essa, perché A3.2 registra solo gli studi che **hanno confermato** la DVT.
+
+In entrambi i casi la sezione bersaglio viene sovrascritta con `forced_value`.
+Ogni regola porta anche `audit_key` e `override_message`, per lasciare traccia
+leggibile nell'audit log.
 
 ---
 
 ## 2. `models.py`
 
-Definisce gli schemi Pydantic che vincolano l'output di Agent 2. Non ci sono funzioni "attive": ogni classe è uno schema dichiarativo.
+Definisce gli schemi Pydantic che vincolano l'output di Agent 2, ed è la fonte
+unica delle opzioni e del loro ordine: gli altri moduli lo introspezionano invece
+di ripetere le stringhe.
 
-**`A1_Autopsy`, `A2_SurgicalProcedure`, `A3_1_ImagingOutcome`, `C_DDimer`, `F_ReportedBySpecialist`, `X_AlternativeDiagnosis`** seguono tutte lo stesso pattern: un unico campo `answer: Literal[opzione1, opzione2, ...]`, con `Field(description=...)` che documenta a quale domanda del questionario corrisponde. `Literal` obbliga Pydantic a rifiutare qualunque valore che non sia *esattamente* una delle stringhe elencate — è questo vincolo che rende sicuro il mapping numero→testo fatto in `agents._match_option`.
+`A1_Autopsy`, `A2_SurgicalProcedure`, `A3_1_ImagingOutcome`, `C_DDimer`,
+`F_ReportedBySpecialist`, `X_AlternativeDiagnosis` seguono lo stesso schema: un
+unico campo `answer: Literal[...]`. `Literal` fa rifiutare a Pydantic qualunque
+valore che non sia esattamente una delle stringhe elencate, ed è questo vincolo a
+rendere sicuro il mapping numero → testo di `agents._match_option`.
 
-**`A3_2_ImagingStudies` e `B1_2_DVTType`** sono a scelta multipla: il campo (`studies` o `types`) è `List[Literal[...]]` con `default_factory=list` (lista vuota di default se nessuna opzione è selezionata, invece di `None`).
+`A3_2_ImagingStudies` e `B1_2_DVTType` sono a scelta multipla: `List[Literal[...]]`
+con `default_factory=list`, quindi una lista vuota è una risposta valida.
+Nessuna delle due ha un'opzione "nessuna delle precedenti", perché il
+questionario cartaceo non la prevede.
 
-**`B2_NewSymptoms`** è il caso più complesso: campo `symptoms: List[Literal[...]]` con 5 opzioni, di cui l'ultima è `"None of the above were present or it is unknown if any of 1-4 were present"`. Il metodo `none_is_exclusive`, decorato con `@model_validator(mode="after")`, viene eseguito automaticamente da Pydantic dopo la costruzione dell'oggetto: controlla se l'opzione "nessuno dei precedenti" è presente insieme ad altre nella lista (`len(self.symptoms) > 1`) e, se sì, solleva `ValueError` — impedendo uno stato logicamente incoerente (es. "calf pain" + "nessuno dei precedenti" insieme).
+`B2_NewSymptoms` ha cinque opzioni, l'ultima delle quali è la catch-all
+negativa, più un `@model_validator(mode="after")` chiamato `none_is_exclusive`
+che rifiuta quella opzione insieme a un sintomo reale. Girando dopo ogni
+costruzione, rivalida anche le istanze che `criteria_rules` e `agents`
+ricostruiscono, non solo la prima risposta del modello.
 
-**`DVT_CriteriaForm`** è il contenitore finale: un campo obbligatorio `record_id: str` più un campo opzionale (`... | None = None`) per ciascuna delle 10 sezioni, tipizzato con la classe Pydantic corrispondente. È l'oggetto restituito da `pipeline.run_pipeline`, indipendentemente da quale `EXTRACTOR_MODE` sia stato usato.
+`F_ReportedBySpecialist` merita attenzione per l'inversione: `"Yes"` significa
+riportata **senza** dettagli, `"No"` significa che i dettagli c'erano **oppure**
+che la diagnosi non è stata riportata affatto. È la convenzione su cui poggia
+`criteria_rules.apply_details_gate`.
 
-**`SECTION_MODELS`** è il dizionario `{"A1": A1_Autopsy, "A2": A2_SurgicalProcedure, ...}` che permette di risalire dalla chiave testuale della sezione (es. `"A3_1"`) alla classe Pydantic da istanziare, senza bisogno di un lungo `if/elif`.
+`DVT_CriteriaForm` è il contenitore: `record_id` obbligatorio più dieci campi
+opzionali, uno per sezione. Una sezione che la pipeline non è riuscita a
+compilare resta `None` invece di bloccare l'intero form.
+
+`SECTION_MODELS` mappa la chiave testuale della sezione alla classe Pydantic.
 
 ---
 
 ## 3. `rag_setup.py`
 
-Costruisce le due knowledge base vettoriali (Chroma) e i loader dei testi sorgente.
+Prepara il lato retrieval: modello di embedding, le due vector store, i loader e
+il tool che l'estrattore agentico chiama.
 
-**`get_embeddings()`**: restituisce un'istanza di `HuggingFaceEmbeddings(model_name=config.EMBEDDING_MODEL_NAME, encode_kwargs={"prompt": "passage: "}, query_encode_kwargs={"prompt": "query: "})`. Il modello `intfloat/multilingual-e5-small` richiede, per un uso corretto, che i testi indicizzati siano prefissati con `"passage: "` e le query con `"query: "` — senza questi prefissi la qualità del ranking per similarità peggiora. Funzione isolata così che il modello di embedding venga istanziato una sola volta e passato esplicitamente alle altre funzioni, invece di essere ricreato ogni volta.
+**`get_embeddings()`** restituisce `HuggingFaceEmbeddings` configurato con i
+prefissi di ruolo che `multilingual-e5-small` richiede: `"passage: "` per i
+chunk indicizzati (`encode_kwargs`, usato da `embed_documents`) e `"query: "` per
+le query (`query_encode_kwargs`, usato da `embed_query`). Senza i prefissi la
+scheda del modello riporta un retrieval degradato.
 
-**`build_brighton_kb(brighton_pdf_text, embeddings=None, force_rebuild=False)`**: se `embeddings` non è passato, lo crea con `get_embeddings()`. Controlla se la cartella `config.BRIGHTON_KB_PERSIST_DIR` esiste già sul disco e `force_rebuild` è `False`: in tal caso ricarica l'indice esistente con `Chroma(persist_directory=..., embedding_function=embeddings)` invece di ricalcolare gli embedding (risparmio di tempo, dato che il paper Brighton non cambia mai). Altrimenti crea uno `splitter = RecursiveCharacterTextSplitter(chunk_size=config.BRIGHTON_CHUNK_SIZE, chunk_overlap=config.BRIGHTON_CHUNK_OVERLAP)`, lo usa per spezzare il testo in `chunks`, e costruisce l'indice da zero con `Chroma.from_texts(...)`, allegando a ogni chunk il metadato `{"source": "brighton_dvt_synonyms"}`.
+**`build_brighton_kb(...)`** costruisce o ricarica l'indice del paper. Il
+documento è identico per ogni paziente, quindi un indice già su disco viene
+ricaricato invece di essere ricalcolato, a meno di `force_rebuild`.
 
-**`build_ehr_kb(patient_record_text, patient_id, embeddings=None)`**: stessa logica di chunking ma per il referto del singolo paziente, con `config.EHR_CHUNK_SIZE`/`EHR_CHUNK_OVERLAP`. La cartella di persistenza è `f"{config.EHR_KB_PERSIST_DIR}_{patient_id}"` — suffissata per paziente, così run su pazienti diversi non si sovrascrivono a vicenda. Prima di ricreare l'indice, controlla `if os.path.isdir(persist_dir): shutil.rmtree(persist_dir)` — cancella esplicitamente la cartella se esiste già: il commento spiega che senza questa cancellazione, rilanciare la pipeline sullo stesso `patient_id` (tipico durante il debug) accumulerebbe chunk duplicati nello stesso indice ad ogni run, diluendo silenziosamente la qualità del retrieval nel tempo.
+**`build_ehr_kb(...)`** chunka e indicizza il referto di un singolo paziente. La
+cartella di persistenza è suffissata con `patient_id`, così due referti non ne
+condividono una, e viene **cancellata prima di ricostruire**: senza,
+`Chroma.from_texts` appenderebbe a quanto già persistito e rilanciare la pipeline
+sullo stesso identificativo accumulerebbe chunk duplicati, diluendo il retrieval
+nel tempo.
 
-**`make_ehr_retriever_tool(ehr_vectorstore)`**: crea `ehr_retriever = ehr_vectorstore.as_retriever(search_kwargs={"k": config.EHR_RETRIEVER_K})` e lo avvolge con `create_retriever_tool(ehr_retriever, "search_patient_record", ...)`, con una descrizione che copre esplicitamente tutti e 10 i domini di criteri del questionario (non solo "sintomi, referti chirurgici, date e risultati di laboratorio" come nella prima versione) — restituendo un oggetto `Tool` di LangChain, utilizzabile da un agente tool-calling. Usato quando `EXTRACTOR_MODE == "agentic_graph"` (chiamato in `pipeline.py`, il tool risultante è poi passato al nodo di ricerca di `agentic_graph.py`). Il docstring nota che richiede il pacchetto base `langchain` (non solo i sotto-pacchetti `langchain-core`/`community`/`ollama`).
+**`make_ehr_retriever_tool(...)`** avvolge il retriever come tool
+`search_patient_record`. La descrizione nomina esplicitamente tutti i domini
+clinici toccati dai dieci criteri, perché la stessa descrizione viene riusata
+invariata su ogni sezione e una più stretta rischia che il modello non pensi a
+cercare un dominio che non vede nominato.
 
-**`load_brighton_pdf_text(pdf_path)`**: apre il PDF con `PdfReader(pdf_path)` e concatena `page.extract_text() or ""` per ogni pagina, unendo tutto con `"\n".join(...)`. L'`or ""` gestisce il caso in cui `extract_text()` restituisca `None` per una pagina non testuale.
+**`load_brighton_pdf_text(...)`** estrae il testo dal PDF e lo tronca
+all'intestazione della bibliografia. La lista di riferimenti è circa l'ultimo 40%
+del paper ed è puro rumore: i suoi chunk vengono indicizzati e recuperati come
+gli altri e arrivano ad Agent 2 come se fossero terminologia di riferimento.
+Troncare prima del chunking li rimuove in blocco, comprese le voci spezzate su
+più righe che un filtro riga per riga non intercetterebbe. Un paper senza quella
+intestazione restituisce il testo intero, quindi si perde la pulizia ma non il
+contenuto.
 
-**`load_ehr_text(txt_path)`**: apertura file di testo semplice in lettura UTF-8, restituisce il contenuto intero come stringa. Il docstring lascia una nota per sé stessi: se in futuro i referti arriveranno in PDF o DOCX, andrà aggiunto un loader equivalente qui (riusando l'approccio di `load_brighton_pdf_text` per PDF, o `python-docx` per Word).
+**`clean_brighton_context(...)`** è la seconda linea di difesa: filtra dai chunk
+recuperati le righe bibliografiche superstiti (marcatori di citazione seguiti da
+un nome, URL, DOI, citazioni di volume). Se il filtro rimuoverebbe tutto,
+restituisce l'originale, così un chunk fatto di soli riferimenti produce
+comunque qualcosa e non un contesto vuoto.
+
+**`load_ehr_text(...)`** legge il referto da un `.txt` in UTF-8.
 
 ---
 
 ## 4. `agents.py`
 
-Il cuore della logica dei due agenti. Contiene sia le funzioni di estrazione (Agent 1) sia quella di valutazione (Agent 2).
+I due agenti e tutto il parsing delle risposte.
 
-### 4.1 Setup comune
+### 4.1 Costruzione dei modelli
 
-**`build_llm(temperature=None)`**: costruisce e restituisce un `ChatOllama` con `model=config.LLM_MODEL_NAME`, temperatura di default `config.LLM_TEMPERATURE` (sovrascrivibile passando un valore esplicito), `num_predict=config.LLM_NUM_PREDICT` e `request_timeout=config.LLM_REQUEST_TIMEOUT`. È la factory usata per Agent 2 in ogni modalità, e per Agent 1 nelle modalità `full_text`/`rag`. In modalità `agentic_graph`, Agent 1 usa invece `agentic_graph.build_agentic_llm()` (modello diverso, tool-capable).
+**`build_llm(model_name=None, temperature=None, num_predict=None)`** è la
+factory unica per ogni modello non tool-calling del progetto. Legge i default da
+`config.py` e passa `num_gpu`; il parametro `reasoning` viene inviato **solo**
+quando `config.LLM_REASONING` non è `None`, così un modello privo di modalità di
+ragionamento non lo riceve affatto.
 
-Nota storica: il modulo conteneva anche `test_structured_output_support(llm, sample_model)`, una funzione diagnostica (mai usata dalla pipeline principale) che verificava a runtime se `llm.with_structured_output(sample_model)` — l'API nativa di LangChain per output strutturato — fosse affidabile con il modello scelto. È stata rimossa in quanto codice morto, dato che il suo unico scopo era stato quello di guidare la decisione di design già documentata nel docstring del modulo (righe 1-9): il progetto non usa `with_structured_output` direttamente, preferendo il parsing manuale di `FINAL_OPTION`/`FINAL_ANSWER` fatto in `evaluate_section`.
+### 4.2 Agent 1, l'estrattore
 
-### 4.2 Agent 1 — Extractor
+**`EXTRACTOR_SYSTEM_PROMPT`** istruisce il modello a essere un copiatore e non un
+commentatore: copiare frammenti letterali, riconoscere che il referto può essere
+in italiano senza tradurlo, considerare rilevante solo ciò che riguarda lo stesso
+test o evento specifico chiesto dal criterio, e rispondere esattamente
+`NO RELEVANT EVIDENCE FOUND.` se nulla è pertinente. Il prompt include un
+esempio corretto e uno sbagliato.
 
-**`EXTRACTOR_SYSTEM_PROMPT`**: prompt di sistema condiviso da tutte e tre le funzioni di estrazione. Istruisce il modello a estrarre *solo* frammenti letterali dal referto (niente parafrasi, niente introduzioni/conclusioni), a riconoscere che il referto può essere in italiano, a preservare la lingua originale del frammento, e a rispondere esattamente con la stringa `"NO RELEVANT EVIDENCE FOUND."` se nulla è pertinente.
+**`extract_evidence(llm, ehr_vectorstore, criterion_query)`** — modalità `rag`.
+Retrieval a `k` fisso, poi il modello copia i frammenti rilevanti dai chunk
+recuperati. Se il retrieval non restituisce nulla, salta la chiamata al modello e
+ritorna direttamente la stringa di fallback.
 
-**`extract_evidence(llm, ehr_vectorstore, criterion_query)`** (modalità `rag`): crea un retriever con `k=config.EHR_RETRIEVER_K`, esegue `retriever.invoke(criterion_query)` per ottenere i documenti più simili, concatena i loro `page_content` con separatore `"\n---\n"` in `context`. Se `context` è vuoto dopo strip, ritorna direttamente una stringa di fallback senza nemmeno interpellare il modello. Altrimenti costruisce i messaggi (`system` = `EXTRACTOR_SYSTEM_PROMPT`, `human` = criterio + frammenti recuperati) e ritorna `response.content` dell'invocazione LLM. Non usata dalla pipeline di default (`EXTRACTOR_MODE = "full_text"`), pensata per referti troppo lunghi da passare per intero.
+**`extract_evidence_full_text(llm, full_ehr_text, criterion_query)`** — modalità
+`full_text`. Stessa struttura senza retrieval: il referto intero va nel prompt.
 
-**`extract_evidence_full_text(llm, full_ehr_text, criterion_query)`** (modalità default): stessa struttura ma senza alcun retrieval — il messaggio "human" contiene l'intero `full_ehr_text` concatenato al criterio. Più semplice e priva del rischio di "retrieval miss" (chunk sbagliato recuperato), finché il referto sta nella finestra di contesto del modello.
+**`AGENTIC_EXTRACTOR_SYSTEM_PROMPT`** estende il prompt condiviso con due blocchi:
 
-**`AGENTIC_EXTRACTOR_SYSTEM_PROMPT`**: è `EXTRACTOR_SYSTEM_PROMPT` con in coda due blocchi di istruzioni aggiuntivi, introdotti in momenti diversi per correggere bug reali osservati:
-1. **TOOL USE**: dice esplicitamente al modello che il referto *non* è nel messaggio, che esiste un tool chiamato `search_patient_record`, che è *obbligatorio* chiamarlo almeno una volta, e che non può rispondere `"NO RELEVANT EVIDENCE FOUND."` senza averlo prima interrogato. Motivo: senza questa istruzione, il modello rispondeva quella stringa di fallback su *tutte* le 10 sezioni senza mai invocare il tool.
-2. **TRANSCRIPTION RULE**: vieta esplicitamente di parafrasare, tradurre o riassumere ciò che il tool restituisce, imponendo di ricopiare i frammenti letteralmente. Motivo: in test reali, senza questa regola, la risposta finale dell'agente dopo l'uso del tool tendeva a "raccontare" ciò che aveva trovato invece di citarlo, corrompendo le risposte a valle (es. una diagnosi "No" trasformata in "Yes", o un'ecocolordoppler etichettata erroneamente come "compression ultrasonography").
+1. **TOOL USE** — dice che il referto non è nella conversazione e che è
+   obbligatorio chiamare `search_patient_record` almeno una volta prima di
+   rispondere. Senza questa istruzione il modello rispondeva la stringa di
+   fallback su tutte e dieci le sezioni senza mai cercare.
+2. **TRANSCRIPTION RULE** — governa il turno finale dell'agente, che
+   `extract_evidence_agentic` non legge: la funzione restituisce l'output grezzo
+   del tool. Il paragrafo viene quindi generato e scartato, ed è annotato come
+   tale nel codice.
 
-Usata dal nodo di ricerca di `agentic_graph.py` (modalità `agentic_graph`) tramite `extract_evidence_agentic`, sotto.
+**`extract_evidence_agentic(...)`** costruisce un `AgentExecutor` con
+`return_intermediate_steps=True` e `early_stopping_method="force"`. L'evidenza
+restituita è l'unione **deduplicata dei chunk grezzi restituiti da ogni chiamata
+al tool**, non il turno finale dell'agente: quel turno tende a parafrasare o
+tradurre, e una citazione corrotta fa ragionare il valutatore sul testo
+sbagliato. La copertura dipende quindi dalle decisioni di ricerca dell'agente:
+una sezione dove sceglie una query povera, o non cerca affatto, produce
+`NO_EVIDENCE`.
 
-**`extract_evidence_agentic(llm, ehr_tool, ehr_vectorstore, criterion_query, max_iterations=3)`** (usata in modalità `agentic_graph`, chiamata dal nodo di ricerca di `agentic_graph.py`): costruisce un `ChatPromptTemplate` a tre messaggi — `system` (`AGENTIC_EXTRACTOR_SYSTEM_PROMPT`), `human` (placeholder `{input}`), `placeholder` (`{agent_scratchpad}`, dove LangChain inserisce la cronologia delle chiamate al tool). Crea `agent = create_tool_calling_agent(llm, [ehr_tool], prompt)` e lo avvolge in un `AgentExecutor` con `max_iterations=max_iterations`, `early_stopping_method="force"` (se il limite di iterazioni viene raggiunto, l'agente è forzato a produrre comunque una risposta invece di continuare a chiamare il tool) e `return_intermediate_steps=True`. Invoca l'executor passando come `input` sia il criterio da investigare sia un promemoria esplicito di usare il tool prima di rispondere.
+### 4.3 Agent 2, il valutatore
 
-A differenza della prima versione, **non** ritorna più `result["output"]` (il testo finale, in linguaggio naturale, prodotto dall'agente) — questo per un bug osservato ripetutamente su più run reali: l'agente a volte si fermava dopo che una ricerca aveva recuperato un chunk irrilevante per quella sezione (tipicamente accadeva sulla sezione B2, dove il chunk con i sintomi soggettivi del paziente veniva scartato a favore del chunk con D-dimero/ecocolordoppler, pur essendo entrambi recuperabili dallo stesso vector store). L'evidenza restituita ora è invece l'unione di due fonti grezze:
-1. `agent_chunks`: il testo grezzo effettivamente restituito da ogni chiamata al tool durante la ricerca autonoma, letto da `result["intermediate_steps"]` (una lista di coppie `(azione, osservazione)`) — non il riassunto finale dell'agente, che poteva parafrasare o scartare informazioni.
-2. `floor_chunks`: una retrieval deterministica a `top_k` fisso (`ehr_vectorstore.as_retriever(search_kwargs={"k": config.EHR_RETRIEVER_K}).invoke(criterion_query)`) sulla query di sezione — la stessa identica ricerca che farebbe la modalità `rag`, eseguita sempre e comunque, indipendentemente da cosa l'agente abbia deciso di cercare.
+**`EVALUATOR_SYSTEM_PROMPT`** chiede di determinare la risposta dalla sola
+evidenza, di consultare i sinonimi Brighton, e soprattutto di prestare estrema
+attenzione alle negazioni in entrambe le direzioni: non trattare come presente
+ciò che è esplicitamente negato, e non assumere assente ciò che semplicemente non
+è menzionato. Un secondo paragrafo tratta le domande su un metodo specifico:
+vieta di inferire che quel metodo sia stato eseguito solo perché la DVT è stata
+confermata da un metodo diverso.
 
-Le due liste vengono unite (`floor_chunks + agent_chunks`) e deduplicate per corrispondenza esatta di stringa, poi ricongiunte con `"\n---\n"`. In questo modo il retrieval a query fissa fa da "pavimento" di sicurezza: anche se in un run l'agente si ferma dopo una ricerca povera, l'evidenza include comunque il chunk rilevante che la ricerca deterministica avrebbe comunque trovato — la ricerca autonoma dell'agente può solo aggiungere copertura extra rispetto a quel minimo, mai toglierla.
+**`_get_field_info(section_model)`** introspeziona lo schema e restituisce
+`(field_name, options, is_multi_select)`. È ciò che rende `evaluate_section`
+generica per tutte e dieci le sezioni senza un ramo per ciascuna.
 
-### 4.3 Agent 2 — Evaluator
+**`_build_reasoning_prompt(...)`** compone il prompt. Le opzioni sono numerate e
+il modello risponde **due volte**: il testo dell'opzione su `FINAL_OPTION` e il
+suo numero su `FINAL_ANSWER`. Due risposte invece di una rendono visibile un
+disaccordo, dato che il modello a volte nomina un'opzione e scrive il numero di
+un'altra. Il prompt chiede inoltre esplicitamente che ogni opzione elencata sia
+tracciabile a una frase del ragionamento, e non inclusa per default o per
+margine di sicurezza.
 
-**`EVALUATOR_SYSTEM_PROMPT`**: istruisce il modello a determinare la risposta corretta basandosi solo sull'evidenza data, a consultare i sinonimi Brighton quando rilevanti, e soprattutto a prestare "estrema attenzione" alle negazioni (non trattare come presente qualcosa esplicitamente negato; non assumere assente qualcosa semplicemente non menzionato). Un secondo paragrafo tratta il caso specifico delle domande su UN metodo preciso (autopsia, un tipo di intervento chirurgico, una modalità di imaging): vieta di inferire che quel metodo specifico sia stato eseguito solo perché la DVT è stata confermata con un metodo *diverso* menzionato altrove nell'evidenza.
+Per le sezioni multi-scelta prive di un'opzione "nessuna delle precedenti", cioè
+A3.2 e B1.2, il prompt aggiunge come dire che nulla si applica: `FINAL_OPTION:
+none` e `FINAL_ANSWER: none`. Senza questa istruzione, non avendo modo di
+esprimere una risposta vuota, il modello selezionava tutte le opzioni. La cosa è
+esplicitata solo dove serve, così B2 continua a usare la propria opzione 5.
 
-**`_get_field_info(section_model)`**: dato uno schema Pydantic di sezione, recupera il nome del suo unico campo (`field_name = next(iter(section_model.model_fields.keys()))`) e la relativa annotazione di tipo. Se l'annotazione è una `list` (controllato con `get_origin(annotation) is list`), estrae il tipo `Literal` interno con `get_args(annotation)[0]` e ne ricava le opzioni con `get_args(inner)`, segnalando `is_multi_select=True`. Altrimenti tratta l'annotazione come `Literal` diretto e ritorna `is_multi_select=False`. Questa funzione è ciò che permette a `evaluate_section` di essere generica per tutte le 10 sezioni senza bisogno di un `if` per ciascuna.
+**`_extract_final_answer_line`** e **`_extract_labeled_line`** leggono le due
+righe. Entrambe prendono l'**ultima** occorrenza, non la prima, perché il modello
+a volte ripete l'istruzione prima di rispondere. La differenza sta nel
+fallimento: `FINAL_ANSWER` mancante solleva un'eccezione, `FINAL_OPTION` mancante
+restituisce `None` e il chiamante rinuncia al solo controllo incrociato.
 
-**`_build_reasoning_prompt(evidence_text, brighton_context, options, multi_select, extra_instructions="")`**: costruisce il prompt testuale per Agent 2. Le opzioni vengono numerate (`f"{i}. {opt}"` per ognuna, a partire da 1) — scelta motivata dal commento: far rispondere il modello con un *numero* invece che con il testo dell'opzione evita fuzzy-match sbagliati tra opzioni quasi identiche salvo una negazione. Il prompt include, in ordine: l'evidenza, il contesto Brighton (se presente), le istruzioni extra per-sezione (se presenti), il blocco delle opzioni numerate, e infine l'istruzione di formato finale, ora composta da **due** righe anziché una sola: `FINAL_OPTION: <testo opzione>` (il modello deve ricopiare *verbatim* il testo esatto dell'opzione scelta, non una parafrasi) seguita da `FINAL_ANSWER: <numero>` (il numero di quella stessa opzione) — entrambe con la variante multi-select a elementi separati da `;`. La riga `FINAL_OPTION` è stata aggiunta dopo aver osservato, su un caso reale (sezione A3_2), che Agent 2 poteva ragionare correttamente in prosa (identificando l'esame giusto) ma poi scrivere su `FINAL_ANSWER` il numero di un'opzione diversa — un errore di mapping ragionamento→indice, non di comprensione dell'evidenza. Chiedere anche il testo copiato letteralmente fornisce a `evaluate_section` un secondo segnale, derivato indipendentemente, con cui verificare il numero.
+**`_match_option(raw_value, valid_options, cutoff=0.75)`** mappa un frammento di
+risposta su un'opzione valida, in tre passi. Primo, l'indice numerico, che è ciò
+che il prompt chiede. Secondo, il testo dell'opzione, confrontato dopo aver tolto
+la punteggiatura finale da entrambi i lati, restituendo comunque la forma esatta
+dello schema. Terzo, un fuzzy match con soglia, **stampato esplicitamente** come
+avviso: un fuzzy match silenzioso rischia di atterrare sull'opzione opposta per
+negazione, dato che "confirmed DVT" e "didn't confirm DVT" sono testualmente
+vicine e semanticamente opposte.
 
-**`_extract_final_answer_line(text)`**: usa una regex (`r"FINAL_ANSWER:\s*(.+)"`) con `re.findall` per trovare tutte le occorrenze di quella riga nel testo di risposta, e prende specificamente *l'ultima* (`matches[-1]`) — non la prima — perché il commento nota che il modello a volte ripete/cita l'istruzione stessa prima di rispondere davvero. Se non trova alcuna occorrenza, solleva `ValueError`.
+**`evaluate_section(...)`** orchestra Agent 2 per una sezione, identica in tutte
+le modalità. Ritorna una tripla `(istanza, reasoning_text, conflict)`.
 
-**`_extract_labeled_line(text, label)`**: generalizzazione di `_extract_final_answer_line` a qualunque etichetta (usata per `"FINAL_OPTION"`), con una differenza importante: se l'etichetta non compare nel testo, ritorna `None` invece di sollevare un'eccezione. A differenza di `FINAL_ANSWER`, `FINAL_OPTION` è un controllo incrociato *best-effort*, non un requisito rigido — se il modello lo omette nonostante l'istruzione, il parsing deve comunque procedere basandosi solo sul numero, invece di far fallire l'intera valutazione.
+`conflict` è `None` quando le due righe concordano, altrimenti un dizionario con
+un campo `kind` che nomina il tipo di disaccordo:
 
-**`_match_option(raw_value, valid_options, cutoff=0.75)`**: converte il valore grezzo estratto in una delle stringhe valide dello schema. Prima pulisce la stringa (`strip`, rimozione di `-` iniziali e `.`/`;` finali), poi rimuove anche un eventuale prefisso numerico in stile lista (`re.sub(r"^\d+[.)]\s*", "", cleaned)`, es. `"1. "`) che il modello a volte ricopia insieme al testo dell'opzione su `FINAL_OPTION`. Se il risultato è numerico (`isdigit()`), lo interpreta come indice 1-based: se nel range valido ritorna `valid_options[idx - 1]`, altrimenti solleva `ValueError` con messaggio esplicito sull'indice fuori range. Se non è numerico, prova prima un match esatto diretto, poi un secondo confronto in cui la punteggiatura finale (`.`) viene rimossa da *entrambi* i lati (candidato ricopiato e ogni opzione valida) prima del confronto — così una differenza di solo punto finale (es. il modello scrive l'opzione senza il punto conclusivo) non fa fallire il match — restituendo comunque la forma canonica (con punteggiatura) dello schema. Se nessuno di questi passi funziona, tenta un fuzzy match con `difflib.get_close_matches` (soglia di similarità `cutoff=0.75`), stampando un avviso esplicito perché un fuzzy match silenzioso rischierebbe di far atterrare la risposta sull'opzione opposta per negazione. Se nessuna via funziona, solleva `ValueError` finale.
+- `text_vs_number` — le due righe indicano opzioni diverse. **Vince il numero**;
+  il testo è un controllo incrociato, non una fonte che possa da sola
+  invalidare una risposta.
+- `none_vs_text` — `FINAL_ANSWER` dice che nulla si applica mentre
+  `FINAL_OPTION` elenca opzioni. Vince la risposta vuota.
+- `none_with_options` — la stessa riga contiene sia "none" sia opzioni nominate.
+  Le opzioni nominate vengono tenute.
 
-**`evaluate_section(llm, section_model, evidence_text, brighton_context="", extra_instructions="", max_retries=2)`**: orchestratore di Agent 2 per una singola sezione, usato identicamente da tutte e tre le modalità (chiamato direttamente dal ciclo di `pipeline.py` per `full_text`/`rag`, e dal nodo `answer_criterion` di `agentic_graph.py` per `agentic_graph`). Chiama `_get_field_info` per ottenere nome campo/opzioni/multi-select, poi `_build_reasoning_prompt` per costruire il prompt iniziale. Entra in un ciclo `for attempt in range(max_retries + 1)` (quindi fino a 3 tentativi totali): invoca l'LLM con `system=EVALUATOR_SYSTEM_PROMPT` e `human=prompt`, estrae `raw_final` (riga `FINAL_ANSWER`, obbligatoria) e `raw_option_text` (riga `FINAL_OPTION`, opzionale, via `_extract_labeled_line`), poi mappa `raw_final` a un'opzione valida con `_match_option` (gestendo separatamente il caso multi-select — ogni elemento separato da `;` mappato singolarmente, poi deduplicato preservando l'ordine con l'idioma `seen = set(); [m for m in matched if not (m in seen or seen.add(m))]`).
+Il modello a volte seleziona "None of the above" insieme a reperti reali, che il
+validatore di B2 rifiuta: la funzione ripara scartando l'opzione catch-all e
+tenendo i reperti, perché lasciar passare l'errore costerebbe l'intera sezione
+una volta esauriti i tentativi.
 
-Se `raw_option_text` è presente, viene anch'esso mappato con `_match_option` e confrontato con il risultato ottenuto dal numero: in caso di disaccordo, vince il testo copiato letteralmente (motivo: è una copia diretta, meno soggetta a errore di un salto a un indice) e viene stampato un warning esplicito con entrambi i valori grezzi, per restare verificabile a posteriori. Se il matching del testo fallisce (es. non corrisponde a nessuna opzione valida) si ignora silenziosamente e resta valido il risultato derivato dal numero — `FINAL_OPTION` è un rinforzo, non una fonte che può da sola invalidare una risposta altrimenti valida.
-
-Se tutto va a buon fine, ritorna `(section_model(**{field_name: matched}), content)` — istanzia lo schema Pydantic (che valida di nuovo il valore) insieme al testo di ragionamento completo del modello. Se il parsing/matching della riga `FINAL_ANSWER` fallisce, cattura l'eccezione, la salva in `last_error`, e **aggiunge** al prompt (non lo sostituisce) un paragrafo che spiega l'errore e ripete l'istruzione di formato (entrambe le righe, `FINAL_OPTION` e `FINAL_ANSWER`), prima di ritentare. Se tutti i tentativi falliscono, solleva `RuntimeError` con l'ultimo errore registrato.
-
----
-
-## 5. `pipeline.py`
-
-Orchestratore principale, usato da `main.py`, che dispatcha su tutte e tre le modalità di `config.EXTRACTOR_MODE`.
-
-**`SECTION_QUERIES`**: dizionario `{sezione: query_testuale}` — per ognuna delle 10 sezioni definisce cosa Agent 1 deve cercare nel referto (es. per `C`: `"D-dimer value, test date, laboratory upper limit of normal"`). Usata sia come query di estrazione sia come query di retrieval sul Brighton KB, sia dal ciclo di `pipeline.py` sia (passata esplicitamente come parametro) da `agentic_graph.run_agentic_graph_pipeline`.
-
-**`run_pipeline(record_id, patient_ehr_path, brighton_pdf_path)`**: funzione principale, restituisce `(form, audit_log)`.
-
-*Setup iniziale*: crea `embeddings` e `llm`, carica il testo del PDF Brighton e del referto, costruisce `brighton_kb` (sempre). Se `config.EXTRACTOR_MODE` è `"rag"` o `"agentic_graph"`, costruisce anche `ehr_kb`; se è `"agentic_graph"`, costruisce in più il tool di ricerca `ehr_tool` via `make_ehr_retriever_tool` — altrimenti queste variabili restano `None` e non vengono usate.
-
-*Dispatch su `agentic_graph`*: se `config.EXTRACTOR_MODE == "agentic_graph"`, la funzione costruisce il modello di ricerca separato (`search_llm = build_agentic_llm()`, importata in cima al modulo da `agentic_graph.py`) e delega l'intera esecuzione delle 10 sezioni a `run_agentic_graph_pipeline(...)`, passando anche `ehr_vectorstore=ehr_kb` (lo stesso oggetto Chroma già costruito sopra, usato dal nodo di ricerca per il retrieval deterministico di sicurezza -- vedi sezione 4.2) oltre a `ehr_tool`. Ritorna `(form_data, audit_log)` con la stessa forma prodotta dal ciclo `for` (vedi sezione 7). L'import da `agentic_graph.py` è un normale import di modulo, in cima a `pipeline.py`: non c'è alcun ciclo da evitare, dato che `agentic_graph.py` non importa nulla da `pipeline.py` (`SECTION_QUERIES` gli viene passato come parametro esplicito, non importato).
-
-*Ciclo principale* (per le altre due modalità, `full_text` e `rag`): per ogni `section_key` in `config.SECTION_ORDER`, recupera lo schema (`SECTION_MODELS[section_key]`) e la query (`SECTION_QUERIES[section_key]`), poi entra in un blocco `try`:
-1. **Agent 1**: a seconda di `config.EXTRACTOR_MODE`, chiama `extract_evidence` o `extract_evidence_full_text`, cronometrando il tempo con `time.time()`. Il risultato (`evidence`) viene salvato in `section_log["evidence"]`.
-2. **Contesto Brighton**: interroga `brighton_kb.as_retriever(search_kwargs={"k": config.BRIGHTON_RETRIEVER_K}).invoke(query)`, concatena i `page_content` in `brighton_context`.
-3. **Agent 2**: chiama `evaluate_section` passando anche `config.SECTION_HINTS.get(section_key, "")` come istruzioni extra. Cronometra e stampa il tempo impiegato.
-4. **Gate a parole chiave**: chiama `criteria_rules.apply_keyword_gate(section_key, section_result, evidence, reasoning_text)` (vedi sezione 6), che ritorna eventualmente un `section_result`/`reasoning_text` corretti se il gate scatta.
-5. **Gate dettagli (solo F)**: subito dopo, chiama `criteria_rules.apply_details_gate(section_key, section_result, reasoning_text)` (vedi sezione 6), che per la sola sezione `F` ricontrolla la coerenza tra la riga `DETAILS_PRESENT` scritta dal modello e la risposta Sì/No effettivamente data, correggendola se in disaccordo; per ogni altra sezione non fa nulla.
-6. Salva `section_log["reasoning"]`, `section_log["result"]` (via `.model_dump()`) e popola `form_data[section_key.lower()]` con l'oggetto Pydantic.
-
-Se una qualunque eccezione viene sollevata durante questi passi, il blocco `except` stampa il traceback, imposta `form_data[section_key.lower()] = None` e registra l'errore in `section_log["error"]` — così il fallimento di una sezione non compromette le altre. In ogni caso, `audit_log[section_key] = section_log` viene eseguito fuori dal try/except.
-
-*Regole cross-section*: dopo il branch (indipendentemente da quale modalità l'abbia prodotto), chiama `form_data = criteria_rules.apply_cross_section_rules(form_data, audit_log)` (vedi sezione 6) — un'unica chiamata condivisa da tutte e tre le modalità, invece di una copia duplicata dentro ciascun percorso di esecuzione.
-
-*Chiusura*: costruisce `form = DVT_CriteriaForm(**form_data)` e ritorna `(form, audit_log)`.
-
----
-
-## 6. `criteria_rules.py`
-
-Modulo nuovo, introdotto per eliminare la duplicazione di codice tra `pipeline.py` (ciclo `for` per `full_text`/`rag`) e `agentic_graph.py` (nodi del grafo per `agentic_graph`): prima queste due funzioni di sicurezza erano copiate identiche in entrambi i file; ora hanno un'unica fonte, importata da entrambi.
-
-**`apply_keyword_gate(section_key, section_result, evidence, reasoning_text)`**: implementa `config.SECTION_KEYWORD_GATES`. Recupera il nome dell'unico campo di `section_result` (`list(type(section_result).model_fields.keys())[0]`) e il valore scelto da Agent 2. Determina `is_positive` confrontando quel valore con il `default_option_text` della sezione (gestendo sia il caso singolo sia lista, con `any(...)` per le liste). Se `is_positive`, controlla se una qualunque delle `keywords` compare (case-insensitive) in `evidence`; se **nessuna** compare, ricostruisce `section_result` forzandolo al default negativo — usando il costruttore Pydantic (`type(section_result)(**{...})`), non `setattr`, così il valore forzato ripassa comunque dalla validazione dello schema — e appende una nota `"[SYSTEM OVERRIDE]"` a `reasoning_text`. Ritorna sempre la coppia `(section_result, reasoning_text)`, invariata se il gate non scatta o la sezione non ne ha uno.
-
-**`apply_details_gate(section_key, section_result, reasoning_text)`**: gate specifico per la sola sezione `F`, introdotto per correggere un bug che `apply_keyword_gate` e il cross-check `FINAL_OPTION`/`FINAL_ANSWER` (sezione 4.3) non intercettavano: casi in cui il modello si autocontraddiceva restando comunque interamente coerente tra le due righe finali (`FINAL_OPTION` e `FINAL_ANSWER` concordavano tra loro, ma erano entrambe sbagliate rispetto al ragionamento). Se `section_key != "F"`, ritorna subito `(section_result, reasoning_text)` invariati. Altrimenti estrae con una regex (`r"DETAILS_PRESENT:\s*(yes|no)"`, case-insensitive) la riga che `SECTION_HINTS["F"]` istruisce il modello a scrivere separatamente dalla risposta finale (vedi sezione 1) — un giudizio fattuale indipendente ("sono presenti dettagli clinici specifici nell'evidenza?"). Se la riga non è presente, non fa nulla (nessun dato su cui basare una correzione). Se presente, deriva meccanicamente la risposta corretta con una mappatura fissa: `yes → "No"`, `no → "Yes"` (la domanda F è formulata come doppia negazione — "la diagnosi è stata riportata SENZA dettagli" — quindi "dettagli presenti" implica risposta "No" a quella domanda, e viceversa). Se il valore derivato differisce dalla risposta che il modello ha effettivamente dato, ricostruisce `section_result` con il valore derivato (stesso principio delle altre funzioni: costruttore Pydantic, non `setattr`) e appende una nota `"[SYSTEM OVERRIDE]"` a `reasoning_text`. A differenza di `apply_keyword_gate`, che si basa sul confronto tra la risposta e la presenza/assenza di parole chiave nell'evidenza grezza, questo gate deriva la correzione esclusivamente da un giudizio che il modello stesso ha già espresso esplicitamente — non introduce alcuna euristica esterna basata sul testo dell'evidenza.
-
-**`apply_cross_section_rules(form_data, audit_log)`**: implementa `config.CROSS_SECTION_RULES`. Per ogni regola, recupera `if_result`/`then_result` da `form_data` (saltando se uno dei due è `None`, ad esempio perché quella sezione è fallita), normalizza `if_answers` a lista se non lo è già, e controlla `has_non_default = any(ans != rule["none_option"] for ans in if_answers)`. Se vero e il valore corrente di `then_result` è diverso da `rule["forced_value"]`, ricostruisce quel campo (stesso principio: costruttore Pydantic, non `setattr`) con il valore forzato e aggiunge una nota `"[SYSTEM OVERRIDE]"` al reasoning già presente in `audit_log[rule["audit_key"]]`. Muta e ritorna `form_data`.
-
-Tutte e tre le funzioni sono invocate una sola volta per punto di applicazione: `apply_keyword_gate` e, subito dopo, `apply_details_gate` dentro il ciclo per-sezione (sia quello di `pipeline.py` sia il nodo `answer_criterion` di `agentic_graph.py`); `apply_cross_section_rules` una sola volta in `pipeline.run_pipeline`, dopo che `form_data` è stato prodotto — da qualunque modalità, incluso `agentic_graph` — e prima di costruire `DVT_CriteriaForm`.
-
----
-
-## 7. `agentic_graph.py`
-
-Implementazione della modalità `EXTRACTOR_MODE == "agentic_graph"`: Agent 1 esplora il referto autonomamente con un tool di ricerca, orchestrato come macchina a stati esplicita con **LangGraph** invece che con un ciclo Python semplice. In origine era un file sperimentale standalone (`experimental_agentic_graph_pipeline.py`) che non modificava né si integrava con `pipeline.py`; ora è importato normalmente (in cima al modulo) da `pipeline.py` ed è a tutti gli effetti l'unica modalità agentic di produzione, selezionabile semplicemente impostando `config.EXTRACTOR_MODE = "agentic_graph"` e lanciando `python main.py` come al solito. (Una precedente modalità `"agentic"`, che faceva la stessa ricerca autonoma ma dentro il semplice ciclo `for` di `pipeline.py` senza LangGraph, è stata rimossa: questa modalità la sostituisce interamente.)
-
-**`build_agentic_llm()`**: costruisce e restituisce un `ChatOllama` con `model=config.AGENTIC_LLM_MODEL_NAME` (non più una costante locale come nella versione sperimentale, ma letta da `config.py`), riusando gli stessi `temperature`/`num_predict`/`request_timeout` di `config.py`. Usato *solo* per il nodo di ricerca (`search_record`); il nodo di valutazione (`answer_criterion`) riceve invece il modello standard `agents.build_llm()`, passato dall'esterno da `pipeline.py`.
-
-**`GraphState`**: `TypedDict` che definisce la forma dello stato che circola tra i nodi del grafo: `record_id`, `remaining_sections` (coda delle sezioni ancora da fare), `current_section`, `form_data`, `audit_log`, `done` (flag di terminazione).
-
-**`_select_next(state)`**: nodo del grafo. Se `remaining_sections` è vuota, ritorna lo stato con `current_section=None, done=True`. Altrimenti "pop" (senza mutare in place: `remaining[1:]`) del primo elemento, lo assegna a `current_section`, stampa l'intestazione `=== Section {sezione} ===` e ritorna lo stato aggiornato con `done=False`.
-
-**`_route_after_select(state)`**: funzione di routing condizionale, non un nodo vero e proprio — ritorna la stringa `"finalize"` se `state["done"]`, altrimenti `"search_record"`. Usata da `graph.add_conditional_edges`.
-
-**`_make_search_node(llm, ehr_tool, ehr_vectorstore, section_queries)`**: *factory* che chiude su `llm`, `ehr_tool`, `ehr_vectorstore` (l'oggetto Chroma passato da `pipeline.py`, usato per il retrieval deterministico di sicurezza -- vedi sezione 4.2) e sul dizionario `section_queries` (passato esplicitamente da `pipeline.py`, non più importato direttamente da `pipeline.SECTION_QUERIES` per evitare l'accoppiamento diretto al momento dell'import) e ritorna la funzione-nodo `search_record`. Quest'ultima recupera la query per `current_section`, chiama `extract_evidence_agentic` (con `max_iterations=config.AGENTIC_MAX_ITERATIONS`) dentro un `try/except` (in caso di eccezione stampa l'errore e imposta `evidence=None` invece di interrompere il grafo), e salva `{"query": ..., "evidence": ...}` in `audit_log[section_key]`.
-
-**`_make_answer_node(llm, brighton_kb, section_queries)`**: factory analoga per il nodo `answer_criterion`. Recupera l'evidenza salvata dal nodo precedente; se è vuota/assente (`if not evidence`), salta direttamente la valutazione, imposta il campo a `None` e registra un errore esplicito ("Agent 1 (agentic) produced no evidence"). Altrimenti: recupera il contesto Brighton (stessa logica di `pipeline.py`), chiama `evaluate_section`, applica in sequenza **`criteria_rules.apply_keyword_gate`** e **`criteria_rules.apply_details_gate`** (non più copie locali duplicate, come nella versione sperimentale — stessa coppia di chiamate, nello stesso ordine, usata dal ciclo per-sezione di `pipeline.py`, vedi sezioni 5 e 6), e infine popola `form_data`/`audit_log`. Un `try/except` esterno cattura eventuali fallimenti di Agent 2 senza interrompere il grafo.
-
-**`_finalize(state)`**: nodo finale del grafo. Nella versione sperimentale applicava qui le regole cross-section (con una copia locale duplicata della logica di `pipeline.py`); ora è un semplice passthrough che ritorna lo stato invariato, perché `pipeline.run_pipeline` applica `criteria_rules.apply_cross_section_rules` una sola volta, dopo aver ricevuto `form_data` da questo modulo — stessa logica, unica fonte, indipendentemente dalla modalità.
-
-**`build_graph(search_llm, answer_llm, ehr_tool, ehr_vectorstore, brighton_kb, section_queries)`**: assembla il grafo. Crea `StateGraph(GraphState)`, aggiunge i 4 nodi (`select_next`, `search_record`, `answer_criterion`, `finalize`), imposta `select_next` come punto di ingresso (`set_entry_point`), collega `select_next` con un arco condizionale (`add_conditional_edges`) che instrada verso `search_record` o `finalize` in base a `_route_after_select`, poi gli archi fissi `search_record → answer_criterion → select_next` (chiudendo il ciclo) e `finalize → END`. Ritorna il grafo compilato (`graph.compile()`), pronto per essere invocato.
-
-**`run_agentic_graph_pipeline(record_id, evaluator_llm, search_llm, ehr_tool, ehr_vectorstore, brighton_kb, section_queries)`**: punto d'ingresso chiamato da `pipeline.run_pipeline` (sostituisce la vecchia `run_experimental_pipeline`, che invece costruiva da sé embeddings/KB e restituiva direttamente un `DVT_CriteriaForm` già completo di regole cross-section). Costruisce il grafo con `build_graph(...)`, prepara `initial_state` con `remaining_sections = list(config.SECTION_ORDER)`, e invoca il grafo con `recursion_limit = len(config.SECTION_ORDER) * 3 + 10` (margine esplicito perché il limite di default di LangGraph, 25, sarebbe insufficiente per 10 sezioni × 3 passi ciascuna). Ritorna direttamente `(final_state["form_data"], final_state["audit_log"])` — **non** un `DVT_CriteriaForm` e **senza** aver applicato le regole cross-section: entrambi questi passi restano centralizzati in `pipeline.run_pipeline`, uguali per tutte le modalità.
-
----
-
-## 8. `aggregation.py`
-
-Un solo modulo minimale.
-
-**`form_to_json_summary(form)`**: chiama `form.model_dump(exclude_none=True)` — serializza il form Pydantic in un dizionario, escludendo tutti i campi rimasti `None` (cioè le sezioni fallite durante `run_pipeline`), così l'output JSON pulito contiene solo le sezioni effettivamente compilate.
+In caso di fallimento del parsing, il prompt viene **esteso** con il testo
+dell'errore e la sezione ritentata, fino a `max_retries + 1` tentativi. Se
+falliscono tutti, la funzione solleva un `RuntimeError` a cui **allega l'ultima
+risposta del modello** come attributo `last_response`: una sezione fallita è
+l'unico caso in cui il chiamante non ha altra copia di ciò che il modello ha
+scritto.
 
 ---
 
-## 9. `main.py`
+## 5. `criteria_rules.py`
 
-Entry point della pipeline, unico per tutte e tre le modalità (basta cambiare `config.EXTRACTOR_MODE`, non serve toccare `main.py`).
+Reti di sicurezza deterministiche applicate sopra l'output dei due agenti.
+Nessuna funzione qui chiama un modello: ognuna o mantiene la risposta di Agent 2
+o la sostituisce con un valore derivato meccanicamente dall'evidenza o da
+un'altra sezione. Ogni override lascia una nota `[SYSTEM OVERRIDE]` nel testo di
+ragionamento, così una risposta forzata non è mai indistinguibile da una
+prodotta dal modello — ed è questa proprietà che rende possibile ricostruire
+l'effetto di un gate dagli audit log senza rieseguire nulla.
 
-**`main()`**: fissa `record_id = "PATIENT_001"` e i percorsi hardcoded del referto (`./patient_001.txt`) e del PDF Brighton (`./1-s2.0-S0264410X22010854-main.pdf`). Chiama `run_pipeline(...)`, ottenendo `(form, audit_log)`. Serializza il form con `form_to_json_summary`, lo stampa a schermo in JSON indentato. Crea la cartella `./output` se non esiste (`os.makedirs(..., exist_ok=True)`). Salva due file distinti: `output/PATIENT_001.json` (il riassunto pulito) e `output/PATIENT_001_audit_log.json` (l'intero audit log, incluse le sezioni fallite) — quest'ultimo tenuto separato apposta, come spiega il commento, così non deve essere condiviso a valle ma resta disponibile per verificare manualmente una risposta specifica senza dover rilanciare tutta la pipeline. Il blocco `if __name__ == "__main__": main()` rende lo script eseguibile direttamente.
+**`apply_keyword_gate(...)`** implementa `SECTION_KEYWORD_GATES`. Legge il campo
+unico dello schema, così funziona su scelta singola e multipla senza un ramo per
+ciascuna, determina se la risposta è fra quelle che le parole chiave possono
+controllare, e in caso di assenza di ogni parola chiave ricostruisce l'istanza sul
+default negativo. La ricostruzione passa dal costruttore Pydantic e non da
+`setattr`, così il valore forzato viene rivalidato contro lo schema.
+
+**`apply_details_gate(...)`** riguarda la sola sezione F. Legge la riga
+`DETAILS_PRESENT` che l'hint di F chiede al modello — un giudizio fattuale,
+non una mappatura sullo schema — e ne deriva meccanicamente l'etichetta:
+dettagli presenti implica `"No"`, assenti implica `"Yes"`. Se la riga manca, la
+funzione non fa nulla e si fida del modello anziché far fallire la sezione.
+Attualmente il gate è spento in `config.SECTION_GATES_ENABLED`.
+
+**`apply_absent_pulses_gate(...)`** rimuove da B2 la sola opzione
+`"Absent pulses in legs or arms"` quando nell'evidenza non compare alcun esame
+dei polsi. Il modello la sceglieva sulla base del solo linguaggio dell'imaging,
+ragionando che un flusso assente al Doppler implichi polsi assenti: sono reperti
+diversi, uno di imaging vascolare e uno di esame obiettivo. È ristretto a questa
+singola coppia sezione-opzione e non generalizzato, perché l'evidenza che la
+distingue è quasi non ambigua — le parole `polso`, `polsi`, `pulse` compaiono o
+no — mentre le altre opzioni di B2 e le modalità di A3.2 variano troppo nella
+formulazione perché una lista corta di parole chiave sia sicura.
+
+**`apply_section_gates(...)`** applica in ordine i gate abilitati. Con tutti
+disattivati è la funzione identità, cioè la risposta grezza del modello.
+
+**`apply_cross_section_rules(form_data, audit_log)`** applica
+`CROSS_SECTION_RULES` una volta sola, dopo che tutte le sezioni sono state
+compilate, indipendentemente dalla modalità che le ha prodotte. Richiede la
+presenza della sola sezione **sorgente**: una risposta forzata derivata da una
+sezione mancante sarebbe infondata, mentre il bersaglio può essere `None`, dato
+che il valore forzato viene dalla regola e la classe si legge da
+`SECTION_MODELS`. Questo permette a una regola di riempire una sezione che una
+valutazione fallita aveva lasciato vuota. Sovrascrive solo quando il valore
+corrente differisce da quello forzato, per non riempire il log di voci in cui
+Agent 2 era già d'accordo.
+
+---
+
+## 6. `agentic_graph.py`
+
+Implementa `EXTRACTOR_MODE == "agentic_graph"` come macchina a stati LangGraph
+esplicita, dove ogni passo è una funzione con il proprio stato in ingresso e in
+uscita, invece che un ciclo Python.
+
+Forma del grafo:
+
+```
+select_next -> {search_record, finalize} -> answer_criterion -> select_next
+```
+
+**`build_agentic_llm()`** costruisce il modello tool-calling. È separata da
+`agents.build_llm` perché questo è l'unico ruolo che lega un tool e quindi
+l'unico che ha bisogno di un modello che supporti l'API di tool calling di
+Ollama.
+
+**`GraphState`** è il `TypedDict` che circola tra i nodi: `record_id`,
+`remaining_sections`, `current_section`, `form_data`, `audit_log`, `done`.
+
+**`_select_next(state)`** preleva la sezione successiva dalla coda, restituendo
+una nuova lista invece di mutarla in place, perché lo stato del grafo è trattato
+come immutabile da un passo all'altro. Quando la coda è vuota imposta
+`done=True`.
+
+**`_route_after_select(state)`** è la funzione di routing dell'arco
+condizionale: `finalize` se `done`, altrimenti `search_record`.
+
+**`_make_search_node(...)`** e **`_make_answer_node(...)`** sono factory e non
+nodi diretti, perché un nodo LangGraph riceve solo lo stato mentre questi due
+passi hanno bisogno anche del modello, del tool e delle query. Il nodo di
+ricerca cronometra anche i fallimenti, così una sezione lenta perché ha
+continuato a ritentare resta visibile nel log. Il nodo di risposta applica gli
+stessi gate per-sezione di ogni altra modalità.
+
+**`_finalize(state)`** è un passthrough deliberato: le regole cross-section
+vengono applicate una sola volta da `pipeline.run_pipeline` dopo che il grafo ha
+restituito, così ogni modalità passa dallo stesso codice invece che da una copia.
+
+**`run_agentic_graph_pipeline(...)`** è il punto d'ingresso. Il limite di
+ricorsione è calcolato da `len(SECTION_ORDER) * 3 + 10`, perché ogni sezione
+attraversa tre nodi. Restituisce `(form_data, audit_log)` nella stessa forma del
+ciclo semplice, senza aver costruito il form né applicato le regole
+cross-section.
+
+---
+
+## 7. `pipeline.py`
+
+Orchestra un referto e dispatcha sulle tre modalità.
+
+**`SECTION_QUERIES`** associa a ogni sezione la query che dice ad Agent 1 cosa
+cercare, e che serve anche a recuperare il contesto dalla linea guida. La query
+di `X` è formulata seguendo il linguaggio della Tabella 2 del paper: la
+formulazione precedente non recuperava mai quella tabella, che finiva a B2 perché
+la riga della TVP è scritta in parole di sintomo che corrispondono quasi
+esattamente alla query di B2.
+
+**`_ollama_version()`** legge la versione del binario Ollama. È registrata perché
+due versioni di Ollama portano due versioni di llama.cpp, e con esse kernel di
+quantizzazione diversi: a temperatura 0 basta a far cambiare un token che il
+modello aveva quasi in parità, quindi run prodotte sotto versioni diverse non
+sono direttamente confrontabili. Non solleva mai: una versione mancante costa la
+provenienza, non la run.
+
+**`_hint_fingerprint()`** produce, per ogni sezione che riceve un hint non vuoto,
+la coppia lunghezza e prefisso sha256 del testo, più un digest `all` dell'intero
+insieme. Gli interruttori dicono quali hint sono stati inviati, non cosa
+dicevano, quindi senza questo due run i cui hint sono stati riscritti in mezzo
+porterebbero la stessa firma.
+
+**`_run_config_snapshot()`** cattura tutto ciò che determina cosa una run
+produce: modalità, gate, hint e loro fingerprint, modelli per ruolo (con
+l'estrattore **effettivo**, che in modalità agentica è un modello diverso),
+ambiente, parametri di generazione, parametri di retrieval. Viene scritto
+nell'audit log sotto `_run_config`, chiave scelta per non poter collidere con un
+nome di sezione, così un file di risultati è auto-descrittivo mesi dopo.
+
+**`run_pipeline(record_id, patient_ehr_path, brighton_pdf_path)`** costruisce una
+sola volta embedding e valutatore, carica i due testi, costruisce la KB Brighton
+sempre e quella del referto solo dove serve. Il modello di Agent 1 viene
+costruito **dentro** il ramo che lo usa, così una modalità che non lo interroga
+non lo carica in VRAM.
+
+Nel ciclo per-sezione, ogni sezione passa da Agent 1, dal recupero del contesto
+Brighton ripulito, da Agent 2 e dai gate. Il fallimento di una sezione non
+compromette le altre: il campo resta `None`, l'errore va in `section_log["error"]`
+e l'ultima risposta del modello, se disponibile, in `section_log["reasoning"]`.
+
+Alla fine applica le regole cross-section una volta sola, aggiunge lo snapshot di
+configurazione e costruisce `DVT_CriteriaForm`.
+
+---
+
+## 8. `aggregation.py` e `main.py`
+
+**`aggregation.form_to_json_summary(form)`** serializza il form con
+`exclude_none=True`: le sezioni lasciate `None` da una valutazione fallita
+vengono omesse invece che scritte come `null`, così una risposta mancante è
+assente e non somiglia a una risposta di "nessuno".
+
+**`main.py`** esegue la pipeline su un singolo referto, con i percorsi ancorati
+alla posizione del file e non alla directory di lancio. Scrive due file che
+condividono lo stesso timestamp, il risultato e l'audit log, così una coppia è
+sempre associabile e rilanciare non sovrascrive mai una run precedente.
+
+---
+
+## 9. `run_synthetic_records.py`
+
+Esegue la pipeline su ogni referto del corpus, con la stessa convenzione di nomi
+di `main.py` così la valutazione li trova con i percorsi di default.
+
+`--only` restringe il batch ai referti il cui identificativo contiene una delle
+stringhe date, per ricontrollarne pochi dopo una modifica al prompt senza pagare
+l'intero set. **Un run parziale non è un run**: la valutazione tiene il file più
+recente per referto, quindi il punteggio mescolerebbe i risultati con quelli
+prodotti prima dagli altri referti. Un identificativo scritto male fa uscire lo
+script invece di eseguire zero referti, che altrimenti sembrerebbe una run
+riuscita con zero record.
+
+Prima di ogni referto un controllo non bloccante segnala un `.txt` senza ground
+truth corrispondente, che altrimenti resterebbe silenziosamente non valutato. Il
+tempo rimanente è stimato dalla media corrente e non dall'ultimo referto, perché
+la durata varia con quante chiamate al tool l'estrattore agentico decide di fare.
+
+---
+
+## 10. `generate_synthetic_records.py`
+
+Genera i referti sintetici in italiano con la ground truth corrispondente.
+
+**Ground truth per costruzione.** Ogni scenario porta sia i fatti clinici sia le
+risposte corrette per tutte e dieci le sezioni, scritte a mano con le stringhe
+esatte di `models.py`. Nessun modello indovina mai il riferimento, ed è questo a
+renderlo utilizzabile come tale. I JSON di ground truth vengono sempre riscritti,
+dato che produrli non coinvolge alcun modello.
+
+**I referti.** Quelli attualmente su disco non sono stati prodotti dal modello
+scrittore: sono stati redatti da un modello generalista esterno a ogni ruolo
+della pipeline, a partire dai fatti di ogni scenario e rivisti contro di essi,
+dopo che quelli generati erano stati ripetutamente trovati in contraddizione con
+la propria ground truth. Lo scrittore resta disponibile per nuovi scenari, a
+temperatura non nulla per variazione lessicale. I referti vengono scritti solo se
+mancanti, salvo `--force`, quindi un run normale non può sovrascriverli.
+
+**Gli stili.** `STYLE_VARIANTS` chiede le caratteristiche strutturali che i
+referti ospedalieri italiani condividono, mai le etichette o le formulazioni
+esatte: uno scrittore copia gli esempi che riceve, quindi prescriverle
+produrrebbe varianti quasi identiche di un unico documento, sovradattate a un
+solo clinico. Esiste una direttiva separata per gli scenari la cui ground truth
+è `F = "Yes"`, cioè diagnosi riportata **senza** dettagli: un solo parametro
+vitale o reperto renderebbe il referto dettagliato e ribalterebbe la risposta
+corretta di F.
+
+**Il controllo di fedeltà.** `_expected_markers(scenario)` ricava dai fatti
+dello scenario quali marcatori il referto deve contenere; `check_record(text,
+scenario)` verifica il testo contro quella lista e restituisce l'elenco dei
+problemi; `generate_checked_record(...)` rigenera finché il controllo rifiuta,
+fino a `WRITER_MAX_ATTEMPTS`, e ogni tentativo è un vero ricampionamento grazie
+alla temperatura non nulla. `check_existing_records()` esegue gli stessi
+controlli su un corpus già su disco senza chiamare alcun modello
+(`--check`).
+
+**Il limite noto.** Il controllo è deterministico e intercetta la troncatura e i
+fatti mancanti, non la violazione semantica: un referto può contenere il valore
+giusto e descriverlo male. Intercettarlo richiederebbe un secondo modello come
+giudice, deliberatamente non costruito per mantenere il controllo deterministico.
+
+**Un secondo limite, sui dati.** Un referto è di circa 1000 caratteri, cioè circa
+un chunk, mentre il retriever ne chiede 5: il retrieval restituisce ogni volta il
+referto intero. Le tre modalità di estrazione danno quindi ad Agent 2 lo stesso
+input e non sono confrontabili su questo dataset.
+
+---
+
+## 11. `evaluate_predictions.py`
+
+Valuta una run contro la ground truth. Non esegue la pipeline. Legge predizioni e
+riferimenti da directory passate a riga di comando, così lo stesso script serve
+il corpus sintetico e qualunque altro insieme annotato. Le predizioni sono
+associate al riferimento tramite il campo `record_id` interno al JSON e non dal
+nome del file; quando un referto ha più file, vince il più recente.
+
+Metriche, per sezione e complessive:
+
+- **Accuratezza exact-match** con intervallo di Wilson al 95%. Wilson e non
+  l'intervallo normale, che su una sezione quasi perfetta esce oltre 1.0 e
+  collassa a larghezza zero esattamente a 1.0.
+- **Baseline di maggioranza** e guadagno su di essa: è il pavimento che una
+  sezione deve superare per portare informazione.
+- **Kappa di Cohen**, con la risposta intera trattata come una sola etichetta,
+  così una sezione multi-scelta è valutata sull'insieme esatto che ha prodotto.
+- **TP/TN/FP/FN, precisione, richiamo e F1 per opzione** e non per sezione:
+  senza questo, una sezione multi-scelta risposta a metà conterebbe come
+  semplicemente sbagliata. Precisione e richiamo ignorano deliberatamente i veri
+  negativi, che sono la maggioranza di ogni conteggio dato che la maggior parte
+  delle opzioni non si applica alla maggior parte dei referti.
+- **Matrice di confusione**, solo per le sezioni a scelta singola, dove una
+  predizione è una classe. Mostra **quali** opzioni vengono scambiate tra loro.
+
+La riga complessiva è riportata due volte: **micro** mette in comune ogni opzione
+di ogni sezione, quindi una sezione con più opzioni pesa di più; **macro** media
+le cifre per sezione, quindi ogni sezione conta una volta.
+
+Una sezione lasciata `None`, o un referto senza output, è riportata come mancante
+ed esclusa dalle metriche invece di essere contata come errore. È una scelta da
+tenere presente leggendo i numeri: un modello che fallisce molte sezioni ottiene
+un punteggio ottimisticamente alto.
+
+Dipende da scikit-learn e da `models.py`, ma non da langchain o Ollama: gira
+senza lo stack della pipeline installato.
+
+---
+
+## 12. `compare_runs.py`
+
+Confronta **due run tra loro** e riporta quante risposte sono cambiate. È il
+complemento di `evaluate_predictions.py`, che confronta una run contro la ground
+truth.
+
+La temperatura è 0, quindi la pipeline è nominalmente deterministica, ma Ollama
+non garantisce generazioni identiche bit per bit tra chiamate. Questo script
+quantifica il pavimento di rumore sotto una metrica prodotta da una sola run: se
+due run identiche già divergono sull'N% delle sezioni, qualunque differenza di
+accuratezza inferiore a N% tra due configurazioni non è un risultato.
+
+Con una directory confronta i due file più recenti per referto; con due, il più
+recente di ciascuna. Riporta anche l'accuratezza di ciascuna run, così una
+differenza di stabilità si legge accanto a una differenza di accuratezza. Una
+sezione mancante in **entrambe** le run viene esclusa invece che contata come
+invariata, per non gonfiare la stabilità con sezioni che non hanno mai prodotto
+nulla.
+
+---
+
+## 13. `export_redcap_csv.py`
+
+Converte l'output della pipeline nel CSV che REDCap importa, così il Level of
+Certainty può essere calcolato dal progetto REDCap stesso.
+
+Scrive il formato che il Data Import Tool si aspetta: nomi delle variabili come
+intestazioni, codici numerici come valori, e le caselle come colonne
+`<campo>___<codice>` che contengono 0 o 1.
+
+`SECTION_FIELDS` mappa ogni sezione su un campo REDCap e su un tipo:
+
+- `radio` — una colonna con la posizione 1-based dell'opzione.
+- `checkbox` — una colonna per opzione. **Ogni casella viene scritta
+  esplicitamente, comprese quelle non spuntate**: REDCap legge una cella vuota
+  come "lascia invariato", quindi una risposta di "nessuna di queste" va inviata
+  come una riga di zeri effettivi.
+- `yesno` — una colonna codificata 1/0 anziché 1/2. La sezione F è l'unica, ed è
+  l'unico punto in cui il codice non segue la posizione nello schema.
+
+I codici delle opzioni sono letti dallo schema Pydantic e non ripetuti qui, così
+una modifica a `models.py` non può produrre silenziosamente un CSV i cui codici
+puntano alle opzioni sbagliate.
+
+Una sezione che la pipeline non ha risposto produce celle **vuote**, non un
+default: scrivere zeri ovunque affermerebbe che ogni opzione è stata valutata e
+scartata, che è diverso da "non lo sappiamo". Lo script avvisa esplicitamente
+quali referti hanno almeno una sezione non risposta.
+
+Come `evaluate_predictions.py`, tiene il file più recente per referto: una run
+sperimentale lasciata in `output/` diventa il CSV che va a REDCap. Va controllato
+`_run_config.models.evaluator` sul file più recente prima di esportare.
+
+È volutamente autonomo: importa solo `models.py`, quindi gira senza langchain né
+Ollama.

@@ -10,7 +10,7 @@ models.py's exact Literal strings. No model ever guesses the reference, which
 is what makes it usable as one. The ground-truth JSONs are always rewritten,
 since producing them involves no LLM.
 
-RECORDS: the 30 records in data/synthetic_records/ were not produced by the
+RECORDS: the records in data/synthetic_records/ were not produced by the
 writer below. They were drafted with Claude (a general-purpose model, outside
 every pipeline role) from each scenario's facts and reviewed against them,
 after generated ones were repeatedly found to contradict their own ground
