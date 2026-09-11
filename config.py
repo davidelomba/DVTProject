@@ -39,7 +39,7 @@ EMBEDDING_MODEL_NAME = "intfloat/multilingual-e5-small"
 #   Agent 1 explores the record autonomously, orchestrated as an explicit
 #   LangGraph state machine (agentic_graph.py), using a separate tool-
 #   calling-capable model for the search step (AGENTIC_LLM_MODEL_NAME).
-EXTRACTOR_MODE = "agentic_graph"  # "full_text", "rag", or "agentic_graph"
+EXTRACTOR_MODE = "full_text"  # "full_text", "rag", or "agentic_graph"
 AGENTIC_MAX_ITERATIONS = 5  # cap on tool calls per section, used by "agentic_graph" mode
 
 # Chunking for the clinical record (EHR)
