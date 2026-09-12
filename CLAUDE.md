@@ -204,6 +204,18 @@ Only an outside authority settles the difference.
   empty, and two sections that failed outright with `FINAL_ANSWER: 5` for a
   two-option field, the model having reasoned correctly that DVT was ruled out
   and having nowhere to put it.
+- **A weak first stage decides the score.** Four extraction modes, evaluator and
+  prompts identical: `agentic_graph` 398/400, `raw_record` 392/400, `full_text`
+  341/400 (`rag` not run). What separates them is not how much they search but
+  who filters the evidence. Letting the 8B extractor select it returns
+  `NO RELEVANT EVIDENCE FOUND.` on **143 sections out of 400**, and the errors
+  are omissions, 67 false negatives against 54. `raw_record` errs the other way,
+  6 against 4, on undifferentiated context. Agent 2 keeps reasoning correctly on
+  what it receives, so reading only the final answer hides the cause.
+- **A correct safety net can amplify an error.** On SYN_28 the model gets A3.1
+  wrong and the cross-section rule, behaving as designed, clears A3.2: one model
+  error, two wrong sections. The same rules are worth 8 sections on this corpus,
+  so they stay clearly positive, but their effect is not monotone.
 - **The score is not the instrument any more; the audit log is.** The run that
   added that F precondition scored 99.2% with zero sections changed out of 400,
   which reads as a change that did nothing. The log showed the model had in fact
