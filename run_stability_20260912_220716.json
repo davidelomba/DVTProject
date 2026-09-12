@@ -1,0 +1,168 @@
+{
+  "records_compared": 40,
+  "sections": {
+    "A1": {
+      "compared": 40,
+      "changed": 0,
+      "correct_a": 40,
+      "correct_b": 40,
+      "stability": 1.0
+    },
+    "A2": {
+      "compared": 40,
+      "changed": 1,
+      "correct_a": 39,
+      "correct_b": 40,
+      "stability": 0.975
+    },
+    "A3_1": {
+      "compared": 40,
+      "changed": 1,
+      "correct_a": 40,
+      "correct_b": 39,
+      "stability": 0.975
+    },
+    "A3_2": {
+      "compared": 40,
+      "changed": 3,
+      "correct_a": 40,
+      "correct_b": 37,
+      "stability": 0.925
+    },
+    "B1_1": {
+      "compared": 40,
+      "changed": 0,
+      "correct_a": 39,
+      "correct_b": 39,
+      "stability": 1.0
+    },
+    "B1_2": {
+      "compared": 40,
+      "changed": 1,
+      "correct_a": 40,
+      "correct_b": 39,
+      "stability": 0.975
+    },
+    "B2": {
+      "compared": 40,
+      "changed": 2,
+      "correct_a": 40,
+      "correct_b": 38,
+      "stability": 0.95
+    },
+    "C": {
+      "compared": 40,
+      "changed": 0,
+      "correct_a": 40,
+      "correct_b": 40,
+      "stability": 1.0
+    },
+    "F": {
+      "compared": 40,
+      "changed": 0,
+      "correct_a": 40,
+      "correct_b": 40,
+      "stability": 1.0
+    },
+    "X": {
+      "compared": 40,
+      "changed": 0,
+      "correct_a": 40,
+      "correct_b": 40,
+      "stability": 1.0
+    }
+  },
+  "differences": [
+    {
+      "record_id": "SYN_03_upper_extremity_catheter_v2",
+      "section": "A2",
+      "run_a": [
+        "Other procedure done that confirmed presence of DVT"
+      ],
+      "run_b": [
+        "No surgical procedure done; or, done but either did not confirm presence of DVT or findings unknown; or unknown if done"
+      ]
+    },
+    {
+      "record_id": "SYN_07_thrombectomy_positive_v2",
+      "section": "B2",
+      "run_a": [
+        "Calf pain or tenderness",
+        "Leg swelling or pitting oedema"
+      ],
+      "run_b": [
+        "Leg swelling or pitting oedema"
+      ]
+    },
+    {
+      "record_id": "SYN_12_other_procedure_positive_v2",
+      "section": "A3_2",
+      "run_a": [
+        "Doppler/Duplex Ultrasound"
+      ],
+      "run_b": [
+        "Contrast venography",
+        "Doppler/Duplex Ultrasound"
+      ]
+    },
+    {
+      "record_id": "SYN_18_absent_pulses_true_positive_v2",
+      "section": "B2",
+      "run_a": [
+        "Absent pulses in legs or arms",
+        "Calf pain or tenderness",
+        "Leg swelling or pitting oedema"
+      ],
+      "run_b": [
+        "Absent pulses in legs or arms",
+        "Calf pain or tenderness",
+        "Leg swelling or pitting oedema",
+        "Redness, warmth, or pain in one or more extremities"
+      ]
+    },
+    {
+      "record_id": "SYN_23_other_procedure_ivc_filter_v2",
+      "section": "A3_2",
+      "run_a": [
+        "Doppler/Duplex Ultrasound"
+      ],
+      "run_b": [
+        "Contrast venography",
+        "Doppler/Duplex Ultrasound"
+      ]
+    },
+    {
+      "record_id": "SYN_28_other_modality_plethysmography_v2",
+      "section": "A3_1",
+      "run_a": [
+        "≥1 imaging study was done and confirmed DVT"
+      ],
+      "run_b": [
+        "No imaging studies done, unknown if done, or done but results unknown"
+      ]
+    },
+    {
+      "record_id": "SYN_28_other_modality_plethysmography_v2",
+      "section": "A3_2",
+      "run_a": [
+        "Other"
+      ],
+      "run_b": []
+    },
+    {
+      "record_id": "SYN_40_imaging_report_pending_v2",
+      "section": "B1_2",
+      "run_a": [],
+      "run_b": [
+        "Lower extremity DVT"
+      ]
+    }
+  ],
+  "overall": {
+    "compared": 400,
+    "changed": 8,
+    "correct_a": 398,
+    "correct_b": 392,
+    "stability": 0.98
+  }
+}
