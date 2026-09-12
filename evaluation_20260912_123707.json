@@ -1,0 +1,376 @@
+{
+  "records_compared": 40,
+  "records_missing_prediction": [],
+  "sections": {
+    "A1": {
+      "compared": 40,
+      "missing": 0,
+      "exact_matches": 40,
+      "options": [
+        "Autopsy showed presence of DVT",
+        "Autopsy done but showed no evidence of DVT",
+        "No autopsy done, unknown if done, or done but results unavailable"
+      ],
+      "accuracy": 1.0,
+      "majority_baseline": 0.9,
+      "accuracy_ci95": [
+        0.9123754607496077,
+        1.0
+      ],
+      "tp": 40,
+      "tn": 80,
+      "fp": 0,
+      "fn": 0,
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0,
+      "cohens_kappa": 1.0,
+      "confusion_matrix": [
+        [
+          2,
+          0,
+          0
+        ],
+        [
+          0,
+          2,
+          0
+        ],
+        [
+          0,
+          0,
+          36
+        ]
+      ]
+    },
+    "A2": {
+      "compared": 40,
+      "missing": 0,
+      "exact_matches": 38,
+      "options": [
+        "Thrombectomy related to DVT performed",
+        "Other procedure done that confirmed presence of DVT",
+        "No surgical procedure done; or, done but either did not confirm presence of DVT or findings unknown; or unknown if done"
+      ],
+      "accuracy": 0.95,
+      "majority_baseline": 0.9,
+      "accuracy_ci95": [
+        0.834958291820748,
+        0.9861796228538989
+      ],
+      "tp": 38,
+      "tn": 78,
+      "fp": 2,
+      "fn": 2,
+      "precision": 0.95,
+      "recall": 0.95,
+      "f1": 0.95,
+      "cohens_kappa": 0.7297297297297298,
+      "confusion_matrix": [
+        [
+          2,
+          0,
+          0
+        ],
+        [
+          0,
+          1,
+          1
+        ],
+        [
+          1,
+          0,
+          35
+        ]
+      ]
+    },
+    "A3_1": {
+      "compared": 40,
+      "missing": 0,
+      "exact_matches": 37,
+      "options": [
+        "≥1 imaging study was done and confirmed DVT",
+        "≥1 imaging study was done but didn't confirm DVT",
+        "No imaging studies done, unknown if done, or done but results unknown"
+      ],
+      "accuracy": 0.925,
+      "majority_baseline": 0.425,
+      "accuracy_ci95": [
+        0.8013546984090248,
+        0.9741644432281419
+      ],
+      "tp": 37,
+      "tn": 77,
+      "fp": 3,
+      "fn": 3,
+      "precision": 0.925,
+      "recall": 0.925,
+      "f1": 0.925,
+      "cohens_kappa": 0.8818897637795275,
+      "confusion_matrix": [
+        [
+          15,
+          1,
+          1
+        ],
+        [
+          0,
+          7,
+          0
+        ],
+        [
+          1,
+          0,
+          15
+        ]
+      ]
+    },
+    "A3_2": {
+      "compared": 40,
+      "missing": 0,
+      "exact_matches": 33,
+      "options": [
+        "Compression ultrasonography",
+        "CT or MR venography",
+        "Contrast venography",
+        "Doppler/Duplex Ultrasound",
+        "Other"
+      ],
+      "accuracy": 0.825,
+      "majority_baseline": 0.575,
+      "accuracy_ci95": [
+        0.6804970794560755,
+        0.9125469700311694
+      ],
+      "tp": 13,
+      "tn": 177,
+      "fp": 5,
+      "fn": 5,
+      "precision": 0.7222222222222222,
+      "recall": 0.7222222222222222,
+      "f1": 0.7222222222222222,
+      "cohens_kappa": 0.6972972972972973
+    },
+    "B1_1": {
+      "compared": 39,
+      "missing": 1,
+      "exact_matches": 22,
+      "options": [
+        "≥1 symptom or sign of DVT was reported",
+        "There was no report of a recognized DVT syndrome",
+        "It is unknown if there was a report of a DVT syndrome"
+      ],
+      "accuracy": 0.5641025641025641,
+      "majority_baseline": 0.717948717948718,
+      "accuracy_ci95": [
+        0.40975423474522105,
+        0.7069547583829534
+      ],
+      "tp": 22,
+      "tn": 61,
+      "fp": 17,
+      "fn": 17,
+      "precision": 0.5641025641025641,
+      "recall": 0.5641025641025641,
+      "f1": 0.5641025641025641,
+      "cohens_kappa": -0.08866995073891615,
+      "confusion_matrix": [
+        [
+          22,
+          0,
+          6
+        ],
+        [
+          0,
+          0,
+          3
+        ],
+        [
+          8,
+          0,
+          0
+        ]
+      ]
+    },
+    "B1_2": {
+      "compared": 40,
+      "missing": 0,
+      "exact_matches": 37,
+      "options": [
+        "Lower extremity DVT",
+        "Upper extremity DVT"
+      ],
+      "accuracy": 0.925,
+      "majority_baseline": 0.55,
+      "accuracy_ci95": [
+        0.8013546984090248,
+        0.9741644432281419
+      ],
+      "tp": 25,
+      "tn": 52,
+      "fp": 1,
+      "fn": 2,
+      "precision": 0.9615384615384616,
+      "recall": 0.9259259259259259,
+      "f1": 0.9433962264150944,
+      "cohens_kappa": 0.8687089715536105
+    },
+    "B2": {
+      "compared": 40,
+      "missing": 0,
+      "exact_matches": 27,
+      "options": [
+        "Calf pain or tenderness",
+        "Leg swelling or pitting oedema",
+        "Absent pulses in legs or arms",
+        "Redness, warmth, or pain in one or more extremities",
+        "None of the above were present or it is unknown if any of 1-4 were present"
+      ],
+      "accuracy": 0.675,
+      "majority_baseline": 0.4,
+      "accuracy_ci95": [
+        0.52017458088898,
+        0.7991568303733828
+      ],
+      "tp": 39,
+      "tn": 123,
+      "fp": 13,
+      "fn": 25,
+      "precision": 0.75,
+      "recall": 0.609375,
+      "f1": 0.6724137931034483,
+      "cohens_kappa": 0.5630252100840336
+    },
+    "C": {
+      "compared": 40,
+      "missing": 0,
+      "exact_matches": 40,
+      "options": [
+        "D-dimer exceeded test lab's upper limit of normal.",
+        "D-dimer tested and was within test lab's range of normal",
+        "D-dimer not tested, or tested but results unknown or not available"
+      ],
+      "accuracy": 1.0,
+      "majority_baseline": 0.475,
+      "accuracy_ci95": [
+        0.9123754607496077,
+        1.0
+      ],
+      "tp": 40,
+      "tn": 80,
+      "fp": 0,
+      "fn": 0,
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0,
+      "cohens_kappa": 1.0,
+      "confusion_matrix": [
+        [
+          19,
+          0,
+          0
+        ],
+        [
+          0,
+          5,
+          0
+        ],
+        [
+          0,
+          0,
+          16
+        ]
+      ]
+    },
+    "F": {
+      "compared": 40,
+      "missing": 0,
+      "exact_matches": 32,
+      "options": [
+        "Yes",
+        "No"
+      ],
+      "accuracy": 0.8,
+      "majority_baseline": 0.825,
+      "accuracy_ci95": [
+        0.6524239261814333,
+        0.8950013502683314
+      ],
+      "tp": 32,
+      "tn": 32,
+      "fp": 8,
+      "fn": 8,
+      "precision": 0.8,
+      "recall": 0.8,
+      "f1": 0.8,
+      "cohens_kappa": -0.045751633986928164,
+      "confusion_matrix": [
+        [
+          0,
+          7
+        ],
+        [
+          1,
+          32
+        ]
+      ]
+    },
+    "X": {
+      "compared": 40,
+      "missing": 0,
+      "exact_matches": 35,
+      "options": [
+        "An alternative diagnosis was found that explained the acute illness",
+        "No alternative diagnosis was found to explain the acute illness"
+      ],
+      "accuracy": 0.875,
+      "majority_baseline": 0.85,
+      "accuracy_ci95": [
+        0.7388757932976187,
+        0.9454058022645873
+      ],
+      "tp": 35,
+      "tn": 35,
+      "fp": 5,
+      "fn": 5,
+      "precision": 0.875,
+      "recall": 0.875,
+      "f1": 0.875,
+      "cohens_kappa": 0.25373134328358204,
+      "confusion_matrix": [
+        [
+          1,
+          5
+        ],
+        [
+          0,
+          34
+        ]
+      ]
+    }
+  },
+  "overall": {
+    "compared": 399,
+    "exact_matches": 341,
+    "tp": 321,
+    "tn": 795,
+    "fp": 54,
+    "fn": 67,
+    "accuracy": 0.8546365914786967,
+    "accuracy_ci95": [
+      0.816669231517481,
+      0.8858401418938053
+    ],
+    "precision": 0.856,
+    "recall": 0.8273195876288659,
+    "f1": 0.8414154652686762,
+    "macro_precision": 0.8547863247863248,
+    "macro_recall": 0.8371625712250712,
+    "macro_f1": 0.8452134805843329,
+    "macro_accuracy": 0.8539102564102563,
+    "macro_kappa": 0.5859960731001936,
+    "macro_majority_baseline": 0.6617948717948717
+  },
+  "ground_truth_dir": "c:\\Users\\davil\\Desktop\\Tesi_magistrale\\DVTProject\\data\\synthetic_records",
+  "predictions_dir": "c:\\Users\\davil\\Desktop\\Tesi_magistrale\\DVTProject\\output_full_text"
+}

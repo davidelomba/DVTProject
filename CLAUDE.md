@@ -25,8 +25,9 @@ When something is unverified, say so.
 - `pipeline.py` orchestrates one record; `agents.py` holds both agents.
 - Agent 1 (extractor) copies evidence verbatim. Agent 2 (evaluator) answers with
   `FINAL_OPTION` / `FINAL_ANSWER` lines.
-- `config.EXTRACTOR_MODE` selects `full_text`, `rag` (baselines) or
-  `agentic_graph` (reference mode, a LangGraph state machine).
+- `config.EXTRACTOR_MODE` selects `full_text`, `rag` (baselines),
+  `agentic_graph` (reference mode, a LangGraph state machine) or `raw_record`
+  (no Agent 1 at all).
 - `models.py` holds the Pydantic schema and is the single source of truth for
   section options and their order. Other modules introspect it rather than
   repeating the options.

@@ -117,6 +117,15 @@ def _run_config_snapshot() -> dict:
         A JSON-serialisable dict of the relevant config values.
     """
 
+    # Which model reads the record, by mode. "raw_record" loads none, since the
+    # record reaches Agent 2 unfiltered.
+    if config.EXTRACTOR_MODE == "agentic_graph":
+        extractor_model = config.AGENTIC_LLM_MODEL_NAME
+    elif config.EXTRACTOR_MODE == "raw_record":
+        extractor_model = None
+    else:
+        extractor_model = config.LLM_MODEL_NAME
+
     return {
         "extractor_mode": config.EXTRACTOR_MODE,
         "section_gates_enabled": dict(config.SECTION_GATES_ENABLED),
@@ -126,14 +135,8 @@ def _run_config_snapshot() -> dict:
         # Always applied, never switchable: recorded so a reader does not have
         # to know that to interpret the run.
         "cross_section_rules_applied": True,
-        # In "agentic_graph" Agent 1 runs on AGENTIC_LLM_MODEL_NAME; the other
-        # two modes reach the record through LLM_MODEL_NAME.
         "models": {
-            "extractor": (
-                config.AGENTIC_LLM_MODEL_NAME
-                if config.EXTRACTOR_MODE == "agentic_graph"
-                else config.LLM_MODEL_NAME
-            ),
+            "extractor": extractor_model,
             "evaluator": config.EVALUATOR_LLM_MODEL_NAME,
             "embeddings": config.EMBEDDING_MODEL_NAME,
         },
@@ -214,8 +217,9 @@ def run_pipeline(record_id: str, patient_ehr_path: str, brighton_pdf_path: str):
             section_queries=SECTION_QUERIES,
         )
     else:
-        # Agent 1's model for rag and full_text.
-        llm = build_llm()
+        # Built only by the modes that call Agent 1, so "raw_record" keeps the
+        # extractor out of VRAM.
+        llm = build_llm() if config.EXTRACTOR_MODE in ("rag", "full_text") else None
 
         form_data = {"record_id": record_id}
         audit_log = {}
@@ -236,12 +240,15 @@ def run_pipeline(record_id: str, patient_ehr_path: str, brighton_pdf_path: str):
                 print(f"[{section_key}] Agent 1 (extractor, mode={config.EXTRACTOR_MODE}) searching the clinical record...", flush=True)
                 t0 = time.time()
 
-                # Only "rag" and "full_text" reach this loop; "agentic_graph"
-                # is dispatched separately, above, before this loop runs.
+                # "agentic_graph" is dispatched separately, above, so only the
+                # other three reach this loop. "raw_record" passes the record
+                # unchanged, so every section receives the same text.
                 if config.EXTRACTOR_MODE == "rag":
                     evidence = extract_evidence(llm, ehr_kb, query)
-                else:
+                elif config.EXTRACTOR_MODE == "full_text":
                     evidence = extract_evidence_full_text(llm, patient_ehr_text, query)
+                else:
+                    evidence = patient_ehr_text
                 elapsed = time.time() - t0
                 print(f"[{section_key}] Agent 1 done in {elapsed:.1f}s", flush=True)
                 section_log["evidence"] = evidence
