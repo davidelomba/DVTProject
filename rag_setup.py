@@ -177,6 +177,31 @@ def clean_brighton_context(context: str) -> str:
     return cleaned if cleaned else context
 
 
+def retrieve_brighton_context(brighton_kb: Chroma, query: str) -> str:
+    """The guideline terminology to send with one section, already cleaned.
+
+    Called by every execution mode, so the reference context is built the same
+    way however the evidence was gathered.
+
+    Args:
+        brighton_kb: the guideline vector store.
+        query: the section's retrieval query.
+
+    Returns:
+        The retrieved chunks with bibliography lines stripped, or the empty
+        string when config.BRIGHTON_CONTEXT_ENABLED is False, which
+        agents._build_reasoning_prompt then omits from the prompt.
+    """
+
+    if not config.BRIGHTON_CONTEXT_ENABLED:
+        return ""
+
+    docs = brighton_kb.as_retriever(
+        search_kwargs={"k": config.BRIGHTON_RETRIEVER_K}
+    ).invoke(query)
+    return clean_brighton_context("\n".join(d.page_content for d in docs))
+
+
 def make_ehr_retriever_tool(ehr_vectorstore: Chroma):
     """Wraps the EHR retriever as the tool the agentic extractor calls.
 

@@ -123,6 +123,11 @@ SECTION_KEYWORD_GATES = {
     }
 }
 
+# Whether Agent 2 receives the guideline terminology retrieved for its section.
+# False sends no reference context at all, so the model answers from the
+# evidence and the options alone.
+BRIGHTON_CONTEXT_ENABLED = True
+
 # Master switch for SECTION_HINTS, the counterpart of SECTION_GATES_ENABLED.
 # The hint for F asks for the DETAILS_PRESENT line that apply_details_gate
 # reads, so turning hints off also disables that gate.

@@ -96,6 +96,34 @@ directory to `evaluate_predictions`. `compare_runs ./output ./output_other`
 reports both arms' accuracy side by side and lists the sections where they
 differ, which is the comparison worth reading when only one component changed.
 
+## The reference configuration
+
+Everything the numbers under What the measurements say were produced with. An
+experimental arm changes one line of it and puts the run in its own directory;
+this is what `config.py` goes back to afterwards.
+
+```python
+LLM_MODEL_NAME           = "llama3:8b-instruct-q4_0"
+EVALUATOR_LLM_MODEL_NAME = "qwen3.6:27b"
+AGENTIC_LLM_MODEL_NAME   = "llama3.1:8b-instruct-q4_0"
+LLM_REASONING            = False
+EXTRACTOR_MODE           = "agentic_graph"
+BRIGHTON_CONTEXT_ENABLED = True
+SECTION_HINTS_ENABLED    = True
+SECTION_HINTS_DISABLED   = {"B2"}
+SECTION_GATES_ENABLED    = {"keyword": True, "details": False, "absent_pulses": True}
+```
+
+Check it before every launch, since an arm left in place is how a run gets
+attributed to the wrong configuration:
+
+```bash
+grep -E '^(LLM_MODEL_NAME|EVALUATOR_LLM_MODEL_NAME|AGENTIC_LLM_MODEL_NAME|LLM_REASONING|EXTRACTOR_MODE|BRIGHTON_CONTEXT_ENABLED|SECTION_HINTS_ENABLED|SECTION_HINTS_DISABLED)' config.py
+```
+
+`_run_config` records all of it in every audit log, so a result file can always
+be traced back even when the working copy has moved on.
+
 The ground-truth files hold the same section keys as the pipeline's output, so
 `export_redcap_csv` converts them once they carry a name it parses. That is what
 makes the Level of Certainty measurable:
@@ -285,6 +313,19 @@ Only an outside authority settles the difference.
   records the X question above decides.
 - Test whether the TRANSCRIPTION RULE in `AGENTIC_EXTRACTOR_SYSTEM_PROMPT` does
   anything: it governs a string the code discards.
+- **Does the guideline context do anything?** Never measured.
+  `BRIGHTON_CONTEXT_ENABLED` makes it an ablation. The model names Brighton in
+  its reasoning on 5 sections out of 400, and every case where the context was
+  clearly decisive pushed it toward over-selection: medgemma citing compression
+  ultrasonography as the first-line test on A3.2, SYN_10 citing the guideline's
+  non-specific signs on B1.1, and B2's hint existing to say that the context
+  listing a symptom is not evidence the patient had it. Improving the retrieval
+  before knowing the sign would make the system better at delivering a document
+  that may be hurting it.
+- **Turning off the keyword gate** is a decision waiting on the X question, not
+  on a run: the gate fires 3 times in 400 and those are the three records that
+  question decides. Its effect is exactly reconstructible from the audit logs,
+  for every mode and under both readings, without any GPU time.
 - **Two wrong sections in 400 is past what 40 records can resolve.** Each record
   is worth 0.25 points and the 95% interval on the total is [98, 100], so a
   one-section change is not a measurable difference. What is still worth reading

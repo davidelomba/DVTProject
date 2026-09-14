@@ -23,7 +23,7 @@ from rag_setup import (
     make_ehr_retriever_tool,
     load_brighton_pdf_text,
     load_ehr_text,
-    clean_brighton_context,
+    retrieve_brighton_context,
 )
 from agents import build_llm, evaluate_section, extract_evidence, extract_evidence_full_text
 from criteria_rules import apply_section_gates, apply_cross_section_rules
@@ -129,6 +129,7 @@ def _run_config_snapshot() -> dict:
     return {
         "extractor_mode": config.EXTRACTOR_MODE,
         "section_gates_enabled": dict(config.SECTION_GATES_ENABLED),
+        "brighton_context_enabled": config.BRIGHTON_CONTEXT_ENABLED,
         "section_hints_enabled": config.SECTION_HINTS_ENABLED,
         "section_hints_disabled": sorted(config.SECTION_HINTS_DISABLED),
         "section_hints_fingerprint": _hint_fingerprint(),
@@ -254,12 +255,7 @@ def run_pipeline(record_id: str, patient_ehr_path: str, brighton_pdf_path: str):
                 section_log["evidence"] = evidence
                 section_log["agent1_seconds"] = round(elapsed, 1)
 
-                # Brighton context relevant to this section, with
-                # bibliography stripped (see rag_setup.clean_brighton_context).
-                brighton_docs = brighton_kb.as_retriever(search_kwargs={"k": config.BRIGHTON_RETRIEVER_K}).invoke(query)
-                brighton_context = clean_brighton_context(
-                    "\n".join(d.page_content for d in brighton_docs)
-                )
+                brighton_context = retrieve_brighton_context(brighton_kb, query)
                 section_log["brighton_context"] = brighton_context
 
                 # Agent 2: evaluation constrained to the section's Pydantic schema
