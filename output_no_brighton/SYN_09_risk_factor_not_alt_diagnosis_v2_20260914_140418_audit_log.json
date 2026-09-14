@@ -1,0 +1,175 @@
+{
+  "A1": {
+    "query": "autopsy report, necropsy, post-mortem examination, autoptic findings",
+    "evidence": "palpazione. Addome trattabile, non dolente. Esami di laboratorio: D-dimero 1.500 ng/mL, superiore al limite superiore di riferimento del laboratorio. Eseguito ecocolordoppler venoso dell'arto inferiore sinistro: trombosi venosa della vena poplitea sinistra. Non e' stata identificata alcuna diagnosi alternativa; il volo prolungato e la terapia ormonale sono annotati in anamnesi come fattori di rischio.\n\nAnamnesi patologica remota: Donna di 34 anni, in terapia ormonale contraccettiva da 2 anni. Nessun intervento chirurgico recente. Non allergie farmacologiche note. Riferisce volo intercontinentale di 12 ore effettuato 6 giorni prima dell'esordio dei sintomi. Anamnesi Prossima: Da 3 giorni dolore al polpaccio sinistro con edema progressivo dell'arto inferiore omolaterale. Nega trauma, febbre, dolore toracico e dispnea. Esame obiettivo all'ingresso: Paziente vigile, orientata e collaborante. PA 116/72 mmHg, FC 78 bpm, FR 15 atti/min, SpO2 99% in aria ambiente, TC 36,5°C. Arto inferiore sinistro con edema del polpaccio e dolorabilita' alla palpazione. Addome trattabile, non dolente. Esami di laboratorio: D-dimero 1.500 ng/mL, superiore al limite superiore di riferimento del laboratorio.",
+    "agent1_seconds": 6.9,
+    "brighton_context": "",
+    "agent2_seconds": 16.2,
+    "answer_conflict": null,
+    "reasoning": "The evidence describes a living patient undergoing clinical evaluation, including physical examination, laboratory tests (D-dimer), and imaging (venous color Doppler ultrasound) which confirmed a popliteal vein thrombosis. The prompt explicitly states that \"Only post-mortem findings count here\" and that imaging on a living patient is not an autopsy. Since the patient is alive and no autopsy was performed or mentioned, the correct classification is that no autopsy was done.\n\nFINAL_OPTION: No autopsy done, unknown if done, or done but results unavailable\nFINAL_ANSWER: 3",
+    "result": {
+      "answer": "No autopsy done, unknown if done, or done but results unavailable"
+    }
+  },
+  "A2": {
+    "query": "thrombectomy, surgical procedure related to DVT",
+    "evidence": "palpazione. Addome trattabile, non dolente. Esami di laboratorio: D-dimero 1.500 ng/mL, superiore al limite superiore di riferimento del laboratorio. Eseguito ecocolordoppler venoso dell'arto inferiore sinistro: trombosi venosa della vena poplitea sinistra. Non e' stata identificata alcuna diagnosi alternativa; il volo prolungato e la terapia ormonale sono annotati in anamnesi come fattori di rischio.\n\nAnamnesi patologica remota: Donna di 34 anni, in terapia ormonale contraccettiva da 2 anni. Nessun intervento chirurgico recente. Non allergie farmacologiche note. Riferisce volo intercontinentale di 12 ore effettuato 6 giorni prima dell'esordio dei sintomi. Anamnesi Prossima: Da 3 giorni dolore al polpaccio sinistro con edema progressivo dell'arto inferiore omolaterale. Nega trauma, febbre, dolore toracico e dispnea. Esame obiettivo all'ingresso: Paziente vigile, orientata e collaborante. PA 116/72 mmHg, FC 78 bpm, FR 15 atti/min, SpO2 99% in aria ambiente, TC 36,5°C. Arto inferiore sinistro con edema del polpaccio e dolorabilita' alla palpazione. Addome trattabile, non dolente. Esami di laboratorio: D-dimero 1.500 ng/mL, superiore al limite superiore di riferimento del laboratorio.",
+    "agent1_seconds": 7.0,
+    "brighton_context": "",
+    "agent2_seconds": 16.7,
+    "answer_conflict": null,
+    "reasoning": "The evidence explicitly states \"Nessun intervento chirurgico recente\" (No recent surgical intervention) in the remote pathological history and does not mention any surgical procedure being performed during the current admission. The diagnosis of DVT was confirmed via venous color Doppler ultrasound (\"ecocolordoppler\"), which is an imaging modality, not a surgical procedure or thrombectomy. Therefore, no surgical procedure related to DVT treatment or confirmation was performed.\n\nFINAL_OPTION: No surgical procedure done; or, done but either did not confirm presence of DVT or findings unknown; or unknown if done\nFINAL_ANSWER: 3",
+    "result": {
+      "answer": "No surgical procedure done; or, done but either did not confirm presence of DVT or findings unknown; or unknown if done"
+    }
+  },
+  "A3_1": {
+    "query": "ultrasound, CT, MRI, venography: imaging outcome for deep vein thrombosis",
+    "evidence": "palpazione. Addome trattabile, non dolente. Esami di laboratorio: D-dimero 1.500 ng/mL, superiore al limite superiore di riferimento del laboratorio. Eseguito ecocolordoppler venoso dell'arto inferiore sinistro: trombosi venosa della vena poplitea sinistra. Non e' stata identificata alcuna diagnosi alternativa; il volo prolungato e la terapia ormonale sono annotati in anamnesi come fattori di rischio.\n\nAnamnesi patologica remota: Donna di 34 anni, in terapia ormonale contraccettiva da 2 anni. Nessun intervento chirurgico recente. Non allergie farmacologiche note. Riferisce volo intercontinentale di 12 ore effettuato 6 giorni prima dell'esordio dei sintomi. Anamnesi Prossima: Da 3 giorni dolore al polpaccio sinistro con edema progressivo dell'arto inferiore omolaterale. Nega trauma, febbre, dolore toracico e dispnea. Esame obiettivo all'ingresso: Paziente vigile, orientata e collaborante. PA 116/72 mmHg, FC 78 bpm, FR 15 atti/min, SpO2 99% in aria ambiente, TC 36,5°C. Arto inferiore sinistro con edema del polpaccio e dolorabilita' alla palpazione. Addome trattabile, non dolente. Esami di laboratorio: D-dimero 1.500 ng/mL, superiore al limite superiore di riferimento del laboratorio.",
+    "agent1_seconds": 7.0,
+    "brighton_context": "",
+    "agent2_seconds": 16.2,
+    "answer_conflict": null,
+    "reasoning": "The evidence explicitly states that a venous color Doppler ultrasound of the left lower limb was performed (\"Eseguito ecocolordoppler venoso dell'arto inferiore sinistro\"). The result of this imaging study identified thrombosis in the left popliteal vein (\"trombosi venosa della vena poplitea sinistra\"), which confirms Deep Vein Thrombosis (DVT). Therefore, an imaging study was done and it confirmed DVT.\n\nFINAL_OPTION: ≥1 imaging study was done and confirmed DVT\nFINAL_ANSWER: 1",
+    "result": {
+      "answer": "≥1 imaging study was done and confirmed DVT"
+    }
+  },
+  "A3_2": {
+    "query": "type of imaging study performed: compression ultrasonography, doppler, venography",
+    "evidence": "palpazione. Addome trattabile, non dolente. Esami di laboratorio: D-dimero 1.500 ng/mL, superiore al limite superiore di riferimento del laboratorio. Eseguito ecocolordoppler venoso dell'arto inferiore sinistro: trombosi venosa della vena poplitea sinistra. Non e' stata identificata alcuna diagnosi alternativa; il volo prolungato e la terapia ormonale sono annotati in anamnesi come fattori di rischio.\n\nAnamnesi patologica remota: Donna di 34 anni, in terapia ormonale contraccettiva da 2 anni. Nessun intervento chirurgico recente. Non allergie farmacologiche note. Riferisce volo intercontinentale di 12 ore effettuato 6 giorni prima dell'esordio dei sintomi. Anamnesi Prossima: Da 3 giorni dolore al polpaccio sinistro con edema progressivo dell'arto inferiore omolaterale. Nega trauma, febbre, dolore toracico e dispnea. Esame obiettivo all'ingresso: Paziente vigile, orientata e collaborante. PA 116/72 mmHg, FC 78 bpm, FR 15 atti/min, SpO2 99% in aria ambiente, TC 36,5°C. Arto inferiore sinistro con edema del polpaccio e dolorabilita' alla palpazione. Addome trattabile, non dolente. Esami di laboratorio: D-dimero 1.500 ng/mL, superiore al limite superiore di riferimento del laboratorio.",
+    "agent1_seconds": 6.8,
+    "brighton_context": "",
+    "agent2_seconds": 16.7,
+    "answer_conflict": null,
+    "reasoning": "The evidence explicitly states \"Eseguito ecocolordoppler venoso dell'arto inferiore sinistro\" (Venous color Doppler ultrasound of the left lower limb was performed). This modality corresponds to Doppler/Duplex Ultrasound. The text does not mention compression ultrasonography as a distinct separate test, nor does it mention CT/MR venography, contrast venography, or any other imaging modality. Therefore, only option 4 is supported by the evidence.\n\nFINAL_OPTION: Doppler/Duplex Ultrasound\nFINAL_ANSWER: 4",
+    "result": {
+      "studies": [
+        "Doppler/Duplex Ultrasound"
+      ]
+    }
+  },
+  "B1_1": {
+    "query": "reported symptoms or signs of deep vein thrombosis",
+    "evidence": "palpazione. Addome trattabile, non dolente. Esami di laboratorio: D-dimero 1.500 ng/mL, superiore al limite superiore di riferimento del laboratorio. Eseguito ecocolordoppler venoso dell'arto inferiore sinistro: trombosi venosa della vena poplitea sinistra. Non e' stata identificata alcuna diagnosi alternativa; il volo prolungato e la terapia ormonale sono annotati in anamnesi come fattori di rischio.\n\nAnamnesi patologica remota: Donna di 34 anni, in terapia ormonale contraccettiva da 2 anni. Nessun intervento chirurgico recente. Non allergie farmacologiche note. Riferisce volo intercontinentale di 12 ore effettuato 6 giorni prima dell'esordio dei sintomi. Anamnesi Prossima: Da 3 giorni dolore al polpaccio sinistro con edema progressivo dell'arto inferiore omolaterale. Nega trauma, febbre, dolore toracico e dispnea. Esame obiettivo all'ingresso: Paziente vigile, orientata e collaborante. PA 116/72 mmHg, FC 78 bpm, FR 15 atti/min, SpO2 99% in aria ambiente, TC 36,5°C. Arto inferiore sinistro con edema del polpaccio e dolorabilita' alla palpazione. Addome trattabile, non dolente. Esami di laboratorio: D-dimero 1.500 ng/mL, superiore al limite superiore di riferimento del laboratorio.",
+    "agent1_seconds": 7.0,
+    "brighton_context": "",
+    "agent2_seconds": 18.3,
+    "answer_conflict": null,
+    "reasoning": "The evidence explicitly describes the patient's clinical presentation in the \"Anamnesi Prossima\" and \"Esame obiettivo\" sections. It states that the patient reported \"dolore al polpaccio sinistro\" (left calf pain) and had \"edema progressivo dell'arto inferiore omolaterale\" (progressive edema of the ipsilateral lower limb). Additionally, the physical exam noted \"edema del polpaccio e dolorabilita' alla palpazione\" (calf edema and tenderness on palpation). These are recognized signs and symptoms of Deep Vein Thrombosis (DVT). Therefore, there is a clear report of DVT symptoms.\n\nFINAL_OPTION: ≥1 symptom or sign of DVT was reported\nFINAL_ANSWER: 1",
+    "result": {
+      "answer": "≥1 symptom or sign of DVT was reported"
+    }
+  },
+  "B1_2": {
+    "query": "deep vein thrombosis lower extremity or upper extremity",
+    "evidence": "palpazione. Addome trattabile, non dolente. Esami di laboratorio: D-dimero 1.500 ng/mL, superiore al limite superiore di riferimento del laboratorio. Eseguito ecocolordoppler venoso dell'arto inferiore sinistro: trombosi venosa della vena poplitea sinistra. Non e' stata identificata alcuna diagnosi alternativa; il volo prolungato e la terapia ormonale sono annotati in anamnesi come fattori di rischio.\n\nAnamnesi patologica remota: Donna di 34 anni, in terapia ormonale contraccettiva da 2 anni. Nessun intervento chirurgico recente. Non allergie farmacologiche note. Riferisce volo intercontinentale di 12 ore effettuato 6 giorni prima dell'esordio dei sintomi. Anamnesi Prossima: Da 3 giorni dolore al polpaccio sinistro con edema progressivo dell'arto inferiore omolaterale. Nega trauma, febbre, dolore toracico e dispnea. Esame obiettivo all'ingresso: Paziente vigile, orientata e collaborante. PA 116/72 mmHg, FC 78 bpm, FR 15 atti/min, SpO2 99% in aria ambiente, TC 36,5°C. Arto inferiore sinistro con edema del polpaccio e dolorabilita' alla palpazione. Addome trattabile, non dolente. Esami di laboratorio: D-dimero 1.500 ng/mL, superiore al limite superiore di riferimento del laboratorio.",
+    "agent1_seconds": 7.1,
+    "brighton_context": "",
+    "agent2_seconds": 16.8,
+    "answer_conflict": null,
+    "reasoning": "The evidence explicitly states that a venous color Doppler ultrasound of the left lower limb was performed (\"Eseguito ecocolordoppler venoso dell'arto inferiore sinistro\") and confirmed \"trombosi venosa della vena poplitea sinistra\" (venous thrombosis of the left popliteal vein). The popliteal vein is located in the lower extremity. Therefore, this confirms a Lower extremity DVT. There is no mention of thrombosis in the upper extremities.\n\nFINAL_OPTION: Lower extremity DVT\nFINAL_ANSWER: 1",
+    "result": {
+      "types": [
+        "Lower extremity DVT"
+      ]
+    }
+  },
+  "B2": {
+    "query": "calf pain, swelling, oedema, redness, warmth, absent pulses",
+    "evidence": "Anamnesi patologica remota: Donna di 34 anni, in terapia ormonale contraccettiva da 2 anni. Nessun intervento chirurgico recente. Non allergie farmacologiche note. Riferisce volo intercontinentale di 12 ore effettuato 6 giorni prima dell'esordio dei sintomi. Anamnesi Prossima: Da 3 giorni dolore al polpaccio sinistro con edema progressivo dell'arto inferiore omolaterale. Nega trauma, febbre, dolore toracico e dispnea. Esame obiettivo all'ingresso: Paziente vigile, orientata e collaborante. PA 116/72 mmHg, FC 78 bpm, FR 15 atti/min, SpO2 99% in aria ambiente, TC 36,5°C. Arto inferiore sinistro con edema del polpaccio e dolorabilita' alla palpazione. Addome trattabile, non dolente. Esami di laboratorio: D-dimero 1.500 ng/mL, superiore al limite superiore di riferimento del laboratorio.\n\npalpazione. Addome trattabile, non dolente. Esami di laboratorio: D-dimero 1.500 ng/mL, superiore al limite superiore di riferimento del laboratorio. Eseguito ecocolordoppler venoso dell'arto inferiore sinistro: trombosi venosa della vena poplitea sinistra. Non e' stata identificata alcuna diagnosi alternativa; il volo prolungato e la terapia ormonale sono annotati in anamnesi come fattori di rischio.",
+    "agent1_seconds": 7.1,
+    "brighton_context": "",
+    "agent2_seconds": 19.7,
+    "answer_conflict": null,
+    "reasoning": "The evidence explicitly states \"dolore al polpaccio sinistro\" (pain in the left calf) and \"dolorabilita' alla palpazione\" (tenderness upon palpation), which directly supports Option 1 (Calf pain or tenderness). Additionally, the text mentions \"edema progressivo dell'arto inferiore omolaterale\" (progressive edema of the ipsilateral lower limb) and \"edema del polpaccio\" (calf edema), which supports Option 2 (Leg swelling or pitting oedema). The evidence does not mention absent pulses, nor does it describe redness or warmth; while pain is present, the specific combination of redness/warmth required for Option 4 is not described. Therefore, only options 1 and 2 are supported by the text.\n\nFINAL_OPTION: Calf pain or tenderness; Leg swelling or pitting oedema\nFINAL_ANSWER: 1; 2",
+    "result": {
+      "symptoms": [
+        "Calf pain or tenderness",
+        "Leg swelling or pitting oedema"
+      ]
+    }
+  },
+  "C": {
+    "query": "D-dimer value, test date, laboratory upper limit of normal",
+    "evidence": "palpazione. Addome trattabile, non dolente. Esami di laboratorio: D-dimero 1.500 ng/mL, superiore al limite superiore di riferimento del laboratorio. Eseguito ecocolordoppler venoso dell'arto inferiore sinistro: trombosi venosa della vena poplitea sinistra. Non e' stata identificata alcuna diagnosi alternativa; il volo prolungato e la terapia ormonale sono annotati in anamnesi come fattori di rischio.\n\nAnamnesi patologica remota: Donna di 34 anni, in terapia ormonale contraccettiva da 2 anni. Nessun intervento chirurgico recente. Non allergie farmacologiche note. Riferisce volo intercontinentale di 12 ore effettuato 6 giorni prima dell'esordio dei sintomi. Anamnesi Prossima: Da 3 giorni dolore al polpaccio sinistro con edema progressivo dell'arto inferiore omolaterale. Nega trauma, febbre, dolore toracico e dispnea. Esame obiettivo all'ingresso: Paziente vigile, orientata e collaborante. PA 116/72 mmHg, FC 78 bpm, FR 15 atti/min, SpO2 99% in aria ambiente, TC 36,5°C. Arto inferiore sinistro con edema del polpaccio e dolorabilita' alla palpazione. Addome trattabile, non dolente. Esami di laboratorio: D-dimero 1.500 ng/mL, superiore al limite superiore di riferimento del laboratorio.",
+    "agent1_seconds": 7.0,
+    "brighton_context": "",
+    "agent2_seconds": 15.4,
+    "answer_conflict": null,
+    "reasoning": "The evidence explicitly states \"D-dimero 1.500 ng/mL, superiore al limite superiore di riferimento del laboratorio\" (D-dimer 1,500 ng/mL, above the upper limit of reference of the laboratory). This confirms that the D-dimer was tested and the result exceeded the laboratory's upper limit of normal.\n\nFINAL_OPTION: D-dimer exceeded test lab's upper limit of normal.\nFINAL_ANSWER: 1",
+    "result": {
+      "answer": "D-dimer exceeded test lab's upper limit of normal."
+    }
+  },
+  "F": {
+    "query": "diagnosis of deep vein thrombosis reported by specialist",
+    "evidence": "palpazione. Addome trattabile, non dolente. Esami di laboratorio: D-dimero 1.500 ng/mL, superiore al limite superiore di riferimento del laboratorio. Eseguito ecocolordoppler venoso dell'arto inferiore sinistro: trombosi venosa della vena poplitea sinistra. Non e' stata identificata alcuna diagnosi alternativa; il volo prolungato e la terapia ormonale sono annotati in anamnesi come fattori di rischio.\n\nAnamnesi patologica remota: Donna di 34 anni, in terapia ormonale contraccettiva da 2 anni. Nessun intervento chirurgico recente. Non allergie farmacologiche note. Riferisce volo intercontinentale di 12 ore effettuato 6 giorni prima dell'esordio dei sintomi. Anamnesi Prossima: Da 3 giorni dolore al polpaccio sinistro con edema progressivo dell'arto inferiore omolaterale. Nega trauma, febbre, dolore toracico e dispnea. Esame obiettivo all'ingresso: Paziente vigile, orientata e collaborante. PA 116/72 mmHg, FC 78 bpm, FR 15 atti/min, SpO2 99% in aria ambiente, TC 36,5°C. Arto inferiore sinistro con edema del polpaccio e dolorabilita' alla palpazione. Addome trattabile, non dolente. Esami di laboratorio: D-dimero 1.500 ng/mL, superiore al limite superiore di riferimento del laboratorio.",
+    "agent1_seconds": 7.1,
+    "brighton_context": "",
+    "agent2_seconds": 17.5,
+    "answer_conflict": null,
+    "reasoning": "DETAILS_PRESENT: yes\n\nThe evidence explicitly reports specific clinical findings supporting the diagnosis of DVT. It details the results of a venous color Doppler ultrasound (\"Eseguito ecocolordoppler venoso dell'arto inferiore sinistro\") which identified \"trombosi venosa della vena poplitea sinistra\" (venous thrombosis of the left popliteal vein). Additionally, it provides specific laboratory values (D-dimer 1.500 ng/mL) and physical examination findings (edema, pain on palpation). Since these are specific supporting details rather than a bare conclusion, the diagnosis was not reported without details.\n\nFINAL_OPTION: No\nFINAL_ANSWER: 2",
+    "result": {
+      "answer": "No"
+    }
+  },
+  "X": {
+    "query": "possible alternative etiologies; clinical syndromes to be differentiated from thrombosis; conditions explaining calf pain, redness, warmth or ankle edema other than DVT",
+    "evidence": "palpazione. Addome trattabile, non dolente. Esami di laboratorio: D-dimero 1.500 ng/mL, superiore al limite superiore di riferimento del laboratorio. Eseguito ecocolordoppler venoso dell'arto inferiore sinistro: trombosi venosa della vena poplitea sinistra. Non e' stata identificata alcuna diagnosi alternativa; il volo prolungato e la terapia ormonale sono annotati in anamnesi come fattori di rischio.\n\nAnamnesi patologica remota: Donna di 34 anni, in terapia ormonale contraccettiva da 2 anni. Nessun intervento chirurgico recente. Non allergie farmacologiche note. Riferisce volo intercontinentale di 12 ore effettuato 6 giorni prima dell'esordio dei sintomi. Anamnesi Prossima: Da 3 giorni dolore al polpaccio sinistro con edema progressivo dell'arto inferiore omolaterale. Nega trauma, febbre, dolore toracico e dispnea. Esame obiettivo all'ingresso: Paziente vigile, orientata e collaborante. PA 116/72 mmHg, FC 78 bpm, FR 15 atti/min, SpO2 99% in aria ambiente, TC 36,5°C. Arto inferiore sinistro con edema del polpaccio e dolorabilita' alla palpazione. Addome trattabile, non dolente. Esami di laboratorio: D-dimero 1.500 ng/mL, superiore al limite superiore di riferimento del laboratorio.",
+    "agent1_seconds": 7.1,
+    "brighton_context": "",
+    "agent2_seconds": 15.9,
+    "answer_conflict": null,
+    "reasoning": "The evidence explicitly states \"Non e' stata identificata alcuna diagnosi alternativa\" (No alternative diagnosis was identified). The patient's symptoms (calf pain, edema) and findings (positive D-dimer, ultrasound confirmation of popliteal vein thrombosis) are fully explained by the Deep Vein Thrombosis (DVT). There is no mention of any other disease process being diagnosed as the cause of the acute illness.\n\nFINAL_OPTION: No alternative diagnosis was found to explain the acute illness\nFINAL_ANSWER: 2",
+    "result": {
+      "answer": "No alternative diagnosis was found to explain the acute illness"
+    }
+  },
+  "_run_config": {
+    "extractor_mode": "agentic_graph",
+    "section_gates_enabled": {
+      "keyword": true,
+      "details": false,
+      "absent_pulses": true
+    },
+    "brighton_context_enabled": false,
+    "section_hints_enabled": true,
+    "section_hints_disabled": [
+      "B2"
+    ],
+    "section_hints_fingerprint": {
+      "A1": "94 fc56153ea429",
+      "A2": "226 c42c3b188a45",
+      "A3_1": "277 c59144334788",
+      "A3_2": "143 023c43c73783",
+      "B1_1": "513 a65c3a0069c5",
+      "C": "342 7e8efb23dfc0",
+      "F": "1216 4d54ff2a7269",
+      "X": "260 e4ce4dddf649",
+      "all": "ab63b8e5f5af"
+    },
+    "cross_section_rules_applied": true,
+    "models": {
+      "extractor": "llama3.1:8b-instruct-q4_0",
+      "evaluator": "qwen3.6:27b",
+      "embeddings": "intfloat/multilingual-e5-small"
+    },
+    "environment": {
+      "hostname": "mari",
+      "ollama_version": "ollama version is 0.32.1"
+    },
+    "generation": {
+      "temperature": 0.0,
+      "num_predict": 1024,
+      "num_gpu": 999,
+      "reasoning": false
+    },
+    "retrieval": {
+      "ehr_chunk_size": 800,
+      "ehr_chunk_overlap": 150,
+      "ehr_retriever_k": 5,
+      "brighton_retriever_k": 5
+    }
+  }
+}

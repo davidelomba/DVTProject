@@ -1,0 +1,176 @@
+{
+  "A1": {
+    "query": "autopsy report, necropsy, post-mortem examination, autoptic findings",
+    "evidence": "dolorabilita' alla palpazione del polpaccio. Polsi periferici (pedidio e tibiale posteriore) non palpabili all'arto inferiore sinistro. Esami di laboratorio: D-dimero 5.200 ng/mL, superiore al limite superiore di riferimento del laboratorio. Eseguito ecocolordoppler venoso: trombosi venosa ileo-femorale sinistra estesa, quadro compatibile con flegmasia cerulea dolens.\n\nAnamnesi patologica remota: Uomo di 63 anni. Nessun intervento chirurgico recente. Non allergie farmacologiche note. Anamnesi farmacologica: ramipril 5 mg, atorvastatina 20 mg. Anamnesi Prossima: Da 12 ore edema massivo e dolore severo al polpaccio e all'intero arto inferiore sinistro, con cute cianotica. Nega trauma recente, febbre, dolore toracico e dispnea. Accede in Pronto Soccorso per il rapido peggioramento del quadro. Esame obiettivo all'ingresso: Paziente vigile, orientato e collaborante. PA 134/84 mmHg, FC 96 bpm, FR 18 atti/min, SpO2 97% in aria ambiente, TC 36,8°C. Arto inferiore sinistro con edema massivo e cute cianotica; marcata dolorabilita' alla palpazione del polpaccio. Polsi periferici (pedidio e tibiale posteriore) non palpabili all'arto inferiore sinistro. Esami di",
+    "agent1_seconds": 7.3,
+    "brighton_context": "",
+    "agent2_seconds": 18.2,
+    "answer_conflict": null,
+    "reasoning": "The evidence describes a living patient presenting to the Emergency Department with symptoms and imaging findings consistent with deep vein thrombosis (DVT) and phlegmasia cerulea dolens. The diagnosis was confirmed via venous color Doppler ultrasound (\"ecocolordoppler venoso\") performed on the living patient. There is no mention of the patient's death, nor any description of an autopsy being performed. Since the question specifically asks about post-mortem findings (autopsy) and explicitly states that imaging on a living patient does not count as an autopsy, and no autopsy is mentioned in the text, the correct classification is that no autopsy was done or its status is unknown.\n\nFINAL_OPTION: No autopsy done, unknown if done, or done but results unavailable\nFINAL_ANSWER: 3",
+    "result": {
+      "answer": "No autopsy done, unknown if done, or done but results unavailable"
+    }
+  },
+  "A2": {
+    "query": "thrombectomy, surgical procedure related to DVT",
+    "evidence": "dolorabilita' alla palpazione del polpaccio. Polsi periferici (pedidio e tibiale posteriore) non palpabili all'arto inferiore sinistro. Esami di laboratorio: D-dimero 5.200 ng/mL, superiore al limite superiore di riferimento del laboratorio. Eseguito ecocolordoppler venoso: trombosi venosa ileo-femorale sinistra estesa, quadro compatibile con flegmasia cerulea dolens.\n\nAnamnesi patologica remota: Uomo di 63 anni. Nessun intervento chirurgico recente. Non allergie farmacologiche note. Anamnesi farmacologica: ramipril 5 mg, atorvastatina 20 mg. Anamnesi Prossima: Da 12 ore edema massivo e dolore severo al polpaccio e all'intero arto inferiore sinistro, con cute cianotica. Nega trauma recente, febbre, dolore toracico e dispnea. Accede in Pronto Soccorso per il rapido peggioramento del quadro. Esame obiettivo all'ingresso: Paziente vigile, orientato e collaborante. PA 134/84 mmHg, FC 96 bpm, FR 18 atti/min, SpO2 97% in aria ambiente, TC 36,8°C. Arto inferiore sinistro con edema massivo e cute cianotica; marcata dolorabilita' alla palpazione del polpaccio. Polsi periferici (pedidio e tibiale posteriore) non palpabili all'arto inferiore sinistro. Esami di",
+    "agent1_seconds": 7.2,
+    "brighton_context": "",
+    "agent2_seconds": 19.1,
+    "answer_conflict": null,
+    "reasoning": "The evidence describes a patient presenting with symptoms of deep vein thrombosis (DVT) and flegmasia cerulea dolens, confirmed by venous color Doppler ultrasound. The text explicitly states \"Nessun intervento chirurgico recente\" (No recent surgical intervention) in the remote pathological history. Furthermore, the provided clinical record details the presentation, physical exam, laboratory results, and diagnostic imaging (ultrasound), but it does not mention that a thrombectomy or any other surgical procedure was performed during this admission. Since there is no evidence of a surgical procedure being performed to confirm or treat the DVT in this specific encounter, and the prompt requires strict adherence to explicit mentions or negations, we must conclude that no such procedure is documented as having been done.\n\nFINAL_OPTION: No surgical procedure done; or, done but either did not confirm presence of DVT or findings unknown; or unknown if done\nFINAL_ANSWER: 3",
+    "result": {
+      "answer": "No surgical procedure done; or, done but either did not confirm presence of DVT or findings unknown; or unknown if done"
+    }
+  },
+  "A3_1": {
+    "query": "ultrasound, CT, MRI, venography: imaging outcome for deep vein thrombosis",
+    "evidence": "dolorabilita' alla palpazione del polpaccio. Polsi periferici (pedidio e tibiale posteriore) non palpabili all'arto inferiore sinistro. Esami di laboratorio: D-dimero 5.200 ng/mL, superiore al limite superiore di riferimento del laboratorio. Eseguito ecocolordoppler venoso: trombosi venosa ileo-femorale sinistra estesa, quadro compatibile con flegmasia cerulea dolens.\n\nAnamnesi patologica remota: Uomo di 63 anni. Nessun intervento chirurgico recente. Non allergie farmacologiche note. Anamnesi farmacologica: ramipril 5 mg, atorvastatina 20 mg. Anamnesi Prossima: Da 12 ore edema massivo e dolore severo al polpaccio e all'intero arto inferiore sinistro, con cute cianotica. Nega trauma recente, febbre, dolore toracico e dispnea. Accede in Pronto Soccorso per il rapido peggioramento del quadro. Esame obiettivo all'ingresso: Paziente vigile, orientato e collaborante. PA 134/84 mmHg, FC 96 bpm, FR 18 atti/min, SpO2 97% in aria ambiente, TC 36,8°C. Arto inferiore sinistro con edema massivo e cute cianotica; marcata dolorabilita' alla palpazione del polpaccio. Polsi periferici (pedidio e tibiale posteriore) non palpabili all'arto inferiore sinistro. Esami di",
+    "agent1_seconds": 7.1,
+    "brighton_context": "",
+    "agent2_seconds": 16.1,
+    "answer_conflict": null,
+    "reasoning": "The evidence explicitly states that a venous color Doppler ultrasound (\"ecocolordoppler venoso\") was performed. The results of this imaging study showed \"trombosi venosa ileo-femorale sinistra estesa\" (extensive left iliofemoral venous thrombosis), which confirms the presence of Deep Vein Thrombosis (DVT). Therefore, an imaging study was done and it confirmed DVT.\n\nFINAL_OPTION: ≥1 imaging study was done and confirmed DVT\nFINAL_ANSWER: 1",
+    "result": {
+      "answer": "≥1 imaging study was done and confirmed DVT"
+    }
+  },
+  "A3_2": {
+    "query": "type of imaging study performed: compression ultrasonography, doppler, venography",
+    "evidence": "dolorabilita' alla palpazione del polpaccio. Polsi periferici (pedidio e tibiale posteriore) non palpabili all'arto inferiore sinistro. Esami di laboratorio: D-dimero 5.200 ng/mL, superiore al limite superiore di riferimento del laboratorio. Eseguito ecocolordoppler venoso: trombosi venosa ileo-femorale sinistra estesa, quadro compatibile con flegmasia cerulea dolens.\n\nAnamnesi patologica remota: Uomo di 63 anni. Nessun intervento chirurgico recente. Non allergie farmacologiche note. Anamnesi farmacologica: ramipril 5 mg, atorvastatina 20 mg. Anamnesi Prossima: Da 12 ore edema massivo e dolore severo al polpaccio e all'intero arto inferiore sinistro, con cute cianotica. Nega trauma recente, febbre, dolore toracico e dispnea. Accede in Pronto Soccorso per il rapido peggioramento del quadro. Esame obiettivo all'ingresso: Paziente vigile, orientato e collaborante. PA 134/84 mmHg, FC 96 bpm, FR 18 atti/min, SpO2 97% in aria ambiente, TC 36,8°C. Arto inferiore sinistro con edema massivo e cute cianotica; marcata dolorabilita' alla palpazione del polpaccio. Polsi periferici (pedidio e tibiale posteriore) non palpabili all'arto inferiore sinistro. Esami di",
+    "agent1_seconds": 6.9,
+    "brighton_context": "",
+    "agent2_seconds": 17.2,
+    "answer_conflict": null,
+    "reasoning": "The evidence explicitly states \"Eseguito ecocolordoppler venoso\" (Venous color Doppler ultrasound performed). This confirms the diagnosis of left iliofemoral venous thrombosis. Color Doppler ultrasound falls under the category of Doppler/Duplex Ultrasound. There is no mention of compression ultrasonography being specifically distinguished from the Doppler study, nor are CT/MR venography, contrast venography, or other modalities mentioned as the primary diagnostic tool for this finding. Therefore, only option 4 applies.\n\nFINAL_OPTION: Doppler/Duplex Ultrasound\nFINAL_ANSWER: 4",
+    "result": {
+      "studies": [
+        "Doppler/Duplex Ultrasound"
+      ]
+    }
+  },
+  "B1_1": {
+    "query": "reported symptoms or signs of deep vein thrombosis",
+    "evidence": "dolorabilita' alla palpazione del polpaccio. Polsi periferici (pedidio e tibiale posteriore) non palpabili all'arto inferiore sinistro. Esami di laboratorio: D-dimero 5.200 ng/mL, superiore al limite superiore di riferimento del laboratorio. Eseguito ecocolordoppler venoso: trombosi venosa ileo-femorale sinistra estesa, quadro compatibile con flegmasia cerulea dolens.\n\nAnamnesi patologica remota: Uomo di 63 anni. Nessun intervento chirurgico recente. Non allergie farmacologiche note. Anamnesi farmacologica: ramipril 5 mg, atorvastatina 20 mg. Anamnesi Prossima: Da 12 ore edema massivo e dolore severo al polpaccio e all'intero arto inferiore sinistro, con cute cianotica. Nega trauma recente, febbre, dolore toracico e dispnea. Accede in Pronto Soccorso per il rapido peggioramento del quadro. Esame obiettivo all'ingresso: Paziente vigile, orientato e collaborante. PA 134/84 mmHg, FC 96 bpm, FR 18 atti/min, SpO2 97% in aria ambiente, TC 36,8°C. Arto inferiore sinistro con edema massivo e cute cianotica; marcata dolorabilita' alla palpazione del polpaccio. Polsi periferici (pedidio e tibiale posteriore) non palpabili all'arto inferiore sinistro. Esami di",
+    "agent1_seconds": 7.2,
+    "brighton_context": "",
+    "agent2_seconds": 17.6,
+    "answer_conflict": null,
+    "reasoning": "The evidence explicitly reports multiple signs and symptoms consistent with Deep Vein Thrombosis (DVT), including \"dolorabilita' alla palpazione del polpaccio\" (calf tenderness on palpation), \"edema massivo\" (massive edema) of the left lower limb, and \"cute cianotica\" (cyanotic skin). Additionally, the patient denies chest pain and dyspnea, but the presence of leg swelling, pain, and cyanosis constitutes a report of recognized DVT signs/symptoms. Therefore, it is not unknown, nor is there an absence of such reports.\n\nFINAL_OPTION: ≥1 symptom or sign of DVT was reported\nFINAL_ANSWER: 1",
+    "result": {
+      "answer": "≥1 symptom or sign of DVT was reported"
+    }
+  },
+  "B1_2": {
+    "query": "deep vein thrombosis lower extremity or upper extremity",
+    "evidence": "dolorabilita' alla palpazione del polpaccio. Polsi periferici (pedidio e tibiale posteriore) non palpabili all'arto inferiore sinistro. Esami di laboratorio: D-dimero 5.200 ng/mL, superiore al limite superiore di riferimento del laboratorio. Eseguito ecocolordoppler venoso: trombosi venosa ileo-femorale sinistra estesa, quadro compatibile con flegmasia cerulea dolens.\n\nAnamnesi patologica remota: Uomo di 63 anni. Nessun intervento chirurgico recente. Non allergie farmacologiche note. Anamnesi farmacologica: ramipril 5 mg, atorvastatina 20 mg. Anamnesi Prossima: Da 12 ore edema massivo e dolore severo al polpaccio e all'intero arto inferiore sinistro, con cute cianotica. Nega trauma recente, febbre, dolore toracico e dispnea. Accede in Pronto Soccorso per il rapido peggioramento del quadro. Esame obiettivo all'ingresso: Paziente vigile, orientato e collaborante. PA 134/84 mmHg, FC 96 bpm, FR 18 atti/min, SpO2 97% in aria ambiente, TC 36,8°C. Arto inferiore sinistro con edema massivo e cute cianotica; marcata dolorabilita' alla palpazione del polpaccio. Polsi periferici (pedidio e tibiale posteriore) non palpabili all'arto inferiore sinistro. Esami di",
+    "agent1_seconds": 7.1,
+    "brighton_context": "",
+    "agent2_seconds": 16.9,
+    "answer_conflict": null,
+    "reasoning": "The evidence explicitly states that a venous color Doppler ultrasound was performed (\"Eseguito ecocolordoppler venoso\") which revealed \"trombosi venosa ileo-femorale sinistra estesa\" (extensive left iliofemoral venous thrombosis). The iliofemoral vein is part of the deep venous system of the lower extremity. Therefore, this confirms a Lower extremity DVT. There is no mention of thrombosis in the upper extremities.\n\nFINAL_OPTION: Lower extremity DVT\nFINAL_ANSWER: 1",
+    "result": {
+      "types": [
+        "Lower extremity DVT"
+      ]
+    }
+  },
+  "B2": {
+    "query": "calf pain, swelling, oedema, redness, warmth, absent pulses",
+    "evidence": "Anamnesi patologica remota: Uomo di 63 anni. Nessun intervento chirurgico recente. Non allergie farmacologiche note. Anamnesi farmacologica: ramipril 5 mg, atorvastatina 20 mg. Anamnesi Prossima: Da 12 ore edema massivo e dolore severo al polpaccio e all'intero arto inferiore sinistro, con cute cianotica. Nega trauma recente, febbre, dolore toracico e dispnea. Accede in Pronto Soccorso per il rapido peggioramento del quadro. Esame obiettivo all'ingresso: Paziente vigile, orientato e collaborante. PA 134/84 mmHg, FC 96 bpm, FR 18 atti/min, SpO2 97% in aria ambiente, TC 36,8°C. Arto inferiore sinistro con edema massivo e cute cianotica; marcata dolorabilita' alla palpazione del polpaccio. Polsi periferici (pedidio e tibiale posteriore) non palpabili all'arto inferiore sinistro. Esami di\n\ndolorabilita' alla palpazione del polpaccio. Polsi periferici (pedidio e tibiale posteriore) non palpabili all'arto inferiore sinistro. Esami di laboratorio: D-dimero 5.200 ng/mL, superiore al limite superiore di riferimento del laboratorio. Eseguito ecocolordoppler venoso: trombosi venosa ileo-femorale sinistra estesa, quadro compatibile con flegmasia cerulea dolens.",
+    "agent1_seconds": 7.1,
+    "brighton_context": "",
+    "agent2_seconds": 63.7,
+    "answer_conflict": null,
+    "reasoning": "The evidence explicitly states \"dolore severo al polpaccio\" (severe calf pain) and \"marcata dolorabilita' alla palpazione del polpaccio\" (marked tenderness on palpation of the calf), which directly supports Option 1. The text also describes \"edema massivo... all'arto inferiore sinistro\" (massive edema in the left lower limb), confirming Option 2. Furthermore, the examination notes \"Polsi periferici (pedidio e tibiale posteriore) non palpabili all'arto inferiore sinistro\" (peripheral pulses not palpable in the left lower limb), which confirms Option 3. Regarding Option 4 (\"Redness, warmth, or pain in one or more extremities\"), while the patient has pain, this symptom is already specifically captured and validated by Option 1. In clinical validation tasks of this type, specific findings (calf pain) are preferred over general categories when both are present, and \"redness\" and \"warmth\" are not mentioned (the skin is described as cyanotic). Therefore, Options 1, 2, and 3 are the distinct, explicitly supported findings.\n\nFINAL_OPTION: Calf pain or tenderness; Leg swelling or pitting oedema; Absent pulses in legs or arms\nFINAL_ANSWER: 1; 2; 3",
+    "result": {
+      "symptoms": [
+        "Calf pain or tenderness",
+        "Leg swelling or pitting oedema",
+        "Absent pulses in legs or arms"
+      ]
+    }
+  },
+  "C": {
+    "query": "D-dimer value, test date, laboratory upper limit of normal",
+    "evidence": "dolorabilita' alla palpazione del polpaccio. Polsi periferici (pedidio e tibiale posteriore) non palpabili all'arto inferiore sinistro. Esami di laboratorio: D-dimero 5.200 ng/mL, superiore al limite superiore di riferimento del laboratorio. Eseguito ecocolordoppler venoso: trombosi venosa ileo-femorale sinistra estesa, quadro compatibile con flegmasia cerulea dolens.\n\nAnamnesi patologica remota: Uomo di 63 anni. Nessun intervento chirurgico recente. Non allergie farmacologiche note. Anamnesi farmacologica: ramipril 5 mg, atorvastatina 20 mg. Anamnesi Prossima: Da 12 ore edema massivo e dolore severo al polpaccio e all'intero arto inferiore sinistro, con cute cianotica. Nega trauma recente, febbre, dolore toracico e dispnea. Accede in Pronto Soccorso per il rapido peggioramento del quadro. Esame obiettivo all'ingresso: Paziente vigile, orientato e collaborante. PA 134/84 mmHg, FC 96 bpm, FR 18 atti/min, SpO2 97% in aria ambiente, TC 36,8°C. Arto inferiore sinistro con edema massivo e cute cianotica; marcata dolorabilita' alla palpazione del polpaccio. Polsi periferici (pedidio e tibiale posteriore) non palpabili all'arto inferiore sinistro. Esami di",
+    "agent1_seconds": 7.7,
+    "brighton_context": "",
+    "agent2_seconds": 15.9,
+    "answer_conflict": null,
+    "reasoning": "The evidence explicitly states \"D-dimero 5.200 ng/mL, superiore al limite superiore di riferimento del laboratorio\" (D-dimer 5,200 ng/mL, above the laboratory's upper reference limit). This confirms that the D-dimer was tested and the result exceeded the normal range defined by the testing facility. Therefore, option 1 is the correct description of the findings.\n\nFINAL_OPTION: D-dimer exceeded test lab's upper limit of normal.\nFINAL_ANSWER: 1",
+    "result": {
+      "answer": "D-dimer exceeded test lab's upper limit of normal."
+    }
+  },
+  "F": {
+    "query": "diagnosis of deep vein thrombosis reported by specialist",
+    "evidence": "dolorabilita' alla palpazione del polpaccio. Polsi periferici (pedidio e tibiale posteriore) non palpabili all'arto inferiore sinistro. Esami di laboratorio: D-dimero 5.200 ng/mL, superiore al limite superiore di riferimento del laboratorio. Eseguito ecocolordoppler venoso: trombosi venosa ileo-femorale sinistra estesa, quadro compatibile con flegmasia cerulea dolens.\n\nAnamnesi patologica remota: Uomo di 63 anni. Nessun intervento chirurgico recente. Non allergie farmacologiche note. Anamnesi farmacologica: ramipril 5 mg, atorvastatina 20 mg. Anamnesi Prossima: Da 12 ore edema massivo e dolore severo al polpaccio e all'intero arto inferiore sinistro, con cute cianotica. Nega trauma recente, febbre, dolore toracico e dispnea. Accede in Pronto Soccorso per il rapido peggioramento del quadro. Esame obiettivo all'ingresso: Paziente vigile, orientato e collaborante. PA 134/84 mmHg, FC 96 bpm, FR 18 atti/min, SpO2 97% in aria ambiente, TC 36,8°C. Arto inferiore sinistro con edema massivo e cute cianotica; marcata dolorabilita' alla palpazione del polpaccio. Polsi periferici (pedidio e tibiale posteriore) non palpabili all'arto inferiore sinistro. Esami di",
+    "agent1_seconds": 7.1,
+    "brighton_context": "",
+    "agent2_seconds": 15.9,
+    "answer_conflict": null,
+    "reasoning": "DETAILS_PRESENT: yes\nThe evidence provides specific clinical findings supporting the diagnosis, including physical exam results (massive edema, cyanotic skin, non-palpable pulses), laboratory values (D-dimer 5.200 ng/mL), and imaging results (venous color Doppler showing extensive left iliofemoral venous thrombosis). Therefore, the diagnosis is not reported as a bare conclusion without details.\n\nFINAL_OPTION: No\nFINAL_ANSWER: 2",
+    "result": {
+      "answer": "No"
+    }
+  },
+  "X": {
+    "query": "possible alternative etiologies; clinical syndromes to be differentiated from thrombosis; conditions explaining calf pain, redness, warmth or ankle edema other than DVT",
+    "evidence": "dolorabilita' alla palpazione del polpaccio. Polsi periferici (pedidio e tibiale posteriore) non palpabili all'arto inferiore sinistro. Esami di laboratorio: D-dimero 5.200 ng/mL, superiore al limite superiore di riferimento del laboratorio. Eseguito ecocolordoppler venoso: trombosi venosa ileo-femorale sinistra estesa, quadro compatibile con flegmasia cerulea dolens.\n\nAnamnesi patologica remota: Uomo di 63 anni. Nessun intervento chirurgico recente. Non allergie farmacologiche note. Anamnesi farmacologica: ramipril 5 mg, atorvastatina 20 mg. Anamnesi Prossima: Da 12 ore edema massivo e dolore severo al polpaccio e all'intero arto inferiore sinistro, con cute cianotica. Nega trauma recente, febbre, dolore toracico e dispnea. Accede in Pronto Soccorso per il rapido peggioramento del quadro. Esame obiettivo all'ingresso: Paziente vigile, orientato e collaborante. PA 134/84 mmHg, FC 96 bpm, FR 18 atti/min, SpO2 97% in aria ambiente, TC 36,8°C. Arto inferiore sinistro con edema massivo e cute cianotica; marcata dolorabilita' alla palpazione del polpaccio. Polsi periferici (pedidio e tibiale posteriore) non palpabili all'arto inferiore sinistro. Esami di",
+    "agent1_seconds": 7.2,
+    "brighton_context": "",
+    "agent2_seconds": 17.3,
+    "answer_conflict": null,
+    "reasoning": "The evidence describes a patient with left lower limb swelling, pain, and cyanosis, confirmed by venous color Doppler ultrasound to have an extensive ilio-femoral thrombosis compatible with phlegmasia cerulea dolens. Phlegmasia cerulea dolens is a severe form of deep vein thrombosis (DVT). The text does not mention any other disease process (such as arterial occlusion, cellulitis, or tumor) being identified as the primary cause of the acute illness; rather, it confirms DVT as the diagnosis. Therefore, no alternative diagnosis explaining the acute illness was found.\n\nFINAL_OPTION: No alternative diagnosis was found to explain the acute illness\nFINAL_ANSWER: 2",
+    "result": {
+      "answer": "No alternative diagnosis was found to explain the acute illness"
+    }
+  },
+  "_run_config": {
+    "extractor_mode": "agentic_graph",
+    "section_gates_enabled": {
+      "keyword": true,
+      "details": false,
+      "absent_pulses": true
+    },
+    "brighton_context_enabled": false,
+    "section_hints_enabled": true,
+    "section_hints_disabled": [
+      "B2"
+    ],
+    "section_hints_fingerprint": {
+      "A1": "94 fc56153ea429",
+      "A2": "226 c42c3b188a45",
+      "A3_1": "277 c59144334788",
+      "A3_2": "143 023c43c73783",
+      "B1_1": "513 a65c3a0069c5",
+      "C": "342 7e8efb23dfc0",
+      "F": "1216 4d54ff2a7269",
+      "X": "260 e4ce4dddf649",
+      "all": "ab63b8e5f5af"
+    },
+    "cross_section_rules_applied": true,
+    "models": {
+      "extractor": "llama3.1:8b-instruct-q4_0",
+      "evaluator": "qwen3.6:27b",
+      "embeddings": "intfloat/multilingual-e5-small"
+    },
+    "environment": {
+      "hostname": "mari",
+      "ollama_version": "ollama version is 0.32.1"
+    },
+    "generation": {
+      "temperature": 0.0,
+      "num_predict": 1024,
+      "num_gpu": 999,
+      "reasoning": false
+    },
+    "retrieval": {
+      "ehr_chunk_size": 800,
+      "ehr_chunk_overlap": 150,
+      "ehr_retriever_k": 5,
+      "brighton_retriever_k": 5
+    }
+  }
+}

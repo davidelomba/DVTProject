@@ -1,0 +1,176 @@
+{
+  "A1": {
+    "query": "autopsy report, necropsy, post-mortem examination, autoptic findings",
+    "evidence": "con edema del polpaccio e dolorabilita' alla palpazione; cute di colorito nella norma, non calda al tatto. Toni cardiaci validi e ritmici. Esami di laboratorio: D-dimero 3.050 ng/mL, superiore al limite superiore di riferimento del laboratorio. Eseguita ecografia compressiva venosa dell'arto inferiore sinistro: vena poplitea non comprimibile. Eseguito nella stessa giornata ecocolordoppler dello stesso arto: conferma di trombosi della vena poplitea sinistra.\n\nAnamnesi patologica remota: Uomo di 70 anni. Nessuna autopsia. In anamnesi remota sostituzione protesica del ginocchio. Ipertensione arteriosa in trattamento. Non allergie farmacologiche note. Anamnesi farmacologica: amlodipina 5 mg, atorvastatina 20 mg. Anamnesi Prossima: Da 5 giorni dolore al polpaccio sinistro con edema dell'arto inferiore omolaterale. Non riferito arrossamento ne' aumento della temperatura locale. Nega trauma, febbre, dispnea e dolore toracico. Esame obiettivo all'ingresso: Paziente vigile, orientato e collaborante. PA 132/80 mmHg, FC 74 bpm, FR 16 atti/min, SpO2 97% in aria ambiente, TC 36,5°C. Arto inferiore sinistro con edema del polpaccio e dolorabilita' alla palpazione; cute di colorito nella norma, non calda al tatto. Toni cardiaci validi e ritmici. Esami di",
+    "agent1_seconds": 7.0,
+    "brighton_context": "",
+    "agent2_seconds": 15.6,
+    "answer_conflict": null,
+    "reasoning": "The evidence explicitly states \"Nessuna autopsia\" (No autopsy) in the remote pathological history section. Furthermore, the prompt instructions specify that only post-mortem findings count for an autopsy and that imaging performed on a living patient does not constitute an autopsy. Since no autopsy was performed, we cannot determine if it showed presence or absence of DVT via that specific method.\n\nFINAL_OPTION: No autopsy done, unknown if done, or done but results unavailable\nFINAL_ANSWER: 3",
+    "result": {
+      "answer": "No autopsy done, unknown if done, or done but results unavailable"
+    }
+  },
+  "A2": {
+    "query": "thrombectomy, surgical procedure related to DVT",
+    "evidence": "con edema del polpaccio e dolorabilita' alla palpazione; cute di colorito nella norma, non calda al tatto. Toni cardiaci validi e ritmici. Esami di laboratorio: D-dimero 3.050 ng/mL, superiore al limite superiore di riferimento del laboratorio. Eseguita ecografia compressiva venosa dell'arto inferiore sinistro: vena poplitea non comprimibile. Eseguito nella stessa giornata ecocolordoppler dello stesso arto: conferma di trombosi della vena poplitea sinistra.\n\nAnamnesi patologica remota: Uomo di 70 anni. Nessuna autopsia. In anamnesi remota sostituzione protesica del ginocchio. Ipertensione arteriosa in trattamento. Non allergie farmacologiche note. Anamnesi farmacologica: amlodipina 5 mg, atorvastatina 20 mg. Anamnesi Prossima: Da 5 giorni dolore al polpaccio sinistro con edema dell'arto inferiore omolaterale. Non riferito arrossamento ne' aumento della temperatura locale. Nega trauma, febbre, dispnea e dolore toracico. Esame obiettivo all'ingresso: Paziente vigile, orientato e collaborante. PA 132/80 mmHg, FC 74 bpm, FR 16 atti/min, SpO2 97% in aria ambiente, TC 36,5°C. Arto inferiore sinistro con edema del polpaccio e dolorabilita' alla palpazione; cute di colorito nella norma, non calda al tatto. Toni cardiaci validi e ritmici. Esami di",
+    "agent1_seconds": 7.2,
+    "brighton_context": "",
+    "agent2_seconds": 17.3,
+    "answer_conflict": null,
+    "reasoning": "The evidence describes diagnostic imaging procedures (compressive ultrasound and color Doppler) which confirmed the presence of a thrombosis in the left popliteal vein. However, these are non-invasive diagnostic tests, not surgical procedures or thrombectomies. The text explicitly states \"Nessuna autopsia\" (No autopsy) and does not mention any surgical intervention, thrombectomy, or other invasive procedure being performed to treat or confirm the DVT. Therefore, no surgical procedure was done.\n\nFINAL_OPTION: No surgical procedure done; or, done but either did not confirm presence of DVT or findings unknown; or unknown if done\nFINAL_ANSWER: 3",
+    "result": {
+      "answer": "No surgical procedure done; or, done but either did not confirm presence of DVT or findings unknown; or unknown if done"
+    }
+  },
+  "A3_1": {
+    "query": "ultrasound, CT, MRI, venography: imaging outcome for deep vein thrombosis",
+    "evidence": "con edema del polpaccio e dolorabilita' alla palpazione; cute di colorito nella norma, non calda al tatto. Toni cardiaci validi e ritmici. Esami di laboratorio: D-dimero 3.050 ng/mL, superiore al limite superiore di riferimento del laboratorio. Eseguita ecografia compressiva venosa dell'arto inferiore sinistro: vena poplitea non comprimibile. Eseguito nella stessa giornata ecocolordoppler dello stesso arto: conferma di trombosi della vena poplitea sinistra.\n\nAnamnesi patologica remota: Uomo di 70 anni. Nessuna autopsia. In anamnesi remota sostituzione protesica del ginocchio. Ipertensione arteriosa in trattamento. Non allergie farmacologiche note. Anamnesi farmacologica: amlodipina 5 mg, atorvastatina 20 mg. Anamnesi Prossima: Da 5 giorni dolore al polpaccio sinistro con edema dell'arto inferiore omolaterale. Non riferito arrossamento ne' aumento della temperatura locale. Nega trauma, febbre, dispnea e dolore toracico. Esame obiettivo all'ingresso: Paziente vigile, orientato e collaborante. PA 132/80 mmHg, FC 74 bpm, FR 16 atti/min, SpO2 97% in aria ambiente, TC 36,5°C. Arto inferiore sinistro con edema del polpaccio e dolorabilita' alla palpazione; cute di colorito nella norma, non calda al tatto. Toni cardiaci validi e ritmici. Esami di",
+    "agent1_seconds": 7.1,
+    "brighton_context": "",
+    "agent2_seconds": 16.0,
+    "answer_conflict": null,
+    "reasoning": "The evidence explicitly states that a compressive venous ultrasound and a color Doppler ultrasound were performed on the left lower limb. The results indicated that the popliteal vein was non-compressible and confirmed thrombosis of the left popliteal vein. Since these are imaging studies and they confirmed the presence of DVT (Deep Vein Thrombosis), option 1 is the correct choice.\n\nFINAL_OPTION: ≥1 imaging study was done and confirmed DVT\nFINAL_ANSWER: 1",
+    "result": {
+      "answer": "≥1 imaging study was done and confirmed DVT"
+    }
+  },
+  "A3_2": {
+    "query": "type of imaging study performed: compression ultrasonography, doppler, venography",
+    "evidence": "con edema del polpaccio e dolorabilita' alla palpazione; cute di colorito nella norma, non calda al tatto. Toni cardiaci validi e ritmici. Esami di laboratorio: D-dimero 3.050 ng/mL, superiore al limite superiore di riferimento del laboratorio. Eseguita ecografia compressiva venosa dell'arto inferiore sinistro: vena poplitea non comprimibile. Eseguito nella stessa giornata ecocolordoppler dello stesso arto: conferma di trombosi della vena poplitea sinistra.\n\nAnamnesi patologica remota: Uomo di 70 anni. Nessuna autopsia. In anamnesi remota sostituzione protesica del ginocchio. Ipertensione arteriosa in trattamento. Non allergie farmacologiche note. Anamnesi farmacologica: amlodipina 5 mg, atorvastatina 20 mg. Anamnesi Prossima: Da 5 giorni dolore al polpaccio sinistro con edema dell'arto inferiore omolaterale. Non riferito arrossamento ne' aumento della temperatura locale. Nega trauma, febbre, dispnea e dolore toracico. Esame obiettivo all'ingresso: Paziente vigile, orientato e collaborante. PA 132/80 mmHg, FC 74 bpm, FR 16 atti/min, SpO2 97% in aria ambiente, TC 36,5°C. Arto inferiore sinistro con edema del polpaccio e dolorabilita' alla palpazione; cute di colorito nella norma, non calda al tatto. Toni cardiaci validi e ritmici. Esami di",
+    "agent1_seconds": 7.1,
+    "brighton_context": "",
+    "agent2_seconds": 18.2,
+    "answer_conflict": null,
+    "reasoning": "The evidence explicitly states that two specific imaging procedures were performed on the left lower limb. First, \"Eseguita ecografia compressiva venosa dell'arto inferiore sinistro\" (Compression venous ultrasound of the left lower limb was performed), which corresponds to **Compression ultrasonography**. Second, \"Eseguito nella stessa giornata ecocolordoppler dello stesso arto\" (Color Doppler ultrasound of the same limb was performed on the same day), which corresponds to **Doppler/Duplex Ultrasound**. Both tests confirmed the diagnosis. There is no mention of CT/MR venography, contrast venography, or other imaging modalities like impedance plethysmography.\n\nFINAL_OPTION: Compression ultrasonography; Doppler/Duplex Ultrasound\nFINAL_ANSWER: 1; 4",
+    "result": {
+      "studies": [
+        "Compression ultrasonography",
+        "Doppler/Duplex Ultrasound"
+      ]
+    }
+  },
+  "B1_1": {
+    "query": "reported symptoms or signs of deep vein thrombosis",
+    "evidence": "con edema del polpaccio e dolorabilita' alla palpazione; cute di colorito nella norma, non calda al tatto. Toni cardiaci validi e ritmici. Esami di laboratorio: D-dimero 3.050 ng/mL, superiore al limite superiore di riferimento del laboratorio. Eseguita ecografia compressiva venosa dell'arto inferiore sinistro: vena poplitea non comprimibile. Eseguito nella stessa giornata ecocolordoppler dello stesso arto: conferma di trombosi della vena poplitea sinistra.\n\nAnamnesi patologica remota: Uomo di 70 anni. Nessuna autopsia. In anamnesi remota sostituzione protesica del ginocchio. Ipertensione arteriosa in trattamento. Non allergie farmacologiche note. Anamnesi farmacologica: amlodipina 5 mg, atorvastatina 20 mg. Anamnesi Prossima: Da 5 giorni dolore al polpaccio sinistro con edema dell'arto inferiore omolaterale. Non riferito arrossamento ne' aumento della temperatura locale. Nega trauma, febbre, dispnea e dolore toracico. Esame obiettivo all'ingresso: Paziente vigile, orientato e collaborante. PA 132/80 mmHg, FC 74 bpm, FR 16 atti/min, SpO2 97% in aria ambiente, TC 36,5°C. Arto inferiore sinistro con edema del polpaccio e dolorabilita' alla palpazione; cute di colorito nella norma, non calda al tatto. Toni cardiaci validi e ritmici. Esami di",
+    "agent1_seconds": 7.0,
+    "brighton_context": "",
+    "agent2_seconds": 18.2,
+    "answer_conflict": null,
+    "reasoning": "The evidence explicitly reports clinical signs and symptoms consistent with Deep Vein Thrombosis (DVT). Specifically, it mentions \"edema del polpaccio\" (calf edema) and \"dolorabilita' alla palpazione\" (pain on palpation) in the left lower limb. Additionally, the patient's history notes \"dolore al polpaccio sinistro con edema dell'arto inferiore omolaterale\" (left calf pain with edema of the ipsilateral lower limb). These are recognized signs and symptoms of DVT. Therefore, it is not unknown, nor is there an absence of such reports; rather, they are clearly documented.\n\nFINAL_OPTION: ≥1 symptom or sign of DVT was reported\nFINAL_ANSWER: 1",
+    "result": {
+      "answer": "≥1 symptom or sign of DVT was reported"
+    }
+  },
+  "B1_2": {
+    "query": "deep vein thrombosis lower extremity or upper extremity",
+    "evidence": "con edema del polpaccio e dolorabilita' alla palpazione; cute di colorito nella norma, non calda al tatto. Toni cardiaci validi e ritmici. Esami di laboratorio: D-dimero 3.050 ng/mL, superiore al limite superiore di riferimento del laboratorio. Eseguita ecografia compressiva venosa dell'arto inferiore sinistro: vena poplitea non comprimibile. Eseguito nella stessa giornata ecocolordoppler dello stesso arto: conferma di trombosi della vena poplitea sinistra.\n\nAnamnesi patologica remota: Uomo di 70 anni. Nessuna autopsia. In anamnesi remota sostituzione protesica del ginocchio. Ipertensione arteriosa in trattamento. Non allergie farmacologiche note. Anamnesi farmacologica: amlodipina 5 mg, atorvastatina 20 mg. Anamnesi Prossima: Da 5 giorni dolore al polpaccio sinistro con edema dell'arto inferiore omolaterale. Non riferito arrossamento ne' aumento della temperatura locale. Nega trauma, febbre, dispnea e dolore toracico. Esame obiettivo all'ingresso: Paziente vigile, orientato e collaborante. PA 132/80 mmHg, FC 74 bpm, FR 16 atti/min, SpO2 97% in aria ambiente, TC 36,5°C. Arto inferiore sinistro con edema del polpaccio e dolorabilita' alla palpazione; cute di colorito nella norma, non calda al tatto. Toni cardiaci validi e ritmici. Esami di",
+    "agent1_seconds": 7.4,
+    "brighton_context": "",
+    "agent2_seconds": 15.8,
+    "answer_conflict": null,
+    "reasoning": "The evidence explicitly describes symptoms (calf edema, pain) in the left lower extremity. Diagnostic imaging (compressive ultrasound and color Doppler) of the left lower limb confirmed thrombosis of the left popliteal vein. The popliteal vein is located in the lower extremity. There is no mention of upper extremity involvement or symptoms. Therefore, the condition is a lower extremity DVT.\n\nFINAL_OPTION: Lower extremity DVT\nFINAL_ANSWER: 1",
+    "result": {
+      "types": [
+        "Lower extremity DVT"
+      ]
+    }
+  },
+  "B2": {
+    "query": "calf pain, swelling, oedema, redness, warmth, absent pulses",
+    "evidence": "Anamnesi patologica remota: Uomo di 70 anni. Nessuna autopsia. In anamnesi remota sostituzione protesica del ginocchio. Ipertensione arteriosa in trattamento. Non allergie farmacologiche note. Anamnesi farmacologica: amlodipina 5 mg, atorvastatina 20 mg. Anamnesi Prossima: Da 5 giorni dolore al polpaccio sinistro con edema dell'arto inferiore omolaterale. Non riferito arrossamento ne' aumento della temperatura locale. Nega trauma, febbre, dispnea e dolore toracico. Esame obiettivo all'ingresso: Paziente vigile, orientato e collaborante. PA 132/80 mmHg, FC 74 bpm, FR 16 atti/min, SpO2 97% in aria ambiente, TC 36,5°C. Arto inferiore sinistro con edema del polpaccio e dolorabilita' alla palpazione; cute di colorito nella norma, non calda al tatto. Toni cardiaci validi e ritmici. Esami di\n\ncon edema del polpaccio e dolorabilita' alla palpazione; cute di colorito nella norma, non calda al tatto. Toni cardiaci validi e ritmici. Esami di laboratorio: D-dimero 3.050 ng/mL, superiore al limite superiore di riferimento del laboratorio. Eseguita ecografia compressiva venosa dell'arto inferiore sinistro: vena poplitea non comprimibile. Eseguito nella stessa giornata ecocolordoppler dello stesso arto: conferma di trombosi della vena poplitea sinistra.",
+    "agent1_seconds": 7.0,
+    "brighton_context": "",
+    "agent2_seconds": 20.2,
+    "answer_conflict": null,
+    "reasoning": "The patient presents with \"dolore al polpaccio sinistro\" (left calf pain) and \"dolorabilita' alla palpazione\" (tenderness to palpation), which directly supports option 1 (Calf pain or tenderness). The evidence also explicitly states \"edema dell'arto inferiore omolaterale\" (edema of the ipsilateral lower limb) and \"edema del polpaccio\" (calf edema), supporting option 2 (Leg swelling or pitting oedema). Regarding option 4, the text explicitly negates redness (\"Non riferito arrossamento\") and warmth (\"non calda al tatto\"), so this option is not present. Option 3 (Absent pulses) is not mentioned in the evidence, so it cannot be assumed to be present. Therefore, only options 1 and 2 are supported by the text.\n\nFINAL_OPTION: Calf pain or tenderness; Leg swelling or pitting oedema\nFINAL_ANSWER: 1; 2",
+    "result": {
+      "symptoms": [
+        "Calf pain or tenderness",
+        "Leg swelling or pitting oedema"
+      ]
+    }
+  },
+  "C": {
+    "query": "D-dimer value, test date, laboratory upper limit of normal",
+    "evidence": "con edema del polpaccio e dolorabilita' alla palpazione; cute di colorito nella norma, non calda al tatto. Toni cardiaci validi e ritmici. Esami di laboratorio: D-dimero 3.050 ng/mL, superiore al limite superiore di riferimento del laboratorio. Eseguita ecografia compressiva venosa dell'arto inferiore sinistro: vena poplitea non comprimibile. Eseguito nella stessa giornata ecocolordoppler dello stesso arto: conferma di trombosi della vena poplitea sinistra.\n\nAnamnesi patologica remota: Uomo di 70 anni. Nessuna autopsia. In anamnesi remota sostituzione protesica del ginocchio. Ipertensione arteriosa in trattamento. Non allergie farmacologiche note. Anamnesi farmacologica: amlodipina 5 mg, atorvastatina 20 mg. Anamnesi Prossima: Da 5 giorni dolore al polpaccio sinistro con edema dell'arto inferiore omolaterale. Non riferito arrossamento ne' aumento della temperatura locale. Nega trauma, febbre, dispnea e dolore toracico. Esame obiettivo all'ingresso: Paziente vigile, orientato e collaborante. PA 132/80 mmHg, FC 74 bpm, FR 16 atti/min, SpO2 97% in aria ambiente, TC 36,5°C. Arto inferiore sinistro con edema del polpaccio e dolorabilita' alla palpazione; cute di colorito nella norma, non calda al tatto. Toni cardiaci validi e ritmici. Esami di",
+    "agent1_seconds": 7.6,
+    "brighton_context": "",
+    "agent2_seconds": 15.5,
+    "answer_conflict": null,
+    "reasoning": "The evidence explicitly states \"D-dimero 3.050 ng/mL, superiore al limite superiore di riferimento del laboratorio\" (D-dimer 3,050 ng/mL, above the upper limit of reference of the laboratory). This confirms that the D-dimer was tested and the result exceeded the laboratory's upper limit of normal.\n\nFINAL_OPTION: D-dimer exceeded test lab's upper limit of normal.\nFINAL_ANSWER: 1",
+    "result": {
+      "answer": "D-dimer exceeded test lab's upper limit of normal."
+    }
+  },
+  "F": {
+    "query": "diagnosis of deep vein thrombosis reported by specialist",
+    "evidence": "con edema del polpaccio e dolorabilita' alla palpazione; cute di colorito nella norma, non calda al tatto. Toni cardiaci validi e ritmici. Esami di laboratorio: D-dimero 3.050 ng/mL, superiore al limite superiore di riferimento del laboratorio. Eseguita ecografia compressiva venosa dell'arto inferiore sinistro: vena poplitea non comprimibile. Eseguito nella stessa giornata ecocolordoppler dello stesso arto: conferma di trombosi della vena poplitea sinistra.\n\nAnamnesi patologica remota: Uomo di 70 anni. Nessuna autopsia. In anamnesi remota sostituzione protesica del ginocchio. Ipertensione arteriosa in trattamento. Non allergie farmacologiche note. Anamnesi farmacologica: amlodipina 5 mg, atorvastatina 20 mg. Anamnesi Prossima: Da 5 giorni dolore al polpaccio sinistro con edema dell'arto inferiore omolaterale. Non riferito arrossamento ne' aumento della temperatura locale. Nega trauma, febbre, dispnea e dolore toracico. Esame obiettivo all'ingresso: Paziente vigile, orientato e collaborante. PA 132/80 mmHg, FC 74 bpm, FR 16 atti/min, SpO2 97% in aria ambiente, TC 36,5°C. Arto inferiore sinistro con edema del polpaccio e dolorabilita' alla palpazione; cute di colorito nella norma, non calda al tatto. Toni cardiaci validi e ritmici. Esami di",
+    "agent1_seconds": 7.0,
+    "brighton_context": "",
+    "agent2_seconds": 16.0,
+    "answer_conflict": null,
+    "reasoning": "DETAILS_PRESENT: yes\nThe evidence provides specific clinical findings supporting the diagnosis of DVT, including elevated D-dimer levels (3.050 ng/mL) and explicit imaging results from a compressive venous ultrasound (\"vena poplitea non comprimibile\") and color Doppler ultrasound (\"conferma di trombosi della vena poplitea sinistra\"). Since specific diagnostic details are present, the diagnosis was not reported without details.\n\nFINAL_OPTION: No\nFINAL_ANSWER: 2",
+    "result": {
+      "answer": "No"
+    }
+  },
+  "X": {
+    "query": "possible alternative etiologies; clinical syndromes to be differentiated from thrombosis; conditions explaining calf pain, redness, warmth or ankle edema other than DVT",
+    "evidence": "con edema del polpaccio e dolorabilita' alla palpazione; cute di colorito nella norma, non calda al tatto. Toni cardiaci validi e ritmici. Esami di laboratorio: D-dimero 3.050 ng/mL, superiore al limite superiore di riferimento del laboratorio. Eseguita ecografia compressiva venosa dell'arto inferiore sinistro: vena poplitea non comprimibile. Eseguito nella stessa giornata ecocolordoppler dello stesso arto: conferma di trombosi della vena poplitea sinistra.\n\nAnamnesi patologica remota: Uomo di 70 anni. Nessuna autopsia. In anamnesi remota sostituzione protesica del ginocchio. Ipertensione arteriosa in trattamento. Non allergie farmacologiche note. Anamnesi farmacologica: amlodipina 5 mg, atorvastatina 20 mg. Anamnesi Prossima: Da 5 giorni dolore al polpaccio sinistro con edema dell'arto inferiore omolaterale. Non riferito arrossamento ne' aumento della temperatura locale. Nega trauma, febbre, dispnea e dolore toracico. Esame obiettivo all'ingresso: Paziente vigile, orientato e collaborante. PA 132/80 mmHg, FC 74 bpm, FR 16 atti/min, SpO2 97% in aria ambiente, TC 36,5°C. Arto inferiore sinistro con edema del polpaccio e dolorabilita' alla palpazione; cute di colorito nella norma, non calda al tatto. Toni cardiaci validi e ritmici. Esami di",
+    "agent1_seconds": 7.5,
+    "brighton_context": "",
+    "agent2_seconds": 17.5,
+    "answer_conflict": null,
+    "reasoning": "The clinical evidence describes a patient presenting with left calf edema and pain, elevated D-dimer, and imaging findings (non-compressible popliteal vein on compression ultrasound and confirmed thrombosis on color Doppler) consistent with Deep Vein Thrombosis (DVT). The text explicitly states that the Doppler \"confirms thrombosis of the left popliteal vein.\" There is no mention of any other disease process being identified as the cause of the acute illness, nor is an alternative diagnosis provided to explain the symptoms. Therefore, no alternative diagnosis was found.\n\nFINAL_OPTION: No alternative diagnosis was found to explain the acute illness\nFINAL_ANSWER: 2",
+    "result": {
+      "answer": "No alternative diagnosis was found to explain the acute illness"
+    }
+  },
+  "_run_config": {
+    "extractor_mode": "agentic_graph",
+    "section_gates_enabled": {
+      "keyword": true,
+      "details": false,
+      "absent_pulses": true
+    },
+    "brighton_context_enabled": false,
+    "section_hints_enabled": true,
+    "section_hints_disabled": [
+      "B2"
+    ],
+    "section_hints_fingerprint": {
+      "A1": "94 fc56153ea429",
+      "A2": "226 c42c3b188a45",
+      "A3_1": "277 c59144334788",
+      "A3_2": "143 023c43c73783",
+      "B1_1": "513 a65c3a0069c5",
+      "C": "342 7e8efb23dfc0",
+      "F": "1216 4d54ff2a7269",
+      "X": "260 e4ce4dddf649",
+      "all": "ab63b8e5f5af"
+    },
+    "cross_section_rules_applied": true,
+    "models": {
+      "extractor": "llama3.1:8b-instruct-q4_0",
+      "evaluator": "qwen3.6:27b",
+      "embeddings": "intfloat/multilingual-e5-small"
+    },
+    "environment": {
+      "hostname": "mari",
+      "ollama_version": "ollama version is 0.32.1"
+    },
+    "generation": {
+      "temperature": 0.0,
+      "num_predict": 1024,
+      "num_gpu": 999,
+      "reasoning": false
+    },
+    "retrieval": {
+      "ehr_chunk_size": 800,
+      "ehr_chunk_overlap": 150,
+      "ehr_retriever_k": 5,
+      "brighton_retriever_k": 5
+    }
+  }
+}

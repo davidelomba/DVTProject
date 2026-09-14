@@ -1,0 +1,175 @@
+{
+  "A1": {
+    "query": "autopsy report, necropsy, post-mortem examination, autoptic findings",
+    "evidence": "Anamnesi patologica remota: Uomo di 52 anni. Nessuna autopsia. Non allergie farmacologiche note. Anamnesi farmacologica: nessuna terapia cronica in atto. Anamnesi Prossima: Da 2 giorni dolore al polpaccio ed edema severo dell'arto inferiore sinistro. Nega trauma, febbre, dolore toracico e dispnea. Esame obiettivo all'ingresso: Paziente vigile, orientato e collaborante. PA 130/82 mmHg, FC 84 bpm, FR 16 atti/min, SpO2 98% in aria ambiente, TC 36,7°C. Arto inferiore sinistro con edema severo esteso alla coscia e dolorabilita' alla palpazione del polpaccio. Toni cardiaci validi e ritmici. Esami di laboratorio: D-dimero 3.700 ng/mL, superiore al limite superiore di riferimento del laboratorio. Eseguito ecocolordoppler venoso: trombosi venosa ileo-femorale sinistra estesa. Il paziente e' stato\n\nlimite superiore di riferimento del laboratorio. Eseguito ecocolordoppler venoso: trombosi venosa ileo-femorale sinistra estesa. Il paziente e' stato sottoposto a trombolisi farmaco-meccanica per via percutanea con catetere; la venografia intraprocedurale ha confermato la presenza del trombo nella vena iliaca sinistra.",
+    "agent1_seconds": 6.8,
+    "brighton_context": "",
+    "agent2_seconds": 15.3,
+    "answer_conflict": null,
+    "reasoning": "The evidence explicitly states \"Nessuna autopsia\" (No autopsy) in the remote pathological history section. Furthermore, the prompt instructions specify that only post-mortem findings count as an autopsy and that imaging performed on a living patient is not an autopsy. Since the text confirms no autopsy was performed, we cannot determine DVT status via autopsy findings.\n\nFINAL_OPTION: No autopsy done, unknown if done, or done but results unavailable\nFINAL_ANSWER: 3",
+    "result": {
+      "answer": "No autopsy done, unknown if done, or done but results unavailable"
+    }
+  },
+  "A2": {
+    "query": "thrombectomy, surgical procedure related to DVT",
+    "evidence": "limite superiore di riferimento del laboratorio. Eseguito ecocolordoppler venoso: trombosi venosa ileo-femorale sinistra estesa. Il paziente e' stato sottoposto a trombolisi farmaco-meccanica per via percutanea con catetere; la venografia intraprocedurale ha confermato la presenza del trombo nella vena iliaca sinistra.\n\nAnamnesi patologica remota: Uomo di 52 anni. Nessuna autopsia. Non allergie farmacologiche note. Anamnesi farmacologica: nessuna terapia cronica in atto. Anamnesi Prossima: Da 2 giorni dolore al polpaccio ed edema severo dell'arto inferiore sinistro. Nega trauma, febbre, dolore toracico e dispnea. Esame obiettivo all'ingresso: Paziente vigile, orientato e collaborante. PA 130/82 mmHg, FC 84 bpm, FR 16 atti/min, SpO2 98% in aria ambiente, TC 36,7°C. Arto inferiore sinistro con edema severo esteso alla coscia e dolorabilita' alla palpazione del polpaccio. Toni cardiaci validi e ritmici. Esami di laboratorio: D-dimero 3.700 ng/mL, superiore al limite superiore di riferimento del laboratorio. Eseguito ecocolordoppler venoso: trombosi venosa ileo-femorale sinistra estesa. Il paziente e' stato",
+    "agent1_seconds": 7.0,
+    "brighton_context": "",
+    "agent2_seconds": 38.5,
+    "answer_conflict": null,
+    "reasoning": "The evidence explicitly states that the patient underwent \"trombolisi farmaco-meccanica per via percutanea con catetere\" (pharmacomechanical thrombolysis via percutaneous catheter). This is a minimally invasive interventional procedure, not an open surgical thrombectomy. Furthermore, the text specifies that \"la venografia intraprocedurale ha confermato la presenza del trombo\" (intraprocedural venography confirmed the presence of the thrombus). Venography is an imaging modality/procedure used to visualize the vessels and confirm the diagnosis during the intervention. Since a procedure was performed that confirmed the presence of DVT, and it was not a surgical thrombectomy in the traditional sense (often implying open surgery or specific mechanical extraction distinct from pharmacomechanical lysis), we must evaluate the options carefully. Option 1 specifies \"Thrombectomy\". Pharmacomechanical thrombolysis involves breaking up and removing clot, which can be considered a form of thrombectomy, but often \"thrombectomy\" in these contexts refers to surgical or specific mechanical retrieval. However, looking at Option 2: \"Other procedure done that confirmed presence of DVT\". The venography confirmed the DVT. The pharmacomechanical thrombolysis is the treatment. The question asks about confirmation. The text says venography confirmed it. Is venography a \"procedure\"? Yes. Did it confirm DVT? Yes. Was it a thrombectomy? No, it was imaging. Was the thrombolysis a thrombectomy? It's a form of clot removal. However, usually, if a specific imaging modality confirms it during a procedure, and that procedure isn't strictly \"surgical thrombectomy\" (open), Option 2 is a strong candidate for \"Other procedure... confirmed\". Let's re-read the negation instruction. \"Pay extreme attention to ANY negations preceding surgical terms.\" There are no negations of surgery here. The patient had a percutaneous procedure. Is percutaneous pharmacomechanical thrombolysis considered \"Thrombectomy related to DVT performed\"? In many clinical coding contexts, yes. But let's look at Option 2 again. \"Other procedure done that confirmed presence of DVT\". The venography confirmed it. The ultrasound also confirmed it earlier. The prompt asks to determine the correct answer based on evidence. The evidence says venography confirmed the thrombus. Venography is a procedure. It is not a thrombectomy (it's imaging). Therefore, a procedure was done (venography/thrombolysis setup) that confirmed DVT. If we consider the thrombolysis itself as the primary event, it treated the DVT. The confirmation came from venography. Option 2 fits \"Other procedure done that confirmed presence of DVT\" because venography is an \"other procedure\" (not a surgical thrombectomy) that confirmed the DVT. Option 1 implies the act of removing the clot was the primary descriptor, but the confirmation aspect is tied to venography in the text. Given the distinction between \"Thrombectomy\" (often implying mechanical extraction or surgery) and \"Pharmacomechanical thrombolysis\" (lysis + aspiration), and the explicit statement that *venography* confirmed the presence, Option 2 is the most precise description of the confirmation event described in the procedural context.\n\nFINAL_OPTION: Other procedure done that confirmed presence of DVT\nFINAL_ANSWER: 2",
+    "result": {
+      "answer": "Other procedure done that confirmed presence of DVT"
+    }
+  },
+  "A3_1": {
+    "query": "ultrasound, CT, MRI, venography: imaging outcome for deep vein thrombosis",
+    "evidence": "limite superiore di riferimento del laboratorio. Eseguito ecocolordoppler venoso: trombosi venosa ileo-femorale sinistra estesa. Il paziente e' stato sottoposto a trombolisi farmaco-meccanica per via percutanea con catetere; la venografia intraprocedurale ha confermato la presenza del trombo nella vena iliaca sinistra.\n\nAnamnesi patologica remota: Uomo di 52 anni. Nessuna autopsia. Non allergie farmacologiche note. Anamnesi farmacologica: nessuna terapia cronica in atto. Anamnesi Prossima: Da 2 giorni dolore al polpaccio ed edema severo dell'arto inferiore sinistro. Nega trauma, febbre, dolore toracico e dispnea. Esame obiettivo all'ingresso: Paziente vigile, orientato e collaborante. PA 130/82 mmHg, FC 84 bpm, FR 16 atti/min, SpO2 98% in aria ambiente, TC 36,7°C. Arto inferiore sinistro con edema severo esteso alla coscia e dolorabilita' alla palpazione del polpaccio. Toni cardiaci validi e ritmici. Esami di laboratorio: D-dimero 3.700 ng/mL, superiore al limite superiore di riferimento del laboratorio. Eseguito ecocolordoppler venoso: trombosi venosa ileo-femorale sinistra estesa. Il paziente e' stato",
+    "agent1_seconds": 7.4,
+    "brighton_context": "",
+    "agent2_seconds": 15.5,
+    "answer_conflict": null,
+    "reasoning": "The evidence explicitly states that a venous color Doppler ultrasound (\"ecocolordoppler venoso\") was performed and confirmed an extended left iliofemoral venous thrombosis. Additionally, intraprocedural venography confirmed the presence of the thrombus. Since at least one imaging study was performed and it confirmed DVT, Option 1 is the correct choice.\n\nFINAL_OPTION: ≥1 imaging study was done and confirmed DVT\nFINAL_ANSWER: 1",
+    "result": {
+      "answer": "≥1 imaging study was done and confirmed DVT"
+    }
+  },
+  "A3_2": {
+    "query": "type of imaging study performed: compression ultrasonography, doppler, venography",
+    "evidence": "limite superiore di riferimento del laboratorio. Eseguito ecocolordoppler venoso: trombosi venosa ileo-femorale sinistra estesa. Il paziente e' stato sottoposto a trombolisi farmaco-meccanica per via percutanea con catetere; la venografia intraprocedurale ha confermato la presenza del trombo nella vena iliaca sinistra.\n\nAnamnesi patologica remota: Uomo di 52 anni. Nessuna autopsia. Non allergie farmacologiche note. Anamnesi farmacologica: nessuna terapia cronica in atto. Anamnesi Prossima: Da 2 giorni dolore al polpaccio ed edema severo dell'arto inferiore sinistro. Nega trauma, febbre, dolore toracico e dispnea. Esame obiettivo all'ingresso: Paziente vigile, orientato e collaborante. PA 130/82 mmHg, FC 84 bpm, FR 16 atti/min, SpO2 98% in aria ambiente, TC 36,7°C. Arto inferiore sinistro con edema severo esteso alla coscia e dolorabilita' alla palpazione del polpaccio. Toni cardiaci validi e ritmici. Esami di laboratorio: D-dimero 3.700 ng/mL, superiore al limite superiore di riferimento del laboratorio. Eseguito ecocolordoppler venoso: trombosi venosa ileo-femorale sinistra estesa. Il paziente e' stato",
+    "agent1_seconds": 7.6,
+    "brighton_context": "",
+    "agent2_seconds": 24.0,
+    "answer_conflict": null,
+    "reasoning": "The evidence explicitly states \"Eseguito ecocolordoppler venoso\" (Venous color Doppler ultrasound performed), which confirmed the thrombosis. This corresponds directly to Option 4: Doppler/Duplex Ultrasound. Although contrast venography (\"venografia intraprocedurale\") was mentioned, it was performed *during* the thrombolysis procedure to confirm the presence of the thrombus for procedural guidance, not as the primary diagnostic imaging test used to establish the diagnosis initially (which was the ultrasound). The question asks for the imaging test that confirmed the condition in the context of the diagnostic workup described. The primary diagnostic modality identified is the Doppler ultrasound. While venography was done, it is part of the therapeutic intervention description. However, looking at standard clinical validation questions, if a specific diagnostic test is named as confirming the diagnosis, it is selected. The text says \"Eseguito ecocolordoppler venoso: trombosi...\". This is the diagnostic confirmation. The venography confirmed the thrombus *during* the procedure. Usually, the initial diagnostic test is the key answer. Let's re-read carefully. \"Eseguito ecocolordoppler venoso: trombosi venosa ileo-femorale sinistra estesa.\" This is the diagnostic finding. The venography was \"intraprocedurale\" (during the procedure). Therefore, the primary imaging modality for diagnosis is Doppler/Duplex Ultrasound.\n\nFINAL_OPTION: Doppler/Duplex Ultrasound\nFINAL_ANSWER: 4",
+    "result": {
+      "studies": [
+        "Doppler/Duplex Ultrasound"
+      ]
+    }
+  },
+  "B1_1": {
+    "query": "reported symptoms or signs of deep vein thrombosis",
+    "evidence": "limite superiore di riferimento del laboratorio. Eseguito ecocolordoppler venoso: trombosi venosa ileo-femorale sinistra estesa. Il paziente e' stato sottoposto a trombolisi farmaco-meccanica per via percutanea con catetere; la venografia intraprocedurale ha confermato la presenza del trombo nella vena iliaca sinistra.\n\nAnamnesi patologica remota: Uomo di 52 anni. Nessuna autopsia. Non allergie farmacologiche note. Anamnesi farmacologica: nessuna terapia cronica in atto. Anamnesi Prossima: Da 2 giorni dolore al polpaccio ed edema severo dell'arto inferiore sinistro. Nega trauma, febbre, dolore toracico e dispnea. Esame obiettivo all'ingresso: Paziente vigile, orientato e collaborante. PA 130/82 mmHg, FC 84 bpm, FR 16 atti/min, SpO2 98% in aria ambiente, TC 36,7°C. Arto inferiore sinistro con edema severo esteso alla coscia e dolorabilita' alla palpazione del polpaccio. Toni cardiaci validi e ritmici. Esami di laboratorio: D-dimero 3.700 ng/mL, superiore al limite superiore di riferimento del laboratorio. Eseguito ecocolordoppler venoso: trombosi venosa ileo-femorale sinistra estesa. Il paziente e' stato",
+    "agent1_seconds": 7.7,
+    "brighton_context": "",
+    "agent2_seconds": 17.5,
+    "answer_conflict": null,
+    "reasoning": "The evidence explicitly reports symptoms and signs consistent with DVT in the \"Anamnesi Prossima\" (Recent History) and \"Esame obiettivo\" (Physical Exam) sections. Specifically, it mentions \"dolore al polpaccio\" (calf pain), \"edema severo dell'arto inferiore sinistro\" (severe edema of the left lower limb), and \"dolorabilita' alla palpazione del polpaccio\" (pain on palpation of the calf). Therefore, there is a clear report of recognized DVT symptoms/signs.\n\nFINAL_OPTION: ≥1 symptom or sign of DVT was reported\nFINAL_ANSWER: 1",
+    "result": {
+      "answer": "≥1 symptom or sign of DVT was reported"
+    }
+  },
+  "B1_2": {
+    "query": "deep vein thrombosis lower extremity or upper extremity",
+    "evidence": "limite superiore di riferimento del laboratorio. Eseguito ecocolordoppler venoso: trombosi venosa ileo-femorale sinistra estesa. Il paziente e' stato sottoposto a trombolisi farmaco-meccanica per via percutanea con catetere; la venografia intraprocedurale ha confermato la presenza del trombo nella vena iliaca sinistra.\n\nAnamnesi patologica remota: Uomo di 52 anni. Nessuna autopsia. Non allergie farmacologiche note. Anamnesi farmacologica: nessuna terapia cronica in atto. Anamnesi Prossima: Da 2 giorni dolore al polpaccio ed edema severo dell'arto inferiore sinistro. Nega trauma, febbre, dolore toracico e dispnea. Esame obiettivo all'ingresso: Paziente vigile, orientato e collaborante. PA 130/82 mmHg, FC 84 bpm, FR 16 atti/min, SpO2 98% in aria ambiente, TC 36,7°C. Arto inferiore sinistro con edema severo esteso alla coscia e dolorabilita' alla palpazione del polpaccio. Toni cardiaci validi e ritmici. Esami di laboratorio: D-dimero 3.700 ng/mL, superiore al limite superiore di riferimento del laboratorio. Eseguito ecocolordoppler venoso: trombosi venosa ileo-femorale sinistra estesa. Il paziente e' stato",
+    "agent1_seconds": 7.1,
+    "brighton_context": "",
+    "agent2_seconds": 16.4,
+    "answer_conflict": null,
+    "reasoning": "The evidence explicitly states \"trombosi venosa ileo-femorale sinistra estesa\" (extended left iliofemoral venous thrombosis) confirmed by venous color Doppler ultrasound and intraprocedural venography. The iliac and femoral veins are part of the lower extremity venous system. Therefore, this constitutes a Lower extremity DVT. There is no mention of thrombosis in the upper extremities.\n\nFINAL_OPTION: Lower extremity DVT\nFINAL_ANSWER: 1",
+    "result": {
+      "types": [
+        "Lower extremity DVT"
+      ]
+    }
+  },
+  "B2": {
+    "query": "calf pain, swelling, oedema, redness, warmth, absent pulses",
+    "evidence": "Anamnesi patologica remota: Uomo di 52 anni. Nessuna autopsia. Non allergie farmacologiche note. Anamnesi farmacologica: nessuna terapia cronica in atto. Anamnesi Prossima: Da 2 giorni dolore al polpaccio ed edema severo dell'arto inferiore sinistro. Nega trauma, febbre, dolore toracico e dispnea. Esame obiettivo all'ingresso: Paziente vigile, orientato e collaborante. PA 130/82 mmHg, FC 84 bpm, FR 16 atti/min, SpO2 98% in aria ambiente, TC 36,7°C. Arto inferiore sinistro con edema severo esteso alla coscia e dolorabilita' alla palpazione del polpaccio. Toni cardiaci validi e ritmici. Esami di laboratorio: D-dimero 3.700 ng/mL, superiore al limite superiore di riferimento del laboratorio. Eseguito ecocolordoppler venoso: trombosi venosa ileo-femorale sinistra estesa. Il paziente e' stato\n\nlimite superiore di riferimento del laboratorio. Eseguito ecocolordoppler venoso: trombosi venosa ileo-femorale sinistra estesa. Il paziente e' stato sottoposto a trombolisi farmaco-meccanica per via percutanea con catetere; la venografia intraprocedurale ha confermato la presenza del trombo nella vena iliaca sinistra.",
+    "agent1_seconds": 7.7,
+    "brighton_context": "",
+    "agent2_seconds": 19.4,
+    "answer_conflict": null,
+    "reasoning": "The patient presents with \"dolore al polpaccio\" (calf pain) and \"dolorabilita' alla palpazione del polpaccio\" (tenderness on palpation of the calf), which directly supports Option 1. Additionally, the evidence describes \"edema severo dell'arto inferiore sinistro\" (severe edema of the left lower limb) and \"Arto inferiore sinistro con edema severo\" (left lower limb with severe edema), which supports Option 2. The text explicitly negates trauma, fever, chest pain, and dyspnea, but does not mention absent pulses or specific signs of redness/warmth beyond the general inflammation implied by DVT, so Options 3 and 4 are not supported by explicit evidence in the text provided.\n\nFINAL_OPTION: Calf pain or tenderness; Leg swelling or pitting oedema\nFINAL_ANSWER: 1; 2",
+    "result": {
+      "symptoms": [
+        "Calf pain or tenderness",
+        "Leg swelling or pitting oedema"
+      ]
+    }
+  },
+  "C": {
+    "query": "D-dimer value, test date, laboratory upper limit of normal",
+    "evidence": "Anamnesi patologica remota: Uomo di 52 anni. Nessuna autopsia. Non allergie farmacologiche note. Anamnesi farmacologica: nessuna terapia cronica in atto. Anamnesi Prossima: Da 2 giorni dolore al polpaccio ed edema severo dell'arto inferiore sinistro. Nega trauma, febbre, dolore toracico e dispnea. Esame obiettivo all'ingresso: Paziente vigile, orientato e collaborante. PA 130/82 mmHg, FC 84 bpm, FR 16 atti/min, SpO2 98% in aria ambiente, TC 36,7°C. Arto inferiore sinistro con edema severo esteso alla coscia e dolorabilita' alla palpazione del polpaccio. Toni cardiaci validi e ritmici. Esami di laboratorio: D-dimero 3.700 ng/mL, superiore al limite superiore di riferimento del laboratorio. Eseguito ecocolordoppler venoso: trombosi venosa ileo-femorale sinistra estesa. Il paziente e' stato\n\nlimite superiore di riferimento del laboratorio. Eseguito ecocolordoppler venoso: trombosi venosa ileo-femorale sinistra estesa. Il paziente e' stato sottoposto a trombolisi farmaco-meccanica per via percutanea con catetere; la venografia intraprocedurale ha confermato la presenza del trombo nella vena iliaca sinistra.",
+    "agent1_seconds": 7.3,
+    "brighton_context": "",
+    "agent2_seconds": 15.1,
+    "answer_conflict": null,
+    "reasoning": "The evidence explicitly states \"D-dimero 3.700 ng/mL, superiore al limite superiore di riferimento del laboratorio,\" which translates to D-dimer 3,700 ng/mL, above the laboratory's upper limit of reference. This confirms that the test was performed and the result exceeded the normal range.\n\nFINAL_OPTION: D-dimer exceeded test lab's upper limit of normal.\nFINAL_ANSWER: 1",
+    "result": {
+      "answer": "D-dimer exceeded test lab's upper limit of normal."
+    }
+  },
+  "F": {
+    "query": "diagnosis of deep vein thrombosis reported by specialist",
+    "evidence": "limite superiore di riferimento del laboratorio. Eseguito ecocolordoppler venoso: trombosi venosa ileo-femorale sinistra estesa. Il paziente e' stato sottoposto a trombolisi farmaco-meccanica per via percutanea con catetere; la venografia intraprocedurale ha confermato la presenza del trombo nella vena iliaca sinistra.\n\nAnamnesi patologica remota: Uomo di 52 anni. Nessuna autopsia. Non allergie farmacologiche note. Anamnesi farmacologica: nessuna terapia cronica in atto. Anamnesi Prossima: Da 2 giorni dolore al polpaccio ed edema severo dell'arto inferiore sinistro. Nega trauma, febbre, dolore toracico e dispnea. Esame obiettivo all'ingresso: Paziente vigile, orientato e collaborante. PA 130/82 mmHg, FC 84 bpm, FR 16 atti/min, SpO2 98% in aria ambiente, TC 36,7°C. Arto inferiore sinistro con edema severo esteso alla coscia e dolorabilita' alla palpazione del polpaccio. Toni cardiaci validi e ritmici. Esami di laboratorio: D-dimero 3.700 ng/mL, superiore al limite superiore di riferimento del laboratorio. Eseguito ecocolordoppler venoso: trombosi venosa ileo-femorale sinistra estesa. Il paziente e' stato",
+    "agent1_seconds": 7.4,
+    "brighton_context": "",
+    "agent2_seconds": 17.5,
+    "answer_conflict": null,
+    "reasoning": "DETAILS_PRESENT: yes\nThe evidence explicitly reports specific clinical findings supporting the diagnosis of DVT. It mentions a D-dimer level of 3.700 ng/mL (a lab value), physical exam findings of severe edema and calf pain, and imaging results from an ecocolordoppler showing \"trombosi venosa ileo-femorale sinistra estesa\" (extended left iliofemoral venous thrombosis). Additionally, intraprocedural venography confirmed the presence of the thrombus. Since specific supporting details are present, the diagnosis was not reported without details.\n\nFINAL_OPTION: No\nFINAL_ANSWER: 2",
+    "result": {
+      "answer": "No"
+    }
+  },
+  "X": {
+    "query": "possible alternative etiologies; clinical syndromes to be differentiated from thrombosis; conditions explaining calf pain, redness, warmth or ankle edema other than DVT",
+    "evidence": "Anamnesi patologica remota: Uomo di 52 anni. Nessuna autopsia. Non allergie farmacologiche note. Anamnesi farmacologica: nessuna terapia cronica in atto. Anamnesi Prossima: Da 2 giorni dolore al polpaccio ed edema severo dell'arto inferiore sinistro. Nega trauma, febbre, dolore toracico e dispnea. Esame obiettivo all'ingresso: Paziente vigile, orientato e collaborante. PA 130/82 mmHg, FC 84 bpm, FR 16 atti/min, SpO2 98% in aria ambiente, TC 36,7°C. Arto inferiore sinistro con edema severo esteso alla coscia e dolorabilita' alla palpazione del polpaccio. Toni cardiaci validi e ritmici. Esami di laboratorio: D-dimero 3.700 ng/mL, superiore al limite superiore di riferimento del laboratorio. Eseguito ecocolordoppler venoso: trombosi venosa ileo-femorale sinistra estesa. Il paziente e' stato\n\nlimite superiore di riferimento del laboratorio. Eseguito ecocolordoppler venoso: trombosi venosa ileo-femorale sinistra estesa. Il paziente e' stato sottoposto a trombolisi farmaco-meccanica per via percutanea con catetere; la venografia intraprocedurale ha confermato la presenza del trombo nella vena iliaca sinistra.",
+    "agent1_seconds": 7.1,
+    "brighton_context": "",
+    "agent2_seconds": 16.6,
+    "answer_conflict": null,
+    "reasoning": "The clinical evidence describes a patient presenting with left leg pain and edema, which was confirmed as an extensive ilio-femoral venous thrombosis (DVT) via venous color Doppler ultrasound and intraprocedural venography. The text details the diagnosis of DVT and the subsequent treatment (pharmacomechanical thrombolysis). There is no mention of any other disease process, competing explanation, or alternative final diagnosis that accounts for the patient's acute illness. Therefore, no alternative diagnosis was found.\n\nFINAL_OPTION: No alternative diagnosis was found to explain the acute illness\nFINAL_ANSWER: 2",
+    "result": {
+      "answer": "No alternative diagnosis was found to explain the acute illness"
+    }
+  },
+  "_run_config": {
+    "extractor_mode": "agentic_graph",
+    "section_gates_enabled": {
+      "keyword": true,
+      "details": false,
+      "absent_pulses": true
+    },
+    "brighton_context_enabled": false,
+    "section_hints_enabled": true,
+    "section_hints_disabled": [
+      "B2"
+    ],
+    "section_hints_fingerprint": {
+      "A1": "94 fc56153ea429",
+      "A2": "226 c42c3b188a45",
+      "A3_1": "277 c59144334788",
+      "A3_2": "143 023c43c73783",
+      "B1_1": "513 a65c3a0069c5",
+      "C": "342 7e8efb23dfc0",
+      "F": "1216 4d54ff2a7269",
+      "X": "260 e4ce4dddf649",
+      "all": "ab63b8e5f5af"
+    },
+    "cross_section_rules_applied": true,
+    "models": {
+      "extractor": "llama3.1:8b-instruct-q4_0",
+      "evaluator": "qwen3.6:27b",
+      "embeddings": "intfloat/multilingual-e5-small"
+    },
+    "environment": {
+      "hostname": "mari",
+      "ollama_version": "ollama version is 0.32.1"
+    },
+    "generation": {
+      "temperature": 0.0,
+      "num_predict": 1024,
+      "num_gpu": 999,
+      "reasoning": false
+    },
+    "retrieval": {
+      "ehr_chunk_size": 800,
+      "ehr_chunk_overlap": 150,
+      "ehr_retriever_k": 5,
+      "brighton_retriever_k": 5
+    }
+  }
+}

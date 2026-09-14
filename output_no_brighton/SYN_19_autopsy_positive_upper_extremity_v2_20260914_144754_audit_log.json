@@ -1,0 +1,172 @@
+{
+  "A1": {
+    "query": "autopsy report, necropsy, post-mortem examination, autoptic findings",
+    "evidence": "prima del decesso. Riscontro autoptico: trombosi venosa profonda della vena succlavia sinistra, con embolia polmonare massiva quale causa del decesso. All'autopsia non e' stata identificata alcuna diagnosi alternativa.\n\nAnamnesi patologica remota: Donna di 68 anni, portatrice di catetere venoso centrale posizionato sul braccio sinistro per chemioterapia, deceduta improvvisamente in reparto oncologico. Nessun intervento chirurgico eseguito. Non allergie farmacologiche note. Anamnesi Prossima: Nei giorni precedenti il decesso la paziente aveva riferito dolore e arrossamento al braccio sinistro, in corrispondenza della sede del catetere. Esame obiettivo all'ingresso: Rilevati arrossamento e dolorabilita' del braccio sinistro in sede di catetere durante l'assistenza in reparto. Esami di laboratorio: Nessun esame di imaging venoso ne' dosaggio del D-dimero eseguiti prima del decesso. Riscontro autoptico: trombosi venosa profonda della vena succlavia sinistra, con embolia polmonare massiva quale causa del",
+    "agent1_seconds": 7.2,
+    "brighton_context": "",
+    "agent2_seconds": 15.7,
+    "answer_conflict": null,
+    "reasoning": "The evidence explicitly states \"Riscontro autoptico: trombosi venosa profonda della vena succlavia sinistra\" (Autopsy finding: deep vein thrombosis of the left subclavian vein). This confirms that an autopsy was performed and it identified the presence of DVT. The text also notes that no alternative diagnosis was found at autopsy, reinforcing the finding. Therefore, the autopsy showed the presence of DVT.\n\nFINAL_OPTION: Autopsy showed presence of DVT\nFINAL_ANSWER: 1",
+    "result": {
+      "answer": "Autopsy showed presence of DVT"
+    }
+  },
+  "A2": {
+    "query": "thrombectomy, surgical procedure related to DVT",
+    "evidence": "Anamnesi patologica remota: Donna di 68 anni, portatrice di catetere venoso centrale posizionato sul braccio sinistro per chemioterapia, deceduta improvvisamente in reparto oncologico. Nessun intervento chirurgico eseguito. Non allergie farmacologiche note. Anamnesi Prossima: Nei giorni precedenti il decesso la paziente aveva riferito dolore e arrossamento al braccio sinistro, in corrispondenza della sede del catetere. Esame obiettivo all'ingresso: Rilevati arrossamento e dolorabilita' del braccio sinistro in sede di catetere durante l'assistenza in reparto. Esami di laboratorio: Nessun esame di imaging venoso ne' dosaggio del D-dimero eseguiti prima del decesso. Riscontro autoptico: trombosi venosa profonda della vena succlavia sinistra, con embolia polmonare massiva quale causa del\n\nprima del decesso. Riscontro autoptico: trombosi venosa profonda della vena succlavia sinistra, con embolia polmonare massiva quale causa del decesso. All'autopsia non e' stata identificata alcuna diagnosi alternativa.",
+    "agent1_seconds": 6.8,
+    "brighton_context": "",
+    "agent2_seconds": 16.4,
+    "answer_conflict": null,
+    "reasoning": "The evidence explicitly states \"Nessun intervento chirurgico eseguito\" (No surgical procedure performed). Although an autopsy confirmed the presence of deep vein thrombosis (DVT), an autopsy is a post-mortem examination and not classified as a surgical procedure in the context of clinical interventions like thrombectomy. Furthermore, no imaging or other diagnostic procedures were performed before death to confirm DVT clinically. Therefore, no surgical procedure was done.\n\nFINAL_OPTION: No surgical procedure done; or, done but either did not confirm presence of DVT or findings unknown; or unknown if done\nFINAL_ANSWER: 3",
+    "result": {
+      "answer": "No surgical procedure done; or, done but either did not confirm presence of DVT or findings unknown; or unknown if done"
+    }
+  },
+  "A3_1": {
+    "query": "ultrasound, CT, MRI, venography: imaging outcome for deep vein thrombosis",
+    "evidence": "prima del decesso. Riscontro autoptico: trombosi venosa profonda della vena succlavia sinistra, con embolia polmonare massiva quale causa del decesso. All'autopsia non e' stata identificata alcuna diagnosi alternativa.\n\nAnamnesi patologica remota: Donna di 68 anni, portatrice di catetere venoso centrale posizionato sul braccio sinistro per chemioterapia, deceduta improvvisamente in reparto oncologico. Nessun intervento chirurgico eseguito. Non allergie farmacologiche note. Anamnesi Prossima: Nei giorni precedenti il decesso la paziente aveva riferito dolore e arrossamento al braccio sinistro, in corrispondenza della sede del catetere. Esame obiettivo all'ingresso: Rilevati arrossamento e dolorabilita' del braccio sinistro in sede di catetere durante l'assistenza in reparto. Esami di laboratorio: Nessun esame di imaging venoso ne' dosaggio del D-dimero eseguiti prima del decesso. Riscontro autoptico: trombosi venosa profonda della vena succlavia sinistra, con embolia polmonare massiva quale causa del",
+    "agent1_seconds": 7.1,
+    "brighton_context": "",
+    "agent2_seconds": 15.8,
+    "answer_conflict": null,
+    "reasoning": "The evidence explicitly states \"Nessun esame di imaging venoso... eseguiti prima del decesso\" (No venous imaging exams... performed before death). Although an autopsy confirmed the presence of deep vein thrombosis (DVT), the question specifically asks about imaging studies. Since no imaging was performed, we cannot select options claiming an imaging study was done. Therefore, the correct classification is that no imaging studies were done.\n\nFINAL_OPTION: No imaging studies done, unknown if done, or done but results unknown\nFINAL_ANSWER: 3",
+    "result": {
+      "answer": "No imaging studies done, unknown if done, or done but results unknown"
+    }
+  },
+  "A3_2": {
+    "query": "type of imaging study performed: compression ultrasonography, doppler, venography",
+    "evidence": "Anamnesi patologica remota: Donna di 68 anni, portatrice di catetere venoso centrale posizionato sul braccio sinistro per chemioterapia, deceduta improvvisamente in reparto oncologico. Nessun intervento chirurgico eseguito. Non allergie farmacologiche note. Anamnesi Prossima: Nei giorni precedenti il decesso la paziente aveva riferito dolore e arrossamento al braccio sinistro, in corrispondenza della sede del catetere. Esame obiettivo all'ingresso: Rilevati arrossamento e dolorabilita' del braccio sinistro in sede di catetere durante l'assistenza in reparto. Esami di laboratorio: Nessun esame di imaging venoso ne' dosaggio del D-dimero eseguiti prima del decesso. Riscontro autoptico: trombosi venosa profonda della vena succlavia sinistra, con embolia polmonare massiva quale causa del\n\nprima del decesso. Riscontro autoptico: trombosi venosa profonda della vena succlavia sinistra, con embolia polmonare massiva quale causa del decesso. All'autopsia non e' stata identificata alcuna diagnosi alternativa.",
+    "agent1_seconds": 6.9,
+    "brighton_context": "",
+    "agent2_seconds": 17.1,
+    "answer_conflict": null,
+    "reasoning": "The evidence explicitly states: \"Nessun esame di imaging venoso ne' dosaggio del D-dimero eseguiti prima del decesso\" (No venous imaging exam nor D-dimer dosage performed before death). This sentence directly negates the performance of any venous imaging tests, including compression ultrasonography, CT/MR venography, contrast venography, or Doppler/Duplex ultrasound. The diagnosis of deep vein thrombosis was made post-mortem via autopsy (\"Riscontro autoptico\"), not through antemortem imaging. Therefore, none of the listed imaging modalities were performed.\n\nFINAL_OPTION: none\nFINAL_ANSWER: none",
+    "result": {
+      "studies": []
+    }
+  },
+  "B1_1": {
+    "query": "reported symptoms or signs of deep vein thrombosis",
+    "evidence": "Anamnesi patologica remota: Donna di 68 anni, portatrice di catetere venoso centrale posizionato sul braccio sinistro per chemioterapia, deceduta improvvisamente in reparto oncologico. Nessun intervento chirurgico eseguito. Non allergie farmacologiche note. Anamnesi Prossima: Nei giorni precedenti il decesso la paziente aveva riferito dolore e arrossamento al braccio sinistro, in corrispondenza della sede del catetere. Esame obiettivo all'ingresso: Rilevati arrossamento e dolorabilita' del braccio sinistro in sede di catetere durante l'assistenza in reparto. Esami di laboratorio: Nessun esame di imaging venoso ne' dosaggio del D-dimero eseguiti prima del decesso. Riscontro autoptico: trombosi venosa profonda della vena succlavia sinistra, con embolia polmonare massiva quale causa del\n\nprima del decesso. Riscontro autoptico: trombosi venosa profonda della vena succlavia sinistra, con embolia polmonare massiva quale causa del decesso. All'autopsia non e' stata identificata alcuna diagnosi alternativa.",
+    "agent1_seconds": 6.9,
+    "brighton_context": "",
+    "agent2_seconds": 16.2,
+    "answer_conflict": null,
+    "reasoning": "The evidence explicitly states that in the days preceding death, the patient reported pain and redness in the left arm at the site of the central venous catheter. Furthermore, the physical examination upon admission noted redness and tenderness in the same area. These findings constitute reported symptoms and signs consistent with a DVT syndrome (specifically upper extremity DVT associated with the catheter). Therefore, it is known that ≥1 symptom or sign was reported.\n\nFINAL_OPTION: ≥1 symptom or sign of DVT was reported\nFINAL_ANSWER: 1",
+    "result": {
+      "answer": "≥1 symptom or sign of DVT was reported"
+    }
+  },
+  "B1_2": {
+    "query": "deep vein thrombosis lower extremity or upper extremity",
+    "evidence": "prima del decesso. Riscontro autoptico: trombosi venosa profonda della vena succlavia sinistra, con embolia polmonare massiva quale causa del decesso. All'autopsia non e' stata identificata alcuna diagnosi alternativa.\n\nAnamnesi patologica remota: Donna di 68 anni, portatrice di catetere venoso centrale posizionato sul braccio sinistro per chemioterapia, deceduta improvvisamente in reparto oncologico. Nessun intervento chirurgico eseguito. Non allergie farmacologiche note. Anamnesi Prossima: Nei giorni precedenti il decesso la paziente aveva riferito dolore e arrossamento al braccio sinistro, in corrispondenza della sede del catetere. Esame obiettivo all'ingresso: Rilevati arrossamento e dolorabilita' del braccio sinistro in sede di catetere durante l'assistenza in reparto. Esami di laboratorio: Nessun esame di imaging venoso ne' dosaggio del D-dimero eseguiti prima del decesso. Riscontro autoptico: trombosi venosa profonda della vena succlavia sinistra, con embolia polmonare massiva quale causa del",
+    "agent1_seconds": 7.0,
+    "brighton_context": "",
+    "agent2_seconds": 16.1,
+    "answer_conflict": null,
+    "reasoning": "The autopsy report explicitly identifies \"trombosi venosa profonda della vena succlavia sinistra\" (deep vein thrombosis of the left subclavian vein). The subclavian vein is located in the upper extremity/shoulder region, not the lower extremities. Therefore, this constitutes an upper extremity DVT. There is no mention of thrombosis in the legs or pelvic veins, so Lower extremity DVT is not supported by the evidence.\n\nFINAL_OPTION: Upper extremity DVT\nFINAL_ANSWER: 2",
+    "result": {
+      "types": [
+        "Upper extremity DVT"
+      ]
+    }
+  },
+  "B2": {
+    "query": "calf pain, swelling, oedema, redness, warmth, absent pulses",
+    "evidence": "Anamnesi patologica remota: Donna di 68 anni, portatrice di catetere venoso centrale posizionato sul braccio sinistro per chemioterapia, deceduta improvvisamente in reparto oncologico. Nessun intervento chirurgico eseguito. Non allergie farmacologiche note. Anamnesi Prossima: Nei giorni precedenti il decesso la paziente aveva riferito dolore e arrossamento al braccio sinistro, in corrispondenza della sede del catetere. Esame obiettivo all'ingresso: Rilevati arrossamento e dolorabilita' del braccio sinistro in sede di catetere durante l'assistenza in reparto. Esami di laboratorio: Nessun esame di imaging venoso ne' dosaggio del D-dimero eseguiti prima del decesso. Riscontro autoptico: trombosi venosa profonda della vena succlavia sinistra, con embolia polmonare massiva quale causa del\n\nprima del decesso. Riscontro autoptico: trombosi venosa profonda della vena succlavia sinistra, con embolia polmonare massiva quale causa del decesso. All'autopsia non e' stata identificata alcuna diagnosi alternativa.",
+    "agent1_seconds": 7.1,
+    "brighton_context": "",
+    "agent2_seconds": 18.1,
+    "answer_conflict": null,
+    "reasoning": "The evidence explicitly states that the patient reported \"dolore e arrossamento al braccio sinistro\" (pain and redness in the left arm) and that physical examination revealed \"arrossamento e dolorabilita' del braccio sinistro\" (redness and tenderness/pain of the left arm). This directly supports option 4 (\"Redness, warmth, or pain in one or more extremities\"). The evidence does not mention calf pain, leg swelling, or absent pulses, nor does it rule them out explicitly, but since they are not mentioned as present, they cannot be selected based on the provided text. Option 5 is incorrect because option 4 is clearly supported by the text.\n\nFINAL_OPTION: Redness, warmth, or pain in one or more extremities\nFINAL_ANSWER: 4",
+    "result": {
+      "symptoms": [
+        "Redness, warmth, or pain in one or more extremities"
+      ]
+    }
+  },
+  "C": {
+    "query": "D-dimer value, test date, laboratory upper limit of normal",
+    "evidence": "Anamnesi patologica remota: Donna di 68 anni, portatrice di catetere venoso centrale posizionato sul braccio sinistro per chemioterapia, deceduta improvvisamente in reparto oncologico. Nessun intervento chirurgico eseguito. Non allergie farmacologiche note. Anamnesi Prossima: Nei giorni precedenti il decesso la paziente aveva riferito dolore e arrossamento al braccio sinistro, in corrispondenza della sede del catetere. Esame obiettivo all'ingresso: Rilevati arrossamento e dolorabilita' del braccio sinistro in sede di catetere durante l'assistenza in reparto. Esami di laboratorio: Nessun esame di imaging venoso ne' dosaggio del D-dimero eseguiti prima del decesso. Riscontro autoptico: trombosi venosa profonda della vena succlavia sinistra, con embolia polmonare massiva quale causa del\n\nprima del decesso. Riscontro autoptico: trombosi venosa profonda della vena succlavia sinistra, con embolia polmonare massiva quale causa del decesso. All'autopsia non e' stata identificata alcuna diagnosi alternativa.",
+    "agent1_seconds": 7.7,
+    "brighton_context": "",
+    "agent2_seconds": 15.7,
+    "answer_conflict": null,
+    "reasoning": "The evidence explicitly states \"Nessun esame di imaging venoso ne' dosaggio del D-dimero eseguiti prima del decesso,\" which translates to \"No venous imaging or D-dimer dosage performed before death.\" Since the text clearly indicates that the D-dimer test was not performed, it falls under the category of not tested.\n\nFINAL_OPTION: D-dimer not tested, or tested but results unknown or not available\nFINAL_ANSWER: 3",
+    "result": {
+      "answer": "D-dimer not tested, or tested but results unknown or not available"
+    }
+  },
+  "F": {
+    "query": "diagnosis of deep vein thrombosis reported by specialist",
+    "evidence": "Anamnesi patologica remota: Donna di 68 anni, portatrice di catetere venoso centrale posizionato sul braccio sinistro per chemioterapia, deceduta improvvisamente in reparto oncologico. Nessun intervento chirurgico eseguito. Non allergie farmacologiche note. Anamnesi Prossima: Nei giorni precedenti il decesso la paziente aveva riferito dolore e arrossamento al braccio sinistro, in corrispondenza della sede del catetere. Esame obiettivo all'ingresso: Rilevati arrossamento e dolorabilita' del braccio sinistro in sede di catetere durante l'assistenza in reparto. Esami di laboratorio: Nessun esame di imaging venoso ne' dosaggio del D-dimero eseguiti prima del decesso. Riscontro autoptico: trombosi venosa profonda della vena succlavia sinistra, con embolia polmonare massiva quale causa del\n\nprima del decesso. Riscontro autoptico: trombosi venosa profonda della vena succlavia sinistra, con embolia polmonare massiva quale causa del decesso. All'autopsia non e' stata identificata alcuna diagnosi alternativa.",
+    "agent1_seconds": 6.9,
+    "brighton_context": "",
+    "agent2_seconds": 16.8,
+    "answer_conflict": null,
+    "reasoning": "DETAILS_PRESENT: yes\n\nThe evidence explicitly reports specific clinical findings and diagnostic results. It details symptoms such as pain and redness in the left arm at the catheter site. Crucially, it provides a specific autopsy finding: \"deep vein thrombosis of the left subclavian vein\" and \"massive pulmonary embolism.\" Since the diagnosis is supported by these specific anatomical and pathological findings rather than being a bare conclusion, details are present. Therefore, the statement that the diagnosis was reported 'WITHOUT details' is false.\n\nFINAL_OPTION: No\nFINAL_ANSWER: 2",
+    "result": {
+      "answer": "No"
+    }
+  },
+  "X": {
+    "query": "possible alternative etiologies; clinical syndromes to be differentiated from thrombosis; conditions explaining calf pain, redness, warmth or ankle edema other than DVT",
+    "evidence": "Anamnesi patologica remota: Donna di 68 anni, portatrice di catetere venoso centrale posizionato sul braccio sinistro per chemioterapia, deceduta improvvisamente in reparto oncologico. Nessun intervento chirurgico eseguito. Non allergie farmacologiche note. Anamnesi Prossima: Nei giorni precedenti il decesso la paziente aveva riferito dolore e arrossamento al braccio sinistro, in corrispondenza della sede del catetere. Esame obiettivo all'ingresso: Rilevati arrossamento e dolorabilita' del braccio sinistro in sede di catetere durante l'assistenza in reparto. Esami di laboratorio: Nessun esame di imaging venoso ne' dosaggio del D-dimero eseguiti prima del decesso. Riscontro autoptico: trombosi venosa profonda della vena succlavia sinistra, con embolia polmonare massiva quale causa del\n\nprima del decesso. Riscontro autoptico: trombosi venosa profonda della vena succlavia sinistra, con embolia polmonare massiva quale causa del decesso. All'autopsia non e' stata identificata alcuna diagnosi alternativa.",
+    "agent1_seconds": 7.3,
+    "brighton_context": "",
+    "agent2_seconds": 15.7,
+    "answer_conflict": null,
+    "reasoning": "The evidence explicitly states in the autopsy findings (\"Riscontro autoptico\") that \"All'autopsia non e' stata identificata alcuna diagnosi alternativa\" (No alternative diagnosis was identified at autopsy). The cause of death was determined to be massive pulmonary embolism secondary to deep vein thrombosis, with no other competing diagnoses found. Therefore, no alternative diagnosis was found to explain the acute illness.\n\nFINAL_OPTION: No alternative diagnosis was found to explain the acute illness\nFINAL_ANSWER: 2",
+    "result": {
+      "answer": "No alternative diagnosis was found to explain the acute illness"
+    }
+  },
+  "_run_config": {
+    "extractor_mode": "agentic_graph",
+    "section_gates_enabled": {
+      "keyword": true,
+      "details": false,
+      "absent_pulses": true
+    },
+    "brighton_context_enabled": false,
+    "section_hints_enabled": true,
+    "section_hints_disabled": [
+      "B2"
+    ],
+    "section_hints_fingerprint": {
+      "A1": "94 fc56153ea429",
+      "A2": "226 c42c3b188a45",
+      "A3_1": "277 c59144334788",
+      "A3_2": "143 023c43c73783",
+      "B1_1": "513 a65c3a0069c5",
+      "C": "342 7e8efb23dfc0",
+      "F": "1216 4d54ff2a7269",
+      "X": "260 e4ce4dddf649",
+      "all": "ab63b8e5f5af"
+    },
+    "cross_section_rules_applied": true,
+    "models": {
+      "extractor": "llama3.1:8b-instruct-q4_0",
+      "evaluator": "qwen3.6:27b",
+      "embeddings": "intfloat/multilingual-e5-small"
+    },
+    "environment": {
+      "hostname": "mari",
+      "ollama_version": "ollama version is 0.32.1"
+    },
+    "generation": {
+      "temperature": 0.0,
+      "num_predict": 1024,
+      "num_gpu": 999,
+      "reasoning": false
+    },
+    "retrieval": {
+      "ehr_chunk_size": 800,
+      "ehr_chunk_overlap": 150,
+      "ehr_retriever_k": 5,
+      "brighton_retriever_k": 5
+    }
+  }
+}

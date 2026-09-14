@@ -1,0 +1,172 @@
+{
+  "A1": {
+    "query": "autopsy report, necropsy, post-mortem examination, autoptic findings",
+    "evidence": "alla coscia, cute integra e non iperemica, non dolorabilita' alla palpazione. Polsi periferici validi. Esami di laboratorio: D-dimero 280 ng/mL, entro il range di normalita' del laboratorio. Accertamenti strumentali: ecocolordoppler venoso dell'arto inferiore sinistro con flusso regolare nei distretti esplorati e nessuna evidenza di trombosi venosa profonda. Valutazione specialistica: diagnosi di linfedema secondario da ostruzione linfatica.\n\nAnamnesi patologica remota: Donna di 63 anni, sottoposta in passato a linfoadenectomia inguinale nell'ambito del trattamento di una neoplasia. Nessun intervento chirurgico recente. Allergia nota alla penicillina. Anamnesi farmacologica: terapia antipertensiva domiciliare. Anamnesi prossima: da circa tre settimane edema progressivo dell'arto inferiore sinistro, non doloroso, ingravescente nel corso della giornata. Nega trauma, febbre, arrossamento cutaneo e dispnea. Esame obiettivo: paziente vigile e collaborante. PA 134/80 mmHg, FC 72 bpm, FR 15 atti/min, SpO2 98% in aria ambiente, TC 36,4°C. Arto inferiore sinistro con edema improntabile esteso alla coscia, cute integra e non iperemica, non dolorabilita' alla palpazione. Polsi periferici validi. Esami di laboratorio: D-dimero 280 ng/mL,",
+    "agent1_seconds": 7.2,
+    "brighton_context": "",
+    "agent2_seconds": 17.0,
+    "answer_conflict": null,
+    "reasoning": "The evidence describes a living patient undergoing clinical evaluation, including physical examination, laboratory tests (D-dimer), and imaging (venous color Doppler ultrasound). The text explicitly states that the ultrasound showed no evidence of deep vein thrombosis. There is no mention of the patient's death or any post-mortem examination. Since an autopsy is a post-mortem procedure and only post-mortem findings count for this specific question, and no such procedure is mentioned or implied to have occurred, the correct classification is that no autopsy was done.\n\nFINAL_OPTION: No autopsy done, unknown if done, or done but results unavailable\nFINAL_ANSWER: 3",
+    "result": {
+      "answer": "No autopsy done, unknown if done, or done but results unavailable"
+    }
+  },
+  "A2": {
+    "query": "thrombectomy, surgical procedure related to DVT",
+    "evidence": "Anamnesi patologica remota: Donna di 63 anni, sottoposta in passato a linfoadenectomia inguinale nell'ambito del trattamento di una neoplasia. Nessun intervento chirurgico recente. Allergia nota alla penicillina. Anamnesi farmacologica: terapia antipertensiva domiciliare. Anamnesi prossima: da circa tre settimane edema progressivo dell'arto inferiore sinistro, non doloroso, ingravescente nel corso della giornata. Nega trauma, febbre, arrossamento cutaneo e dispnea. Esame obiettivo: paziente vigile e collaborante. PA 134/80 mmHg, FC 72 bpm, FR 15 atti/min, SpO2 98% in aria ambiente, TC 36,4°C. Arto inferiore sinistro con edema improntabile esteso alla coscia, cute integra e non iperemica, non dolorabilita' alla palpazione. Polsi periferici validi. Esami di laboratorio: D-dimero 280 ng/mL,\n\nalla coscia, cute integra e non iperemica, non dolorabilita' alla palpazione. Polsi periferici validi. Esami di laboratorio: D-dimero 280 ng/mL, entro il range di normalita' del laboratorio. Accertamenti strumentali: ecocolordoppler venoso dell'arto inferiore sinistro con flusso regolare nei distretti esplorati e nessuna evidenza di trombosi venosa profonda. Valutazione specialistica: diagnosi di linfedema secondario da ostruzione linfatica.",
+    "agent1_seconds": 7.0,
+    "brighton_context": "",
+    "agent2_seconds": 17.8,
+    "answer_conflict": null,
+    "reasoning": "The evidence explicitly states \"Nessun intervento chirurgico recente\" (No recent surgical intervention) and describes a diagnostic workup involving laboratory tests and venous color Doppler ultrasound. The ultrasound results showed \"nessuna evidenza di trombosi venosa profonda\" (no evidence of deep vein thrombosis), leading to a diagnosis of secondary lymphedema. Since no surgery was performed, and specifically no thrombectomy or other procedure confirming DVT was done, the correct classification is that no surgical procedure was done or findings were negative/unknown for DVT confirmation via surgery.\n\nFINAL_OPTION: No surgical procedure done; or, done but either did not confirm presence of DVT or findings unknown; or unknown if done\nFINAL_ANSWER: 3",
+    "result": {
+      "answer": "No surgical procedure done; or, done but either did not confirm presence of DVT or findings unknown; or unknown if done"
+    }
+  },
+  "A3_1": {
+    "query": "ultrasound, CT, MRI, venography: imaging outcome for deep vein thrombosis",
+    "evidence": "alla coscia, cute integra e non iperemica, non dolorabilita' alla palpazione. Polsi periferici validi. Esami di laboratorio: D-dimero 280 ng/mL, entro il range di normalita' del laboratorio. Accertamenti strumentali: ecocolordoppler venoso dell'arto inferiore sinistro con flusso regolare nei distretti esplorati e nessuna evidenza di trombosi venosa profonda. Valutazione specialistica: diagnosi di linfedema secondario da ostruzione linfatica.\n\nAnamnesi patologica remota: Donna di 63 anni, sottoposta in passato a linfoadenectomia inguinale nell'ambito del trattamento di una neoplasia. Nessun intervento chirurgico recente. Allergia nota alla penicillina. Anamnesi farmacologica: terapia antipertensiva domiciliare. Anamnesi prossima: da circa tre settimane edema progressivo dell'arto inferiore sinistro, non doloroso, ingravescente nel corso della giornata. Nega trauma, febbre, arrossamento cutaneo e dispnea. Esame obiettivo: paziente vigile e collaborante. PA 134/80 mmHg, FC 72 bpm, FR 15 atti/min, SpO2 98% in aria ambiente, TC 36,4°C. Arto inferiore sinistro con edema improntabile esteso alla coscia, cute integra e non iperemica, non dolorabilita' alla palpazione. Polsi periferici validi. Esami di laboratorio: D-dimero 280 ng/mL,",
+    "agent1_seconds": 7.3,
+    "brighton_context": "",
+    "agent2_seconds": 16.0,
+    "answer_conflict": null,
+    "reasoning": "The evidence explicitly states that an \"ecocolordoppler venoso dell'arto inferiore sinistro\" (venous color Doppler ultrasound of the left lower limb) was performed. This is an imaging study. The results showed \"nessuna evidenza di trombosi venosa profonda\" (no evidence of deep vein thrombosis). Therefore, an imaging study was done, but it did not confirm DVT; rather, it ruled it out.\n\nFINAL_OPTION: ≥1 imaging study was done but didn't confirm DVT\nFINAL_ANSWER: 2",
+    "result": {
+      "answer": "≥1 imaging study was done but didn't confirm DVT"
+    }
+  },
+  "A3_2": {
+    "query": "type of imaging study performed: compression ultrasonography, doppler, venography",
+    "evidence": "alla coscia, cute integra e non iperemica, non dolorabilita' alla palpazione. Polsi periferici validi. Esami di laboratorio: D-dimero 280 ng/mL, entro il range di normalita' del laboratorio. Accertamenti strumentali: ecocolordoppler venoso dell'arto inferiore sinistro con flusso regolare nei distretti esplorati e nessuna evidenza di trombosi venosa profonda. Valutazione specialistica: diagnosi di linfedema secondario da ostruzione linfatica.\n\nAnamnesi patologica remota: Donna di 63 anni, sottoposta in passato a linfoadenectomia inguinale nell'ambito del trattamento di una neoplasia. Nessun intervento chirurgico recente. Allergia nota alla penicillina. Anamnesi farmacologica: terapia antipertensiva domiciliare. Anamnesi prossima: da circa tre settimane edema progressivo dell'arto inferiore sinistro, non doloroso, ingravescente nel corso della giornata. Nega trauma, febbre, arrossamento cutaneo e dispnea. Esame obiettivo: paziente vigile e collaborante. PA 134/80 mmHg, FC 72 bpm, FR 15 atti/min, SpO2 98% in aria ambiente, TC 36,4°C. Arto inferiore sinistro con edema improntabile esteso alla coscia, cute integra e non iperemica, non dolorabilita' alla palpazione. Polsi periferici validi. Esami di laboratorio: D-dimero 280 ng/mL,",
+    "agent1_seconds": 7.1,
+    "brighton_context": "",
+    "agent2_seconds": 16.6,
+    "answer_conflict": null,
+    "reasoning": "The evidence explicitly states that an \"ecocolordoppler venoso dell'arto inferiore sinistro\" (venous color Doppler ultrasound of the left lower limb) was performed. This modality corresponds to Doppler/Duplex Ultrasound. The text confirms this test showed regular flow and no evidence of deep vein thrombosis. No other imaging modalities such as CT, MR venography, or contrast venography are mentioned. Therefore, only option 4 applies.\n\nFINAL_OPTION: Doppler/Duplex Ultrasound\nFINAL_ANSWER: 4\n\n[SYSTEM OVERRIDE]: A3.2 was automatically cleared because Section A3.1 reported that the imaging study did not confirm DVT, and A3.2 records only the studies that confirmed it.",
+    "result": {
+      "studies": [
+        "Doppler/Duplex Ultrasound"
+      ]
+    }
+  },
+  "B1_1": {
+    "query": "reported symptoms or signs of deep vein thrombosis",
+    "evidence": "alla coscia, cute integra e non iperemica, non dolorabilita' alla palpazione. Polsi periferici validi. Esami di laboratorio: D-dimero 280 ng/mL, entro il range di normalita' del laboratorio. Accertamenti strumentali: ecocolordoppler venoso dell'arto inferiore sinistro con flusso regolare nei distretti esplorati e nessuna evidenza di trombosi venosa profonda. Valutazione specialistica: diagnosi di linfedema secondario da ostruzione linfatica.\n\nAnamnesi patologica remota: Donna di 63 anni, sottoposta in passato a linfoadenectomia inguinale nell'ambito del trattamento di una neoplasia. Nessun intervento chirurgico recente. Allergia nota alla penicillina. Anamnesi farmacologica: terapia antipertensiva domiciliare. Anamnesi prossima: da circa tre settimane edema progressivo dell'arto inferiore sinistro, non doloroso, ingravescente nel corso della giornata. Nega trauma, febbre, arrossamento cutaneo e dispnea. Esame obiettivo: paziente vigile e collaborante. PA 134/80 mmHg, FC 72 bpm, FR 15 atti/min, SpO2 98% in aria ambiente, TC 36,4°C. Arto inferiore sinistro con edema improntabile esteso alla coscia, cute integra e non iperemica, non dolorabilita' alla palpazione. Polsi periferici validi. Esami di laboratorio: D-dimero 280 ng/mL,",
+    "agent1_seconds": 7.3,
+    "brighton_context": "",
+    "agent2_seconds": 60.1,
+    "answer_conflict": null,
+    "reasoning": "The evidence explicitly reports the presence of \"edema progressivo dell'arto inferiore sinistro\" (progressive edema of the left lower limb). Edema (swelling) is a recognized clinical sign associated with Deep Vein Thrombosis (DVT). Although the patient denied pain and redness, and the final diagnosis was lymphedema with negative imaging for DVT, the question asks whether a symptom or sign of DVT was *reported*. Since swelling is a key sign of DVT and it was explicitly documented as present in the patient's history and physical exam, at least one sign of DVT was reported. The instruction to choose \"There was no report...\" applies when signs are explicitly absent (e.g., \"no leg swelling\"), which is not the case here because leg swelling *was* present.\n\nFINAL_OPTION: ≥1 symptom or sign of DVT was reported\nFINAL_ANSWER: 1",
+    "result": {
+      "answer": "≥1 symptom or sign of DVT was reported"
+    }
+  },
+  "B1_2": {
+    "query": "deep vein thrombosis lower extremity or upper extremity",
+    "evidence": "alla coscia, cute integra e non iperemica, non dolorabilita' alla palpazione. Polsi periferici validi. Esami di laboratorio: D-dimero 280 ng/mL, entro il range di normalita' del laboratorio. Accertamenti strumentali: ecocolordoppler venoso dell'arto inferiore sinistro con flusso regolare nei distretti esplorati e nessuna evidenza di trombosi venosa profonda. Valutazione specialistica: diagnosi di linfedema secondario da ostruzione linfatica.\n\nAnamnesi patologica remota: Donna di 63 anni, sottoposta in passato a linfoadenectomia inguinale nell'ambito del trattamento di una neoplasia. Nessun intervento chirurgico recente. Allergia nota alla penicillina. Anamnesi farmacologica: terapia antipertensiva domiciliare. Anamnesi prossima: da circa tre settimane edema progressivo dell'arto inferiore sinistro, non doloroso, ingravescente nel corso della giornata. Nega trauma, febbre, arrossamento cutaneo e dispnea. Esame obiettivo: paziente vigile e collaborante. PA 134/80 mmHg, FC 72 bpm, FR 15 atti/min, SpO2 98% in aria ambiente, TC 36,4°C. Arto inferiore sinistro con edema improntabile esteso alla coscia, cute integra e non iperemica, non dolorabilita' alla palpazione. Polsi periferici validi. Esami di laboratorio: D-dimero 280 ng/mL,",
+    "agent1_seconds": 7.4,
+    "brighton_context": "",
+    "agent2_seconds": 16.4,
+    "answer_conflict": null,
+    "reasoning": "The evidence explicitly states that the venous color Doppler ultrasound of the left lower extremity showed regular flow and \"nessuna evidenza di trombosi venosa profonda\" (no evidence of deep vein thrombosis). Additionally, the D-dimer was within normal limits, and the specialist diagnosis was secondary lymphedema. Therefore, there is no evidence supporting a diagnosis of Lower extremity DVT or Upper extremity DVT; in fact, lower extremity DVT is explicitly ruled out.\n\nFINAL_OPTION: none\nFINAL_ANSWER: none",
+    "result": {
+      "types": []
+    }
+  },
+  "B2": {
+    "query": "calf pain, swelling, oedema, redness, warmth, absent pulses",
+    "evidence": "Anamnesi patologica remota: Donna di 63 anni, sottoposta in passato a linfoadenectomia inguinale nell'ambito del trattamento di una neoplasia. Nessun intervento chirurgico recente. Allergia nota alla penicillina. Anamnesi farmacologica: terapia antipertensiva domiciliare. Anamnesi prossima: da circa tre settimane edema progressivo dell'arto inferiore sinistro, non doloroso, ingravescente nel corso della giornata. Nega trauma, febbre, arrossamento cutaneo e dispnea. Esame obiettivo: paziente vigile e collaborante. PA 134/80 mmHg, FC 72 bpm, FR 15 atti/min, SpO2 98% in aria ambiente, TC 36,4°C. Arto inferiore sinistro con edema improntabile esteso alla coscia, cute integra e non iperemica, non dolorabilita' alla palpazione. Polsi periferici validi. Esami di laboratorio: D-dimero 280 ng/mL,\n\nalla coscia, cute integra e non iperemica, non dolorabilita' alla palpazione. Polsi periferici validi. Esami di laboratorio: D-dimero 280 ng/mL, entro il range di normalita' del laboratorio. Accertamenti strumentali: ecocolordoppler venoso dell'arto inferiore sinistro con flusso regolare nei distretti esplorati e nessuna evidenza di trombosi venosa profonda. Valutazione specialistica: diagnosi di linfedema secondario da ostruzione linfatica.",
+    "agent1_seconds": 7.3,
+    "brighton_context": "",
+    "agent2_seconds": 20.7,
+    "answer_conflict": null,
+    "reasoning": "The patient presents with progressive edema of the left lower limb, which is described as \"edema improntabile\" (pitting edema) extending to the thigh. This directly supports option 2 (\"Leg swelling or pitting oedema\"). Regarding option 1 (\"Calf pain or tenderness\"), the text explicitly states the edema is \"non doloroso\" (painless) and there is \"non dolorabilita' alla palpazione\" (no pain on palpation), so this is absent. Regarding option 3 (\"Absent pulses in legs or arms\"), the examination notes \"Polsi periferici validi\" (valid peripheral pulses), meaning pulses are present, not absent. Regarding option 4 (\"Redness, warmth, or pain...\"), the patient denies redness (\"arrossamento cutaneo\") and fever, and the skin is described as \"non iperemica\" (not hyperemic/red) and painless. Therefore, only option 2 is supported by the evidence.\n\nFINAL_OPTION: Leg swelling or pitting oedema\nFINAL_ANSWER: 2",
+    "result": {
+      "symptoms": [
+        "Leg swelling or pitting oedema"
+      ]
+    }
+  },
+  "C": {
+    "query": "D-dimer value, test date, laboratory upper limit of normal",
+    "evidence": "alla coscia, cute integra e non iperemica, non dolorabilita' alla palpazione. Polsi periferici validi. Esami di laboratorio: D-dimero 280 ng/mL, entro il range di normalita' del laboratorio. Accertamenti strumentali: ecocolordoppler venoso dell'arto inferiore sinistro con flusso regolare nei distretti esplorati e nessuna evidenza di trombosi venosa profonda. Valutazione specialistica: diagnosi di linfedema secondario da ostruzione linfatica.\n\nAnamnesi patologica remota: Donna di 63 anni, sottoposta in passato a linfoadenectomia inguinale nell'ambito del trattamento di una neoplasia. Nessun intervento chirurgico recente. Allergia nota alla penicillina. Anamnesi farmacologica: terapia antipertensiva domiciliare. Anamnesi prossima: da circa tre settimane edema progressivo dell'arto inferiore sinistro, non doloroso, ingravescente nel corso della giornata. Nega trauma, febbre, arrossamento cutaneo e dispnea. Esame obiettivo: paziente vigile e collaborante. PA 134/80 mmHg, FC 72 bpm, FR 15 atti/min, SpO2 98% in aria ambiente, TC 36,4°C. Arto inferiore sinistro con edema improntabile esteso alla coscia, cute integra e non iperemica, non dolorabilita' alla palpazione. Polsi periferici validi. Esami di laboratorio: D-dimero 280 ng/mL,",
+    "agent1_seconds": 7.6,
+    "brighton_context": "",
+    "agent2_seconds": 15.6,
+    "answer_conflict": null,
+    "reasoning": "The evidence explicitly states \"D-dimero 280 ng/mL, entro il range di normalita' del laboratorio\" (D-dimer 280 ng/mL, within the laboratory's normal range). This confirms that the test was performed and the result was within the normal limits. Therefore, option 2 is the correct choice.\n\nFINAL_OPTION: D-dimer tested and was within test lab's range of normal\nFINAL_ANSWER: 2",
+    "result": {
+      "answer": "D-dimer tested and was within test lab's range of normal"
+    }
+  },
+  "F": {
+    "query": "diagnosis of deep vein thrombosis reported by specialist",
+    "evidence": "alla coscia, cute integra e non iperemica, non dolorabilita' alla palpazione. Polsi periferici validi. Esami di laboratorio: D-dimero 280 ng/mL, entro il range di normalita' del laboratorio. Accertamenti strumentali: ecocolordoppler venoso dell'arto inferiore sinistro con flusso regolare nei distretti esplorati e nessuna evidenza di trombosi venosa profonda. Valutazione specialistica: diagnosi di linfedema secondario da ostruzione linfatica.\n\nAnamnesi patologica remota: Donna di 63 anni, sottoposta in passato a linfoadenectomia inguinale nell'ambito del trattamento di una neoplasia. Nessun intervento chirurgico recente. Allergia nota alla penicillina. Anamnesi farmacologica: terapia antipertensiva domiciliare. Anamnesi prossima: da circa tre settimane edema progressivo dell'arto inferiore sinistro, non doloroso, ingravescente nel corso della giornata. Nega trauma, febbre, arrossamento cutaneo e dispnea. Esame obiettivo: paziente vigile e collaborante. PA 134/80 mmHg, FC 72 bpm, FR 15 atti/min, SpO2 98% in aria ambiente, TC 36,4°C. Arto inferiore sinistro con edema improntabile esteso alla coscia, cute integra e non iperemica, non dolorabilita' alla palpazione. Polsi periferici validi. Esami di laboratorio: D-dimero 280 ng/mL,",
+    "agent1_seconds": 7.2,
+    "brighton_context": "",
+    "agent2_seconds": 16.7,
+    "answer_conflict": null,
+    "reasoning": "DETAILS_PRESENT: yes\n\nThe evidence provides specific clinical findings, including physical examination results (intact skin, no hyperemia, non-tender), laboratory values (D-dimer 280 ng/mL within normal range), and instrumental assessment results (venous color Doppler ultrasound showing regular flow and no evidence of deep vein thrombosis). Although the final diagnosis is lymphedema and DVT was ruled out, the record contains detailed supporting findings rather than being a bare conclusion. Therefore, the diagnosis/report is not \"without details\".\n\nFINAL_OPTION: No\nFINAL_ANSWER: 2",
+    "result": {
+      "answer": "No"
+    }
+  },
+  "X": {
+    "query": "possible alternative etiologies; clinical syndromes to be differentiated from thrombosis; conditions explaining calf pain, redness, warmth or ankle edema other than DVT",
+    "evidence": "Anamnesi patologica remota: Donna di 63 anni, sottoposta in passato a linfoadenectomia inguinale nell'ambito del trattamento di una neoplasia. Nessun intervento chirurgico recente. Allergia nota alla penicillina. Anamnesi farmacologica: terapia antipertensiva domiciliare. Anamnesi prossima: da circa tre settimane edema progressivo dell'arto inferiore sinistro, non doloroso, ingravescente nel corso della giornata. Nega trauma, febbre, arrossamento cutaneo e dispnea. Esame obiettivo: paziente vigile e collaborante. PA 134/80 mmHg, FC 72 bpm, FR 15 atti/min, SpO2 98% in aria ambiente, TC 36,4°C. Arto inferiore sinistro con edema improntabile esteso alla coscia, cute integra e non iperemica, non dolorabilita' alla palpazione. Polsi periferici validi. Esami di laboratorio: D-dimero 280 ng/mL,\n\nalla coscia, cute integra e non iperemica, non dolorabilita' alla palpazione. Polsi periferici validi. Esami di laboratorio: D-dimero 280 ng/mL, entro il range di normalita' del laboratorio. Accertamenti strumentali: ecocolordoppler venoso dell'arto inferiore sinistro con flusso regolare nei distretti esplorati e nessuna evidenza di trombosi venosa profonda. Valutazione specialistica: diagnosi di linfedema secondario da ostruzione linfatica.",
+    "agent1_seconds": 7.3,
+    "brighton_context": "",
+    "agent2_seconds": 16.3,
+    "answer_conflict": null,
+    "reasoning": "The evidence explicitly states under \"Valutazione specialistica\" (Specialist evaluation) that the diagnosis is \"linfedema secondario da ostruzione linfatica\" (secondary lymphedema due to lymphatic obstruction). This is a specific disease entity distinct from Deep Vein Thrombosis (DVT), which was ruled out by the negative venous duplex ultrasound. Therefore, an alternative diagnosis explaining the patient's symptoms (leg edema) was identified.\n\nFINAL_OPTION: An alternative diagnosis was found that explained the acute illness\nFINAL_ANSWER: 1",
+    "result": {
+      "answer": "An alternative diagnosis was found that explained the acute illness"
+    }
+  },
+  "_run_config": {
+    "extractor_mode": "agentic_graph",
+    "section_gates_enabled": {
+      "keyword": true,
+      "details": false,
+      "absent_pulses": true
+    },
+    "brighton_context_enabled": false,
+    "section_hints_enabled": true,
+    "section_hints_disabled": [
+      "B2"
+    ],
+    "section_hints_fingerprint": {
+      "A1": "94 fc56153ea429",
+      "A2": "226 c42c3b188a45",
+      "A3_1": "277 c59144334788",
+      "A3_2": "143 023c43c73783",
+      "B1_1": "513 a65c3a0069c5",
+      "C": "342 7e8efb23dfc0",
+      "F": "1216 4d54ff2a7269",
+      "X": "260 e4ce4dddf649",
+      "all": "ab63b8e5f5af"
+    },
+    "cross_section_rules_applied": true,
+    "models": {
+      "extractor": "llama3.1:8b-instruct-q4_0",
+      "evaluator": "qwen3.6:27b",
+      "embeddings": "intfloat/multilingual-e5-small"
+    },
+    "environment": {
+      "hostname": "mari",
+      "ollama_version": "ollama version is 0.32.1"
+    },
+    "generation": {
+      "temperature": 0.0,
+      "num_predict": 1024,
+      "num_gpu": 999,
+      "reasoning": false
+    },
+    "retrieval": {
+      "ehr_chunk_size": 800,
+      "ehr_chunk_overlap": 150,
+      "ehr_retriever_k": 5,
+      "brighton_retriever_k": 5
+    }
+  }
+}

@@ -1,0 +1,173 @@
+{
+  "A1": {
+    "query": "autopsy report, necropsy, post-mortem examination, autoptic findings",
+    "evidence": "della loggia posteriore. Polsi periferici presenti e simmetrici. Addome trattabile, non dolente. Esami di laboratorio: D-dimero non eseguito. Accertamenti strumentali: eseguita ecografia dell'arto inferiore destro, che documenta vene comprimibili e nessuna evidenza di trombosi venosa profonda; nel contesto del muscolo gastrocnemio mediale si apprezza una lesione parziale delle fibre con associata raccolta ematica. Valutazione specialistica: diagnosi di strappo muscolare del gastrocnemio destro.\n\nAnamnesi patologica remota: Uomo di 34 anni, in buona salute, praticante attivita' sportiva amatoriale. Nessun intervento chirurgico recente. Non allergie farmacologiche note. Anamnesi farmacologica: nessuna terapia cronica in atto. Anamnesi prossima: riferisce dolore acuto al polpaccio destro insorto due giorni fa durante una partita di calcetto, con successiva tumefazione dell'arto. Nega febbre, dispnea e dolore toracico. Esame obiettivo: paziente vigile, orientato e collaborante. PA 128/78 mmHg, FC 76 bpm, FR 14 atti/min, SpO2 99% in aria ambiente, TC 36,6°C. Arto inferiore destro con tumefazione del polpaccio e dolorabilita' alla palpazione della loggia posteriore. Polsi periferici presenti e simmetrici. Addome trattabile, non dolente. Esami di laboratorio: D-dimero non eseguito.",
+    "agent1_seconds": 6.8,
+    "brighton_context": "",
+    "agent2_seconds": 17.4,
+    "answer_conflict": null,
+    "reasoning": "The provided evidence describes a clinical evaluation of a living patient, including physical examination and ultrasound imaging of the lower limb. The text explicitly states that an ultrasound was performed on a living subject (\"eseguita ecografia\"), which ruled out deep vein thrombosis (DVT) in favor of a muscle tear. There is no mention of death, post-mortem examination, or autopsy procedures. Since the prompt specifies that only post-mortem findings count and imaging on a living patient is not an autopsy, and because there is no evidence that an autopsy was performed at all, the correct classification is that no autopsy was done.\n\nFINAL_OPTION: No autopsy done, unknown if done, or done but results unavailable\nFINAL_ANSWER: 3",
+    "result": {
+      "answer": "No autopsy done, unknown if done, or done but results unavailable"
+    }
+  },
+  "A2": {
+    "query": "thrombectomy, surgical procedure related to DVT",
+    "evidence": "Anamnesi patologica remota: Uomo di 34 anni, in buona salute, praticante attivita' sportiva amatoriale. Nessun intervento chirurgico recente. Non allergie farmacologiche note. Anamnesi farmacologica: nessuna terapia cronica in atto. Anamnesi prossima: riferisce dolore acuto al polpaccio destro insorto due giorni fa durante una partita di calcetto, con successiva tumefazione dell'arto. Nega febbre, dispnea e dolore toracico. Esame obiettivo: paziente vigile, orientato e collaborante. PA 128/78 mmHg, FC 76 bpm, FR 14 atti/min, SpO2 99% in aria ambiente, TC 36,6°C. Arto inferiore destro con tumefazione del polpaccio e dolorabilita' alla palpazione della loggia posteriore. Polsi periferici presenti e simmetrici. Addome trattabile, non dolente. Esami di laboratorio: D-dimero non eseguito.\n\ndella loggia posteriore. Polsi periferici presenti e simmetrici. Addome trattabile, non dolente. Esami di laboratorio: D-dimero non eseguito. Accertamenti strumentali: eseguita ecografia dell'arto inferiore destro, che documenta vene comprimibili e nessuna evidenza di trombosi venosa profonda; nel contesto del muscolo gastrocnemio mediale si apprezza una lesione parziale delle fibre con associata raccolta ematica. Valutazione specialistica: diagnosi di strappo muscolare del gastrocnemio destro.",
+    "agent1_seconds": 6.8,
+    "brighton_context": "",
+    "agent2_seconds": 17.3,
+    "answer_conflict": null,
+    "reasoning": "The evidence explicitly states that an ultrasound was performed which showed compressible veins and no evidence of deep vein thrombosis (DVT), leading to a diagnosis of a muscle tear. Furthermore, the patient's history notes \"No recent surgical intervention\" (\"Nessun intervento chirurgico recente\"), and there is no mention of any other procedure being performed to confirm DVT. Since DVT was ruled out by imaging and no surgery was performed, the correct classification is that no surgical procedure was done or findings did not confirm DVT.\n\nFINAL_OPTION: No surgical procedure done; or, done but either did not confirm presence of DVT or findings unknown; or unknown if done\nFINAL_ANSWER: 3",
+    "result": {
+      "answer": "No surgical procedure done; or, done but either did not confirm presence of DVT or findings unknown; or unknown if done"
+    }
+  },
+  "A3_1": {
+    "query": "ultrasound, CT, MRI, venography: imaging outcome for deep vein thrombosis",
+    "evidence": "della loggia posteriore. Polsi periferici presenti e simmetrici. Addome trattabile, non dolente. Esami di laboratorio: D-dimero non eseguito. Accertamenti strumentali: eseguita ecografia dell'arto inferiore destro, che documenta vene comprimibili e nessuna evidenza di trombosi venosa profonda; nel contesto del muscolo gastrocnemio mediale si apprezza una lesione parziale delle fibre con associata raccolta ematica. Valutazione specialistica: diagnosi di strappo muscolare del gastrocnemio destro.\n\nAnamnesi patologica remota: Uomo di 34 anni, in buona salute, praticante attivita' sportiva amatoriale. Nessun intervento chirurgico recente. Non allergie farmacologiche note. Anamnesi farmacologica: nessuna terapia cronica in atto. Anamnesi prossima: riferisce dolore acuto al polpaccio destro insorto due giorni fa durante una partita di calcetto, con successiva tumefazione dell'arto. Nega febbre, dispnea e dolore toracico. Esame obiettivo: paziente vigile, orientato e collaborante. PA 128/78 mmHg, FC 76 bpm, FR 14 atti/min, SpO2 99% in aria ambiente, TC 36,6°C. Arto inferiore destro con tumefazione del polpaccio e dolorabilita' alla palpazione della loggia posteriore. Polsi periferici presenti e simmetrici. Addome trattabile, non dolente. Esami di laboratorio: D-dimero non eseguito.",
+    "agent1_seconds": 7.1,
+    "brighton_context": "",
+    "agent2_seconds": 16.0,
+    "answer_conflict": null,
+    "reasoning": "The evidence explicitly states that an ultrasound of the right lower limb was performed (\"eseguita ecografia dell'arto inferiore destro\"). The results of this imaging study documented compressible veins and no evidence of deep vein thrombosis (\"nessuna evidenza di trombosi venosa profonda\"). Therefore, an imaging study was done, but it did not confirm DVT; rather, it ruled it out. This aligns with Option 2.\n\nFINAL_OPTION: ≥1 imaging study was done but didn't confirm DVT\nFINAL_ANSWER: 2",
+    "result": {
+      "answer": "≥1 imaging study was done but didn't confirm DVT"
+    }
+  },
+  "A3_2": {
+    "query": "type of imaging study performed: compression ultrasonography, doppler, venography",
+    "evidence": "della loggia posteriore. Polsi periferici presenti e simmetrici. Addome trattabile, non dolente. Esami di laboratorio: D-dimero non eseguito. Accertamenti strumentali: eseguita ecografia dell'arto inferiore destro, che documenta vene comprimibili e nessuna evidenza di trombosi venosa profonda; nel contesto del muscolo gastrocnemio mediale si apprezza una lesione parziale delle fibre con associata raccolta ematica. Valutazione specialistica: diagnosi di strappo muscolare del gastrocnemio destro.\n\nAnamnesi patologica remota: Uomo di 34 anni, in buona salute, praticante attivita' sportiva amatoriale. Nessun intervento chirurgico recente. Non allergie farmacologiche note. Anamnesi farmacologica: nessuna terapia cronica in atto. Anamnesi prossima: riferisce dolore acuto al polpaccio destro insorto due giorni fa durante una partita di calcetto, con successiva tumefazione dell'arto. Nega febbre, dispnea e dolore toracico. Esame obiettivo: paziente vigile, orientato e collaborante. PA 128/78 mmHg, FC 76 bpm, FR 14 atti/min, SpO2 99% in aria ambiente, TC 36,6°C. Arto inferiore destro con tumefazione del polpaccio e dolorabilita' alla palpazione della loggia posteriore. Polsi periferici presenti e simmetrici. Addome trattabile, non dolente. Esami di laboratorio: D-dimero non eseguito.",
+    "agent1_seconds": 6.7,
+    "brighton_context": "",
+    "agent2_seconds": 22.6,
+    "answer_conflict": null,
+    "reasoning": "The evidence explicitly states that an ultrasound of the right lower limb was performed (\"eseguita ecografia dell'arto inferiore destro\"). The description notes that the veins were compressible (\"vene comprimibili\") and there was no evidence of deep vein thrombosis. Compression ultrasonography is a specific technique within ultrasound imaging used to diagnose DVT by assessing venous compressibility. While Doppler/Duplex is also an ultrasound modality, the text specifically highlights the compressibility finding, which is the hallmark of compression ultrasonography. However, in clinical practice and Brighton criteria contexts, \"Compression ultrasonography\" and \"Doppler/Duplex Ultrasound\" are often distinct options. The text says \"ecografia\" (ultrasound) and mentions \"vene comprimibili\" (compressible veins). This specific finding points directly to Compression Ultrasonography. It does not mention Doppler flow assessment explicitly, though it is often part of the same exam. Given the explicit mention of compressibility, Option 1 is the most precise fit for the described method's diagnostic criterion mentioned. Options 2 and 3 are not mentioned. Option 5 is not needed as ultrasound is a named modality in the list (Options 1 and 4). Between 1 and 4, the text emphasizes compressibility, which defines Compression Ultrasonography.\n\nFINAL_OPTION: Compression ultrasonography\nFINAL_ANSWER: 1\n\n[SYSTEM OVERRIDE]: A3.2 was automatically cleared because Section A3.1 reported that the imaging study did not confirm DVT, and A3.2 records only the studies that confirmed it.",
+    "result": {
+      "studies": [
+        "Compression ultrasonography"
+      ]
+    }
+  },
+  "B1_1": {
+    "query": "reported symptoms or signs of deep vein thrombosis",
+    "evidence": "Anamnesi patologica remota: Uomo di 34 anni, in buona salute, praticante attivita' sportiva amatoriale. Nessun intervento chirurgico recente. Non allergie farmacologiche note. Anamnesi farmacologica: nessuna terapia cronica in atto. Anamnesi prossima: riferisce dolore acuto al polpaccio destro insorto due giorni fa durante una partita di calcetto, con successiva tumefazione dell'arto. Nega febbre, dispnea e dolore toracico. Esame obiettivo: paziente vigile, orientato e collaborante. PA 128/78 mmHg, FC 76 bpm, FR 14 atti/min, SpO2 99% in aria ambiente, TC 36,6°C. Arto inferiore destro con tumefazione del polpaccio e dolorabilita' alla palpazione della loggia posteriore. Polsi periferici presenti e simmetrici. Addome trattabile, non dolente. Esami di laboratorio: D-dimero non eseguito.\n\ndella loggia posteriore. Polsi periferici presenti e simmetrici. Addome trattabile, non dolente. Esami di laboratorio: D-dimero non eseguito. Accertamenti strumentali: eseguita ecografia dell'arto inferiore destro, che documenta vene comprimibili e nessuna evidenza di trombosi venosa profonda; nel contesto del muscolo gastrocnemio mediale si apprezza una lesione parziale delle fibre con associata raccolta ematica. Valutazione specialistica: diagnosi di strappo muscolare del gastrocnemio destro.",
+    "agent1_seconds": 7.1,
+    "brighton_context": "",
+    "agent2_seconds": 19.2,
+    "answer_conflict": null,
+    "reasoning": "The evidence explicitly states that the patient reported acute pain in the right calf (\"dolore acuto al polpaccio destro\") and subsequent swelling of the limb (\"tumefazione dell'arto\"). The physical examination also confirmed swelling of the calf (\"tumefazione del polpaccio\") and tenderness. Although the final diagnosis was a muscle tear and DVT was ruled out by ultrasound, the question asks whether symptoms or signs of DVT were *reported*. Since pain and swelling are recognized clinical signs/symptoms associated with DVT (even if caused by another pathology here), they were indeed reported in the record. The distinction provided in the prompt clarifies that \"no report\" applies when the record says the patient did *not* have symptoms (e.g., \"no leg swelling\"), whereas here, symptoms were present and documented.\n\nFINAL_OPTION: ≥1 symptom or sign of DVT was reported\nFINAL_ANSWER: 1",
+    "result": {
+      "answer": "≥1 symptom or sign of DVT was reported"
+    }
+  },
+  "B1_2": {
+    "query": "deep vein thrombosis lower extremity or upper extremity",
+    "evidence": "della loggia posteriore. Polsi periferici presenti e simmetrici. Addome trattabile, non dolente. Esami di laboratorio: D-dimero non eseguito. Accertamenti strumentali: eseguita ecografia dell'arto inferiore destro, che documenta vene comprimibili e nessuna evidenza di trombosi venosa profonda; nel contesto del muscolo gastrocnemio mediale si apprezza una lesione parziale delle fibre con associata raccolta ematica. Valutazione specialistica: diagnosi di strappo muscolare del gastrocnemio destro.\n\nAnamnesi patologica remota: Uomo di 34 anni, in buona salute, praticante attivita' sportiva amatoriale. Nessun intervento chirurgico recente. Non allergie farmacologiche note. Anamnesi farmacologica: nessuna terapia cronica in atto. Anamnesi prossima: riferisce dolore acuto al polpaccio destro insorto due giorni fa durante una partita di calcetto, con successiva tumefazione dell'arto. Nega febbre, dispnea e dolore toracico. Esame obiettivo: paziente vigile, orientato e collaborante. PA 128/78 mmHg, FC 76 bpm, FR 14 atti/min, SpO2 99% in aria ambiente, TC 36,6°C. Arto inferiore destro con tumefazione del polpaccio e dolorabilita' alla palpazione della loggia posteriore. Polsi periferici presenti e simmetrici. Addome trattabile, non dolente. Esami di laboratorio: D-dimero non eseguito.",
+    "agent1_seconds": 7.0,
+    "brighton_context": "",
+    "agent2_seconds": 17.6,
+    "answer_conflict": null,
+    "reasoning": "The evidence explicitly states that an ultrasound of the right lower extremity was performed, which documented compressible veins and \"no evidence of deep vein thrombosis\" (nessuna evidenza di trombosi venosa profonda). The final diagnosis provided is a muscle tear of the right gastrocnemius. Therefore, DVT is ruled out for the lower extremity. There is no mention of symptoms, findings, or imaging related to the upper extremities, so Upper extremity DVT cannot be confirmed nor is it suggested by the text. Since DVT was explicitly ruled out in the only examined area and not mentioned elsewhere, neither option applies.\n\nFINAL_OPTION: none\nFINAL_ANSWER: none",
+    "result": {
+      "types": []
+    }
+  },
+  "B2": {
+    "query": "calf pain, swelling, oedema, redness, warmth, absent pulses",
+    "evidence": "Anamnesi patologica remota: Uomo di 34 anni, in buona salute, praticante attivita' sportiva amatoriale. Nessun intervento chirurgico recente. Non allergie farmacologiche note. Anamnesi farmacologica: nessuna terapia cronica in atto. Anamnesi prossima: riferisce dolore acuto al polpaccio destro insorto due giorni fa durante una partita di calcetto, con successiva tumefazione dell'arto. Nega febbre, dispnea e dolore toracico. Esame obiettivo: paziente vigile, orientato e collaborante. PA 128/78 mmHg, FC 76 bpm, FR 14 atti/min, SpO2 99% in aria ambiente, TC 36,6°C. Arto inferiore destro con tumefazione del polpaccio e dolorabilita' alla palpazione della loggia posteriore. Polsi periferici presenti e simmetrici. Addome trattabile, non dolente. Esami di laboratorio: D-dimero non eseguito.\n\ndella loggia posteriore. Polsi periferici presenti e simmetrici. Addome trattabile, non dolente. Esami di laboratorio: D-dimero non eseguito. Accertamenti strumentali: eseguita ecografia dell'arto inferiore destro, che documenta vene comprimibili e nessuna evidenza di trombosi venosa profonda; nel contesto del muscolo gastrocnemio mediale si apprezza una lesione parziale delle fibre con associata raccolta ematica. Valutazione specialistica: diagnosi di strappo muscolare del gastrocnemio destro.",
+    "agent1_seconds": 7.5,
+    "brighton_context": "",
+    "agent2_seconds": 19.3,
+    "answer_conflict": null,
+    "reasoning": "The patient presents with acute pain in the right calf (\"dolore acuto al polpaccio destro\") and tenderness upon palpation of the posterior compartment (\"dolorabilita' alla palpazione della loggia posteriore\"), which directly supports Option 1 (Calf pain or tenderness). Additionally, the evidence notes subsequent swelling of the limb (\"tumefazione dell'arto\") and specifically mentions swelling of the calf on physical exam (\"tumefazione del polpaccio\"), supporting Option 2 (Leg swelling or pitting oedema). The text explicitly states that peripheral pulses were present and symmetric (\"Polsi periferici presenti e simmetrici\"), which negates Option 3. There is no mention of redness or warmth, so Option 4 is not supported by the evidence.\n\nFINAL_OPTION: Calf pain or tenderness; Leg swelling or pitting oedema\nFINAL_ANSWER: 1; 2",
+    "result": {
+      "symptoms": [
+        "Calf pain or tenderness",
+        "Leg swelling or pitting oedema"
+      ]
+    }
+  },
+  "C": {
+    "query": "D-dimer value, test date, laboratory upper limit of normal",
+    "evidence": "Anamnesi patologica remota: Uomo di 34 anni, in buona salute, praticante attivita' sportiva amatoriale. Nessun intervento chirurgico recente. Non allergie farmacologiche note. Anamnesi farmacologica: nessuna terapia cronica in atto. Anamnesi prossima: riferisce dolore acuto al polpaccio destro insorto due giorni fa durante una partita di calcetto, con successiva tumefazione dell'arto. Nega febbre, dispnea e dolore toracico. Esame obiettivo: paziente vigile, orientato e collaborante. PA 128/78 mmHg, FC 76 bpm, FR 14 atti/min, SpO2 99% in aria ambiente, TC 36,6°C. Arto inferiore destro con tumefazione del polpaccio e dolorabilita' alla palpazione della loggia posteriore. Polsi periferici presenti e simmetrici. Addome trattabile, non dolente. Esami di laboratorio: D-dimero non eseguito.\n\ndella loggia posteriore. Polsi periferici presenti e simmetrici. Addome trattabile, non dolente. Esami di laboratorio: D-dimero non eseguito. Accertamenti strumentali: eseguita ecografia dell'arto inferiore destro, che documenta vene comprimibili e nessuna evidenza di trombosi venosa profonda; nel contesto del muscolo gastrocnemio mediale si apprezza una lesione parziale delle fibre con associata raccolta ematica. Valutazione specialistica: diagnosi di strappo muscolare del gastrocnemio destro.",
+    "agent1_seconds": 6.8,
+    "brighton_context": "",
+    "agent2_seconds": 15.9,
+    "answer_conflict": null,
+    "reasoning": "The evidence explicitly states \"D-dimero non eseguito,\" which translates to \"D-dimer not performed.\" According to the instructions, if the test is never mentioned or explicitly stated as not done, the correct classification is that it was not tested. Therefore, options suggesting the result was within normal limits or exceeded limits are incorrect because the test was never conducted.\n\nFINAL_OPTION: D-dimer not tested, or tested but results unknown or not available\nFINAL_ANSWER: 3",
+    "result": {
+      "answer": "D-dimer not tested, or tested but results unknown or not available"
+    }
+  },
+  "F": {
+    "query": "diagnosis of deep vein thrombosis reported by specialist",
+    "evidence": "Anamnesi patologica remota: Uomo di 34 anni, in buona salute, praticante attivita' sportiva amatoriale. Nessun intervento chirurgico recente. Non allergie farmacologiche note. Anamnesi farmacologica: nessuna terapia cronica in atto. Anamnesi prossima: riferisce dolore acuto al polpaccio destro insorto due giorni fa durante una partita di calcetto, con successiva tumefazione dell'arto. Nega febbre, dispnea e dolore toracico. Esame obiettivo: paziente vigile, orientato e collaborante. PA 128/78 mmHg, FC 76 bpm, FR 14 atti/min, SpO2 99% in aria ambiente, TC 36,6°C. Arto inferiore destro con tumefazione del polpaccio e dolorabilita' alla palpazione della loggia posteriore. Polsi periferici presenti e simmetrici. Addome trattabile, non dolente. Esami di laboratorio: D-dimero non eseguito.\n\ndella loggia posteriore. Polsi periferici presenti e simmetrici. Addome trattabile, non dolente. Esami di laboratorio: D-dimero non eseguito. Accertamenti strumentali: eseguita ecografia dell'arto inferiore destro, che documenta vene comprimibili e nessuna evidenza di trombosi venosa profonda; nel contesto del muscolo gastrocnemio mediale si apprezza una lesione parziale delle fibre con associata raccolta ematica. Valutazione specialistica: diagnosi di strappo muscolare del gastrocnemio destro.",
+    "agent1_seconds": 6.8,
+    "brighton_context": "",
+    "agent2_seconds": 16.8,
+    "answer_conflict": null,
+    "reasoning": "DETAILS_PRESENT: yes\n\nThe evidence explicitly states that an ultrasound of the right lower limb was performed and documented \"compressible veins and no evidence of deep vein thrombosis.\" This constitutes a specific clinical finding (a negative imaging result) regarding the presence or absence of DVT. Therefore, the diagnosis (or rather, the exclusion of DVT) is not reported as a bare conclusion without details; it is supported by specific instrumental findings. Consequently, the criterion for \"reported WITHOUT details\" is not met.\n\nFINAL_OPTION: No\nFINAL_ANSWER: 2",
+    "result": {
+      "answer": "No"
+    }
+  },
+  "X": {
+    "query": "possible alternative etiologies; clinical syndromes to be differentiated from thrombosis; conditions explaining calf pain, redness, warmth or ankle edema other than DVT",
+    "evidence": "Anamnesi patologica remota: Uomo di 34 anni, in buona salute, praticante attivita' sportiva amatoriale. Nessun intervento chirurgico recente. Non allergie farmacologiche note. Anamnesi farmacologica: nessuna terapia cronica in atto. Anamnesi prossima: riferisce dolore acuto al polpaccio destro insorto due giorni fa durante una partita di calcetto, con successiva tumefazione dell'arto. Nega febbre, dispnea e dolore toracico. Esame obiettivo: paziente vigile, orientato e collaborante. PA 128/78 mmHg, FC 76 bpm, FR 14 atti/min, SpO2 99% in aria ambiente, TC 36,6°C. Arto inferiore destro con tumefazione del polpaccio e dolorabilita' alla palpazione della loggia posteriore. Polsi periferici presenti e simmetrici. Addome trattabile, non dolente. Esami di laboratorio: D-dimero non eseguito.\n\ndella loggia posteriore. Polsi periferici presenti e simmetrici. Addome trattabile, non dolente. Esami di laboratorio: D-dimero non eseguito. Accertamenti strumentali: eseguita ecografia dell'arto inferiore destro, che documenta vene comprimibili e nessuna evidenza di trombosi venosa profonda; nel contesto del muscolo gastrocnemio mediale si apprezza una lesione parziale delle fibre con associata raccolta ematica. Valutazione specialistica: diagnosi di strappo muscolare del gastrocnemio destro.",
+    "agent1_seconds": 7.6,
+    "brighton_context": "",
+    "agent2_seconds": 17.4,
+    "answer_conflict": null,
+    "reasoning": "The clinical evidence explicitly states that an ultrasound was performed which ruled out deep vein thrombosis (DVT) by showing compressible veins and no evidence of thrombosis. Instead, the ultrasound identified a partial tear of muscle fibers with associated hematoma in the medial gastrocnemius. The specialist evaluation concluded with a final diagnosis of \"strappo muscolare del gastrocnemio destro\" (right gastrocnemius muscle strain/tear). Since a specific disease entity other than DVT was identified and named as the cause of the patient's acute symptoms, an alternative diagnosis was found.\n\nFINAL_OPTION: An alternative diagnosis was found that explained the acute illness\nFINAL_ANSWER: 1",
+    "result": {
+      "answer": "An alternative diagnosis was found that explained the acute illness"
+    }
+  },
+  "_run_config": {
+    "extractor_mode": "agentic_graph",
+    "section_gates_enabled": {
+      "keyword": true,
+      "details": false,
+      "absent_pulses": true
+    },
+    "brighton_context_enabled": false,
+    "section_hints_enabled": true,
+    "section_hints_disabled": [
+      "B2"
+    ],
+    "section_hints_fingerprint": {
+      "A1": "94 fc56153ea429",
+      "A2": "226 c42c3b188a45",
+      "A3_1": "277 c59144334788",
+      "A3_2": "143 023c43c73783",
+      "B1_1": "513 a65c3a0069c5",
+      "C": "342 7e8efb23dfc0",
+      "F": "1216 4d54ff2a7269",
+      "X": "260 e4ce4dddf649",
+      "all": "ab63b8e5f5af"
+    },
+    "cross_section_rules_applied": true,
+    "models": {
+      "extractor": "llama3.1:8b-instruct-q4_0",
+      "evaluator": "qwen3.6:27b",
+      "embeddings": "intfloat/multilingual-e5-small"
+    },
+    "environment": {
+      "hostname": "mari",
+      "ollama_version": "ollama version is 0.32.1"
+    },
+    "generation": {
+      "temperature": 0.0,
+      "num_predict": 1024,
+      "num_gpu": 999,
+      "reasoning": false
+    },
+    "retrieval": {
+      "ehr_chunk_size": 800,
+      "ehr_chunk_overlap": 150,
+      "ehr_retriever_k": 5,
+      "brighton_retriever_k": 5
+    }
+  }
+}

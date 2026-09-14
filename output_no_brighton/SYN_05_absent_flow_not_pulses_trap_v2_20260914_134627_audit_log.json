@@ -1,0 +1,175 @@
+{
+  "A1": {
+    "query": "autopsy report, necropsy, post-mortem examination, autoptic findings",
+    "evidence": "alla palpazione del polpaccio. Toni cardiaci validi e ritmici, murmure vescicolare presente su tutto l'ambito polmonare. Esami di laboratorio: D-dimero 1.650 ng/mL, superiore al limite superiore di riferimento del laboratorio. Eseguito ecocolordoppler venoso dell'arto inferiore destro: trombosi venosa a carico della vena poplitea destra, con flusso assente nel segmento trombizzato. Vene femorali comuni e superficiali pervie.\n\nAnamnesi patologica remota: Donna di 51 anni. Nessun intervento chirurgico recente. Non allergie note a farmaci o alimenti. Anamnesi farmacologica: ramipril 5 mg al mattino, colecalciferolo settimanale. Anamnesi Prossima: Da 2 giorni dolore gravativo al polpaccio destro, con edema progressivo dell'arto inferiore omolaterale. Nega trauma recente, febbre, dolore toracico e dispnea. Accede in ambulatorio per la persistenza della sintomatologia. Esame obiettivo all'ingresso: Paziente vigile, orientata, eupnoica a riposo. PA 118/74 mmHg, FC 78 bpm, FR 16 atti/min, SpO2 98% in aria ambiente, TC 36,4°C. Arto inferiore destro tumefatto, con dolorabilita' alla palpazione del polpaccio. Toni cardiaci validi e ritmici, murmure vescicolare presente su tutto l'ambito polmonare. Esami di laboratorio:",
+    "agent1_seconds": 6.8,
+    "brighton_context": "",
+    "agent2_seconds": 17.2,
+    "answer_conflict": null,
+    "reasoning": "The evidence describes a living patient undergoing clinical examination and diagnostic imaging (venous color Doppler ultrasound) which confirmed a deep vein thrombosis (DVT) in the right popliteal vein. The text explicitly states that the diagnosis was made via \"ecocolordoppler venoso\" on a conscious, oriented patient (\"Paziente vigile, orientata\"). There is no mention of death, post-mortem examination, or autopsy. Since the prompt specifies that only post-mortem findings count for an autopsy option, and the evidence describes antemortem imaging, no autopsy was performed.\n\nFINAL_OPTION: No autopsy done, unknown if done, or done but results unavailable\nFINAL_ANSWER: 3",
+    "result": {
+      "answer": "No autopsy done, unknown if done, or done but results unavailable"
+    }
+  },
+  "A2": {
+    "query": "thrombectomy, surgical procedure related to DVT",
+    "evidence": "alla palpazione del polpaccio. Toni cardiaci validi e ritmici, murmure vescicolare presente su tutto l'ambito polmonare. Esami di laboratorio: D-dimero 1.650 ng/mL, superiore al limite superiore di riferimento del laboratorio. Eseguito ecocolordoppler venoso dell'arto inferiore destro: trombosi venosa a carico della vena poplitea destra, con flusso assente nel segmento trombizzato. Vene femorali comuni e superficiali pervie.\n\nAnamnesi patologica remota: Donna di 51 anni. Nessun intervento chirurgico recente. Non allergie note a farmaci o alimenti. Anamnesi farmacologica: ramipril 5 mg al mattino, colecalciferolo settimanale. Anamnesi Prossima: Da 2 giorni dolore gravativo al polpaccio destro, con edema progressivo dell'arto inferiore omolaterale. Nega trauma recente, febbre, dolore toracico e dispnea. Accede in ambulatorio per la persistenza della sintomatologia. Esame obiettivo all'ingresso: Paziente vigile, orientata, eupnoica a riposo. PA 118/74 mmHg, FC 78 bpm, FR 16 atti/min, SpO2 98% in aria ambiente, TC 36,4°C. Arto inferiore destro tumefatto, con dolorabilita' alla palpazione del polpaccio. Toni cardiaci validi e ritmici, murmure vescicolare presente su tutto l'ambito polmonare. Esami di laboratorio:",
+    "agent1_seconds": 6.8,
+    "brighton_context": "",
+    "agent2_seconds": 17.0,
+    "answer_conflict": null,
+    "reasoning": "The evidence describes a patient diagnosed with deep vein thrombosis (DVT) via venous color Doppler ultrasound (\"ecocolordoppler\"). The text explicitly states \"Nessun intervento chirurgico recente\" (No recent surgical intervention) in the remote pathological history and does not mention any surgical procedure, such as thrombectomy, being performed during the current admission. Since no surgery was performed, options 1 and 2 are incorrect. Option 3 correctly reflects that no surgical procedure was done.\n\nFINAL_OPTION: No surgical procedure done; or, done but either did not confirm presence of DVT or findings unknown; or unknown if done\nFINAL_ANSWER: 3",
+    "result": {
+      "answer": "No surgical procedure done; or, done but either did not confirm presence of DVT or findings unknown; or unknown if done"
+    }
+  },
+  "A3_1": {
+    "query": "ultrasound, CT, MRI, venography: imaging outcome for deep vein thrombosis",
+    "evidence": "alla palpazione del polpaccio. Toni cardiaci validi e ritmici, murmure vescicolare presente su tutto l'ambito polmonare. Esami di laboratorio: D-dimero 1.650 ng/mL, superiore al limite superiore di riferimento del laboratorio. Eseguito ecocolordoppler venoso dell'arto inferiore destro: trombosi venosa a carico della vena poplitea destra, con flusso assente nel segmento trombizzato. Vene femorali comuni e superficiali pervie.\n\nAnamnesi patologica remota: Donna di 51 anni. Nessun intervento chirurgico recente. Non allergie note a farmaci o alimenti. Anamnesi farmacologica: ramipril 5 mg al mattino, colecalciferolo settimanale. Anamnesi Prossima: Da 2 giorni dolore gravativo al polpaccio destro, con edema progressivo dell'arto inferiore omolaterale. Nega trauma recente, febbre, dolore toracico e dispnea. Accede in ambulatorio per la persistenza della sintomatologia. Esame obiettivo all'ingresso: Paziente vigile, orientata, eupnoica a riposo. PA 118/74 mmHg, FC 78 bpm, FR 16 atti/min, SpO2 98% in aria ambiente, TC 36,4°C. Arto inferiore destro tumefatto, con dolorabilita' alla palpazione del polpaccio. Toni cardiaci validi e ritmici, murmure vescicolare presente su tutto l'ambito polmonare. Esami di laboratorio:",
+    "agent1_seconds": 7.3,
+    "brighton_context": "",
+    "agent2_seconds": 16.1,
+    "answer_conflict": null,
+    "reasoning": "The evidence explicitly states that a venous color Doppler ultrasound (\"ecocolordoppler venoso\") was performed on the right lower limb. The results of this imaging study confirmed \"trombosi venosa\" (venous thrombosis) in the right popliteal vein, which constitutes a Deep Vein Thrombosis (DVT). Therefore, an imaging study was done and it confirmed DVT.\n\nFINAL_OPTION: ≥1 imaging study was done and confirmed DVT\nFINAL_ANSWER: 1",
+    "result": {
+      "answer": "≥1 imaging study was done and confirmed DVT"
+    }
+  },
+  "A3_2": {
+    "query": "type of imaging study performed: compression ultrasonography, doppler, venography",
+    "evidence": "alla palpazione del polpaccio. Toni cardiaci validi e ritmici, murmure vescicolare presente su tutto l'ambito polmonare. Esami di laboratorio: D-dimero 1.650 ng/mL, superiore al limite superiore di riferimento del laboratorio. Eseguito ecocolordoppler venoso dell'arto inferiore destro: trombosi venosa a carico della vena poplitea destra, con flusso assente nel segmento trombizzato. Vene femorali comuni e superficiali pervie.\n\nAnamnesi patologica remota: Donna di 51 anni. Nessun intervento chirurgico recente. Non allergie note a farmaci o alimenti. Anamnesi farmacologica: ramipril 5 mg al mattino, colecalciferolo settimanale. Anamnesi Prossima: Da 2 giorni dolore gravativo al polpaccio destro, con edema progressivo dell'arto inferiore omolaterale. Nega trauma recente, febbre, dolore toracico e dispnea. Accede in ambulatorio per la persistenza della sintomatologia. Esame obiettivo all'ingresso: Paziente vigile, orientata, eupnoica a riposo. PA 118/74 mmHg, FC 78 bpm, FR 16 atti/min, SpO2 98% in aria ambiente, TC 36,4°C. Arto inferiore destro tumefatto, con dolorabilita' alla palpazione del polpaccio. Toni cardiaci validi e ritmici, murmure vescicolare presente su tutto l'ambito polmonare. Esami di laboratorio:",
+    "agent1_seconds": 7.0,
+    "brighton_context": "",
+    "agent2_seconds": 16.8,
+    "answer_conflict": null,
+    "reasoning": "The evidence explicitly states \"Eseguito ecocolordoppler venoso dell'arto inferiore destro\" (Venous color Doppler ultrasound of the right lower limb was performed). This modality corresponds to Doppler/Duplex Ultrasound. The text does not mention compression ultrasonography as a distinct separate test, nor does it mention CT/MR venography, contrast venography, or other imaging modalities like impedance plethysmography. Therefore, only option 4 is supported by the evidence.\n\nFINAL_OPTION: Doppler/Duplex Ultrasound\nFINAL_ANSWER: 4",
+    "result": {
+      "studies": [
+        "Doppler/Duplex Ultrasound"
+      ]
+    }
+  },
+  "B1_1": {
+    "query": "reported symptoms or signs of deep vein thrombosis",
+    "evidence": "alla palpazione del polpaccio. Toni cardiaci validi e ritmici, murmure vescicolare presente su tutto l'ambito polmonare. Esami di laboratorio: D-dimero 1.650 ng/mL, superiore al limite superiore di riferimento del laboratorio. Eseguito ecocolordoppler venoso dell'arto inferiore destro: trombosi venosa a carico della vena poplitea destra, con flusso assente nel segmento trombizzato. Vene femorali comuni e superficiali pervie.\n\nAnamnesi patologica remota: Donna di 51 anni. Nessun intervento chirurgico recente. Non allergie note a farmaci o alimenti. Anamnesi farmacologica: ramipril 5 mg al mattino, colecalciferolo settimanale. Anamnesi Prossima: Da 2 giorni dolore gravativo al polpaccio destro, con edema progressivo dell'arto inferiore omolaterale. Nega trauma recente, febbre, dolore toracico e dispnea. Accede in ambulatorio per la persistenza della sintomatologia. Esame obiettivo all'ingresso: Paziente vigile, orientata, eupnoica a riposo. PA 118/74 mmHg, FC 78 bpm, FR 16 atti/min, SpO2 98% in aria ambiente, TC 36,4°C. Arto inferiore destro tumefatto, con dolorabilita' alla palpazione del polpaccio. Toni cardiaci validi e ritmici, murmure vescicolare presente su tutto l'ambito polmonare. Esami di laboratorio:",
+    "agent1_seconds": 7.3,
+    "brighton_context": "",
+    "agent2_seconds": 16.8,
+    "answer_conflict": null,
+    "reasoning": "The evidence explicitly describes the patient presenting with \"dolore gravativo al polpaccio destro\" (heavy pain in the right calf) and \"edema progressivo dell'arto inferiore omolaterale\" (progressive edema of the ipsilateral lower limb). Additionally, the physical examination notes the right lower limb was swollen (\"tumefatto\") and painful upon palpation. These are recognized signs and symptoms of Deep Vein Thrombosis (DVT). Therefore, there is a clear report of DVT symptoms/signs.\n\nFINAL_OPTION: ≥1 symptom or sign of DVT was reported\nFINAL_ANSWER: 1",
+    "result": {
+      "answer": "≥1 symptom or sign of DVT was reported"
+    }
+  },
+  "B1_2": {
+    "query": "deep vein thrombosis lower extremity or upper extremity",
+    "evidence": "alla palpazione del polpaccio. Toni cardiaci validi e ritmici, murmure vescicolare presente su tutto l'ambito polmonare. Esami di laboratorio: D-dimero 1.650 ng/mL, superiore al limite superiore di riferimento del laboratorio. Eseguito ecocolordoppler venoso dell'arto inferiore destro: trombosi venosa a carico della vena poplitea destra, con flusso assente nel segmento trombizzato. Vene femorali comuni e superficiali pervie.\n\nAnamnesi patologica remota: Donna di 51 anni. Nessun intervento chirurgico recente. Non allergie note a farmaci o alimenti. Anamnesi farmacologica: ramipril 5 mg al mattino, colecalciferolo settimanale. Anamnesi Prossima: Da 2 giorni dolore gravativo al polpaccio destro, con edema progressivo dell'arto inferiore omolaterale. Nega trauma recente, febbre, dolore toracico e dispnea. Accede in ambulatorio per la persistenza della sintomatologia. Esame obiettivo all'ingresso: Paziente vigile, orientata, eupnoica a riposo. PA 118/74 mmHg, FC 78 bpm, FR 16 atti/min, SpO2 98% in aria ambiente, TC 36,4°C. Arto inferiore destro tumefatto, con dolorabilita' alla palpazione del polpaccio. Toni cardiaci validi e ritmici, murmure vescicolare presente su tutto l'ambito polmonare. Esami di laboratorio:",
+    "agent1_seconds": 7.2,
+    "brighton_context": "",
+    "agent2_seconds": 16.6,
+    "answer_conflict": null,
+    "reasoning": "The evidence explicitly states that a venous color Doppler ultrasound of the right lower limb was performed (\"Eseguito ecocolordoppler venoso dell'arto inferiore destro\"). The results confirmed \"trombosi venosa a carico della vena poplitea destra\" (venous thrombosis involving the right popliteal vein). The popliteal vein is located in the lower extremity. There is no mention of thrombosis in the upper extremities. Therefore, the diagnosis is Lower extremity DVT.\n\nFINAL_OPTION: Lower extremity DVT\nFINAL_ANSWER: 1",
+    "result": {
+      "types": [
+        "Lower extremity DVT"
+      ]
+    }
+  },
+  "B2": {
+    "query": "calf pain, swelling, oedema, redness, warmth, absent pulses",
+    "evidence": "Anamnesi patologica remota: Donna di 51 anni. Nessun intervento chirurgico recente. Non allergie note a farmaci o alimenti. Anamnesi farmacologica: ramipril 5 mg al mattino, colecalciferolo settimanale. Anamnesi Prossima: Da 2 giorni dolore gravativo al polpaccio destro, con edema progressivo dell'arto inferiore omolaterale. Nega trauma recente, febbre, dolore toracico e dispnea. Accede in ambulatorio per la persistenza della sintomatologia. Esame obiettivo all'ingresso: Paziente vigile, orientata, eupnoica a riposo. PA 118/74 mmHg, FC 78 bpm, FR 16 atti/min, SpO2 98% in aria ambiente, TC 36,4°C. Arto inferiore destro tumefatto, con dolorabilita' alla palpazione del polpaccio. Toni cardiaci validi e ritmici, murmure vescicolare presente su tutto l'ambito polmonare. Esami di laboratorio:\n\nalla palpazione del polpaccio. Toni cardiaci validi e ritmici, murmure vescicolare presente su tutto l'ambito polmonare. Esami di laboratorio: D-dimero 1.650 ng/mL, superiore al limite superiore di riferimento del laboratorio. Eseguito ecocolordoppler venoso dell'arto inferiore destro: trombosi venosa a carico della vena poplitea destra, con flusso assente nel segmento trombizzato. Vene femorali comuni e superficiali pervie.",
+    "agent1_seconds": 7.4,
+    "brighton_context": "",
+    "agent2_seconds": 18.9,
+    "answer_conflict": null,
+    "reasoning": "The patient's history explicitly states \"dolore gravativo al polpaccio destro\" (heavy pain in the right calf) and the physical examination notes \"dolorabilita' alla palpazione del polpaccio\" (tenderness on palpation of the calf), which confirms option 1. Additionally, the history mentions \"edema progressivo dell'arto inferiore omolaterale\" (progressive edema of the ipsilateral lower limb) and the exam describes the right lower limb as \"tumefatto\" (swollen), confirming option 2. There is no mention of absent pulses, nor is there specific evidence of redness or warmth described in the text provided, so options 3 and 4 are not supported.\n\nFINAL_OPTION: Calf pain or tenderness; Leg swelling or pitting oedema\nFINAL_ANSWER: 1; 2",
+    "result": {
+      "symptoms": [
+        "Calf pain or tenderness",
+        "Leg swelling or pitting oedema"
+      ]
+    }
+  },
+  "C": {
+    "query": "D-dimer value, test date, laboratory upper limit of normal",
+    "evidence": "alla palpazione del polpaccio. Toni cardiaci validi e ritmici, murmure vescicolare presente su tutto l'ambito polmonare. Esami di laboratorio: D-dimero 1.650 ng/mL, superiore al limite superiore di riferimento del laboratorio. Eseguito ecocolordoppler venoso dell'arto inferiore destro: trombosi venosa a carico della vena poplitea destra, con flusso assente nel segmento trombizzato. Vene femorali comuni e superficiali pervie.\n\nAnamnesi patologica remota: Donna di 51 anni. Nessun intervento chirurgico recente. Non allergie note a farmaci o alimenti. Anamnesi farmacologica: ramipril 5 mg al mattino, colecalciferolo settimanale. Anamnesi Prossima: Da 2 giorni dolore gravativo al polpaccio destro, con edema progressivo dell'arto inferiore omolaterale. Nega trauma recente, febbre, dolore toracico e dispnea. Accede in ambulatorio per la persistenza della sintomatologia. Esame obiettivo all'ingresso: Paziente vigile, orientata, eupnoica a riposo. PA 118/74 mmHg, FC 78 bpm, FR 16 atti/min, SpO2 98% in aria ambiente, TC 36,4°C. Arto inferiore destro tumefatto, con dolorabilita' alla palpazione del polpaccio. Toni cardiaci validi e ritmici, murmure vescicolare presente su tutto l'ambito polmonare. Esami di laboratorio:",
+    "agent1_seconds": 6.9,
+    "brighton_context": "",
+    "agent2_seconds": 15.7,
+    "answer_conflict": null,
+    "reasoning": "The evidence explicitly states \"D-dimero 1.650 ng/mL, superiore al limite superiore di riferimento del laboratorio\" (D-dimer 1,650 ng/mL, above the laboratory's upper reference limit). This confirms that the D-dimer was tested and the result exceeded the normal range defined by the laboratory. Therefore, option 1 is the correct description of the findings.\n\nFINAL_OPTION: D-dimer exceeded test lab's upper limit of normal.\nFINAL_ANSWER: 1",
+    "result": {
+      "answer": "D-dimer exceeded test lab's upper limit of normal."
+    }
+  },
+  "F": {
+    "query": "diagnosis of deep vein thrombosis reported by specialist",
+    "evidence": "alla palpazione del polpaccio. Toni cardiaci validi e ritmici, murmure vescicolare presente su tutto l'ambito polmonare. Esami di laboratorio: D-dimero 1.650 ng/mL, superiore al limite superiore di riferimento del laboratorio. Eseguito ecocolordoppler venoso dell'arto inferiore destro: trombosi venosa a carico della vena poplitea destra, con flusso assente nel segmento trombizzato. Vene femorali comuni e superficiali pervie.\n\nAnamnesi patologica remota: Donna di 51 anni. Nessun intervento chirurgico recente. Non allergie note a farmaci o alimenti. Anamnesi farmacologica: ramipril 5 mg al mattino, colecalciferolo settimanale. Anamnesi Prossima: Da 2 giorni dolore gravativo al polpaccio destro, con edema progressivo dell'arto inferiore omolaterale. Nega trauma recente, febbre, dolore toracico e dispnea. Accede in ambulatorio per la persistenza della sintomatologia. Esame obiettivo all'ingresso: Paziente vigile, orientata, eupnoica a riposo. PA 118/74 mmHg, FC 78 bpm, FR 16 atti/min, SpO2 98% in aria ambiente, TC 36,4°C. Arto inferiore destro tumefatto, con dolorabilita' alla palpazione del polpaccio. Toni cardiaci validi e ritmici, murmure vescicolare presente su tutto l'ambito polmonare. Esami di laboratorio:",
+    "agent1_seconds": 7.3,
+    "brighton_context": "",
+    "agent2_seconds": 18.3,
+    "answer_conflict": null,
+    "reasoning": "DETAILS_PRESENT: yes\nThe evidence explicitly reports specific clinical findings supporting the diagnosis of Deep Vein Thrombosis (DVT). It details the results of a venous color Doppler ultrasound (\"ecocolordoppler venoso dell'arto inferiore destro\"), stating \"trombosi venosa a carico della vena poplitea destra\" (venous thrombosis involving the right popliteal vein) with absent flow in the thrombosed segment. Additionally, it provides specific laboratory values (D-dimer 1.650 ng/mL) and physical examination findings (edema, pain on palpation). Since these are specific supporting details rather than a bare conclusion, the diagnosis was not reported without details.\n\nFINAL_OPTION: No\nFINAL_ANSWER: 2",
+    "result": {
+      "answer": "No"
+    }
+  },
+  "X": {
+    "query": "possible alternative etiologies; clinical syndromes to be differentiated from thrombosis; conditions explaining calf pain, redness, warmth or ankle edema other than DVT",
+    "evidence": "Anamnesi patologica remota: Donna di 51 anni. Nessun intervento chirurgico recente. Non allergie note a farmaci o alimenti. Anamnesi farmacologica: ramipril 5 mg al mattino, colecalciferolo settimanale. Anamnesi Prossima: Da 2 giorni dolore gravativo al polpaccio destro, con edema progressivo dell'arto inferiore omolaterale. Nega trauma recente, febbre, dolore toracico e dispnea. Accede in ambulatorio per la persistenza della sintomatologia. Esame obiettivo all'ingresso: Paziente vigile, orientata, eupnoica a riposo. PA 118/74 mmHg, FC 78 bpm, FR 16 atti/min, SpO2 98% in aria ambiente, TC 36,4°C. Arto inferiore destro tumefatto, con dolorabilita' alla palpazione del polpaccio. Toni cardiaci validi e ritmici, murmure vescicolare presente su tutto l'ambito polmonare. Esami di laboratorio:\n\nalla palpazione del polpaccio. Toni cardiaci validi e ritmici, murmure vescicolare presente su tutto l'ambito polmonare. Esami di laboratorio: D-dimero 1.650 ng/mL, superiore al limite superiore di riferimento del laboratorio. Eseguito ecocolordoppler venoso dell'arto inferiore destro: trombosi venosa a carico della vena poplitea destra, con flusso assente nel segmento trombizzato. Vene femorali comuni e superficiali pervie.",
+    "agent1_seconds": 7.4,
+    "brighton_context": "",
+    "agent2_seconds": 16.7,
+    "answer_conflict": null,
+    "reasoning": "The clinical evidence describes a patient presenting with right calf pain and swelling, elevated D-dimer, and an ultrasound confirming thrombosis in the right popliteal vein. The final diagnosis established by the diagnostic workup is Deep Vein Thrombosis (DVT). There is no mention of any other disease process (such as cellulitis, Baker's cyst rupture, or muscle tear) being identified as the cause of the symptoms. Since DVT is the confirmed explanation for the acute illness and no competing diagnosis is presented, no alternative diagnosis was found.\n\nFINAL_OPTION: No alternative diagnosis was found to explain the acute illness\nFINAL_ANSWER: 2",
+    "result": {
+      "answer": "No alternative diagnosis was found to explain the acute illness"
+    }
+  },
+  "_run_config": {
+    "extractor_mode": "agentic_graph",
+    "section_gates_enabled": {
+      "keyword": true,
+      "details": false,
+      "absent_pulses": true
+    },
+    "brighton_context_enabled": false,
+    "section_hints_enabled": true,
+    "section_hints_disabled": [
+      "B2"
+    ],
+    "section_hints_fingerprint": {
+      "A1": "94 fc56153ea429",
+      "A2": "226 c42c3b188a45",
+      "A3_1": "277 c59144334788",
+      "A3_2": "143 023c43c73783",
+      "B1_1": "513 a65c3a0069c5",
+      "C": "342 7e8efb23dfc0",
+      "F": "1216 4d54ff2a7269",
+      "X": "260 e4ce4dddf649",
+      "all": "ab63b8e5f5af"
+    },
+    "cross_section_rules_applied": true,
+    "models": {
+      "extractor": "llama3.1:8b-instruct-q4_0",
+      "evaluator": "qwen3.6:27b",
+      "embeddings": "intfloat/multilingual-e5-small"
+    },
+    "environment": {
+      "hostname": "mari",
+      "ollama_version": "ollama version is 0.32.1"
+    },
+    "generation": {
+      "temperature": 0.0,
+      "num_predict": 1024,
+      "num_gpu": 999,
+      "reasoning": false
+    },
+    "retrieval": {
+      "ehr_chunk_size": 800,
+      "ehr_chunk_overlap": 150,
+      "ehr_retriever_k": 5,
+      "brighton_retriever_k": 5
+    }
+  }
+}

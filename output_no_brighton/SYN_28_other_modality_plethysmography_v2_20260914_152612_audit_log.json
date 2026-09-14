@@ -1,0 +1,175 @@
+{
+  "A1": {
+    "query": "autopsy report, necropsy, post-mortem examination, autoptic findings",
+    "evidence": "palpazione. Toni cardiaci validi e ritmici. Esami di laboratorio: D-dimero 2.050 ng/mL, superiore al limite superiore di riferimento del laboratorio. Eseguita pletismografia ad impedenza dell'arto inferiore sinistro: alterazione del reflusso venoso compatibile con trombosi venosa profonda prossimale.\n\nAnamnesi patologica remota: Donna di 66 anni, portatrice di pacemaker, con controindicazione relativa alla risonanza magnetica. Nessun intervento chirurgico recente. Non allergie farmacologiche note. Anamnesi farmacologica: bisoprololo 2,5 mg, levotiroxina 50 mcg. Anamnesi Prossima: Da 3 giorni dolore al polpaccio e gonfiore dell'arto inferiore sinistro. Nega trauma, febbre, dolore toracico e dispnea. Esame obiettivo all'ingresso: Paziente vigile, orientata e collaborante, eupnoica a riposo. PA 130/78 mmHg, FC 68 bpm, FR 15 atti/min, SpO2 98% in aria ambiente, TC 36,5°C. Arto inferiore sinistro con gonfiore del polpaccio e dolorabilita' alla palpazione. Toni cardiaci validi e ritmici. Esami di laboratorio: D-dimero 2.050 ng/mL, superiore al limite superiore di riferimento del laboratorio.",
+    "agent1_seconds": 7.2,
+    "brighton_context": "",
+    "agent2_seconds": 15.8,
+    "answer_conflict": null,
+    "reasoning": "The evidence describes a living patient undergoing clinical evaluation, including physical examination and impedance plethysmography, which suggested proximal deep vein thrombosis. The prompt explicitly states that only post-mortem findings count for an autopsy and that imaging performed on a living patient is not an autopsy. Since the text does not mention any post-mortem examination or death of the patient, no autopsy was performed.\n\nFINAL_OPTION: No autopsy done, unknown if done, or done but results unavailable\nFINAL_ANSWER: 3",
+    "result": {
+      "answer": "No autopsy done, unknown if done, or done but results unavailable"
+    }
+  },
+  "A2": {
+    "query": "thrombectomy, surgical procedure related to DVT",
+    "evidence": "palpazione. Toni cardiaci validi e ritmici. Esami di laboratorio: D-dimero 2.050 ng/mL, superiore al limite superiore di riferimento del laboratorio. Eseguita pletismografia ad impedenza dell'arto inferiore sinistro: alterazione del reflusso venoso compatibile con trombosi venosa profonda prossimale.\n\nAnamnesi patologica remota: Donna di 66 anni, portatrice di pacemaker, con controindicazione relativa alla risonanza magnetica. Nessun intervento chirurgico recente. Non allergie farmacologiche note. Anamnesi farmacologica: bisoprololo 2,5 mg, levotiroxina 50 mcg. Anamnesi Prossima: Da 3 giorni dolore al polpaccio e gonfiore dell'arto inferiore sinistro. Nega trauma, febbre, dolore toracico e dispnea. Esame obiettivo all'ingresso: Paziente vigile, orientata e collaborante, eupnoica a riposo. PA 130/78 mmHg, FC 68 bpm, FR 15 atti/min, SpO2 98% in aria ambiente, TC 36,5°C. Arto inferiore sinistro con gonfiore del polpaccio e dolorabilita' alla palpazione. Toni cardiaci validi e ritmici. Esami di laboratorio: D-dimero 2.050 ng/mL, superiore al limite superiore di riferimento del laboratorio.",
+    "agent1_seconds": 7.0,
+    "brighton_context": "",
+    "agent2_seconds": 18.0,
+    "answer_conflict": null,
+    "reasoning": "The evidence describes a patient with symptoms and laboratory findings suggestive of Deep Vein Thrombosis (DVT), confirmed by impedance plethysmography (\"pletismografia ad impedenza\"). The text explicitly states \"Nessun intervento chirurgico recente\" (No recent surgical intervention) in the remote pathological history. Furthermore, there is no mention of any surgical procedure, such as thrombectomy, being performed during the current admission or described in the clinical course. Impedance plethysmography is a diagnostic imaging/functional test, not a surgical procedure. Therefore, no surgical procedure was done to confirm DVT.\n\nFINAL_OPTION: No surgical procedure done; or, done but either did not confirm presence of DVT or findings unknown; or unknown if done\nFINAL_ANSWER: 3",
+    "result": {
+      "answer": "No surgical procedure done; or, done but either did not confirm presence of DVT or findings unknown; or unknown if done"
+    }
+  },
+  "A3_1": {
+    "query": "ultrasound, CT, MRI, venography: imaging outcome for deep vein thrombosis",
+    "evidence": "palpazione. Toni cardiaci validi e ritmici. Esami di laboratorio: D-dimero 2.050 ng/mL, superiore al limite superiore di riferimento del laboratorio. Eseguita pletismografia ad impedenza dell'arto inferiore sinistro: alterazione del reflusso venoso compatibile con trombosi venosa profonda prossimale.\n\nAnamnesi patologica remota: Donna di 66 anni, portatrice di pacemaker, con controindicazione relativa alla risonanza magnetica. Nessun intervento chirurgico recente. Non allergie farmacologiche note. Anamnesi farmacologica: bisoprololo 2,5 mg, levotiroxina 50 mcg. Anamnesi Prossima: Da 3 giorni dolore al polpaccio e gonfiore dell'arto inferiore sinistro. Nega trauma, febbre, dolore toracico e dispnea. Esame obiettivo all'ingresso: Paziente vigile, orientata e collaborante, eupnoica a riposo. PA 130/78 mmHg, FC 68 bpm, FR 15 atti/min, SpO2 98% in aria ambiente, TC 36,5°C. Arto inferiore sinistro con gonfiore del polpaccio e dolorabilita' alla palpazione. Toni cardiaci validi e ritmici. Esami di laboratorio: D-dimero 2.050 ng/mL, superiore al limite superiore di riferimento del laboratorio.",
+    "agent1_seconds": 7.7,
+    "brighton_context": "",
+    "agent2_seconds": 17.9,
+    "answer_conflict": null,
+    "reasoning": "The evidence explicitly states that an impedance plethysmography (pletismografia ad impedenza) was performed on the left lower limb. The result showed \"alterazione del reflusso venoso compatibile con trombosi venosa profonda prossimale\" (venous reflux alteration compatible with proximal deep vein thrombosis). Impedance plethysmography is a diagnostic imaging/functional study used to detect DVT. Since the study was performed and the findings were compatible with (confirming) DVT, this fits the criteria for an imaging study being done and confirming DVT. Note that while MRI was contraindicated, another valid diagnostic modality was successfully used and yielded a positive result.\n\nFINAL_OPTION: ≥1 imaging study was done and confirmed DVT\nFINAL_ANSWER: 1",
+    "result": {
+      "answer": "≥1 imaging study was done and confirmed DVT"
+    }
+  },
+  "A3_2": {
+    "query": "type of imaging study performed: compression ultrasonography, doppler, venography",
+    "evidence": "palpazione. Toni cardiaci validi e ritmici. Esami di laboratorio: D-dimero 2.050 ng/mL, superiore al limite superiore di riferimento del laboratorio. Eseguita pletismografia ad impedenza dell'arto inferiore sinistro: alterazione del reflusso venoso compatibile con trombosi venosa profonda prossimale.\n\nAnamnesi patologica remota: Donna di 66 anni, portatrice di pacemaker, con controindicazione relativa alla risonanza magnetica. Nessun intervento chirurgico recente. Non allergie farmacologiche note. Anamnesi farmacologica: bisoprololo 2,5 mg, levotiroxina 50 mcg. Anamnesi Prossima: Da 3 giorni dolore al polpaccio e gonfiore dell'arto inferiore sinistro. Nega trauma, febbre, dolore toracico e dispnea. Esame obiettivo all'ingresso: Paziente vigile, orientata e collaborante, eupnoica a riposo. PA 130/78 mmHg, FC 68 bpm, FR 15 atti/min, SpO2 98% in aria ambiente, TC 36,5°C. Arto inferiore sinistro con gonfiore del polpaccio e dolorabilita' alla palpazione. Toni cardiaci validi e ritmici. Esami di laboratorio: D-dimero 2.050 ng/mL, superiore al limite superiore di riferimento del laboratorio.",
+    "agent1_seconds": 7.0,
+    "brighton_context": "",
+    "agent2_seconds": 17.2,
+    "answer_conflict": null,
+    "reasoning": "The evidence explicitly states that \"Eseguita pletismografia ad impedenza dell'arto inferiore sinistro\" (Impedance plethysmography of the left lower limb was performed). The prompt instructions specify that an imaging test that is none of the four named modalities (Compression ultrasonography, CT or MR venography, Contrast venography, Doppler/Duplex Ultrasound), such as impedance plethysmography, falls under the category 'Other'. No other imaging modalities from the specific list are mentioned as being performed.\n\nFINAL_OPTION: Other\nFINAL_ANSWER: 5",
+    "result": {
+      "studies": [
+        "Other"
+      ]
+    }
+  },
+  "B1_1": {
+    "query": "reported symptoms or signs of deep vein thrombosis",
+    "evidence": "palpazione. Toni cardiaci validi e ritmici. Esami di laboratorio: D-dimero 2.050 ng/mL, superiore al limite superiore di riferimento del laboratorio. Eseguita pletismografia ad impedenza dell'arto inferiore sinistro: alterazione del reflusso venoso compatibile con trombosi venosa profonda prossimale.\n\nAnamnesi patologica remota: Donna di 66 anni, portatrice di pacemaker, con controindicazione relativa alla risonanza magnetica. Nessun intervento chirurgico recente. Non allergie farmacologiche note. Anamnesi farmacologica: bisoprololo 2,5 mg, levotiroxina 50 mcg. Anamnesi Prossima: Da 3 giorni dolore al polpaccio e gonfiore dell'arto inferiore sinistro. Nega trauma, febbre, dolore toracico e dispnea. Esame obiettivo all'ingresso: Paziente vigile, orientata e collaborante, eupnoica a riposo. PA 130/78 mmHg, FC 68 bpm, FR 15 atti/min, SpO2 98% in aria ambiente, TC 36,5°C. Arto inferiore sinistro con gonfiore del polpaccio e dolorabilita' alla palpazione. Toni cardiaci validi e ritmici. Esami di laboratorio: D-dimero 2.050 ng/mL, superiore al limite superiore di riferimento del laboratorio.",
+    "agent1_seconds": 7.2,
+    "brighton_context": "",
+    "agent2_seconds": 17.0,
+    "answer_conflict": null,
+    "reasoning": "The evidence explicitly reports symptoms and signs consistent with DVT in the \"Anamnesi Prossima\" (Recent History) and \"Esame obiettivo\" (Physical Exam) sections. Specifically, it mentions \"dolore al polpaccio e gonfiore dell'arto inferiore sinistro\" (calf pain and swelling of the left lower limb) and \"gonfiore del polpaccio e dolorabilita' alla palpazione\" (calf swelling and tenderness on palpation). Therefore, there is a clear report of recognized DVT symptoms/signs.\n\nFINAL_OPTION: ≥1 symptom or sign of DVT was reported\nFINAL_ANSWER: 1",
+    "result": {
+      "answer": "≥1 symptom or sign of DVT was reported"
+    }
+  },
+  "B1_2": {
+    "query": "deep vein thrombosis lower extremity or upper extremity",
+    "evidence": "palpazione. Toni cardiaci validi e ritmici. Esami di laboratorio: D-dimero 2.050 ng/mL, superiore al limite superiore di riferimento del laboratorio. Eseguita pletismografia ad impedenza dell'arto inferiore sinistro: alterazione del reflusso venoso compatibile con trombosi venosa profonda prossimale.\n\nAnamnesi patologica remota: Donna di 66 anni, portatrice di pacemaker, con controindicazione relativa alla risonanza magnetica. Nessun intervento chirurgico recente. Non allergie farmacologiche note. Anamnesi farmacologica: bisoprololo 2,5 mg, levotiroxina 50 mcg. Anamnesi Prossima: Da 3 giorni dolore al polpaccio e gonfiore dell'arto inferiore sinistro. Nega trauma, febbre, dolore toracico e dispnea. Esame obiettivo all'ingresso: Paziente vigile, orientata e collaborante, eupnoica a riposo. PA 130/78 mmHg, FC 68 bpm, FR 15 atti/min, SpO2 98% in aria ambiente, TC 36,5°C. Arto inferiore sinistro con gonfiore del polpaccio e dolorabilita' alla palpazione. Toni cardiaci validi e ritmici. Esami di laboratorio: D-dimero 2.050 ng/mL, superiore al limite superiore di riferimento del laboratorio.",
+    "agent1_seconds": 7.1,
+    "brighton_context": "",
+    "agent2_seconds": 16.2,
+    "answer_conflict": null,
+    "reasoning": "The evidence explicitly describes symptoms (calf pain and swelling) and diagnostic findings in the **left lower extremity** (\"arto inferiore sinistro\"). The impedance plethysmography performed on this limb showed alterations compatible with proximal deep vein thrombosis. There is no mention of symptoms, examination findings, or diagnostic results related to the upper extremities. Therefore, the evidence supports a diagnosis of lower extremity DVT but does not support upper extremity DVT.\n\nFINAL_OPTION: Lower extremity DVT\nFINAL_ANSWER: 1",
+    "result": {
+      "types": [
+        "Lower extremity DVT"
+      ]
+    }
+  },
+  "B2": {
+    "query": "calf pain, swelling, oedema, redness, warmth, absent pulses",
+    "evidence": "Anamnesi patologica remota: Donna di 66 anni, portatrice di pacemaker, con controindicazione relativa alla risonanza magnetica. Nessun intervento chirurgico recente. Non allergie farmacologiche note. Anamnesi farmacologica: bisoprololo 2,5 mg, levotiroxina 50 mcg. Anamnesi Prossima: Da 3 giorni dolore al polpaccio e gonfiore dell'arto inferiore sinistro. Nega trauma, febbre, dolore toracico e dispnea. Esame obiettivo all'ingresso: Paziente vigile, orientata e collaborante, eupnoica a riposo. PA 130/78 mmHg, FC 68 bpm, FR 15 atti/min, SpO2 98% in aria ambiente, TC 36,5°C. Arto inferiore sinistro con gonfiore del polpaccio e dolorabilita' alla palpazione. Toni cardiaci validi e ritmici. Esami di laboratorio: D-dimero 2.050 ng/mL, superiore al limite superiore di riferimento del laboratorio.\n\npalpazione. Toni cardiaci validi e ritmici. Esami di laboratorio: D-dimero 2.050 ng/mL, superiore al limite superiore di riferimento del laboratorio. Eseguita pletismografia ad impedenza dell'arto inferiore sinistro: alterazione del reflusso venoso compatibile con trombosi venosa profonda prossimale.",
+    "agent1_seconds": 7.1,
+    "brighton_context": "",
+    "agent2_seconds": 18.2,
+    "answer_conflict": null,
+    "reasoning": "The evidence explicitly states \"dolore al polpaccio\" (calf pain) and \"dolorabilita' alla palpazione\" (tenderness on palpation), which directly supports Option 1. It also mentions \"gonfiore dell'arto inferiore sinistro\" (swelling of the left lower limb) and \"gonfiore del polpaccio\" (calf swelling), which supports Option 2. The text does not mention absent pulses, nor does it describe redness or warmth; while pain is present, the specific combination of redness/warmth required for Option 4 is not described. Therefore, only options 1 and 2 are supported by the text.\n\nFINAL_OPTION: Calf pain or tenderness; Leg swelling or pitting oedema\nFINAL_ANSWER: 1; 2",
+    "result": {
+      "symptoms": [
+        "Calf pain or tenderness",
+        "Leg swelling or pitting oedema"
+      ]
+    }
+  },
+  "C": {
+    "query": "D-dimer value, test date, laboratory upper limit of normal",
+    "evidence": "palpazione. Toni cardiaci validi e ritmici. Esami di laboratorio: D-dimero 2.050 ng/mL, superiore al limite superiore di riferimento del laboratorio. Eseguita pletismografia ad impedenza dell'arto inferiore sinistro: alterazione del reflusso venoso compatibile con trombosi venosa profonda prossimale.\n\nAnamnesi patologica remota: Donna di 66 anni, portatrice di pacemaker, con controindicazione relativa alla risonanza magnetica. Nessun intervento chirurgico recente. Non allergie farmacologiche note. Anamnesi farmacologica: bisoprololo 2,5 mg, levotiroxina 50 mcg. Anamnesi Prossima: Da 3 giorni dolore al polpaccio e gonfiore dell'arto inferiore sinistro. Nega trauma, febbre, dolore toracico e dispnea. Esame obiettivo all'ingresso: Paziente vigile, orientata e collaborante, eupnoica a riposo. PA 130/78 mmHg, FC 68 bpm, FR 15 atti/min, SpO2 98% in aria ambiente, TC 36,5°C. Arto inferiore sinistro con gonfiore del polpaccio e dolorabilita' alla palpazione. Toni cardiaci validi e ritmici. Esami di laboratorio: D-dimero 2.050 ng/mL, superiore al limite superiore di riferimento del laboratorio.",
+    "agent1_seconds": 7.4,
+    "brighton_context": "",
+    "agent2_seconds": 15.8,
+    "answer_conflict": null,
+    "reasoning": "The evidence explicitly states \"D-dimero 2.050 ng/mL, superiore al limite superiore di riferimento del laboratorio\" (D-dimer 2,050 ng/mL, above the upper limit of reference of the laboratory). This confirms that the D-dimer was tested and the result exceeded the laboratory's upper limit of normal.\n\nFINAL_OPTION: D-dimer exceeded test lab's upper limit of normal.\nFINAL_ANSWER: 1",
+    "result": {
+      "answer": "D-dimer exceeded test lab's upper limit of normal."
+    }
+  },
+  "F": {
+    "query": "diagnosis of deep vein thrombosis reported by specialist",
+    "evidence": "palpazione. Toni cardiaci validi e ritmici. Esami di laboratorio: D-dimero 2.050 ng/mL, superiore al limite superiore di riferimento del laboratorio. Eseguita pletismografia ad impedenza dell'arto inferiore sinistro: alterazione del reflusso venoso compatibile con trombosi venosa profonda prossimale.\n\nAnamnesi patologica remota: Donna di 66 anni, portatrice di pacemaker, con controindicazione relativa alla risonanza magnetica. Nessun intervento chirurgico recente. Non allergie farmacologiche note. Anamnesi farmacologica: bisoprololo 2,5 mg, levotiroxina 50 mcg. Anamnesi Prossima: Da 3 giorni dolore al polpaccio e gonfiore dell'arto inferiore sinistro. Nega trauma, febbre, dolore toracico e dispnea. Esame obiettivo all'ingresso: Paziente vigile, orientata e collaborante, eupnoica a riposo. PA 130/78 mmHg, FC 68 bpm, FR 15 atti/min, SpO2 98% in aria ambiente, TC 36,5°C. Arto inferiore sinistro con gonfiore del polpaccio e dolorabilita' alla palpazione. Toni cardiaci validi e ritmici. Esami di laboratorio: D-dimero 2.050 ng/mL, superiore al limite superiore di riferimento del laboratorio.",
+    "agent1_seconds": 7.2,
+    "brighton_context": "",
+    "agent2_seconds": 17.0,
+    "answer_conflict": null,
+    "reasoning": "DETAILS_PRESENT: yes\n\nThe evidence explicitly reports specific clinical findings supporting the diagnosis. It details a D-dimer level of 2.050 ng/mL and describes the results of an impedance plethysmography (pletismografia ad impedenza) showing \"alterazione del reflusso venoso compatibile con trombosi venosa profonda prossimale\" (venous reflux alteration compatible with proximal deep vein thrombosis). Since specific laboratory values and imaging/test results are provided, the diagnosis is not a bare conclusion without details.\n\nFINAL_OPTION: No\nFINAL_ANSWER: 2",
+    "result": {
+      "answer": "No"
+    }
+  },
+  "X": {
+    "query": "possible alternative etiologies; clinical syndromes to be differentiated from thrombosis; conditions explaining calf pain, redness, warmth or ankle edema other than DVT",
+    "evidence": "palpazione. Toni cardiaci validi e ritmici. Esami di laboratorio: D-dimero 2.050 ng/mL, superiore al limite superiore di riferimento del laboratorio. Eseguita pletismografia ad impedenza dell'arto inferiore sinistro: alterazione del reflusso venoso compatibile con trombosi venosa profonda prossimale.\n\nAnamnesi patologica remota: Donna di 66 anni, portatrice di pacemaker, con controindicazione relativa alla risonanza magnetica. Nessun intervento chirurgico recente. Non allergie farmacologiche note. Anamnesi farmacologica: bisoprololo 2,5 mg, levotiroxina 50 mcg. Anamnesi Prossima: Da 3 giorni dolore al polpaccio e gonfiore dell'arto inferiore sinistro. Nega trauma, febbre, dolore toracico e dispnea. Esame obiettivo all'ingresso: Paziente vigile, orientata e collaborante, eupnoica a riposo. PA 130/78 mmHg, FC 68 bpm, FR 15 atti/min, SpO2 98% in aria ambiente, TC 36,5°C. Arto inferiore sinistro con gonfiore del polpaccio e dolorabilita' alla palpazione. Toni cardiaci validi e ritmici. Esami di laboratorio: D-dimero 2.050 ng/mL, superiore al limite superiore di riferimento del laboratorio.",
+    "agent1_seconds": 7.3,
+    "brighton_context": "",
+    "agent2_seconds": 16.2,
+    "answer_conflict": null,
+    "reasoning": "The clinical evidence describes a patient with symptoms and findings consistent with Deep Vein Thrombosis (DVT), specifically elevated D-dimer and impedance plethysmography results compatible with proximal DVT. The text does not mention any other disease or condition being identified as the cause of the acute illness, nor does it present an alternative final diagnosis. Therefore, no alternative diagnosis was found to explain the acute illness.\n\nFINAL_OPTION: No alternative diagnosis was found to explain the acute illness\nFINAL_ANSWER: 2",
+    "result": {
+      "answer": "No alternative diagnosis was found to explain the acute illness"
+    }
+  },
+  "_run_config": {
+    "extractor_mode": "agentic_graph",
+    "section_gates_enabled": {
+      "keyword": true,
+      "details": false,
+      "absent_pulses": true
+    },
+    "brighton_context_enabled": false,
+    "section_hints_enabled": true,
+    "section_hints_disabled": [
+      "B2"
+    ],
+    "section_hints_fingerprint": {
+      "A1": "94 fc56153ea429",
+      "A2": "226 c42c3b188a45",
+      "A3_1": "277 c59144334788",
+      "A3_2": "143 023c43c73783",
+      "B1_1": "513 a65c3a0069c5",
+      "C": "342 7e8efb23dfc0",
+      "F": "1216 4d54ff2a7269",
+      "X": "260 e4ce4dddf649",
+      "all": "ab63b8e5f5af"
+    },
+    "cross_section_rules_applied": true,
+    "models": {
+      "extractor": "llama3.1:8b-instruct-q4_0",
+      "evaluator": "qwen3.6:27b",
+      "embeddings": "intfloat/multilingual-e5-small"
+    },
+    "environment": {
+      "hostname": "mari",
+      "ollama_version": "ollama version is 0.32.1"
+    },
+    "generation": {
+      "temperature": 0.0,
+      "num_predict": 1024,
+      "num_gpu": 999,
+      "reasoning": false
+    },
+    "retrieval": {
+      "ehr_chunk_size": 800,
+      "ehr_chunk_overlap": 150,
+      "ehr_retriever_k": 5,
+      "brighton_retriever_k": 5
+    }
+  }
+}

@@ -1,0 +1,173 @@
+{
+  "A1": {
+    "query": "autopsy report, necropsy, post-mortem examination, autoptic findings",
+    "evidence": "laboratorio: D-dimero 410 ng/mL, entro il range di normalita' del laboratorio. Eseguita ecografia compressiva venosa dell'arto inferiore destro: vene comprimibili, nessuna evidenza di trombosi; nella regione poplitea e' stata visualizzata una raccolta liquida compatibile con cisti di Baker rotta. Valutazione specialistica: diagnosi di rottura di cisti di Baker, senza coinvolgimento del sistema venoso profondo.\n\nAnamnesi patologica remota: Donna di 52 anni. Nessun intervento chirurgico recente. Non allergie farmacologiche note. Anamnesi farmacologica: nessuna terapia cronica in atto. Anamnesi Prossima: Da 3 giorni dolore al polpaccio e gonfiore dell'arto inferiore destro, comparsi dopo un'attivita' fisica intensa. Nega trauma diretto, febbre, dolore toracico e dispnea. Esame obiettivo all'ingresso: Paziente vigile, orientata e collaborante. PA 122/76 mmHg, FC 74 bpm, FR 15 atti/min, SpO2 99% in aria ambiente, TC 36,5°C. Arto inferiore destro con gonfiore del polpaccio e dolorabilita' alla palpazione. Addome trattabile, non dolente. Esami di laboratorio: D-dimero 410 ng/mL, entro il range di normalita' del laboratorio. Eseguita ecografia compressiva venosa dell'arto inferiore destro: vene",
+    "agent1_seconds": 6.8,
+    "brighton_context": "",
+    "agent2_seconds": 16.1,
+    "answer_conflict": null,
+    "reasoning": "The evidence provided describes a living patient undergoing clinical evaluation, including laboratory tests and compressive venous ultrasound, which ruled out deep vein thrombosis (DVT) and identified a ruptured Baker's cyst. The prompt explicitly states that only post-mortem findings count for an autopsy and that imaging on a living patient is not an autopsy. Since the text does not mention any post-mortem examination or death of the patient, no autopsy was performed.\n\nFINAL_OPTION: No autopsy done, unknown if done, or done but results unavailable\nFINAL_ANSWER: 3",
+    "result": {
+      "answer": "No autopsy done, unknown if done, or done but results unavailable"
+    }
+  },
+  "A2": {
+    "query": "thrombectomy, surgical procedure related to DVT",
+    "evidence": "laboratorio: D-dimero 410 ng/mL, entro il range di normalita' del laboratorio. Eseguita ecografia compressiva venosa dell'arto inferiore destro: vene comprimibili, nessuna evidenza di trombosi; nella regione poplitea e' stata visualizzata una raccolta liquida compatibile con cisti di Baker rotta. Valutazione specialistica: diagnosi di rottura di cisti di Baker, senza coinvolgimento del sistema venoso profondo.\n\nAnamnesi patologica remota: Donna di 52 anni. Nessun intervento chirurgico recente. Non allergie farmacologiche note. Anamnesi farmacologica: nessuna terapia cronica in atto. Anamnesi Prossima: Da 3 giorni dolore al polpaccio e gonfiore dell'arto inferiore destro, comparsi dopo un'attivita' fisica intensa. Nega trauma diretto, febbre, dolore toracico e dispnea. Esame obiettivo all'ingresso: Paziente vigile, orientata e collaborante. PA 122/76 mmHg, FC 74 bpm, FR 15 atti/min, SpO2 99% in aria ambiente, TC 36,5°C. Arto inferiore destro con gonfiore del polpaccio e dolorabilita' alla palpazione. Addome trattabile, non dolente. Esami di laboratorio: D-dimero 410 ng/mL, entro il range di normalita' del laboratorio. Eseguita ecografia compressiva venosa dell'arto inferiore destro: vene",
+    "agent1_seconds": 6.7,
+    "brighton_context": "",
+    "agent2_seconds": 17.6,
+    "answer_conflict": null,
+    "reasoning": "The evidence explicitly states that a compressive venous ultrasound was performed and showed \"no evidence of thrombosis\" (\"nessuna evidenza di trombosi\") and that the diagnosis was a ruptured Baker's cyst without deep venous system involvement. Furthermore, the patient history notes \"No recent surgical intervention\" (\"Nessun intervento chirurgico recente\"). There is no mention of any surgical procedure like thrombectomy being performed, nor any procedure confirming DVT (since DVT was ruled out). Therefore, no surgical procedure was done to confirm or treat DVT.\n\nFINAL_OPTION: No surgical procedure done; or, done but either did not confirm presence of DVT or findings unknown; or unknown if done\nFINAL_ANSWER: 3",
+    "result": {
+      "answer": "No surgical procedure done; or, done but either did not confirm presence of DVT or findings unknown; or unknown if done"
+    }
+  },
+  "A3_1": {
+    "query": "ultrasound, CT, MRI, venography: imaging outcome for deep vein thrombosis",
+    "evidence": "laboratorio: D-dimero 410 ng/mL, entro il range di normalita' del laboratorio. Eseguita ecografia compressiva venosa dell'arto inferiore destro: vene comprimibili, nessuna evidenza di trombosi; nella regione poplitea e' stata visualizzata una raccolta liquida compatibile con cisti di Baker rotta. Valutazione specialistica: diagnosi di rottura di cisti di Baker, senza coinvolgimento del sistema venoso profondo.\n\nAnamnesi patologica remota: Donna di 52 anni. Nessun intervento chirurgico recente. Non allergie farmacologiche note. Anamnesi farmacologica: nessuna terapia cronica in atto. Anamnesi Prossima: Da 3 giorni dolore al polpaccio e gonfiore dell'arto inferiore destro, comparsi dopo un'attivita' fisica intensa. Nega trauma diretto, febbre, dolore toracico e dispnea. Esame obiettivo all'ingresso: Paziente vigile, orientata e collaborante. PA 122/76 mmHg, FC 74 bpm, FR 15 atti/min, SpO2 99% in aria ambiente, TC 36,5°C. Arto inferiore destro con gonfiore del polpaccio e dolorabilita' alla palpazione. Addome trattabile, non dolente. Esami di laboratorio: D-dimero 410 ng/mL, entro il range di normalita' del laboratorio. Eseguita ecografia compressiva venosa dell'arto inferiore destro: vene",
+    "agent1_seconds": 7.1,
+    "brighton_context": "",
+    "agent2_seconds": 16.2,
+    "answer_conflict": null,
+    "reasoning": "The evidence explicitly states that a compressive venous ultrasound of the right lower limb was performed (\"Eseguita ecografia compressiva venosa\"). The results showed compressible veins and no evidence of thrombosis (\"nessuna evidenza di trombosi\"), effectively ruling out Deep Vein Thrombosis (DVT). Since an imaging study was conducted and it did not confirm DVT, this aligns with the second option.\n\nFINAL_OPTION: ≥1 imaging study was done but didn't confirm DVT\nFINAL_ANSWER: 2",
+    "result": {
+      "answer": "≥1 imaging study was done but didn't confirm DVT"
+    }
+  },
+  "A3_2": {
+    "query": "type of imaging study performed: compression ultrasonography, doppler, venography",
+    "evidence": "laboratorio: D-dimero 410 ng/mL, entro il range di normalita' del laboratorio. Eseguita ecografia compressiva venosa dell'arto inferiore destro: vene comprimibili, nessuna evidenza di trombosi; nella regione poplitea e' stata visualizzata una raccolta liquida compatibile con cisti di Baker rotta. Valutazione specialistica: diagnosi di rottura di cisti di Baker, senza coinvolgimento del sistema venoso profondo.\n\nAnamnesi patologica remota: Donna di 52 anni. Nessun intervento chirurgico recente. Non allergie farmacologiche note. Anamnesi farmacologica: nessuna terapia cronica in atto. Anamnesi Prossima: Da 3 giorni dolore al polpaccio e gonfiore dell'arto inferiore destro, comparsi dopo un'attivita' fisica intensa. Nega trauma diretto, febbre, dolore toracico e dispnea. Esame obiettivo all'ingresso: Paziente vigile, orientata e collaborante. PA 122/76 mmHg, FC 74 bpm, FR 15 atti/min, SpO2 99% in aria ambiente, TC 36,5°C. Arto inferiore destro con gonfiore del polpaccio e dolorabilita' alla palpazione. Addome trattabile, non dolente. Esami di laboratorio: D-dimero 410 ng/mL, entro il range di normalita' del laboratorio. Eseguita ecografia compressiva venosa dell'arto inferiore destro: vene",
+    "agent1_seconds": 7.0,
+    "brighton_context": "",
+    "agent2_seconds": 17.3,
+    "answer_conflict": null,
+    "reasoning": "The evidence explicitly states \"Eseguita ecografia compressiva venosa dell'arto inferiore destro\" (Compressive venous ultrasound of the right lower limb was performed). This directly corresponds to Option 1, Compression ultrasonography. The text does not mention CT or MR venography, contrast venography, or Doppler/Duplex ultrasound as distinct procedures; while Doppler is often part of a comprehensive ultrasound exam, the specific modality named and described by its mechanical action (compressive) is compression ultrasonography. Therefore, only Option 1 is supported by the text.\n\nFINAL_OPTION: Compression ultrasonography\nFINAL_ANSWER: 1\n\n[SYSTEM OVERRIDE]: A3.2 was automatically cleared because Section A3.1 reported that the imaging study did not confirm DVT, and A3.2 records only the studies that confirmed it.",
+    "result": {
+      "studies": [
+        "Compression ultrasonography"
+      ]
+    }
+  },
+  "B1_1": {
+    "query": "reported symptoms or signs of deep vein thrombosis",
+    "evidence": "laboratorio: D-dimero 410 ng/mL, entro il range di normalita' del laboratorio. Eseguita ecografia compressiva venosa dell'arto inferiore destro: vene comprimibili, nessuna evidenza di trombosi; nella regione poplitea e' stata visualizzata una raccolta liquida compatibile con cisti di Baker rotta. Valutazione specialistica: diagnosi di rottura di cisti di Baker, senza coinvolgimento del sistema venoso profondo.\n\nAnamnesi patologica remota: Donna di 52 anni. Nessun intervento chirurgico recente. Non allergie farmacologiche note. Anamnesi farmacologica: nessuna terapia cronica in atto. Anamnesi Prossima: Da 3 giorni dolore al polpaccio e gonfiore dell'arto inferiore destro, comparsi dopo un'attivita' fisica intensa. Nega trauma diretto, febbre, dolore toracico e dispnea. Esame obiettivo all'ingresso: Paziente vigile, orientata e collaborante. PA 122/76 mmHg, FC 74 bpm, FR 15 atti/min, SpO2 99% in aria ambiente, TC 36,5°C. Arto inferiore destro con gonfiore del polpaccio e dolorabilita' alla palpazione. Addome trattabile, non dolente. Esami di laboratorio: D-dimero 410 ng/mL, entro il range di normalita' del laboratorio. Eseguita ecografia compressiva venosa dell'arto inferiore destro: vene",
+    "agent1_seconds": 7.1,
+    "brighton_context": "",
+    "agent2_seconds": 18.4,
+    "answer_conflict": null,
+    "reasoning": "The evidence explicitly reports that the patient presented with \"dolore al polpaccio e gonfiore dell'arto inferiore destro\" (calf pain and swelling of the right lower limb) in the recent history section, and physical examination confirmed \"gonfiore del polpaccio e dolorabilita' alla palpazione\" (calf swelling and tenderness to palpation). These are recognized signs and symptoms of a DVT syndrome. Although the final diagnosis was a ruptured Baker's cyst and DVT was ruled out by ultrasound, the question asks whether symptoms or signs were *reported*, not whether DVT was confirmed. Since the record explicitly documents these symptoms, it is known that they were reported.\n\nFINAL_OPTION: ≥1 symptom or sign of DVT was reported\nFINAL_ANSWER: 1",
+    "result": {
+      "answer": "≥1 symptom or sign of DVT was reported"
+    }
+  },
+  "B1_2": {
+    "query": "deep vein thrombosis lower extremity or upper extremity",
+    "evidence": "laboratorio: D-dimero 410 ng/mL, entro il range di normalita' del laboratorio. Eseguita ecografia compressiva venosa dell'arto inferiore destro: vene comprimibili, nessuna evidenza di trombosi; nella regione poplitea e' stata visualizzata una raccolta liquida compatibile con cisti di Baker rotta. Valutazione specialistica: diagnosi di rottura di cisti di Baker, senza coinvolgimento del sistema venoso profondo.\n\nAnamnesi patologica remota: Donna di 52 anni. Nessun intervento chirurgico recente. Non allergie farmacologiche note. Anamnesi farmacologica: nessuna terapia cronica in atto. Anamnesi Prossima: Da 3 giorni dolore al polpaccio e gonfiore dell'arto inferiore destro, comparsi dopo un'attivita' fisica intensa. Nega trauma diretto, febbre, dolore toracico e dispnea. Esame obiettivo all'ingresso: Paziente vigile, orientata e collaborante. PA 122/76 mmHg, FC 74 bpm, FR 15 atti/min, SpO2 99% in aria ambiente, TC 36,5°C. Arto inferiore destro con gonfiore del polpaccio e dolorabilita' alla palpazione. Addome trattabile, non dolente. Esami di laboratorio: D-dimero 410 ng/mL, entro il range di normalita' del laboratorio. Eseguita ecografia compressiva venosa dell'arto inferiore destro: vene",
+    "agent1_seconds": 7.0,
+    "brighton_context": "",
+    "agent2_seconds": 18.0,
+    "answer_conflict": null,
+    "reasoning": "The evidence explicitly states that the compressive venous ultrasound of the right lower extremity showed compressible veins with \"no evidence of thrombosis\" (nessuna evidenza di trombosi). Furthermore, the specialist evaluation diagnosed a ruptured Baker's cyst and explicitly stated there was \"no involvement of the deep venous system\" (senza coinvolgimento del sistema venoso profondo). Therefore, Deep Vein Thrombosis (DVT) in the lower extremity is ruled out. There is no mention of upper extremity symptoms or imaging, so Upper Extremity DVT is not supported by the evidence. Since both options describe conditions that are either explicitly ruled out or not mentioned/supported, neither option applies.\n\nFINAL_OPTION: none\nFINAL_ANSWER: none",
+    "result": {
+      "types": []
+    }
+  },
+  "B2": {
+    "query": "calf pain, swelling, oedema, redness, warmth, absent pulses",
+    "evidence": "Anamnesi patologica remota: Donna di 52 anni. Nessun intervento chirurgico recente. Non allergie farmacologiche note. Anamnesi farmacologica: nessuna terapia cronica in atto. Anamnesi Prossima: Da 3 giorni dolore al polpaccio e gonfiore dell'arto inferiore destro, comparsi dopo un'attivita' fisica intensa. Nega trauma diretto, febbre, dolore toracico e dispnea. Esame obiettivo all'ingresso: Paziente vigile, orientata e collaborante. PA 122/76 mmHg, FC 74 bpm, FR 15 atti/min, SpO2 99% in aria ambiente, TC 36,5°C. Arto inferiore destro con gonfiore del polpaccio e dolorabilita' alla palpazione. Addome trattabile, non dolente. Esami di laboratorio: D-dimero 410 ng/mL, entro il range di normalita' del laboratorio. Eseguita ecografia compressiva venosa dell'arto inferiore destro: vene\n\nlaboratorio: D-dimero 410 ng/mL, entro il range di normalita' del laboratorio. Eseguita ecografia compressiva venosa dell'arto inferiore destro: vene comprimibili, nessuna evidenza di trombosi; nella regione poplitea e' stata visualizzata una raccolta liquida compatibile con cisti di Baker rotta. Valutazione specialistica: diagnosi di rottura di cisti di Baker, senza coinvolgimento del sistema venoso profondo.",
+    "agent1_seconds": 7.5,
+    "brighton_context": "",
+    "agent2_seconds": 21.6,
+    "answer_conflict": null,
+    "reasoning": "The evidence explicitly states that the patient presented with \"dolore al polpaccio\" (calf pain) and \"dolorabilita' alla palpazione\" (tenderness on palpation) of the right lower limb, which supports Option 1. Additionally, the text mentions \"gonfiore dell'arto inferiore destro\" (swelling of the right lower limb) and \"gonfiore del polpaccio\" (calf swelling), which supports Option 2. There is no mention of absent pulses (Option 3) or specific findings of redness/warmth distinct from the general inflammation/swelling already covered, nor are these explicitly negated, but typically in these validation tasks, we select options explicitly supported by positive findings. The text does not describe redness or warmth specifically, only swelling and pain/tenderness. Therefore, Options 1 and 2 are clearly present. Option 3 is not mentioned (unknown/absent). Option 4 is not explicitly described (redness/warmth are not mentioned, though pain is covered in Option 1).\n\nFINAL_OPTION: Calf pain or tenderness; Leg swelling or pitting oedema\nFINAL_ANSWER: 1; 2",
+    "result": {
+      "symptoms": [
+        "Calf pain or tenderness",
+        "Leg swelling or pitting oedema"
+      ]
+    }
+  },
+  "C": {
+    "query": "D-dimer value, test date, laboratory upper limit of normal",
+    "evidence": "laboratorio: D-dimero 410 ng/mL, entro il range di normalita' del laboratorio. Eseguita ecografia compressiva venosa dell'arto inferiore destro: vene comprimibili, nessuna evidenza di trombosi; nella regione poplitea e' stata visualizzata una raccolta liquida compatibile con cisti di Baker rotta. Valutazione specialistica: diagnosi di rottura di cisti di Baker, senza coinvolgimento del sistema venoso profondo.\n\nAnamnesi patologica remota: Donna di 52 anni. Nessun intervento chirurgico recente. Non allergie farmacologiche note. Anamnesi farmacologica: nessuna terapia cronica in atto. Anamnesi Prossima: Da 3 giorni dolore al polpaccio e gonfiore dell'arto inferiore destro, comparsi dopo un'attivita' fisica intensa. Nega trauma diretto, febbre, dolore toracico e dispnea. Esame obiettivo all'ingresso: Paziente vigile, orientata e collaborante. PA 122/76 mmHg, FC 74 bpm, FR 15 atti/min, SpO2 99% in aria ambiente, TC 36,5°C. Arto inferiore destro con gonfiore del polpaccio e dolorabilita' alla palpazione. Addome trattabile, non dolente. Esami di laboratorio: D-dimero 410 ng/mL, entro il range di normalita' del laboratorio. Eseguita ecografia compressiva venosa dell'arto inferiore destro: vene",
+    "agent1_seconds": 6.9,
+    "brighton_context": "",
+    "agent2_seconds": 15.7,
+    "answer_conflict": null,
+    "reasoning": "The evidence explicitly states \"D-dimero 410 ng/mL, entro il range di normalita' del laboratorio\" (D-dimer 410 ng/mL, within the laboratory's normal range). This confirms that the test was performed and the result was within the normal limits defined by the specific laboratory. Therefore, option 2 is the correct choice.\n\nFINAL_OPTION: D-dimer tested and was within test lab's range of normal\nFINAL_ANSWER: 2",
+    "result": {
+      "answer": "D-dimer tested and was within test lab's range of normal"
+    }
+  },
+  "F": {
+    "query": "diagnosis of deep vein thrombosis reported by specialist",
+    "evidence": "laboratorio: D-dimero 410 ng/mL, entro il range di normalita' del laboratorio. Eseguita ecografia compressiva venosa dell'arto inferiore destro: vene comprimibili, nessuna evidenza di trombosi; nella regione poplitea e' stata visualizzata una raccolta liquida compatibile con cisti di Baker rotta. Valutazione specialistica: diagnosi di rottura di cisti di Baker, senza coinvolgimento del sistema venoso profondo.\n\nAnamnesi patologica remota: Donna di 52 anni. Nessun intervento chirurgico recente. Non allergie farmacologiche note. Anamnesi farmacologica: nessuna terapia cronica in atto. Anamnesi Prossima: Da 3 giorni dolore al polpaccio e gonfiore dell'arto inferiore destro, comparsi dopo un'attivita' fisica intensa. Nega trauma diretto, febbre, dolore toracico e dispnea. Esame obiettivo all'ingresso: Paziente vigile, orientata e collaborante. PA 122/76 mmHg, FC 74 bpm, FR 15 atti/min, SpO2 99% in aria ambiente, TC 36,5°C. Arto inferiore destro con gonfiore del polpaccio e dolorabilita' alla palpazione. Addome trattabile, non dolente. Esami di laboratorio: D-dimero 410 ng/mL, entro il range di normalita' del laboratorio. Eseguita ecografia compressiva venosa dell'arto inferiore destro: vene",
+    "agent1_seconds": 6.8,
+    "brighton_context": "",
+    "agent2_seconds": 17.0,
+    "answer_conflict": null,
+    "reasoning": "DETAILS_PRESENT: yes\n\nThe evidence provides specific clinical findings, including a D-dimer value of 410 ng/mL and detailed results from a compressive venous ultrasound (compressible veins, no evidence of thrombosis, presence of a Baker's cyst rupture). Although the final diagnosis is not DVT but rather a ruptured Baker's cyst, the question asks if the report contains details. Since specific lab values and imaging findings are present, the report is not a \"bare conclusion.\" Therefore, the criterion for being reported \"without details\" is not met.\n\nFINAL_OPTION: No\nFINAL_ANSWER: 2",
+    "result": {
+      "answer": "No"
+    }
+  },
+  "X": {
+    "query": "possible alternative etiologies; clinical syndromes to be differentiated from thrombosis; conditions explaining calf pain, redness, warmth or ankle edema other than DVT",
+    "evidence": "Anamnesi patologica remota: Donna di 52 anni. Nessun intervento chirurgico recente. Non allergie farmacologiche note. Anamnesi farmacologica: nessuna terapia cronica in atto. Anamnesi Prossima: Da 3 giorni dolore al polpaccio e gonfiore dell'arto inferiore destro, comparsi dopo un'attivita' fisica intensa. Nega trauma diretto, febbre, dolore toracico e dispnea. Esame obiettivo all'ingresso: Paziente vigile, orientata e collaborante. PA 122/76 mmHg, FC 74 bpm, FR 15 atti/min, SpO2 99% in aria ambiente, TC 36,5°C. Arto inferiore destro con gonfiore del polpaccio e dolorabilita' alla palpazione. Addome trattabile, non dolente. Esami di laboratorio: D-dimero 410 ng/mL, entro il range di normalita' del laboratorio. Eseguita ecografia compressiva venosa dell'arto inferiore destro: vene\n\nlaboratorio: D-dimero 410 ng/mL, entro il range di normalita' del laboratorio. Eseguita ecografia compressiva venosa dell'arto inferiore destro: vene comprimibili, nessuna evidenza di trombosi; nella regione poplitea e' stata visualizzata una raccolta liquida compatibile con cisti di Baker rotta. Valutazione specialistica: diagnosi di rottura di cisti di Baker, senza coinvolgimento del sistema venoso profondo.",
+    "agent1_seconds": 7.5,
+    "brighton_context": "",
+    "agent2_seconds": 16.4,
+    "answer_conflict": null,
+    "reasoning": "The evidence explicitly states that a compressive venous ultrasound was performed and showed no evidence of thrombosis. Instead, it identified a fluid collection compatible with a ruptured Baker's cyst. The specialist evaluation confirmed the diagnosis as \"rupture of Baker's cyst, without involvement of the deep venous system.\" Therefore, an alternative diagnosis (ruptured Baker's cyst) was found that explained the patient's acute symptoms (calf pain and swelling), ruling out DVT.\n\nFINAL_OPTION: An alternative diagnosis was found that explained the acute illness\nFINAL_ANSWER: 1",
+    "result": {
+      "answer": "An alternative diagnosis was found that explained the acute illness"
+    }
+  },
+  "_run_config": {
+    "extractor_mode": "agentic_graph",
+    "section_gates_enabled": {
+      "keyword": true,
+      "details": false,
+      "absent_pulses": true
+    },
+    "brighton_context_enabled": false,
+    "section_hints_enabled": true,
+    "section_hints_disabled": [
+      "B2"
+    ],
+    "section_hints_fingerprint": {
+      "A1": "94 fc56153ea429",
+      "A2": "226 c42c3b188a45",
+      "A3_1": "277 c59144334788",
+      "A3_2": "143 023c43c73783",
+      "B1_1": "513 a65c3a0069c5",
+      "C": "342 7e8efb23dfc0",
+      "F": "1216 4d54ff2a7269",
+      "X": "260 e4ce4dddf649",
+      "all": "ab63b8e5f5af"
+    },
+    "cross_section_rules_applied": true,
+    "models": {
+      "extractor": "llama3.1:8b-instruct-q4_0",
+      "evaluator": "qwen3.6:27b",
+      "embeddings": "intfloat/multilingual-e5-small"
+    },
+    "environment": {
+      "hostname": "mari",
+      "ollama_version": "ollama version is 0.32.1"
+    },
+    "generation": {
+      "temperature": 0.0,
+      "num_predict": 1024,
+      "num_gpu": 999,
+      "reasoning": false
+    },
+    "retrieval": {
+      "ehr_chunk_size": 800,
+      "ehr_chunk_overlap": 150,
+      "ehr_retriever_k": 5,
+      "brighton_retriever_k": 5
+    }
+  }
+}

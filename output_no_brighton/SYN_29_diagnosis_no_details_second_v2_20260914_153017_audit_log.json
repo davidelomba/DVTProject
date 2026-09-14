@@ -1,0 +1,172 @@
+{
+  "A1": {
+    "query": "autopsy report, necropsy, post-mortem examination, autoptic findings",
+    "evidence": "Nota di trasferimento inter-ospedaliero. Paziente uomo di 49 anni, trasferito con diagnosi di trombosi venosa profonda dell'arto inferiore destro. Nessun intervento chirurgico recente. Non e' disponibile in questa sede alcun altro dettaglio clinico, esame obiettivo, esame di laboratorio o referto di imaging oltre alla diagnosi riferita nella nota di trasferimento.",
+    "agent1_seconds": 6.7,
+    "brighton_context": "",
+    "agent2_seconds": 17.4,
+    "answer_conflict": null,
+    "reasoning": "The evidence describes an inter-hospital transfer note for a living patient diagnosed with deep vein thrombosis (DVT) based on clinical referral. It explicitly states that no other clinical details, laboratory exams, or imaging reports are available at this location. Crucially, there is no mention of the patient's death, nor any mention of an autopsy being performed. Since the prompt specifies that only post-mortem findings count and the text provides no evidence of a post-mortem examination, we cannot conclude that an autopsy was done or what it showed. Therefore, the status of the autopsy is unknown/not done based on the provided text.\n\nFINAL_OPTION: No autopsy done, unknown if done, or done but results unavailable\nFINAL_ANSWER: 3",
+    "result": {
+      "answer": "No autopsy done, unknown if done, or done but results unavailable"
+    }
+  },
+  "A2": {
+    "query": "thrombectomy, surgical procedure related to DVT",
+    "evidence": "Nota di trasferimento inter-ospedaliero. Paziente uomo di 49 anni, trasferito con diagnosi di trombosi venosa profonda dell'arto inferiore destro. Nessun intervento chirurgico recente. Non e' disponibile in questa sede alcun altro dettaglio clinico, esame obiettivo, esame di laboratorio o referto di imaging oltre alla diagnosi riferita nella nota di trasferimento.",
+    "agent1_seconds": 6.9,
+    "brighton_context": "",
+    "agent2_seconds": 15.9,
+    "answer_conflict": null,
+    "reasoning": "The evidence explicitly states \"Nessun intervento chirurgico recente\" (No recent surgical intervention). According to the instructions, if a surgical procedure is explicitly negated or stated as absent, we must not select options indicating a procedure was performed. Therefore, despite the diagnosis of DVT being present in the transfer note, no surgical procedure was done to confirm it or treat it in this context.\n\nFINAL_OPTION: No surgical procedure done; or, done but either did not confirm presence of DVT or findings unknown; or unknown if done\nFINAL_ANSWER: 3",
+    "result": {
+      "answer": "No surgical procedure done; or, done but either did not confirm presence of DVT or findings unknown; or unknown if done"
+    }
+  },
+  "A3_1": {
+    "query": "ultrasound, CT, MRI, venography: imaging outcome for deep vein thrombosis",
+    "evidence": "Nota di trasferimento inter-ospedaliero. Paziente uomo di 49 anni, trasferito con diagnosi di trombosi venosa profonda dell'arto inferiore destro. Nessun intervento chirurgico recente. Non e' disponibile in questa sede alcun altro dettaglio clinico, esame obiettivo, esame di laboratorio o referto di imaging oltre alla diagnosi riferita nella nota di trasferimento.",
+    "agent1_seconds": 7.0,
+    "brighton_context": "",
+    "agent2_seconds": 17.8,
+    "answer_conflict": null,
+    "reasoning": "The evidence states that the patient was transferred with a diagnosis of deep vein thrombosis (DVT) of the right lower limb. However, it explicitly notes that \"no other clinical detail, physical examination, laboratory test, or imaging report is available at this location\" beyond the diagnosis referred to in the transfer note. Since no specific imaging study results are provided or mentioned as being performed and reported within this evidence, we cannot confirm that an imaging study was done and confirmed DVT based on the text provided. The absence of any mention of a specific imaging modality or its result means the status of imaging studies is unknown or not reported in this document.\n\nFINAL_OPTION: No imaging studies done, unknown if done, or done but results unknown\nFINAL_ANSWER: 3",
+    "result": {
+      "answer": "No imaging studies done, unknown if done, or done but results unknown"
+    }
+  },
+  "A3_2": {
+    "query": "type of imaging study performed: compression ultrasonography, doppler, venography",
+    "evidence": "Nota di trasferimento inter-ospedaliero. Paziente uomo di 49 anni, trasferito con diagnosi di trombosi venosa profonda dell'arto inferiore destro. Nessun intervento chirurgico recente. Non e' disponibile in questa sede alcun altro dettaglio clinico, esame obiettivo, esame di laboratorio o referto di imaging oltre alla diagnosi riferita nella nota di trasferimento.",
+    "agent1_seconds": 7.0,
+    "brighton_context": "",
+    "agent2_seconds": 17.7,
+    "answer_conflict": null,
+    "reasoning": "The evidence provided is an inter-hospital transfer note stating a diagnosis of deep vein thrombosis (DVT) of the right lower limb. However, it explicitly states that no clinical details, physical examination findings, laboratory results, or imaging reports are available at this location (\"Non e' disponibile in questa sede alcun altro dettaglio clinico... o referto di imaging\"). Therefore, there is no information regarding which specific imaging modality was used to confirm the diagnosis. Since the text does not mention compression ultrasonography, CT/MR venography, contrast venography, Doppler/Duplex ultrasound, or any other specific test, none of the specific options can be confirmed as having been performed based on this evidence.\n\nFINAL_OPTION: none\nFINAL_ANSWER: none",
+    "result": {
+      "studies": []
+    }
+  },
+  "B1_1": {
+    "query": "reported symptoms or signs of deep vein thrombosis",
+    "evidence": "Nota di trasferimento inter-ospedaliero. Paziente uomo di 49 anni, trasferito con diagnosi di trombosi venosa profonda dell'arto inferiore destro. Nessun intervento chirurgico recente. Non e' disponibile in questa sede alcun altro dettaglio clinico, esame obiettivo, esame di laboratorio o referto di imaging oltre alla diagnosi riferita nella nota di trasferimento.",
+    "agent1_seconds": 6.9,
+    "brighton_context": "",
+    "agent2_seconds": 17.7,
+    "answer_conflict": null,
+    "reasoning": "The evidence explicitly states that \"Non e' disponibile in questa sede alcun altro dettaglio clinico, esame obiettivo... oltre alla diagnosi riferita\" (No other clinical detail, physical examination... is available here beyond the diagnosis referred to). This means the document does not contain any report of specific symptoms or signs (such as swelling or pain), nor does it explicitly state that these symptoms were absent. According to the instructions, when the record leaves you not knowing whether the patient had them because it is silent on the matter or states no such section exists, the correct classification is \"It is unknown\". The absence of a report of symptoms is not a report of their absence.\n\nFINAL_OPTION: It is unknown if there was a report of a DVT syndrome\nFINAL_ANSWER: 3",
+    "result": {
+      "answer": "It is unknown if there was a report of a DVT syndrome"
+    }
+  },
+  "B1_2": {
+    "query": "deep vein thrombosis lower extremity or upper extremity",
+    "evidence": "Nota di trasferimento inter-ospedaliero. Paziente uomo di 49 anni, trasferito con diagnosi di trombosi venosa profonda dell'arto inferiore destro. Nessun intervento chirurgico recente. Non e' disponibile in questa sede alcun altro dettaglio clinico, esame obiettivo, esame di laboratorio o referto di imaging oltre alla diagnosi riferita nella nota di trasferimento.",
+    "agent1_seconds": 6.9,
+    "brighton_context": "",
+    "agent2_seconds": 15.0,
+    "answer_conflict": null,
+    "reasoning": "The evidence explicitly states that the patient was transferred with a diagnosis of \"trombosi venosa profonda dell'arto inferiore destro\" (deep vein thrombosis of the right lower limb). This directly corresponds to Lower extremity DVT. There is no mention of upper extremity involvement, and the specific location (right lower limb) confirms option 1 while excluding option 2.\n\nFINAL_OPTION: Lower extremity DVT\nFINAL_ANSWER: 1",
+    "result": {
+      "types": [
+        "Lower extremity DVT"
+      ]
+    }
+  },
+  "B2": {
+    "query": "calf pain, swelling, oedema, redness, warmth, absent pulses",
+    "evidence": "Nota di trasferimento inter-ospedaliero. Paziente uomo di 49 anni, trasferito con diagnosi di trombosi venosa profonda dell'arto inferiore destro. Nessun intervento chirurgico recente. Non e' disponibile in questa sede alcun altro dettaglio clinico, esame obiettivo, esame di laboratorio o referto di imaging oltre alla diagnosi riferita nella nota di trasferimento.",
+    "agent1_seconds": 7.0,
+    "brighton_context": "",
+    "agent2_seconds": 18.5,
+    "answer_conflict": null,
+    "reasoning": "The evidence provided is a hospital transfer note stating the patient has a diagnosis of deep vein thrombosis (DVT) of the right lower limb. However, the text explicitly states that \"No other clinical detail, physical examination, laboratory test, or imaging report is available at this location beyond the diagnosis referred to in the transfer note.\" Consequently, there is no information regarding specific symptoms such as calf pain, leg swelling, absent pulses, or redness/warmth. Since these findings are not mentioned and the text explicitly denies the availability of physical exam details, it is unknown if any of these specific signs were present. Therefore, none of the specific symptom options (1-4) can be confirmed as present based on the provided evidence.\n\nFINAL_OPTION: None of the above were present or it is unknown if any of 1-4 were present\nFINAL_ANSWER: 5",
+    "result": {
+      "symptoms": [
+        "None of the above were present or it is unknown if any of 1-4 were present"
+      ]
+    }
+  },
+  "C": {
+    "query": "D-dimer value, test date, laboratory upper limit of normal",
+    "evidence": "Nota di trasferimento inter-ospedaliero. Paziente uomo di 49 anni, trasferito con diagnosi di trombosi venosa profonda dell'arto inferiore destro. Nessun intervento chirurgico recente. Non e' disponibile in questa sede alcun altro dettaglio clinico, esame obiettivo, esame di laboratorio o referto di imaging oltre alla diagnosi riferita nella nota di trasferimento.",
+    "agent1_seconds": 6.7,
+    "brighton_context": "",
+    "agent2_seconds": 17.2,
+    "answer_conflict": null,
+    "reasoning": "The provided evidence is an inter-hospital transfer note for a 49-year-old male diagnosed with deep vein thrombosis (DVT) of the right lower limb. The text explicitly states that no other clinical details, physical examination findings, laboratory tests, or imaging reports are available at this location beyond the referred diagnosis. Since there is no mention of a D-dimer test being performed or any results provided, and the instructions specify that if the test is never mentioned the answer is 'not tested', we must conclude that the D-dimer status is unknown/not tested based on this specific document.\n\nFINAL_OPTION: D-dimer not tested, or tested but results unknown or not available\nFINAL_ANSWER: 3",
+    "result": {
+      "answer": "D-dimer not tested, or tested but results unknown or not available"
+    }
+  },
+  "F": {
+    "query": "diagnosis of deep vein thrombosis reported by specialist",
+    "evidence": "Nota di trasferimento inter-ospedaliero. Paziente uomo di 49 anni, trasferito con diagnosi di trombosi venosa profonda dell'arto inferiore destro. Nessun intervento chirurgico recente. Non e' disponibile in questa sede alcun altro dettaglio clinico, esame obiettivo, esame di laboratorio o referto di imaging oltre alla diagnosi riferita nella nota di trasferimento.",
+    "agent1_seconds": 6.9,
+    "brighton_context": "",
+    "agent2_seconds": 16.5,
+    "answer_conflict": null,
+    "reasoning": "DETAILS_PRESENT: no\n\nThe evidence states that the patient was transferred with a diagnosis of deep vein thrombosis (DVT) of the right lower limb. However, it explicitly notes that \"no other clinical detail, physical examination, laboratory test, or imaging report is available at this location beyond the diagnosis referred to in the transfer note.\" Since there are no specific supporting findings (such as ultrasound results, D-dimer levels, or specific symptom descriptions) provided in the text, the diagnosis is reported as a bare conclusion without details.\n\nFINAL_OPTION: Yes\nFINAL_ANSWER: 1",
+    "result": {
+      "answer": "Yes"
+    }
+  },
+  "X": {
+    "query": "possible alternative etiologies; clinical syndromes to be differentiated from thrombosis; conditions explaining calf pain, redness, warmth or ankle edema other than DVT",
+    "evidence": "Nota di trasferimento inter-ospedaliero. Paziente uomo di 49 anni, trasferito con diagnosi di trombosi venosa profonda dell'arto inferiore destro. Nessun intervento chirurgico recente. Non e' disponibile in questa sede alcun altro dettaglio clinico, esame obiettivo, esame di laboratorio o referto di imaging oltre alla diagnosi riferita nella nota di trasferimento.",
+    "agent1_seconds": 7.1,
+    "brighton_context": "",
+    "agent2_seconds": 16.0,
+    "answer_conflict": null,
+    "reasoning": "The evidence explicitly states that the patient was transferred with a diagnosis of deep vein thrombosis (DVT) of the right lower limb. It further clarifies that no other clinical details, objective exams, lab results, or imaging reports are available at this location beyond the referred diagnosis. There is no mention of any other disease being identified as the cause of the illness or serving as an alternative explanation. Therefore, based on the provided text, no alternative diagnosis was found.\n\nFINAL_OPTION: No alternative diagnosis was found to explain the acute illness\nFINAL_ANSWER: 2",
+    "result": {
+      "answer": "No alternative diagnosis was found to explain the acute illness"
+    }
+  },
+  "_run_config": {
+    "extractor_mode": "agentic_graph",
+    "section_gates_enabled": {
+      "keyword": true,
+      "details": false,
+      "absent_pulses": true
+    },
+    "brighton_context_enabled": false,
+    "section_hints_enabled": true,
+    "section_hints_disabled": [
+      "B2"
+    ],
+    "section_hints_fingerprint": {
+      "A1": "94 fc56153ea429",
+      "A2": "226 c42c3b188a45",
+      "A3_1": "277 c59144334788",
+      "A3_2": "143 023c43c73783",
+      "B1_1": "513 a65c3a0069c5",
+      "C": "342 7e8efb23dfc0",
+      "F": "1216 4d54ff2a7269",
+      "X": "260 e4ce4dddf649",
+      "all": "ab63b8e5f5af"
+    },
+    "cross_section_rules_applied": true,
+    "models": {
+      "extractor": "llama3.1:8b-instruct-q4_0",
+      "evaluator": "qwen3.6:27b",
+      "embeddings": "intfloat/multilingual-e5-small"
+    },
+    "environment": {
+      "hostname": "mari",
+      "ollama_version": "ollama version is 0.32.1"
+    },
+    "generation": {
+      "temperature": 0.0,
+      "num_predict": 1024,
+      "num_gpu": 999,
+      "reasoning": false
+    },
+    "retrieval": {
+      "ehr_chunk_size": 800,
+      "ehr_chunk_overlap": 150,
+      "ehr_retriever_k": 5,
+      "brighton_retriever_k": 5
+    }
+  }
+}

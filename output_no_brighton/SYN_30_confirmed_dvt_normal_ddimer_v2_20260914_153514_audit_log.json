@@ -1,0 +1,175 @@
+{
+  "A1": {
+    "query": "autopsy report, necropsy, post-mortem examination, autoptic findings",
+    "evidence": "su tutto l'ambito polmonare. Esami di laboratorio: D-dimero 380 ng/mL, entro il range di normalita' del laboratorio. Eseguito ecocolordoppler venoso dell'arto inferiore destro: trombosi venosa a carico della vena poplitea destra, con flusso assente nel segmento trombizzato.\n\nAnamnesi patologica remota: Uomo di 61 anni. Nessun intervento chirurgico recente. Non allergie farmacologiche note. Anamnesi farmacologica: omeprazolo 20 mg al bisogno. Anamnesi Prossima: Da 5 giorni dolore al polpaccio destro con edema dell'arto inferiore omolaterale. Nega trauma, febbre, dolore toracico, dispnea ed emottisi. Esame obiettivo all'ingresso: Paziente vigile, orientato e collaborante, eupnoico a riposo. PA 130/80 mmHg, FC 76 bpm, FR 16 atti/min, SpO2 98% in aria ambiente, TC 36,7°C. Arto inferiore destro con edema del polpaccio e dolorabilita' alla palpazione. Toni cardiaci validi e ritmici, murmure vescicolare presente su tutto l'ambito polmonare. Esami di laboratorio: D-dimero 380 ng/mL, entro il range di normalita' del laboratorio. Eseguito ecocolordoppler venoso",
+    "agent1_seconds": 7.1,
+    "brighton_context": "",
+    "agent2_seconds": 16.8,
+    "answer_conflict": null,
+    "reasoning": "The evidence describes a living patient undergoing clinical evaluation, including physical examination and laboratory tests. The diagnosis of deep vein thrombosis (DVT) was confirmed via venous color Doppler ultrasound (\"ecocolordoppler venoso\") performed on the right lower limb while the patient was alive. An autopsy is a post-mortem procedure. Since the patient is described as being examined and treated while alive, and there is no mention of death or a post-mortem examination, an autopsy was not performed. Therefore, we cannot determine autopsy findings.\n\nFINAL_OPTION: No autopsy done, unknown if done, or done but results unavailable\nFINAL_ANSWER: 3",
+    "result": {
+      "answer": "No autopsy done, unknown if done, or done but results unavailable"
+    }
+  },
+  "A2": {
+    "query": "thrombectomy, surgical procedure related to DVT",
+    "evidence": "su tutto l'ambito polmonare. Esami di laboratorio: D-dimero 380 ng/mL, entro il range di normalita' del laboratorio. Eseguito ecocolordoppler venoso dell'arto inferiore destro: trombosi venosa a carico della vena poplitea destra, con flusso assente nel segmento trombizzato.\n\nAnamnesi patologica remota: Uomo di 61 anni. Nessun intervento chirurgico recente. Non allergie farmacologiche note. Anamnesi farmacologica: omeprazolo 20 mg al bisogno. Anamnesi Prossima: Da 5 giorni dolore al polpaccio destro con edema dell'arto inferiore omolaterale. Nega trauma, febbre, dolore toracico, dispnea ed emottisi. Esame obiettivo all'ingresso: Paziente vigile, orientato e collaborante, eupnoico a riposo. PA 130/80 mmHg, FC 76 bpm, FR 16 atti/min, SpO2 98% in aria ambiente, TC 36,7°C. Arto inferiore destro con edema del polpaccio e dolorabilita' alla palpazione. Toni cardiaci validi e ritmici, murmure vescicolare presente su tutto l'ambito polmonare. Esami di laboratorio: D-dimero 380 ng/mL, entro il range di normalita' del laboratorio. Eseguito ecocolordoppler venoso",
+    "agent1_seconds": 7.2,
+    "brighton_context": "",
+    "agent2_seconds": 59.4,
+    "answer_conflict": null,
+    "reasoning": "The evidence explicitly states that a venous color Doppler ultrasound (\"ecocolordoppler venoso\") was performed and confirmed the presence of a thrombosis in the right popliteal vein. The text also notes \"Nessun intervento chirurgico recente\" (No recent surgical intervention) in the remote history and does not mention any therapeutic surgical procedures like thrombectomy being performed during this admission. Since an ultrasound is a diagnostic procedure that confirmed the DVT, it fits the description of \"Other procedure done that confirmed presence of DVT\" (Option 2), distinct from a surgical thrombectomy (Option 1) or no procedure/unknown status (Option 3).\n\nFINAL_OPTION: Other procedure done that confirmed presence of DVT\nFINAL_ANSWER: 2",
+    "result": {
+      "answer": "Other procedure done that confirmed presence of DVT"
+    }
+  },
+  "A3_1": {
+    "query": "ultrasound, CT, MRI, venography: imaging outcome for deep vein thrombosis",
+    "evidence": "su tutto l'ambito polmonare. Esami di laboratorio: D-dimero 380 ng/mL, entro il range di normalita' del laboratorio. Eseguito ecocolordoppler venoso dell'arto inferiore destro: trombosi venosa a carico della vena poplitea destra, con flusso assente nel segmento trombizzato.\n\nAnamnesi patologica remota: Uomo di 61 anni. Nessun intervento chirurgico recente. Non allergie farmacologiche note. Anamnesi farmacologica: omeprazolo 20 mg al bisogno. Anamnesi Prossima: Da 5 giorni dolore al polpaccio destro con edema dell'arto inferiore omolaterale. Nega trauma, febbre, dolore toracico, dispnea ed emottisi. Esame obiettivo all'ingresso: Paziente vigile, orientato e collaborante, eupnoico a riposo. PA 130/80 mmHg, FC 76 bpm, FR 16 atti/min, SpO2 98% in aria ambiente, TC 36,7°C. Arto inferiore destro con edema del polpaccio e dolorabilita' alla palpazione. Toni cardiaci validi e ritmici, murmure vescicolare presente su tutto l'ambito polmonare. Esami di laboratorio: D-dimero 380 ng/mL, entro il range di normalita' del laboratorio. Eseguito ecocolordoppler venoso",
+    "agent1_seconds": 7.3,
+    "brighton_context": "",
+    "agent2_seconds": 16.0,
+    "answer_conflict": null,
+    "reasoning": "The evidence explicitly states that a venous color Doppler ultrasound (\"ecocolordoppler venoso\") was performed on the right lower limb. The results of this imaging study showed \"trombosi venosa a carico della vena poplitea destra\" (venous thrombosis involving the right popliteal vein). Since an imaging study was performed and it confirmed the presence of DVT, Option 1 is the correct choice.\n\nFINAL_OPTION: ≥1 imaging study was done and confirmed DVT\nFINAL_ANSWER: 1",
+    "result": {
+      "answer": "≥1 imaging study was done and confirmed DVT"
+    }
+  },
+  "A3_2": {
+    "query": "type of imaging study performed: compression ultrasonography, doppler, venography",
+    "evidence": "su tutto l'ambito polmonare. Esami di laboratorio: D-dimero 380 ng/mL, entro il range di normalita' del laboratorio. Eseguito ecocolordoppler venoso dell'arto inferiore destro: trombosi venosa a carico della vena poplitea destra, con flusso assente nel segmento trombizzato.\n\nAnamnesi patologica remota: Uomo di 61 anni. Nessun intervento chirurgico recente. Non allergie farmacologiche note. Anamnesi farmacologica: omeprazolo 20 mg al bisogno. Anamnesi Prossima: Da 5 giorni dolore al polpaccio destro con edema dell'arto inferiore omolaterale. Nega trauma, febbre, dolore toracico, dispnea ed emottisi. Esame obiettivo all'ingresso: Paziente vigile, orientato e collaborante, eupnoico a riposo. PA 130/80 mmHg, FC 76 bpm, FR 16 atti/min, SpO2 98% in aria ambiente, TC 36,7°C. Arto inferiore destro con edema del polpaccio e dolorabilita' alla palpazione. Toni cardiaci validi e ritmici, murmure vescicolare presente su tutto l'ambito polmonare. Esami di laboratorio: D-dimero 380 ng/mL, entro il range di normalita' del laboratorio. Eseguito ecocolordoppler venoso",
+    "agent1_seconds": 7.0,
+    "brighton_context": "",
+    "agent2_seconds": 16.4,
+    "answer_conflict": null,
+    "reasoning": "The evidence explicitly states \"Eseguito ecocolordoppler venoso dell'arto inferiore destro\" (Venous color Doppler ultrasound of the right lower limb was performed). This modality corresponds to Doppler/Duplex Ultrasound. The text does not mention compression ultrasonography as a distinct separate test, nor does it mention CT/MR venography or contrast venography. Therefore, only option 4 is supported by the evidence.\n\nFINAL_OPTION: Doppler/Duplex Ultrasound\nFINAL_ANSWER: 4",
+    "result": {
+      "studies": [
+        "Doppler/Duplex Ultrasound"
+      ]
+    }
+  },
+  "B1_1": {
+    "query": "reported symptoms or signs of deep vein thrombosis",
+    "evidence": "su tutto l'ambito polmonare. Esami di laboratorio: D-dimero 380 ng/mL, entro il range di normalita' del laboratorio. Eseguito ecocolordoppler venoso dell'arto inferiore destro: trombosi venosa a carico della vena poplitea destra, con flusso assente nel segmento trombizzato.\n\nAnamnesi patologica remota: Uomo di 61 anni. Nessun intervento chirurgico recente. Non allergie farmacologiche note. Anamnesi farmacologica: omeprazolo 20 mg al bisogno. Anamnesi Prossima: Da 5 giorni dolore al polpaccio destro con edema dell'arto inferiore omolaterale. Nega trauma, febbre, dolore toracico, dispnea ed emottisi. Esame obiettivo all'ingresso: Paziente vigile, orientato e collaborante, eupnoico a riposo. PA 130/80 mmHg, FC 76 bpm, FR 16 atti/min, SpO2 98% in aria ambiente, TC 36,7°C. Arto inferiore destro con edema del polpaccio e dolorabilita' alla palpazione. Toni cardiaci validi e ritmici, murmure vescicolare presente su tutto l'ambito polmonare. Esami di laboratorio: D-dimero 380 ng/mL, entro il range di normalita' del laboratorio. Eseguito ecocolordoppler venoso",
+    "agent1_seconds": 7.2,
+    "brighton_context": "",
+    "agent2_seconds": 16.8,
+    "answer_conflict": null,
+    "reasoning": "The evidence explicitly reports symptoms and signs consistent with DVT in the \"Anamnesi Prossima\" (Recent History) and \"Esame obiettivo\" (Physical Exam) sections. Specifically, it mentions \"dolore al polpaccio destro\" (right calf pain), \"edema dell'arto inferiore omolaterale\" (edema of the ipsilateral lower limb), and \"dolorabilita' alla palpazione\" (pain on palpation). Therefore, there is a clear report of recognized DVT symptoms/signs.\n\nFINAL_OPTION: ≥1 symptom or sign of DVT was reported\nFINAL_ANSWER: 1",
+    "result": {
+      "answer": "≥1 symptom or sign of DVT was reported"
+    }
+  },
+  "B1_2": {
+    "query": "deep vein thrombosis lower extremity or upper extremity",
+    "evidence": "su tutto l'ambito polmonare. Esami di laboratorio: D-dimero 380 ng/mL, entro il range di normalita' del laboratorio. Eseguito ecocolordoppler venoso dell'arto inferiore destro: trombosi venosa a carico della vena poplitea destra, con flusso assente nel segmento trombizzato.\n\nAnamnesi patologica remota: Uomo di 61 anni. Nessun intervento chirurgico recente. Non allergie farmacologiche note. Anamnesi farmacologica: omeprazolo 20 mg al bisogno. Anamnesi Prossima: Da 5 giorni dolore al polpaccio destro con edema dell'arto inferiore omolaterale. Nega trauma, febbre, dolore toracico, dispnea ed emottisi. Esame obiettivo all'ingresso: Paziente vigile, orientato e collaborante, eupnoico a riposo. PA 130/80 mmHg, FC 76 bpm, FR 16 atti/min, SpO2 98% in aria ambiente, TC 36,7°C. Arto inferiore destro con edema del polpaccio e dolorabilita' alla palpazione. Toni cardiaci validi e ritmici, murmure vescicolare presente su tutto l'ambito polmonare. Esami di laboratorio: D-dimero 380 ng/mL, entro il range di normalita' del laboratorio. Eseguito ecocolordoppler venoso",
+    "agent1_seconds": 7.5,
+    "brighton_context": "",
+    "agent2_seconds": 16.6,
+    "answer_conflict": null,
+    "reasoning": "The evidence explicitly states that a venous color Doppler ultrasound of the right lower limb was performed (\"Eseguito ecocolordoppler venoso dell'arto inferiore destro\") and confirmed a thrombosis in the right popliteal vein (\"trombosi venosa a carico della vena poplitea destra\"). The popliteal vein is located in the lower extremity. There is no mention of thrombosis in the upper extremities. Therefore, the diagnosis is Lower extremity DVT.\n\nFINAL_OPTION: Lower extremity DVT\nFINAL_ANSWER: 1",
+    "result": {
+      "types": [
+        "Lower extremity DVT"
+      ]
+    }
+  },
+  "B2": {
+    "query": "calf pain, swelling, oedema, redness, warmth, absent pulses",
+    "evidence": "Anamnesi patologica remota: Uomo di 61 anni. Nessun intervento chirurgico recente. Non allergie farmacologiche note. Anamnesi farmacologica: omeprazolo 20 mg al bisogno. Anamnesi Prossima: Da 5 giorni dolore al polpaccio destro con edema dell'arto inferiore omolaterale. Nega trauma, febbre, dolore toracico, dispnea ed emottisi. Esame obiettivo all'ingresso: Paziente vigile, orientato e collaborante, eupnoico a riposo. PA 130/80 mmHg, FC 76 bpm, FR 16 atti/min, SpO2 98% in aria ambiente, TC 36,7°C. Arto inferiore destro con edema del polpaccio e dolorabilita' alla palpazione. Toni cardiaci validi e ritmici, murmure vescicolare presente su tutto l'ambito polmonare. Esami di laboratorio: D-dimero 380 ng/mL, entro il range di normalita' del laboratorio. Eseguito ecocolordoppler venoso\n\nsu tutto l'ambito polmonare. Esami di laboratorio: D-dimero 380 ng/mL, entro il range di normalita' del laboratorio. Eseguito ecocolordoppler venoso dell'arto inferiore destro: trombosi venosa a carico della vena poplitea destra, con flusso assente nel segmento trombizzato.",
+    "agent1_seconds": 7.4,
+    "brighton_context": "",
+    "agent2_seconds": 24.9,
+    "answer_conflict": null,
+    "reasoning": "The patient presents with \"dolore al polpaccio destro\" (right calf pain) and \"dolorabilita' alla palpazione\" (tenderness on palpation), which directly supports Option 1 (Calf pain or tenderness). Additionally, the evidence notes \"edema dell'arto inferiore omolaterale\" (edema of the ipsilateral lower limb) and \"edema del polpaccio\" (calf edema), which supports Option 2 (Leg swelling or pitting oedema). The text explicitly negates trauma, fever, chest pain, dyspnea, and hemoptysis, but does not mention absent pulses (Option 3) or redness/warmth (Option 4). Since the prompt asks to determine the correct answer based on evidence and only include options supported by explicit discussion, Options 1 and 2 are confirmed present. Options 3 and 4 are not mentioned as present, nor are they explicitly negated in a way that rules them out entirely for Option 5 (which requires *none* of 1-4 to be present). However, looking at the structure, usually these questions ask which clinical criteria are met. Let's re-read carefully. The question asks to determine the correct answer. It lists specific symptoms. Options 1 and 2 are clearly present. Option 5 says \"None of the above were present\". Since 1 and 2 are present, 5 is false. Options 3 and 4 are not supported by evidence. Therefore, only 1 and 2 apply.\n\nFINAL_OPTION: Calf pain or tenderness; Leg swelling or pitting oedema\nFINAL_ANSWER: 1; 2",
+    "result": {
+      "symptoms": [
+        "Calf pain or tenderness",
+        "Leg swelling or pitting oedema"
+      ]
+    }
+  },
+  "C": {
+    "query": "D-dimer value, test date, laboratory upper limit of normal",
+    "evidence": "su tutto l'ambito polmonare. Esami di laboratorio: D-dimero 380 ng/mL, entro il range di normalita' del laboratorio. Eseguito ecocolordoppler venoso dell'arto inferiore destro: trombosi venosa a carico della vena poplitea destra, con flusso assente nel segmento trombizzato.\n\nAnamnesi patologica remota: Uomo di 61 anni. Nessun intervento chirurgico recente. Non allergie farmacologiche note. Anamnesi farmacologica: omeprazolo 20 mg al bisogno. Anamnesi Prossima: Da 5 giorni dolore al polpaccio destro con edema dell'arto inferiore omolaterale. Nega trauma, febbre, dolore toracico, dispnea ed emottisi. Esame obiettivo all'ingresso: Paziente vigile, orientato e collaborante, eupnoico a riposo. PA 130/80 mmHg, FC 76 bpm, FR 16 atti/min, SpO2 98% in aria ambiente, TC 36,7°C. Arto inferiore destro con edema del polpaccio e dolorabilita' alla palpazione. Toni cardiaci validi e ritmici, murmure vescicolare presente su tutto l'ambito polmonare. Esami di laboratorio: D-dimero 380 ng/mL, entro il range di normalita' del laboratorio. Eseguito ecocolordoppler venoso",
+    "agent1_seconds": 7.4,
+    "brighton_context": "",
+    "agent2_seconds": 16.0,
+    "answer_conflict": null,
+    "reasoning": "The evidence explicitly states \"D-dimero 380 ng/mL, entro il range di normalita' del laboratorio\" (D-dimer 380 ng/mL, within the laboratory's normal range). This confirms that the test was performed and the result was within the normal limits defined by the lab. Therefore, option 2 is the correct choice.\n\nFINAL_OPTION: D-dimer tested and was within test lab's range of normal\nFINAL_ANSWER: 2",
+    "result": {
+      "answer": "D-dimer tested and was within test lab's range of normal"
+    }
+  },
+  "F": {
+    "query": "diagnosis of deep vein thrombosis reported by specialist",
+    "evidence": "su tutto l'ambito polmonare. Esami di laboratorio: D-dimero 380 ng/mL, entro il range di normalita' del laboratorio. Eseguito ecocolordoppler venoso dell'arto inferiore destro: trombosi venosa a carico della vena poplitea destra, con flusso assente nel segmento trombizzato.\n\nAnamnesi patologica remota: Uomo di 61 anni. Nessun intervento chirurgico recente. Non allergie farmacologiche note. Anamnesi farmacologica: omeprazolo 20 mg al bisogno. Anamnesi Prossima: Da 5 giorni dolore al polpaccio destro con edema dell'arto inferiore omolaterale. Nega trauma, febbre, dolore toracico, dispnea ed emottisi. Esame obiettivo all'ingresso: Paziente vigile, orientato e collaborante, eupnoico a riposo. PA 130/80 mmHg, FC 76 bpm, FR 16 atti/min, SpO2 98% in aria ambiente, TC 36,7°C. Arto inferiore destro con edema del polpaccio e dolorabilita' alla palpazione. Toni cardiaci validi e ritmici, murmure vescicolare presente su tutto l'ambito polmonare. Esami di laboratorio: D-dimero 380 ng/mL, entro il range di normalita' del laboratorio. Eseguito ecocolordoppler venoso",
+    "agent1_seconds": 7.5,
+    "brighton_context": "",
+    "agent2_seconds": 17.5,
+    "answer_conflict": null,
+    "reasoning": "DETAILS_PRESENT: yes\nThe evidence explicitly describes specific clinical findings supporting the diagnosis of Deep Vein Thrombosis (DVT). It details the results of a venous color Doppler ultrasound (\"ecocolordoppler venoso\") showing \"thrombosis involving the right popliteal vein\" with \"absent flow in the thrombosed segment.\" Additionally, it provides specific laboratory values (D-dimer 380 ng/mL) and physical examination findings (edema, pain on palpation). Since these are specific supporting details rather than a bare conclusion, the diagnosis was not reported without details.\n\nFINAL_OPTION: No\nFINAL_ANSWER: 2",
+    "result": {
+      "answer": "No"
+    }
+  },
+  "X": {
+    "query": "possible alternative etiologies; clinical syndromes to be differentiated from thrombosis; conditions explaining calf pain, redness, warmth or ankle edema other than DVT",
+    "evidence": "su tutto l'ambito polmonare. Esami di laboratorio: D-dimero 380 ng/mL, entro il range di normalita' del laboratorio. Eseguito ecocolordoppler venoso dell'arto inferiore destro: trombosi venosa a carico della vena poplitea destra, con flusso assente nel segmento trombizzato.\n\nAnamnesi patologica remota: Uomo di 61 anni. Nessun intervento chirurgico recente. Non allergie farmacologiche note. Anamnesi farmacologica: omeprazolo 20 mg al bisogno. Anamnesi Prossima: Da 5 giorni dolore al polpaccio destro con edema dell'arto inferiore omolaterale. Nega trauma, febbre, dolore toracico, dispnea ed emottisi. Esame obiettivo all'ingresso: Paziente vigile, orientato e collaborante, eupnoico a riposo. PA 130/80 mmHg, FC 76 bpm, FR 16 atti/min, SpO2 98% in aria ambiente, TC 36,7°C. Arto inferiore destro con edema del polpaccio e dolorabilita' alla palpazione. Toni cardiaci validi e ritmici, murmure vescicolare presente su tutto l'ambito polmonare. Esami di laboratorio: D-dimero 380 ng/mL, entro il range di normalita' del laboratorio. Eseguito ecocolordoppler venoso",
+    "agent1_seconds": 7.1,
+    "brighton_context": "",
+    "agent2_seconds": 17.6,
+    "answer_conflict": null,
+    "reasoning": "The evidence describes a patient presenting with right calf pain and edema, which are symptoms consistent with Deep Vein Thrombosis (DVT). The diagnostic workup included a venous color Doppler ultrasound of the right lower limb, which explicitly confirmed \"venous thrombosis involving the right popliteal vein.\" No other disease process is identified or proposed as the cause of these symptoms. The negative D-dimer and absence of pulmonary symptoms (chest pain, dyspnea) further support that the acute illness is explained by the confirmed DVT rather than an alternative diagnosis such as Pulmonary Embolism or cellulitis. Therefore, no alternative diagnosis was found.\n\nFINAL_OPTION: No alternative diagnosis was found to explain the acute illness\nFINAL_ANSWER: 2",
+    "result": {
+      "answer": "No alternative diagnosis was found to explain the acute illness"
+    }
+  },
+  "_run_config": {
+    "extractor_mode": "agentic_graph",
+    "section_gates_enabled": {
+      "keyword": true,
+      "details": false,
+      "absent_pulses": true
+    },
+    "brighton_context_enabled": false,
+    "section_hints_enabled": true,
+    "section_hints_disabled": [
+      "B2"
+    ],
+    "section_hints_fingerprint": {
+      "A1": "94 fc56153ea429",
+      "A2": "226 c42c3b188a45",
+      "A3_1": "277 c59144334788",
+      "A3_2": "143 023c43c73783",
+      "B1_1": "513 a65c3a0069c5",
+      "C": "342 7e8efb23dfc0",
+      "F": "1216 4d54ff2a7269",
+      "X": "260 e4ce4dddf649",
+      "all": "ab63b8e5f5af"
+    },
+    "cross_section_rules_applied": true,
+    "models": {
+      "extractor": "llama3.1:8b-instruct-q4_0",
+      "evaluator": "qwen3.6:27b",
+      "embeddings": "intfloat/multilingual-e5-small"
+    },
+    "environment": {
+      "hostname": "mari",
+      "ollama_version": "ollama version is 0.32.1"
+    },
+    "generation": {
+      "temperature": 0.0,
+      "num_predict": 1024,
+      "num_gpu": 999,
+      "reasoning": false
+    },
+    "retrieval": {
+      "ehr_chunk_size": 800,
+      "ehr_chunk_overlap": 150,
+      "ehr_retriever_k": 5,
+      "brighton_retriever_k": 5
+    }
+  }
+}

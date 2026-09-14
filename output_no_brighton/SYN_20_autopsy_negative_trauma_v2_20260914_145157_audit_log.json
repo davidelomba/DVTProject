@@ -1,0 +1,170 @@
+{
+  "A1": {
+    "query": "autopsy report, necropsy, post-mortem examination, autoptic findings",
+    "evidence": "Anamnesi patologica remota: Uomo di 45 anni, deceduto in seguito a politrauma da incidente stradale. Nessun intervento chirurgico correlato a trombosi venosa profonda eseguito. Anamnesi non ulteriormente ricostruibile. Anamnesi Prossima: Quadro dominato dalle lesioni traumatiche riportate nell'incidente. Nel corso dell'assistenza non e' stato rilevato alcun sintomo di gonfiore, dolore, arrossamento o calore agli arti. Esame obiettivo all'ingresso: Rilevate lesioni traumatiche multiple. All'ispezione degli arti non sono stati constatati edema, arrossamento o alterazioni del colorito cutaneo. Esami di laboratorio: Nessun esame di imaging venoso ne' dosaggio del D-dimero eseguiti in vita. Riscontro autoptico: esame del sistema venoso profondo degli arti negativo, senza alcuna evidenza di\n\nne' dosaggio del D-dimero eseguiti in vita. Riscontro autoptico: esame del sistema venoso profondo degli arti negativo, senza alcuna evidenza di trombosi venosa profonda. Causa del decesso: emorragia interna massiva da trauma, non correlata a fenomeni tromboembolici venosi.",
+    "agent1_seconds": 7.0,
+    "brighton_context": "",
+    "agent2_seconds": 15.6,
+    "answer_conflict": null,
+    "reasoning": "The evidence explicitly states \"Riscontro autoptico\" (Autopsy findings), confirming that an autopsy was performed. The text further specifies that the examination of the deep venous system of the limbs was \"negativo, senza alcuna evidenza di trombosi venosa profonda\" (negative, without any evidence of deep vein thrombosis). Therefore, the autopsy was done and showed no evidence of DVT.\n\nFINAL_OPTION: Autopsy done but showed no evidence of DVT\nFINAL_ANSWER: 2",
+    "result": {
+      "answer": "Autopsy done but showed no evidence of DVT"
+    }
+  },
+  "A2": {
+    "query": "thrombectomy, surgical procedure related to DVT",
+    "evidence": "Anamnesi patologica remota: Uomo di 45 anni, deceduto in seguito a politrauma da incidente stradale. Nessun intervento chirurgico correlato a trombosi venosa profonda eseguito. Anamnesi non ulteriormente ricostruibile. Anamnesi Prossima: Quadro dominato dalle lesioni traumatiche riportate nell'incidente. Nel corso dell'assistenza non e' stato rilevato alcun sintomo di gonfiore, dolore, arrossamento o calore agli arti. Esame obiettivo all'ingresso: Rilevate lesioni traumatiche multiple. All'ispezione degli arti non sono stati constatati edema, arrossamento o alterazioni del colorito cutaneo. Esami di laboratorio: Nessun esame di imaging venoso ne' dosaggio del D-dimero eseguiti in vita. Riscontro autoptico: esame del sistema venoso profondo degli arti negativo, senza alcuna evidenza di\n\nne' dosaggio del D-dimero eseguiti in vita. Riscontro autoptico: esame del sistema venoso profondo degli arti negativo, senza alcuna evidenza di trombosi venosa profonda. Causa del decesso: emorragia interna massiva da trauma, non correlata a fenomeni tromboembolici venosi.",
+    "agent1_seconds": 6.8,
+    "brighton_context": "",
+    "agent2_seconds": 17.0,
+    "answer_conflict": null,
+    "reasoning": "The evidence explicitly states \"Nessun intervento chirurgico correlato a trombosi venosa profonda eseguito,\" which translates to \"No surgical procedure related to deep vein thrombosis performed.\" Additionally, the autopsy findings were negative for DVT. Therefore, no procedure was done that confirmed the presence of DVT, and specifically, no thrombectomy or other confirming procedure was performed. This aligns with option 3, which covers cases where no surgical procedure was done or findings did not confirm DVT.\n\nFINAL_OPTION: No surgical procedure done; or, done but either did not confirm presence of DVT or findings unknown; or unknown if done\nFINAL_ANSWER: 3",
+    "result": {
+      "answer": "No surgical procedure done; or, done but either did not confirm presence of DVT or findings unknown; or unknown if done"
+    }
+  },
+  "A3_1": {
+    "query": "ultrasound, CT, MRI, venography: imaging outcome for deep vein thrombosis",
+    "evidence": "ne' dosaggio del D-dimero eseguiti in vita. Riscontro autoptico: esame del sistema venoso profondo degli arti negativo, senza alcuna evidenza di trombosi venosa profonda. Causa del decesso: emorragia interna massiva da trauma, non correlata a fenomeni tromboembolici venosi.\n\nAnamnesi patologica remota: Uomo di 45 anni, deceduto in seguito a politrauma da incidente stradale. Nessun intervento chirurgico correlato a trombosi venosa profonda eseguito. Anamnesi non ulteriormente ricostruibile. Anamnesi Prossima: Quadro dominato dalle lesioni traumatiche riportate nell'incidente. Nel corso dell'assistenza non e' stato rilevato alcun sintomo di gonfiore, dolore, arrossamento o calore agli arti. Esame obiettivo all'ingresso: Rilevate lesioni traumatiche multiple. All'ispezione degli arti non sono stati constatati edema, arrossamento o alterazioni del colorito cutaneo. Esami di laboratorio: Nessun esame di imaging venoso ne' dosaggio del D-dimero eseguiti in vita. Riscontro autoptico: esame del sistema venoso profondo degli arti negativo, senza alcuna evidenza di",
+    "agent1_seconds": 7.1,
+    "brighton_context": "",
+    "agent2_seconds": 15.5,
+    "answer_conflict": null,
+    "reasoning": "The evidence explicitly states \"Nessun esame di imaging venoso... eseguiti in vita\" (No venous imaging studies... performed while alive). Although an autopsy was performed and ruled out DVT, the question specifically asks about imaging studies. Since no imaging studies were performed, we cannot select options claiming an imaging study was done. Therefore, the correct classification is that no imaging studies were done.\n\nFINAL_OPTION: No imaging studies done, unknown if done, or done but results unknown\nFINAL_ANSWER: 3",
+    "result": {
+      "answer": "No imaging studies done, unknown if done, or done but results unknown"
+    }
+  },
+  "A3_2": {
+    "query": "type of imaging study performed: compression ultrasonography, doppler, venography",
+    "evidence": "Anamnesi patologica remota: Uomo di 45 anni, deceduto in seguito a politrauma da incidente stradale. Nessun intervento chirurgico correlato a trombosi venosa profonda eseguito. Anamnesi non ulteriormente ricostruibile. Anamnesi Prossima: Quadro dominato dalle lesioni traumatiche riportate nell'incidente. Nel corso dell'assistenza non e' stato rilevato alcun sintomo di gonfiore, dolore, arrossamento o calore agli arti. Esame obiettivo all'ingresso: Rilevate lesioni traumatiche multiple. All'ispezione degli arti non sono stati constatati edema, arrossamento o alterazioni del colorito cutaneo. Esami di laboratorio: Nessun esame di imaging venoso ne' dosaggio del D-dimero eseguiti in vita. Riscontro autoptico: esame del sistema venoso profondo degli arti negativo, senza alcuna evidenza di\n\nne' dosaggio del D-dimero eseguiti in vita. Riscontro autoptico: esame del sistema venoso profondo degli arti negativo, senza alcuna evidenza di trombosi venosa profonda. Causa del decesso: emorragia interna massiva da trauma, non correlata a fenomeni tromboembolici venosi.",
+    "agent1_seconds": 6.8,
+    "brighton_context": "",
+    "agent2_seconds": 17.9,
+    "answer_conflict": null,
+    "reasoning": "The evidence explicitly states \"Nessun esame di imaging venoso ne' dosaggio del D-dimero eseguiti in vita\" (No venous imaging exams nor D-dimer dosage performed while alive). This negates the performance of any specific imaging modality listed in options 1 through 4 (Compression ultrasonography, CT or MR venography, Contrast venography, Doppler/Duplex Ultrasound). Since no venous imaging was performed, and there is no mention of other non-standard imaging methods like impedance plethysmography, none of the specific imaging options apply. The diagnosis was ruled out via autopsy, which is not an imaging test. Therefore, none of the listed imaging options were performed.\n\nFINAL_OPTION: none\nFINAL_ANSWER: none",
+    "result": {
+      "studies": []
+    }
+  },
+  "B1_1": {
+    "query": "reported symptoms or signs of deep vein thrombosis",
+    "evidence": "ne' dosaggio del D-dimero eseguiti in vita. Riscontro autoptico: esame del sistema venoso profondo degli arti negativo, senza alcuna evidenza di trombosi venosa profonda. Causa del decesso: emorragia interna massiva da trauma, non correlata a fenomeni tromboembolici venosi.\n\nAnamnesi patologica remota: Uomo di 45 anni, deceduto in seguito a politrauma da incidente stradale. Nessun intervento chirurgico correlato a trombosi venosa profonda eseguito. Anamnesi non ulteriormente ricostruibile. Anamnesi Prossima: Quadro dominato dalle lesioni traumatiche riportate nell'incidente. Nel corso dell'assistenza non e' stato rilevato alcun sintomo di gonfiore, dolore, arrossamento o calore agli arti. Esame obiettivo all'ingresso: Rilevate lesioni traumatiche multiple. All'ispezione degli arti non sono stati constatati edema, arrossamento o alterazioni del colorito cutaneo. Esami di laboratorio: Nessun esame di imaging venoso ne' dosaggio del D-dimero eseguiti in vita. Riscontro autoptico: esame del sistema venoso profondo degli arti negativo, senza alcuna evidenza di",
+    "agent1_seconds": 7.1,
+    "brighton_context": "",
+    "agent2_seconds": 16.9,
+    "answer_conflict": null,
+    "reasoning": "The evidence explicitly states that during assistance, no symptoms such as swelling, pain, redness, or heat in the limbs were detected (\"non e' stato rilevato alcun sintomo di gonfiore, dolore, arrossamento o calore agli arti\"). Furthermore, the physical examination at admission noted no edema, redness, or skin color changes. Since the record actively reports the absence of these signs and symptoms, it constitutes a report that the patient did not have a recognized DVT syndrome, rather than leaving it unknown.\n\nFINAL_OPTION: There was no report of a recognized DVT syndrome\nFINAL_ANSWER: 2",
+    "result": {
+      "answer": "There was no report of a recognized DVT syndrome"
+    }
+  },
+  "B1_2": {
+    "query": "deep vein thrombosis lower extremity or upper extremity",
+    "evidence": "ne' dosaggio del D-dimero eseguiti in vita. Riscontro autoptico: esame del sistema venoso profondo degli arti negativo, senza alcuna evidenza di trombosi venosa profonda. Causa del decesso: emorragia interna massiva da trauma, non correlata a fenomeni tromboembolici venosi.\n\nAnamnesi patologica remota: Uomo di 45 anni, deceduto in seguito a politrauma da incidente stradale. Nessun intervento chirurgico correlato a trombosi venosa profonda eseguito. Anamnesi non ulteriormente ricostruibile. Anamnesi Prossima: Quadro dominato dalle lesioni traumatiche riportate nell'incidente. Nel corso dell'assistenza non e' stato rilevato alcun sintomo di gonfiore, dolore, arrossamento o calore agli arti. Esame obiettivo all'ingresso: Rilevate lesioni traumatiche multiple. All'ispezione degli arti non sono stati constatati edema, arrossamento o alterazioni del colorito cutaneo. Esami di laboratorio: Nessun esame di imaging venoso ne' dosaggio del D-dimero eseguiti in vita. Riscontro autoptico: esame del sistema venoso profondo degli arti negativo, senza alcuna evidenza di",
+    "agent1_seconds": 7.2,
+    "brighton_context": "",
+    "agent2_seconds": 17.3,
+    "answer_conflict": null,
+    "reasoning": "The evidence explicitly states that the autopsy examination of the deep venous system of the limbs was negative, with no evidence of deep vein thrombosis (DVT). Additionally, it notes that no D-dimer tests or venous imaging were performed during life, and clinical signs such as swelling, pain, redness, or heat in the limbs were not observed. The cause of death was determined to be massive internal hemorrhage from trauma, unrelated to venous thromboembolic phenomena. Therefore, neither lower extremity DVT nor upper extremity DVT is supported by the evidence; in fact, their presence is explicitly ruled out by the autopsy findings.\n\nFINAL_OPTION: none\nFINAL_ANSWER: none",
+    "result": {
+      "types": []
+    }
+  },
+  "B2": {
+    "query": "calf pain, swelling, oedema, redness, warmth, absent pulses",
+    "evidence": "Anamnesi patologica remota: Uomo di 45 anni, deceduto in seguito a politrauma da incidente stradale. Nessun intervento chirurgico correlato a trombosi venosa profonda eseguito. Anamnesi non ulteriormente ricostruibile. Anamnesi Prossima: Quadro dominato dalle lesioni traumatiche riportate nell'incidente. Nel corso dell'assistenza non e' stato rilevato alcun sintomo di gonfiore, dolore, arrossamento o calore agli arti. Esame obiettivo all'ingresso: Rilevate lesioni traumatiche multiple. All'ispezione degli arti non sono stati constatati edema, arrossamento o alterazioni del colorito cutaneo. Esami di laboratorio: Nessun esame di imaging venoso ne' dosaggio del D-dimero eseguiti in vita. Riscontro autoptico: esame del sistema venoso profondo degli arti negativo, senza alcuna evidenza di\n\nne' dosaggio del D-dimero eseguiti in vita. Riscontro autoptico: esame del sistema venoso profondo degli arti negativo, senza alcuna evidenza di trombosi venosa profonda. Causa del decesso: emorragia interna massiva da trauma, non correlata a fenomeni tromboembolici venosi.",
+    "agent1_seconds": 6.9,
+    "brighton_context": "",
+    "agent2_seconds": 18.0,
+    "answer_conflict": null,
+    "reasoning": "The evidence explicitly states that during the course of care, no symptoms of swelling, pain, redness, or warmth were detected in the limbs (\"non e' stato rilevato alcun sintomo di gonfiore, dolore, arrossamento o calore agli arti\"). Furthermore, the physical examination at admission confirmed the absence of edema, redness, or skin color changes (\"All'ispezione degli arti non sono stati constatati edema, arrossamento o alterazioni del colorito cutaneo\"). The autopsy also found no evidence of deep vein thrombosis. Therefore, none of the specific symptoms listed in options 1-4 were present.\n\nFINAL_OPTION: None of the above were present or it is unknown if any of 1-4 were present\nFINAL_ANSWER: 5",
+    "result": {
+      "symptoms": [
+        "None of the above were present or it is unknown if any of 1-4 were present"
+      ]
+    }
+  },
+  "C": {
+    "query": "D-dimer value, test date, laboratory upper limit of normal",
+    "evidence": "ne' dosaggio del D-dimero eseguiti in vita. Riscontro autoptico: esame del sistema venoso profondo degli arti negativo, senza alcuna evidenza di trombosi venosa profonda. Causa del decesso: emorragia interna massiva da trauma, non correlata a fenomeni tromboembolici venosi.\n\nAnamnesi patologica remota: Uomo di 45 anni, deceduto in seguito a politrauma da incidente stradale. Nessun intervento chirurgico correlato a trombosi venosa profonda eseguito. Anamnesi non ulteriormente ricostruibile. Anamnesi Prossima: Quadro dominato dalle lesioni traumatiche riportate nell'incidente. Nel corso dell'assistenza non e' stato rilevato alcun sintomo di gonfiore, dolore, arrossamento o calore agli arti. Esame obiettivo all'ingresso: Rilevate lesioni traumatiche multiple. All'ispezione degli arti non sono stati constatati edema, arrossamento o alterazioni del colorito cutaneo. Esami di laboratorio: Nessun esame di imaging venoso ne' dosaggio del D-dimero eseguiti in vita. Riscontro autoptico: esame del sistema venoso profondo degli arti negativo, senza alcuna evidenza di",
+    "agent1_seconds": 7.0,
+    "brighton_context": "",
+    "agent2_seconds": 15.9,
+    "answer_conflict": null,
+    "reasoning": "The evidence explicitly states \"ne' dosaggio del D-dimero eseguiti in vita\" (no D-dimer dosage performed while alive) and repeats this information later as \"Nessun esame di imaging venoso ne' dosaggio del D-dimero eseguiti in vita.\" Since the text clearly indicates that the D-dimer test was not performed, the correct classification is that it was not tested.\n\nFINAL_OPTION: D-dimer not tested, or tested but results unknown or not available\nFINAL_ANSWER: 3",
+    "result": {
+      "answer": "D-dimer not tested, or tested but results unknown or not available"
+    }
+  },
+  "F": {
+    "query": "diagnosis of deep vein thrombosis reported by specialist",
+    "evidence": "Anamnesi patologica remota: Uomo di 45 anni, deceduto in seguito a politrauma da incidente stradale. Nessun intervento chirurgico correlato a trombosi venosa profonda eseguito. Anamnesi non ulteriormente ricostruibile. Anamnesi Prossima: Quadro dominato dalle lesioni traumatiche riportate nell'incidente. Nel corso dell'assistenza non e' stato rilevato alcun sintomo di gonfiore, dolore, arrossamento o calore agli arti. Esame obiettivo all'ingresso: Rilevate lesioni traumatiche multiple. All'ispezione degli arti non sono stati constatati edema, arrossamento o alterazioni del colorito cutaneo. Esami di laboratorio: Nessun esame di imaging venoso ne' dosaggio del D-dimero eseguiti in vita. Riscontro autoptico: esame del sistema venoso profondo degli arti negativo, senza alcuna evidenza di\n\nne' dosaggio del D-dimero eseguiti in vita. Riscontro autoptico: esame del sistema venoso profondo degli arti negativo, senza alcuna evidenza di trombosi venosa profonda. Causa del decesso: emorragia interna massiva da trauma, non correlata a fenomeni tromboembolici venosi.",
+    "agent1_seconds": 6.8,
+    "brighton_context": "",
+    "agent2_seconds": 16.6,
+    "answer_conflict": null,
+    "reasoning": "DETAILS_PRESENT: yes\n\nThe evidence provides specific clinical findings from the autopsy, explicitly stating that the examination of the deep venous system of the limbs was negative with no evidence of deep vein thrombosis. It also details the absence of symptoms (swelling, pain, redness) and the lack of imaging or D-dimer tests during life. Because there are specific supporting findings (the negative autopsy result and clinical observations) rather than just a bare conclusion, the diagnosis is not reported \"without details.\"\n\nFINAL_OPTION: No\nFINAL_ANSWER: 2",
+    "result": {
+      "answer": "No"
+    }
+  },
+  "X": {
+    "query": "possible alternative etiologies; clinical syndromes to be differentiated from thrombosis; conditions explaining calf pain, redness, warmth or ankle edema other than DVT",
+    "evidence": "Anamnesi patologica remota: Uomo di 45 anni, deceduto in seguito a politrauma da incidente stradale. Nessun intervento chirurgico correlato a trombosi venosa profonda eseguito. Anamnesi non ulteriormente ricostruibile. Anamnesi Prossima: Quadro dominato dalle lesioni traumatiche riportate nell'incidente. Nel corso dell'assistenza non e' stato rilevato alcun sintomo di gonfiore, dolore, arrossamento o calore agli arti. Esame obiettivo all'ingresso: Rilevate lesioni traumatiche multiple. All'ispezione degli arti non sono stati constatati edema, arrossamento o alterazioni del colorito cutaneo. Esami di laboratorio: Nessun esame di imaging venoso ne' dosaggio del D-dimero eseguiti in vita. Riscontro autoptico: esame del sistema venoso profondo degli arti negativo, senza alcuna evidenza di\n\nne' dosaggio del D-dimero eseguiti in vita. Riscontro autoptico: esame del sistema venoso profondo degli arti negativo, senza alcuna evidenza di trombosi venosa profonda. Causa del decesso: emorragia interna massiva da trauma, non correlata a fenomeni tromboembolici venosi.",
+    "agent1_seconds": 7.3,
+    "brighton_context": "",
+    "agent2_seconds": 15.5,
+    "answer_conflict": null,
+    "reasoning": "The evidence explicitly states that the cause of death was \"massive internal hemorrhage from trauma\" and that this was \"not related to venous thromboembolic phenomena.\" Since the record identifies a specific condition (traumatic hemorrhage) as the final diagnosis explaining the acute illness and death, distinct from DVT, an alternative diagnosis was found.\n\nFINAL_OPTION: An alternative diagnosis was found that explained the acute illness\nFINAL_ANSWER: 1\n\n[SYSTEM OVERRIDE]: The LLM originally selected 'An alternative diagnosis was found that explained the acute illness', but no triggering keywords ['cellulit', 'baker', 'fractur', 'frattur', 'compartment', 'compartimental', 'vasculit', 'cirrhosis', 'cirrosi', 'nephrotic', 'nefrosic', 'lymphatic', 'linfatic', 'heart failure', 'scompenso cardiaco', 'muscle tear', 'strappo muscolare', 'hematoma', 'ematoma', 'septic arthritis', 'artrite settica', 'fistula', 'fistola', 'dependent edema', 'edema declive', 'achilles', 'achille', 'external compression', 'compressione esterna', 'congenital vascular', 'malformazione vascolare'] were found in the evidence. Answer was automatically reverted to the negative default.",
+    "result": {
+      "answer": "No alternative diagnosis was found to explain the acute illness"
+    }
+  },
+  "_run_config": {
+    "extractor_mode": "agentic_graph",
+    "section_gates_enabled": {
+      "keyword": true,
+      "details": false,
+      "absent_pulses": true
+    },
+    "brighton_context_enabled": false,
+    "section_hints_enabled": true,
+    "section_hints_disabled": [
+      "B2"
+    ],
+    "section_hints_fingerprint": {
+      "A1": "94 fc56153ea429",
+      "A2": "226 c42c3b188a45",
+      "A3_1": "277 c59144334788",
+      "A3_2": "143 023c43c73783",
+      "B1_1": "513 a65c3a0069c5",
+      "C": "342 7e8efb23dfc0",
+      "F": "1216 4d54ff2a7269",
+      "X": "260 e4ce4dddf649",
+      "all": "ab63b8e5f5af"
+    },
+    "cross_section_rules_applied": true,
+    "models": {
+      "extractor": "llama3.1:8b-instruct-q4_0",
+      "evaluator": "qwen3.6:27b",
+      "embeddings": "intfloat/multilingual-e5-small"
+    },
+    "environment": {
+      "hostname": "mari",
+      "ollama_version": "ollama version is 0.32.1"
+    },
+    "generation": {
+      "temperature": 0.0,
+      "num_predict": 1024,
+      "num_gpu": 999,
+      "reasoning": false
+    },
+    "retrieval": {
+      "ehr_chunk_size": 800,
+      "ehr_chunk_overlap": 150,
+      "ehr_retriever_k": 5,
+      "brighton_retriever_k": 5
+    }
+  }
+}

@@ -1,0 +1,170 @@
+{
+  "A1": {
+    "query": "autopsy report, necropsy, post-mortem examination, autoptic findings",
+    "evidence": "e superiori nella norma all'ispezione. Esami di laboratorio: D-dimero non eseguito. Nessun esame di imaging venoso eseguito. Il dolore toracico e' stato attribuito a causa muscoloscheletrica; nel corso della valutazione non e' stato sollevato alcun sospetto di trombosi venosa profonda.\n\nAnamnesi patologica remota: Uomo di 41 anni. Nessun intervento chirurgico recente. Non allergie farmacologiche note. Anamnesi farmacologica: nessuna terapia cronica in atto. Anamnesi Prossima: Giunge in Pronto Soccorso per dolore toracico atipico, insorto in giornata. Nega esplicitamente dolore, gonfiore, arrossamento o calore agli arti inferiori e superiori. Nega inoltre dispnea, sincope ed emottisi. Esame obiettivo all'ingresso: Paziente vigile, orientato e collaborante, eupnoico a riposo. PA 126/80 mmHg, FC 74 bpm, FR 16 atti/min, SpO2 99% in aria ambiente, TC 36,6°C. Dolore riproducibile alla palpazione della parete toracica. Arti inferiori e superiori nella norma all'ispezione. Esami di laboratorio: D-dimero non eseguito. Nessun esame di imaging venoso eseguito. Il dolore toracico e'",
+    "agent1_seconds": 6.7,
+    "brighton_context": "",
+    "agent2_seconds": 16.9,
+    "answer_conflict": null,
+    "reasoning": "The provided evidence describes a clinical evaluation of a living patient in an Emergency Department setting. It explicitly states that no venous imaging was performed and D-dimer was not executed. Crucially, the text contains no mention of the patient's death or any post-mortem examination. Since the question specifies that only post-mortem findings count and defines autopsy as distinct from imaging on a living patient, and there is no evidence of an autopsy being performed, the correct classification is that no autopsy was done or its status is unknown.\n\nFINAL_OPTION: No autopsy done, unknown if done, or done but results unavailable\nFINAL_ANSWER: 3",
+    "result": {
+      "answer": "No autopsy done, unknown if done, or done but results unavailable"
+    }
+  },
+  "A2": {
+    "query": "thrombectomy, surgical procedure related to DVT",
+    "evidence": "e superiori nella norma all'ispezione. Esami di laboratorio: D-dimero non eseguito. Nessun esame di imaging venoso eseguito. Il dolore toracico e' stato attribuito a causa muscoloscheletrica; nel corso della valutazione non e' stato sollevato alcun sospetto di trombosi venosa profonda.\n\nAnamnesi patologica remota: Uomo di 41 anni. Nessun intervento chirurgico recente. Non allergie farmacologiche note. Anamnesi farmacologica: nessuna terapia cronica in atto. Anamnesi Prossima: Giunge in Pronto Soccorso per dolore toracico atipico, insorto in giornata. Nega esplicitamente dolore, gonfiore, arrossamento o calore agli arti inferiori e superiori. Nega inoltre dispnea, sincope ed emottisi. Esame obiettivo all'ingresso: Paziente vigile, orientato e collaborante, eupnoico a riposo. PA 126/80 mmHg, FC 74 bpm, FR 16 atti/min, SpO2 99% in aria ambiente, TC 36,6°C. Dolore riproducibile alla palpazione della parete toracica. Arti inferiori e superiori nella norma all'ispezione. Esami di laboratorio: D-dimero non eseguito. Nessun esame di imaging venoso eseguito. Il dolore toracico e'",
+    "agent1_seconds": 6.8,
+    "brighton_context": "",
+    "agent2_seconds": 16.8,
+    "answer_conflict": null,
+    "reasoning": "The evidence explicitly states \"Nessun esame di imaging venoso eseguito\" (No venous imaging exam performed) and \"D-dimero non eseguito\" (D-dimer not performed). Furthermore, it notes that no suspicion of deep vein thrombosis (DVT) was raised during the evaluation. Since no diagnostic procedures for DVT were performed, and specifically no surgical procedure like a thrombectomy is mentioned or implied, the correct classification is that no such procedure was done.\n\nFINAL_OPTION: No surgical procedure done; or, done but either did not confirm presence of DVT or findings unknown; or unknown if done\nFINAL_ANSWER: 3",
+    "result": {
+      "answer": "No surgical procedure done; or, done but either did not confirm presence of DVT or findings unknown; or unknown if done"
+    }
+  },
+  "A3_1": {
+    "query": "ultrasound, CT, MRI, venography: imaging outcome for deep vein thrombosis",
+    "evidence": "e superiori nella norma all'ispezione. Esami di laboratorio: D-dimero non eseguito. Nessun esame di imaging venoso eseguito. Il dolore toracico e' stato attribuito a causa muscoloscheletrica; nel corso della valutazione non e' stato sollevato alcun sospetto di trombosi venosa profonda.\n\nAnamnesi patologica remota: Uomo di 41 anni. Nessun intervento chirurgico recente. Non allergie farmacologiche note. Anamnesi farmacologica: nessuna terapia cronica in atto. Anamnesi Prossima: Giunge in Pronto Soccorso per dolore toracico atipico, insorto in giornata. Nega esplicitamente dolore, gonfiore, arrossamento o calore agli arti inferiori e superiori. Nega inoltre dispnea, sincope ed emottisi. Esame obiettivo all'ingresso: Paziente vigile, orientato e collaborante, eupnoico a riposo. PA 126/80 mmHg, FC 74 bpm, FR 16 atti/min, SpO2 99% in aria ambiente, TC 36,6°C. Dolore riproducibile alla palpazione della parete toracica. Arti inferiori e superiori nella norma all'ispezione. Esami di laboratorio: D-dimero non eseguito. Nessun esame di imaging venoso eseguito. Il dolore toracico e'",
+    "agent1_seconds": 7.1,
+    "brighton_context": "",
+    "agent2_seconds": 15.7,
+    "answer_conflict": null,
+    "reasoning": "The evidence explicitly states \"Nessun esame di imaging venoso eseguito,\" which translates to \"No venous imaging study performed.\" Since no imaging studies were conducted to evaluate for deep vein thrombosis (DVT), it is impossible for an imaging study to have confirmed or ruled out DVT. Therefore, the correct classification is that no imaging studies were done.\n\nFINAL_OPTION: No imaging studies done, unknown if done, or done but results unknown\nFINAL_ANSWER: 3",
+    "result": {
+      "answer": "No imaging studies done, unknown if done, or done but results unknown"
+    }
+  },
+  "A3_2": {
+    "query": "type of imaging study performed: compression ultrasonography, doppler, venography",
+    "evidence": "e superiori nella norma all'ispezione. Esami di laboratorio: D-dimero non eseguito. Nessun esame di imaging venoso eseguito. Il dolore toracico e' stato attribuito a causa muscoloscheletrica; nel corso della valutazione non e' stato sollevato alcun sospetto di trombosi venosa profonda.\n\nAnamnesi patologica remota: Uomo di 41 anni. Nessun intervento chirurgico recente. Non allergie farmacologiche note. Anamnesi farmacologica: nessuna terapia cronica in atto. Anamnesi Prossima: Giunge in Pronto Soccorso per dolore toracico atipico, insorto in giornata. Nega esplicitamente dolore, gonfiore, arrossamento o calore agli arti inferiori e superiori. Nega inoltre dispnea, sincope ed emottisi. Esame obiettivo all'ingresso: Paziente vigile, orientato e collaborante, eupnoico a riposo. PA 126/80 mmHg, FC 74 bpm, FR 16 atti/min, SpO2 99% in aria ambiente, TC 36,6°C. Dolore riproducibile alla palpazione della parete toracica. Arti inferiori e superiori nella norma all'ispezione. Esami di laboratorio: D-dimero non eseguito. Nessun esame di imaging venoso eseguito. Il dolore toracico e'",
+    "agent1_seconds": 6.9,
+    "brighton_context": "",
+    "agent2_seconds": 18.5,
+    "answer_conflict": null,
+    "reasoning": "The evidence explicitly states \"Nessun esame di imaging venoso eseguito,\" which translates to \"No venous imaging exam performed.\" This negates the performance of any specific venous imaging modality listed in the options, including compression ultrasonography, CT/MR venography, contrast venography, or Doppler/Duplex ultrasound. Since no venous imaging was performed, none of the specific modalities (Options 1-4) were used. Option 5 (\"Other\") refers to an imaging test that *is* performed but is not one of the four named modalities; however, since *no* venous imaging was performed at all, this option does not apply either. Therefore, none of the options describing a performed test are correct.\n\nFINAL_OPTION: none\nFINAL_ANSWER: none",
+    "result": {
+      "studies": []
+    }
+  },
+  "B1_1": {
+    "query": "reported symptoms or signs of deep vein thrombosis",
+    "evidence": "e superiori nella norma all'ispezione. Esami di laboratorio: D-dimero non eseguito. Nessun esame di imaging venoso eseguito. Il dolore toracico e' stato attribuito a causa muscoloscheletrica; nel corso della valutazione non e' stato sollevato alcun sospetto di trombosi venosa profonda.\n\nAnamnesi patologica remota: Uomo di 41 anni. Nessun intervento chirurgico recente. Non allergie farmacologiche note. Anamnesi farmacologica: nessuna terapia cronica in atto. Anamnesi Prossima: Giunge in Pronto Soccorso per dolore toracico atipico, insorto in giornata. Nega esplicitamente dolore, gonfiore, arrossamento o calore agli arti inferiori e superiori. Nega inoltre dispnea, sincope ed emottisi. Esame obiettivo all'ingresso: Paziente vigile, orientato e collaborante, eupnoico a riposo. PA 126/80 mmHg, FC 74 bpm, FR 16 atti/min, SpO2 99% in aria ambiente, TC 36,6°C. Dolore riproducibile alla palpazione della parete toracica. Arti inferiori e superiori nella norma all'ispezione. Esami di laboratorio: D-dimero non eseguito. Nessun esame di imaging venoso eseguito. Il dolore toracico e'",
+    "agent1_seconds": 7.0,
+    "brighton_context": "",
+    "agent2_seconds": 16.5,
+    "answer_conflict": null,
+    "reasoning": "The evidence explicitly states that the patient denied pain, swelling, redness, or warmth in the lower and upper limbs (\"Nega esplicitamente dolore, gonfiore, arrossamento o calore agli arti inferiori e superiori\"). Additionally, the physical examination noted that the limbs were normal upon inspection. Since the record actively reports the absence of these specific signs and symptoms, it constitutes a report that no recognized DVT syndrome was present, rather than leaving it unknown or silent.\n\nFINAL_OPTION: There was no report of a recognized DVT syndrome\nFINAL_ANSWER: 2",
+    "result": {
+      "answer": "There was no report of a recognized DVT syndrome"
+    }
+  },
+  "B1_2": {
+    "query": "deep vein thrombosis lower extremity or upper extremity",
+    "evidence": "e superiori nella norma all'ispezione. Esami di laboratorio: D-dimero non eseguito. Nessun esame di imaging venoso eseguito. Il dolore toracico e' stato attribuito a causa muscoloscheletrica; nel corso della valutazione non e' stato sollevato alcun sospetto di trombosi venosa profonda.\n\nAnamnesi patologica remota: Uomo di 41 anni. Nessun intervento chirurgico recente. Non allergie farmacologiche note. Anamnesi farmacologica: nessuna terapia cronica in atto. Anamnesi Prossima: Giunge in Pronto Soccorso per dolore toracico atipico, insorto in giornata. Nega esplicitamente dolore, gonfiore, arrossamento o calore agli arti inferiori e superiori. Nega inoltre dispnea, sincope ed emottisi. Esame obiettivo all'ingresso: Paziente vigile, orientato e collaborante, eupnoico a riposo. PA 126/80 mmHg, FC 74 bpm, FR 16 atti/min, SpO2 99% in aria ambiente, TC 36,6°C. Dolore riproducibile alla palpazione della parete toracica. Arti inferiori e superiori nella norma all'ispezione. Esami di laboratorio: D-dimero non eseguito. Nessun esame di imaging venoso eseguito. Il dolore toracico e'",
+    "agent1_seconds": 7.0,
+    "brighton_context": "",
+    "agent2_seconds": 16.7,
+    "answer_conflict": null,
+    "reasoning": "The evidence explicitly states that no suspicion of deep vein thrombosis (DVT) was raised during the evaluation (\"non e' stato sollevato alcun sospetto di trombosi venosa profonda\"). Furthermore, the patient explicitly denied symptoms associated with DVT in both lower and upper extremities (pain, swelling, redness, warmth), physical examination showed normal limbs, and no venous imaging or D-dimer tests were performed. Therefore, there is no evidence to support a diagnosis of either lower or upper extremity DVT.\n\nFINAL_OPTION: none\nFINAL_ANSWER: none",
+    "result": {
+      "types": []
+    }
+  },
+  "B2": {
+    "query": "calf pain, swelling, oedema, redness, warmth, absent pulses",
+    "evidence": "Anamnesi patologica remota: Uomo di 41 anni. Nessun intervento chirurgico recente. Non allergie farmacologiche note. Anamnesi farmacologica: nessuna terapia cronica in atto. Anamnesi Prossima: Giunge in Pronto Soccorso per dolore toracico atipico, insorto in giornata. Nega esplicitamente dolore, gonfiore, arrossamento o calore agli arti inferiori e superiori. Nega inoltre dispnea, sincope ed emottisi. Esame obiettivo all'ingresso: Paziente vigile, orientato e collaborante, eupnoico a riposo. PA 126/80 mmHg, FC 74 bpm, FR 16 atti/min, SpO2 99% in aria ambiente, TC 36,6°C. Dolore riproducibile alla palpazione della parete toracica. Arti inferiori e superiori nella norma all'ispezione. Esami di laboratorio: D-dimero non eseguito. Nessun esame di imaging venoso eseguito. Il dolore toracico e'\n\ne superiori nella norma all'ispezione. Esami di laboratorio: D-dimero non eseguito. Nessun esame di imaging venoso eseguito. Il dolore toracico e' stato attribuito a causa muscoloscheletrica; nel corso della valutazione non e' stato sollevato alcun sospetto di trombosi venosa profonda.",
+    "agent1_seconds": 6.9,
+    "brighton_context": "",
+    "agent2_seconds": 28.7,
+    "answer_conflict": null,
+    "reasoning": "The evidence explicitly states that the patient \"Nega esplicitamente dolore, gonfiore, arrossamento o calore agli arti inferiori e superiori\" (Explicitly denies pain, swelling, redness or heat in lower and upper limbs). This directly negates options 1 (Calf pain or tenderness), 2 (Leg swelling or pitting oedema), and 4 (Redness, warmth, or pain in one or more extremities). The text also states that the limbs were \"nella norma all'ispezione\" (normal on inspection) and does not mention absent pulses, nor does it provide evidence to support their presence or absence specifically as a finding of interest for DVT criteria in this context, but crucially, options 1, 2, and 4 are explicitly ruled out. Option 3 is not mentioned, so its status is unknown, but since the question asks what was present/confirmed based on evidence, and 1, 2, and 4 are explicitly absent, we look at option 5. Option 5 states \"None of the above were present or it is unknown if any of 1-4 were present\". Since 1, 2, and 4 are known to be absent (negated), and 3 is not mentioned (unknown), this option accurately reflects the state of the evidence regarding the specific symptoms listed in 1-4. Specifically, for options 1, 2, and 4, they are confirmed absent. For option 3, it is unknown. Therefore, \"None of the above were present\" applies to 1, 2, and 4, and \"it is unknown if any... were present\" covers the uncertainty or lack of data for others if interpreted broadly, but more precisely, since 1, 2, and 4 are explicitly denied, they are not present. Option 5 is the correct choice because it captures that none of the specific positive findings (1-4) are confirmed as present; in fact, most are confirmed absent.\n\nFINAL_OPTION: None of the above were present or it is unknown if any of 1-4 were present\nFINAL_ANSWER: 5",
+    "result": {
+      "symptoms": [
+        "None of the above were present or it is unknown if any of 1-4 were present"
+      ]
+    }
+  },
+  "C": {
+    "query": "D-dimer value, test date, laboratory upper limit of normal",
+    "evidence": "e superiori nella norma all'ispezione. Esami di laboratorio: D-dimero non eseguito. Nessun esame di imaging venoso eseguito. Il dolore toracico e' stato attribuito a causa muscoloscheletrica; nel corso della valutazione non e' stato sollevato alcun sospetto di trombosi venosa profonda.\n\nAnamnesi patologica remota: Uomo di 41 anni. Nessun intervento chirurgico recente. Non allergie farmacologiche note. Anamnesi farmacologica: nessuna terapia cronica in atto. Anamnesi Prossima: Giunge in Pronto Soccorso per dolore toracico atipico, insorto in giornata. Nega esplicitamente dolore, gonfiore, arrossamento o calore agli arti inferiori e superiori. Nega inoltre dispnea, sincope ed emottisi. Esame obiettivo all'ingresso: Paziente vigile, orientato e collaborante, eupnoico a riposo. PA 126/80 mmHg, FC 74 bpm, FR 16 atti/min, SpO2 99% in aria ambiente, TC 36,6°C. Dolore riproducibile alla palpazione della parete toracica. Arti inferiori e superiori nella norma all'ispezione. Esami di laboratorio: D-dimero non eseguito. Nessun esame di imaging venoso eseguito. Il dolore toracico e'",
+    "agent1_seconds": 6.7,
+    "brighton_context": "",
+    "agent2_seconds": 15.2,
+    "answer_conflict": null,
+    "reasoning": "The evidence explicitly states \"D-dimero non eseguito\" (D-dimer not performed) in two separate locations within the text. Since the test was not conducted, there are no results to evaluate against a normal range or upper limit. Therefore, the correct classification is that the D-dimer was not tested.\n\nFINAL_OPTION: D-dimer not tested, or tested but results unknown or not available\nFINAL_ANSWER: 3",
+    "result": {
+      "answer": "D-dimer not tested, or tested but results unknown or not available"
+    }
+  },
+  "F": {
+    "query": "diagnosis of deep vein thrombosis reported by specialist",
+    "evidence": "e superiori nella norma all'ispezione. Esami di laboratorio: D-dimero non eseguito. Nessun esame di imaging venoso eseguito. Il dolore toracico e' stato attribuito a causa muscoloscheletrica; nel corso della valutazione non e' stato sollevato alcun sospetto di trombosi venosa profonda.\n\nAnamnesi patologica remota: Uomo di 41 anni. Nessun intervento chirurgico recente. Non allergie farmacologiche note. Anamnesi farmacologica: nessuna terapia cronica in atto. Anamnesi Prossima: Giunge in Pronto Soccorso per dolore toracico atipico, insorto in giornata. Nega esplicitamente dolore, gonfiore, arrossamento o calore agli arti inferiori e superiori. Nega inoltre dispnea, sincope ed emottisi. Esame obiettivo all'ingresso: Paziente vigile, orientato e collaborante, eupnoico a riposo. PA 126/80 mmHg, FC 74 bpm, FR 16 atti/min, SpO2 99% in aria ambiente, TC 36,6°C. Dolore riproducibile alla palpazione della parete toracica. Arti inferiori e superiori nella norma all'ispezione. Esami di laboratorio: D-dimero non eseguito. Nessun esame di imaging venoso eseguito. Il dolore toracico e'",
+    "agent1_seconds": 7.1,
+    "brighton_context": "",
+    "agent2_seconds": 17.0,
+    "answer_conflict": null,
+    "reasoning": "DETAILS_PRESENT: yes\nThe evidence explicitly states that no suspicion of deep vein thrombosis (DVT) was raised (\"non e' stato sollevato alcun sospetto di trombosi venosa profonda\") and that the chest pain was attributed to a musculoskeletal cause. Since no diagnosis of DVT was reported in the record, the criterion for describing a diagnosis as detailed or undetailed does not apply. According to the instructions, if no diagnosis is reported at all, one must select 'No' (indicating there is no report to describe).\n\nFINAL_OPTION: No\nFINAL_ANSWER: 2",
+    "result": {
+      "answer": "No"
+    }
+  },
+  "X": {
+    "query": "possible alternative etiologies; clinical syndromes to be differentiated from thrombosis; conditions explaining calf pain, redness, warmth or ankle edema other than DVT",
+    "evidence": "e superiori nella norma all'ispezione. Esami di laboratorio: D-dimero non eseguito. Nessun esame di imaging venoso eseguito. Il dolore toracico e' stato attribuito a causa muscoloscheletrica; nel corso della valutazione non e' stato sollevato alcun sospetto di trombosi venosa profonda.\n\nAnamnesi patologica remota: Uomo di 41 anni. Nessun intervento chirurgico recente. Non allergie farmacologiche note. Anamnesi farmacologica: nessuna terapia cronica in atto. Anamnesi Prossima: Giunge in Pronto Soccorso per dolore toracico atipico, insorto in giornata. Nega esplicitamente dolore, gonfiore, arrossamento o calore agli arti inferiori e superiori. Nega inoltre dispnea, sincope ed emottisi. Esame obiettivo all'ingresso: Paziente vigile, orientato e collaborante, eupnoico a riposo. PA 126/80 mmHg, FC 74 bpm, FR 16 atti/min, SpO2 99% in aria ambiente, TC 36,6°C. Dolore riproducibile alla palpazione della parete toracica. Arti inferiori e superiori nella norma all'ispezione. Esami di laboratorio: D-dimero non eseguito. Nessun esame di imaging venoso eseguito. Il dolore toracico e'",
+    "agent1_seconds": 7.1,
+    "brighton_context": "",
+    "agent2_seconds": 15.0,
+    "answer_conflict": null,
+    "reasoning": "The evidence explicitly states that the chest pain was attributed to a musculoskeletal cause (\"Il dolore toracico e' stato attribuito a causa muscoloscheletrica\"). This constitutes a specific alternative diagnosis that explains the patient's acute illness (chest pain), distinct from DVT. Therefore, an alternative diagnosis was found.\n\nFINAL_OPTION: An alternative diagnosis was found that explained the acute illness\nFINAL_ANSWER: 1\n\n[SYSTEM OVERRIDE]: The LLM originally selected 'An alternative diagnosis was found that explained the acute illness', but no triggering keywords ['cellulit', 'baker', 'fractur', 'frattur', 'compartment', 'compartimental', 'vasculit', 'cirrhosis', 'cirrosi', 'nephrotic', 'nefrosic', 'lymphatic', 'linfatic', 'heart failure', 'scompenso cardiaco', 'muscle tear', 'strappo muscolare', 'hematoma', 'ematoma', 'septic arthritis', 'artrite settica', 'fistula', 'fistola', 'dependent edema', 'edema declive', 'achilles', 'achille', 'external compression', 'compressione esterna', 'congenital vascular', 'malformazione vascolare'] were found in the evidence. Answer was automatically reverted to the negative default.",
+    "result": {
+      "answer": "No alternative diagnosis was found to explain the acute illness"
+    }
+  },
+  "_run_config": {
+    "extractor_mode": "agentic_graph",
+    "section_gates_enabled": {
+      "keyword": true,
+      "details": false,
+      "absent_pulses": true
+    },
+    "brighton_context_enabled": false,
+    "section_hints_enabled": true,
+    "section_hints_disabled": [
+      "B2"
+    ],
+    "section_hints_fingerprint": {
+      "A1": "94 fc56153ea429",
+      "A2": "226 c42c3b188a45",
+      "A3_1": "277 c59144334788",
+      "A3_2": "143 023c43c73783",
+      "B1_1": "513 a65c3a0069c5",
+      "C": "342 7e8efb23dfc0",
+      "F": "1216 4d54ff2a7269",
+      "X": "260 e4ce4dddf649",
+      "all": "ab63b8e5f5af"
+    },
+    "cross_section_rules_applied": true,
+    "models": {
+      "extractor": "llama3.1:8b-instruct-q4_0",
+      "evaluator": "qwen3.6:27b",
+      "embeddings": "intfloat/multilingual-e5-small"
+    },
+    "environment": {
+      "hostname": "mari",
+      "ollama_version": "ollama version is 0.32.1"
+    },
+    "generation": {
+      "temperature": 0.0,
+      "num_predict": 1024,
+      "num_gpu": 999,
+      "reasoning": false
+    },
+    "retrieval": {
+      "ehr_chunk_size": 800,
+      "ehr_chunk_overlap": 150,
+      "ehr_retriever_k": 5,
+      "brighton_retriever_k": 5
+    }
+  }
+}

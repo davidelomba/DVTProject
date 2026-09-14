@@ -1,0 +1,172 @@
+{
+  "A1": {
+    "query": "autopsy report, necropsy, post-mortem examination, autoptic findings",
+    "evidence": "Segnalazione ambulatoriale. Paziente uomo di 54 anni, inviato dallo specialista angiologo con diagnosi di trombosi venosa profonda dell'arto superiore destro. Nessun intervento chirurgico recente. Non sono pervenuti in questa sede referti, rilievi obiettivi o accertamenti a supporto della diagnosi riportata nell'impegnativa.",
+    "agent1_seconds": 6.7,
+    "brighton_context": "",
+    "agent2_seconds": 17.1,
+    "answer_conflict": null,
+    "reasoning": "The evidence describes an outpatient referral for a 54-year-old male with a diagnosis of upper extremity DVT. The text explicitly states that no reports, objective findings, or investigations supporting the diagnosis were received at this location. Crucially, there is no mention of the patient's death, nor any mention of an autopsy being performed. Since the prompt specifies that only post-mortem findings count and imaging on a living patient does not constitute an autopsy, and given the complete absence of any reference to an autopsy in the provided text, the correct classification is that no autopsy was done or the results are unavailable/unknown.\n\nFINAL_OPTION: No autopsy done, unknown if done, or done but results unavailable\nFINAL_ANSWER: 3",
+    "result": {
+      "answer": "No autopsy done, unknown if done, or done but results unavailable"
+    }
+  },
+  "A2": {
+    "query": "thrombectomy, surgical procedure related to DVT",
+    "evidence": "Segnalazione ambulatoriale. Paziente uomo di 54 anni, inviato dallo specialista angiologo con diagnosi di trombosi venosa profonda dell'arto superiore destro. Nessun intervento chirurgico recente. Non sono pervenuti in questa sede referti, rilievi obiettivi o accertamenti a supporto della diagnosi riportata nell'impegnativa.",
+    "agent1_seconds": 6.6,
+    "brighton_context": "",
+    "agent2_seconds": 16.2,
+    "answer_conflict": null,
+    "reasoning": "The evidence explicitly states \"Nessun intervento chirurgico recente\" (No recent surgical intervention). Furthermore, it notes that no reports or objective findings supporting the diagnosis were received at this location. Since there is an explicit negation of surgical procedures and no mention of any other procedure being performed to confirm the DVT in this specific record, the correct classification is that no surgical procedure was done or findings are unknown.\n\nFINAL_OPTION: No surgical procedure done; or, done but either did not confirm presence of DVT or findings unknown; or unknown if done\nFINAL_ANSWER: 3",
+    "result": {
+      "answer": "No surgical procedure done; or, done but either did not confirm presence of DVT or findings unknown; or unknown if done"
+    }
+  },
+  "A3_1": {
+    "query": "ultrasound, CT, MRI, venography: imaging outcome for deep vein thrombosis",
+    "evidence": "Segnalazione ambulatoriale. Paziente uomo di 54 anni, inviato dallo specialista angiologo con diagnosi di trombosi venosa profonda dell'arto superiore destro. Nessun intervento chirurgico recente. Non sono pervenuti in questa sede referti, rilievi obiettivi o accertamenti a supporto della diagnosi riportata nell'impegnativa.",
+    "agent1_seconds": 6.8,
+    "brighton_context": "",
+    "agent2_seconds": 17.5,
+    "answer_conflict": null,
+    "reasoning": "The evidence states that the patient was referred with a diagnosis of deep vein thrombosis (DVT) but explicitly notes that \"no reports, objective findings, or investigations supporting the diagnosis reported in the referral have arrived at this location\" (\"Non sono pervenuti... referti, rilievi obiettivi o accertamenti\"). This indicates that while a clinical suspicion exists, no imaging studies or other diagnostic tests were performed or their results provided to confirm the condition. Therefore, we cannot say an imaging study confirmed DVT, nor can we say one was done and ruled it out; rather, the necessary evidence (imaging results) is missing/unknown.\n\nFINAL_OPTION: No imaging studies done, unknown if done, or done but results unknown\nFINAL_ANSWER: 3",
+    "result": {
+      "answer": "No imaging studies done, unknown if done, or done but results unknown"
+    }
+  },
+  "A3_2": {
+    "query": "type of imaging study performed: compression ultrasonography, doppler, venography",
+    "evidence": "Segnalazione ambulatoriale. Paziente uomo di 54 anni, inviato dallo specialista angiologo con diagnosi di trombosi venosa profonda dell'arto superiore destro. Nessun intervento chirurgico recente. Non sono pervenuti in questa sede referti, rilievi obiettivi o accertamenti a supporto della diagnosi riportata nell'impegnativa.",
+    "agent1_seconds": 6.7,
+    "brighton_context": "",
+    "agent2_seconds": 26.2,
+    "answer_conflict": null,
+    "reasoning": "The evidence states that the patient was referred with a diagnosis of upper extremity deep vein thrombosis (DVT), but explicitly notes that \"No reports, objective findings, or investigations supporting the diagnosis reported in the referral have arrived at this location\" (\"Non sono pervenuti in questa sede referti, rilievi obiettivi o accertamenti a supporto della diagnosi riportata nell'impegnativa\"). Therefore, there is no evidence that any specific imaging modality (such as ultrasound, CT, MR, or venography) was performed or confirmed the diagnosis within the context of this record. Since no specific diagnostic test is documented as having been performed to confirm the DVT in this setting, none of the specific options 1-4 apply. The option \"Other\" typically refers to a specific alternative imaging test that *was* performed (e.g., impedance plethysmography). However, since *no* investigations are reported as having arrived or being available, we cannot confirm that an \"Other\" test was performed either. The prompt asks to determine the correct answer based on evidence. If no test is mentioned as performed, and specifically negated by the statement that no supporting investigations arrived, then none of the specific diagnostic categories can be selected as confirmed/performed. However, looking at the strict instruction: \"If the evidence does not mention a symptom or finding at all, do not assume it is absent.\" But here it explicitly says investigations did *not* arrive. Thus, we cannot select any specific modality. Is \"Other\" appropriate? \"Other\" is defined as \"An imaging test that is none of the four named modalities...\". This implies a test *was* done. Since no test is confirmed to have been done/reported here, none of the options 1-5 are supported by evidence of performance. Therefore, none apply.\n\nFINAL_OPTION: none\nFINAL_ANSWER: none",
+    "result": {
+      "studies": []
+    }
+  },
+  "B1_1": {
+    "query": "reported symptoms or signs of deep vein thrombosis",
+    "evidence": "Segnalazione ambulatoriale. Paziente uomo di 54 anni, inviato dallo specialista angiologo con diagnosi di trombosi venosa profonda dell'arto superiore destro. Nessun intervento chirurgico recente. Non sono pervenuti in questa sede referti, rilievi obiettivi o accertamenti a supporto della diagnosi riportata nell'impegnativa.",
+    "agent1_seconds": 7.0,
+    "brighton_context": "",
+    "agent2_seconds": 18.9,
+    "answer_conflict": null,
+    "reasoning": "The evidence states that the patient was referred with a diagnosis of upper extremity DVT, but explicitly notes that \"No reports, objective findings, or investigations supporting the diagnosis reported in the referral have arrived at this location\" (\"Non sono pervenuti... referti, rilievi obiettivi o accertamenti\"). This means the current record contains no documentation of specific symptoms or signs (such as swelling or pain) observed by the clinician reviewing this note. Since the record is silent on whether the patient actually exhibited these symptoms (it only lacks the *reports* of them), we do not know if a DVT syndrome was present or reported in the clinical assessment available here. The absence of the supporting documents means the information regarding the presence of signs/symptoms is missing from this specific evidence, making it unknown rather than explicitly negated.\n\nFINAL_OPTION: It is unknown if there was a report of a DVT syndrome\nFINAL_ANSWER: 3",
+    "result": {
+      "answer": "It is unknown if there was a report of a DVT syndrome"
+    }
+  },
+  "B1_2": {
+    "query": "deep vein thrombosis lower extremity or upper extremity",
+    "evidence": "Segnalazione ambulatoriale. Paziente uomo di 54 anni, inviato dallo specialista angiologo con diagnosi di trombosi venosa profonda dell'arto superiore destro. Nessun intervento chirurgico recente. Non sono pervenuti in questa sede referti, rilievi obiettivi o accertamenti a supporto della diagnosi riportata nell'impegnativa.",
+    "agent1_seconds": 7.0,
+    "brighton_context": "",
+    "agent2_seconds": 15.3,
+    "answer_conflict": null,
+    "reasoning": "The evidence explicitly states that the patient was referred with a diagnosis of \"trombosi venosa profonda dell'arto superiore destro\" (deep vein thrombosis of the right upper extremity). Although no supporting reports or objective findings were received at this location, the clinical referral specifically identifies an upper extremity DVT. There is no mention of lower extremity involvement.\n\nFINAL_OPTION: Upper extremity DVT\nFINAL_ANSWER: 2",
+    "result": {
+      "types": [
+        "Upper extremity DVT"
+      ]
+    }
+  },
+  "B2": {
+    "query": "calf pain, swelling, oedema, redness, warmth, absent pulses",
+    "evidence": "Segnalazione ambulatoriale. Paziente uomo di 54 anni, inviato dallo specialista angiologo con diagnosi di trombosi venosa profonda dell'arto superiore destro. Nessun intervento chirurgico recente. Non sono pervenuti in questa sede referti, rilievi obiettivi o accertamenti a supporto della diagnosi riportata nell'impegnativa.",
+    "agent1_seconds": 6.8,
+    "brighton_context": "",
+    "agent2_seconds": 18.6,
+    "answer_conflict": null,
+    "reasoning": "The evidence states that the patient was referred with a diagnosis of upper extremity deep vein thrombosis (DVT), but explicitly notes that \"No reports, objective findings, or investigations supporting the diagnosis reported in the referral have arrived at this location\" (\"Non sono pervenuti in questa sede referti, rilievi obiettivi o accertamenti a supporto della diagnosi riportata nell'impegnativa\"). Consequently, there is no clinical evidence provided regarding specific symptoms such as calf pain, leg swelling, absent pulses, or redness/warmth. Since the text does not describe these findings as present, nor does it explicitly rule them out (it simply states no supporting data arrived), their presence is unknown based on the provided text. Therefore, none of the specific symptoms 1-4 can be confirmed as present.\n\nFINAL_OPTION: None of the above were present or it is unknown if any of 1-4 were present\nFINAL_ANSWER: 5",
+    "result": {
+      "symptoms": [
+        "None of the above were present or it is unknown if any of 1-4 were present"
+      ]
+    }
+  },
+  "C": {
+    "query": "D-dimer value, test date, laboratory upper limit of normal",
+    "evidence": "Segnalazione ambulatoriale. Paziente uomo di 54 anni, inviato dallo specialista angiologo con diagnosi di trombosi venosa profonda dell'arto superiore destro. Nessun intervento chirurgico recente. Non sono pervenuti in questa sede referti, rilievi obiettivi o accertamenti a supporto della diagnosi riportata nell'impegnativa.",
+    "agent1_seconds": 6.7,
+    "brighton_context": "",
+    "agent2_seconds": 17.1,
+    "answer_conflict": null,
+    "reasoning": "The evidence states that the patient was referred with a diagnosis of deep vein thrombosis but explicitly notes that \"No reports, objective findings, or investigations supporting the diagnosis reported in the referral have arrived at this location\" (\"Non sono pervenuti in questa sede referti, rilievi obiettivi o accertamenti a supporto della diagnosi riportata nell'impegnativa\"). Since no diagnostic tests, including D-dimer, were provided or mentioned as having been performed and recorded in this specific clinical note, the status of the D-dimer test is that it was not tested or results are unavailable.\n\nFINAL_OPTION: D-dimer not tested, or tested but results unknown or not available\nFINAL_ANSWER: 3",
+    "result": {
+      "answer": "D-dimer not tested, or tested but results unknown or not available"
+    }
+  },
+  "F": {
+    "query": "diagnosis of deep vein thrombosis reported by specialist",
+    "evidence": "Segnalazione ambulatoriale. Paziente uomo di 54 anni, inviato dallo specialista angiologo con diagnosi di trombosi venosa profonda dell'arto superiore destro. Nessun intervento chirurgico recente. Non sono pervenuti in questa sede referti, rilievi obiettivi o accertamenti a supporto della diagnosi riportata nell'impegnativa.",
+    "agent1_seconds": 6.9,
+    "brighton_context": "",
+    "agent2_seconds": 17.3,
+    "answer_conflict": null,
+    "reasoning": "DETAILS_PRESENT: no\n\nThe evidence states that the patient was referred with a diagnosis of deep vein thrombosis (DVT) of the right upper limb. However, it explicitly notes that \"No reports, objective findings, or investigations supporting the diagnosis reported in the referral have arrived at this location\" (\"Non sono pervenuti in questa sede referti, rilievi obiettivi o accertamenti a supporto della diagnosi riportata nell'impegnativa\"). Therefore, while a diagnosis is mentioned, there are no specific clinical findings (such as imaging results, lab values, or physical exam details) provided in the text to support it. The diagnosis is presented as a bare conclusion without supporting details in this record.\n\nFINAL_OPTION: Yes\nFINAL_ANSWER: 1",
+    "result": {
+      "answer": "Yes"
+    }
+  },
+  "X": {
+    "query": "possible alternative etiologies; clinical syndromes to be differentiated from thrombosis; conditions explaining calf pain, redness, warmth or ankle edema other than DVT",
+    "evidence": "Segnalazione ambulatoriale. Paziente uomo di 54 anni, inviato dallo specialista angiologo con diagnosi di trombosi venosa profonda dell'arto superiore destro. Nessun intervento chirurgico recente. Non sono pervenuti in questa sede referti, rilievi obiettivi o accertamenti a supporto della diagnosi riportata nell'impegnativa.",
+    "agent1_seconds": 7.0,
+    "brighton_context": "",
+    "agent2_seconds": 16.1,
+    "answer_conflict": null,
+    "reasoning": "The evidence states that the patient was referred with a diagnosis of deep vein thrombosis (DVT) of the right upper limb. It explicitly notes that no reports, objective findings, or investigations supporting this diagnosis were received at this location. Crucially, the text does not mention any other disease, condition, or alternative explanation for the patient's illness. Since no competing diagnosis is presented in the record, we cannot conclude that an alternative diagnosis was found. Therefore, based on the provided text, no alternative diagnosis is identified.\n\nFINAL_OPTION: No alternative diagnosis was found to explain the acute illness\nFINAL_ANSWER: 2",
+    "result": {
+      "answer": "No alternative diagnosis was found to explain the acute illness"
+    }
+  },
+  "_run_config": {
+    "extractor_mode": "agentic_graph",
+    "section_gates_enabled": {
+      "keyword": true,
+      "details": false,
+      "absent_pulses": true
+    },
+    "brighton_context_enabled": false,
+    "section_hints_enabled": true,
+    "section_hints_disabled": [
+      "B2"
+    ],
+    "section_hints_fingerprint": {
+      "A1": "94 fc56153ea429",
+      "A2": "226 c42c3b188a45",
+      "A3_1": "277 c59144334788",
+      "A3_2": "143 023c43c73783",
+      "B1_1": "513 a65c3a0069c5",
+      "C": "342 7e8efb23dfc0",
+      "F": "1216 4d54ff2a7269",
+      "X": "260 e4ce4dddf649",
+      "all": "ab63b8e5f5af"
+    },
+    "cross_section_rules_applied": true,
+    "models": {
+      "extractor": "llama3.1:8b-instruct-q4_0",
+      "evaluator": "qwen3.6:27b",
+      "embeddings": "intfloat/multilingual-e5-small"
+    },
+    "environment": {
+      "hostname": "mari",
+      "ollama_version": "ollama version is 0.32.1"
+    },
+    "generation": {
+      "temperature": 0.0,
+      "num_predict": 1024,
+      "num_gpu": 999,
+      "reasoning": false
+    },
+    "retrieval": {
+      "ehr_chunk_size": 800,
+      "ehr_chunk_overlap": 150,
+      "ehr_retriever_k": 5,
+      "brighton_retriever_k": 5
+    }
+  }
+}

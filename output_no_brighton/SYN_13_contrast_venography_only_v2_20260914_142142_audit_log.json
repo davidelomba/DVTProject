@@ -1,0 +1,176 @@
+{
+  "A1": {
+    "query": "autopsy report, necropsy, post-mortem examination, autoptic findings",
+    "evidence": "riferimento del laboratorio. Eseguita ecografia compressiva, risultata non dirimente per artefatti tecnici. Eseguita successivamente flebografia con mezzo di contrasto dell'arto inferiore destro: difetto di riempimento centrale a carico della vena poplitea destra, compatibile con trombosi venosa profonda.\n\nAnamnesi patologica remota: Donna di 47 anni. Nessun intervento chirurgico recente. Non allergie farmacologiche note. Anamnesi farmacologica: levotiroxina 75 mcg al mattino. Anamnesi Prossima: Da 4 giorni dolore al polpaccio ed edema dell'arto inferiore destro. Nega trauma, febbre, dolore toracico e dispnea. Esame obiettivo all'ingresso: Paziente vigile, orientata e collaborante. PA 120/76 mmHg, FC 76 bpm, FR 16 atti/min, SpO2 98% in aria ambiente, TC 36,6°C. Arto inferiore destro con edema del polpaccio e dolorabilita' alla palpazione. Addome trattabile, non dolente. Esami di laboratorio: D-dimero 2.400 ng/mL, superiore al limite superiore di riferimento del laboratorio. Eseguita ecografia compressiva, risultata non dirimente per artefatti tecnici. Eseguita successivamente flebografia con",
+    "agent1_seconds": 7.1,
+    "brighton_context": "",
+    "agent2_seconds": 16.0,
+    "answer_conflict": null,
+    "reasoning": "The evidence describes a living patient undergoing diagnostic imaging (compressive ultrasound and venography) to confirm deep vein thrombosis (DVT). The prompt explicitly states that \"Only post-mortem findings count here\" and that \"Imaging performed on a living patient is not an autopsy.\" Since the text details clinical evaluation of a living individual and does not mention any post-mortem examination or autopsy, no autopsy was performed.\n\nFINAL_OPTION: No autopsy done, unknown if done, or done but results unavailable\nFINAL_ANSWER: 3",
+    "result": {
+      "answer": "No autopsy done, unknown if done, or done but results unavailable"
+    }
+  },
+  "A2": {
+    "query": "thrombectomy, surgical procedure related to DVT",
+    "evidence": "riferimento del laboratorio. Eseguita ecografia compressiva, risultata non dirimente per artefatti tecnici. Eseguita successivamente flebografia con mezzo di contrasto dell'arto inferiore destro: difetto di riempimento centrale a carico della vena poplitea destra, compatibile con trombosi venosa profonda.\n\nAnamnesi patologica remota: Donna di 47 anni. Nessun intervento chirurgico recente. Non allergie farmacologiche note. Anamnesi farmacologica: levotiroxina 75 mcg al mattino. Anamnesi Prossima: Da 4 giorni dolore al polpaccio ed edema dell'arto inferiore destro. Nega trauma, febbre, dolore toracico e dispnea. Esame obiettivo all'ingresso: Paziente vigile, orientata e collaborante. PA 120/76 mmHg, FC 76 bpm, FR 16 atti/min, SpO2 98% in aria ambiente, TC 36,6°C. Arto inferiore destro con edema del polpaccio e dolorabilita' alla palpazione. Addome trattabile, non dolente. Esami di laboratorio: D-dimero 2.400 ng/mL, superiore al limite superiore di riferimento del laboratorio. Eseguita ecografia compressiva, risultata non dirimente per artefatti tecnici. Eseguita successivamente flebografia con",
+    "agent1_seconds": 6.8,
+    "brighton_context": "",
+    "agent2_seconds": 18.0,
+    "answer_conflict": null,
+    "reasoning": "The evidence describes diagnostic imaging procedures: a compressive ultrasound (which was non-diagnostic due to technical artifacts) and a subsequent venography with contrast medium of the right lower limb, which showed a filling defect compatible with deep vein thrombosis (DVT). Venography is a diagnostic imaging procedure, not a surgical intervention or thrombectomy. The text explicitly states \"Nessun intervento chirurgico recente\" (No recent surgical intervention) and does not mention any therapeutic surgical procedure like thrombectomy being performed. Therefore, no surgical procedure was done to confirm or treat the DVT; it was confirmed via diagnostic imaging.\n\nFINAL_OPTION: No surgical procedure done; or, done but either did not confirm presence of DVT or findings unknown; or unknown if done\nFINAL_ANSWER: 3",
+    "result": {
+      "answer": "No surgical procedure done; or, done but either did not confirm presence of DVT or findings unknown; or unknown if done"
+    }
+  },
+  "A3_1": {
+    "query": "ultrasound, CT, MRI, venography: imaging outcome for deep vein thrombosis",
+    "evidence": "riferimento del laboratorio. Eseguita ecografia compressiva, risultata non dirimente per artefatti tecnici. Eseguita successivamente flebografia con mezzo di contrasto dell'arto inferiore destro: difetto di riempimento centrale a carico della vena poplitea destra, compatibile con trombosi venosa profonda.\n\nAnamnesi patologica remota: Donna di 47 anni. Nessun intervento chirurgico recente. Non allergie farmacologiche note. Anamnesi farmacologica: levotiroxina 75 mcg al mattino. Anamnesi Prossima: Da 4 giorni dolore al polpaccio ed edema dell'arto inferiore destro. Nega trauma, febbre, dolore toracico e dispnea. Esame obiettivo all'ingresso: Paziente vigile, orientata e collaborante. PA 120/76 mmHg, FC 76 bpm, FR 16 atti/min, SpO2 98% in aria ambiente, TC 36,6°C. Arto inferiore destro con edema del polpaccio e dolorabilita' alla palpazione. Addome trattabile, non dolente. Esami di laboratorio: D-dimero 2.400 ng/mL, superiore al limite superiore di riferimento del laboratorio. Eseguita ecografia compressiva, risultata non dirimente per artefatti tecnici. Eseguita successivamente flebografia con",
+    "agent1_seconds": 7.3,
+    "brighton_context": "",
+    "agent2_seconds": 15.8,
+    "answer_conflict": null,
+    "reasoning": "The evidence explicitly states that a compressive ultrasound was performed but was non-diagnostic due to technical artifacts. Subsequently, a venography (flebografia) of the right lower limb was performed, which showed a filling defect in the popliteal vein compatible with deep vein thrombosis (DVT). Since venography is an imaging study and it confirmed the presence of DVT, the criteria for option 1 are met.\n\nFINAL_OPTION: ≥1 imaging study was done and confirmed DVT\nFINAL_ANSWER: 1",
+    "result": {
+      "answer": "≥1 imaging study was done and confirmed DVT"
+    }
+  },
+  "A3_2": {
+    "query": "type of imaging study performed: compression ultrasonography, doppler, venography",
+    "evidence": "riferimento del laboratorio. Eseguita ecografia compressiva, risultata non dirimente per artefatti tecnici. Eseguita successivamente flebografia con mezzo di contrasto dell'arto inferiore destro: difetto di riempimento centrale a carico della vena poplitea destra, compatibile con trombosi venosa profonda.\n\nAnamnesi patologica remota: Donna di 47 anni. Nessun intervento chirurgico recente. Non allergie farmacologiche note. Anamnesi farmacologica: levotiroxina 75 mcg al mattino. Anamnesi Prossima: Da 4 giorni dolore al polpaccio ed edema dell'arto inferiore destro. Nega trauma, febbre, dolore toracico e dispnea. Esame obiettivo all'ingresso: Paziente vigile, orientata e collaborante. PA 120/76 mmHg, FC 76 bpm, FR 16 atti/min, SpO2 98% in aria ambiente, TC 36,6°C. Arto inferiore destro con edema del polpaccio e dolorabilita' alla palpazione. Addome trattabile, non dolente. Esami di laboratorio: D-dimero 2.400 ng/mL, superiore al limite superiore di riferimento del laboratorio. Eseguita ecografia compressiva, risultata non dirimente per artefatti tecnici. Eseguita successivamente flebografia con",
+    "agent1_seconds": 7.0,
+    "brighton_context": "",
+    "agent2_seconds": 17.3,
+    "answer_conflict": null,
+    "reasoning": "The evidence explicitly states that a compression ultrasound (\"ecografia compressiva\") was performed but was non-diagnostic due to technical artifacts. Subsequently, a contrast venography (\"flebografia con mezzo di contrasto\") was performed, which showed a filling defect compatible with deep vein thrombosis (DVT). Therefore, both Compression ultrasonography and Contrast venography were used as imaging tests in this case. Doppler/Duplex Ultrasound is not explicitly mentioned (only compression ultrasound is specified), nor are CT/MR venography or other modalities.\n\nFINAL_OPTION: Compression ultrasonography; Contrast venography\nFINAL_ANSWER: 1; 3",
+    "result": {
+      "studies": [
+        "Compression ultrasonography",
+        "Contrast venography"
+      ]
+    }
+  },
+  "B1_1": {
+    "query": "reported symptoms or signs of deep vein thrombosis",
+    "evidence": "riferimento del laboratorio. Eseguita ecografia compressiva, risultata non dirimente per artefatti tecnici. Eseguita successivamente flebografia con mezzo di contrasto dell'arto inferiore destro: difetto di riempimento centrale a carico della vena poplitea destra, compatibile con trombosi venosa profonda.\n\nAnamnesi patologica remota: Donna di 47 anni. Nessun intervento chirurgico recente. Non allergie farmacologiche note. Anamnesi farmacologica: levotiroxina 75 mcg al mattino. Anamnesi Prossima: Da 4 giorni dolore al polpaccio ed edema dell'arto inferiore destro. Nega trauma, febbre, dolore toracico e dispnea. Esame obiettivo all'ingresso: Paziente vigile, orientata e collaborante. PA 120/76 mmHg, FC 76 bpm, FR 16 atti/min, SpO2 98% in aria ambiente, TC 36,6°C. Arto inferiore destro con edema del polpaccio e dolorabilita' alla palpazione. Addome trattabile, non dolente. Esami di laboratorio: D-dimero 2.400 ng/mL, superiore al limite superiore di riferimento del laboratorio. Eseguita ecografia compressiva, risultata non dirimente per artefatti tecnici. Eseguita successivamente flebografia con",
+    "agent1_seconds": 7.3,
+    "brighton_context": "",
+    "agent2_seconds": 17.3,
+    "answer_conflict": null,
+    "reasoning": "The evidence explicitly reports symptoms and signs consistent with DVT in the \"Anamnesi Prossima\" (Recent History) and \"Esame obiettivo\" (Physical Exam) sections. Specifically, it states \"dolore al polpaccio ed edema dell'arto inferiore destro\" (calf pain and swelling of the right lower limb) and confirms \"edema del polpaccio e dolorabilita' alla palpazione\" (calf swelling and tenderness on palpation). Therefore, there is a clear report of recognized DVT symptoms/signs.\n\nFINAL_OPTION: ≥1 symptom or sign of DVT was reported\nFINAL_ANSWER: 1",
+    "result": {
+      "answer": "≥1 symptom or sign of DVT was reported"
+    }
+  },
+  "B1_2": {
+    "query": "deep vein thrombosis lower extremity or upper extremity",
+    "evidence": "riferimento del laboratorio. Eseguita ecografia compressiva, risultata non dirimente per artefatti tecnici. Eseguita successivamente flebografia con mezzo di contrasto dell'arto inferiore destro: difetto di riempimento centrale a carico della vena poplitea destra, compatibile con trombosi venosa profonda.\n\nAnamnesi patologica remota: Donna di 47 anni. Nessun intervento chirurgico recente. Non allergie farmacologiche note. Anamnesi farmacologica: levotiroxina 75 mcg al mattino. Anamnesi Prossima: Da 4 giorni dolore al polpaccio ed edema dell'arto inferiore destro. Nega trauma, febbre, dolore toracico e dispnea. Esame obiettivo all'ingresso: Paziente vigile, orientata e collaborante. PA 120/76 mmHg, FC 76 bpm, FR 16 atti/min, SpO2 98% in aria ambiente, TC 36,6°C. Arto inferiore destro con edema del polpaccio e dolorabilita' alla palpazione. Addome trattabile, non dolente. Esami di laboratorio: D-dimero 2.400 ng/mL, superiore al limite superiore di riferimento del laboratorio. Eseguita ecografia compressiva, risultata non dirimente per artefatti tecnici. Eseguita successivamente flebografia con",
+    "agent1_seconds": 6.9,
+    "brighton_context": "",
+    "agent2_seconds": 15.7,
+    "answer_conflict": null,
+    "reasoning": "The evidence explicitly describes a filling defect in the right popliteal vein (\"vena poplitea destra\") identified via phlebography, which is compatible with deep vein thrombosis (DVT). The popliteal vein is located in the lower extremity. There is no mention of thrombosis in the upper extremities. Therefore, the condition corresponds to Lower extremity DVT.\n\nFINAL_OPTION: Lower extremity DVT\nFINAL_ANSWER: 1",
+    "result": {
+      "types": [
+        "Lower extremity DVT"
+      ]
+    }
+  },
+  "B2": {
+    "query": "calf pain, swelling, oedema, redness, warmth, absent pulses",
+    "evidence": "Anamnesi patologica remota: Donna di 47 anni. Nessun intervento chirurgico recente. Non allergie farmacologiche note. Anamnesi farmacologica: levotiroxina 75 mcg al mattino. Anamnesi Prossima: Da 4 giorni dolore al polpaccio ed edema dell'arto inferiore destro. Nega trauma, febbre, dolore toracico e dispnea. Esame obiettivo all'ingresso: Paziente vigile, orientata e collaborante. PA 120/76 mmHg, FC 76 bpm, FR 16 atti/min, SpO2 98% in aria ambiente, TC 36,6°C. Arto inferiore destro con edema del polpaccio e dolorabilita' alla palpazione. Addome trattabile, non dolente. Esami di laboratorio: D-dimero 2.400 ng/mL, superiore al limite superiore di riferimento del laboratorio. Eseguita ecografia compressiva, risultata non dirimente per artefatti tecnici. Eseguita successivamente flebografia con\n\nriferimento del laboratorio. Eseguita ecografia compressiva, risultata non dirimente per artefatti tecnici. Eseguita successivamente flebografia con mezzo di contrasto dell'arto inferiore destro: difetto di riempimento centrale a carico della vena poplitea destra, compatibile con trombosi venosa profonda.",
+    "agent1_seconds": 7.5,
+    "brighton_context": "",
+    "agent2_seconds": 18.7,
+    "answer_conflict": null,
+    "reasoning": "The patient's history explicitly states \"dolore al polpaccio\" (calf pain) and the physical examination notes \"dolorabilita' alla palpazione\" (tenderness on palpation) of the right lower limb, which supports Option 1. Additionally, the history mentions \"edema dell'arto inferiore destro\" (edema of the right lower limb) and the exam confirms \"edema del polpaccio\" (calf edema), supporting Option 2. The text explicitly negates trauma, fever, chest pain, and dyspnea, but does not mention absent pulses or specific signs of redness/warmth, so Options 3 and 4 are not supported by the evidence provided.\n\nFINAL_OPTION: Calf pain or tenderness; Leg swelling or pitting oedema\nFINAL_ANSWER: 1; 2",
+    "result": {
+      "symptoms": [
+        "Calf pain or tenderness",
+        "Leg swelling or pitting oedema"
+      ]
+    }
+  },
+  "C": {
+    "query": "D-dimer value, test date, laboratory upper limit of normal",
+    "evidence": "Anamnesi patologica remota: Donna di 47 anni. Nessun intervento chirurgico recente. Non allergie farmacologiche note. Anamnesi farmacologica: levotiroxina 75 mcg al mattino. Anamnesi Prossima: Da 4 giorni dolore al polpaccio ed edema dell'arto inferiore destro. Nega trauma, febbre, dolore toracico e dispnea. Esame obiettivo all'ingresso: Paziente vigile, orientata e collaborante. PA 120/76 mmHg, FC 76 bpm, FR 16 atti/min, SpO2 98% in aria ambiente, TC 36,6°C. Arto inferiore destro con edema del polpaccio e dolorabilita' alla palpazione. Addome trattabile, non dolente. Esami di laboratorio: D-dimero 2.400 ng/mL, superiore al limite superiore di riferimento del laboratorio. Eseguita ecografia compressiva, risultata non dirimente per artefatti tecnici. Eseguita successivamente flebografia con\n\nriferimento del laboratorio. Eseguita ecografia compressiva, risultata non dirimente per artefatti tecnici. Eseguita successivamente flebografia con mezzo di contrasto dell'arto inferiore destro: difetto di riempimento centrale a carico della vena poplitea destra, compatibile con trombosi venosa profonda.",
+    "agent1_seconds": 7.0,
+    "brighton_context": "",
+    "agent2_seconds": 15.5,
+    "answer_conflict": null,
+    "reasoning": "The evidence explicitly states \"D-dimero 2.400 ng/mL, superiore al limite superiore di riferimento del laboratorio,\" which translates to D-dimer 2,400 ng/mL, higher than the laboratory's upper reference limit. This confirms that the test was performed and the result exceeded the normal range.\n\nFINAL_OPTION: D-dimer exceeded test lab's upper limit of normal.\nFINAL_ANSWER: 1",
+    "result": {
+      "answer": "D-dimer exceeded test lab's upper limit of normal."
+    }
+  },
+  "F": {
+    "query": "diagnosis of deep vein thrombosis reported by specialist",
+    "evidence": "riferimento del laboratorio. Eseguita ecografia compressiva, risultata non dirimente per artefatti tecnici. Eseguita successivamente flebografia con mezzo di contrasto dell'arto inferiore destro: difetto di riempimento centrale a carico della vena poplitea destra, compatibile con trombosi venosa profonda.\n\nAnamnesi patologica remota: Donna di 47 anni. Nessun intervento chirurgico recente. Non allergie farmacologiche note. Anamnesi farmacologica: levotiroxina 75 mcg al mattino. Anamnesi Prossima: Da 4 giorni dolore al polpaccio ed edema dell'arto inferiore destro. Nega trauma, febbre, dolore toracico e dispnea. Esame obiettivo all'ingresso: Paziente vigile, orientata e collaborante. PA 120/76 mmHg, FC 76 bpm, FR 16 atti/min, SpO2 98% in aria ambiente, TC 36,6°C. Arto inferiore destro con edema del polpaccio e dolorabilita' alla palpazione. Addome trattabile, non dolente. Esami di laboratorio: D-dimero 2.400 ng/mL, superiore al limite superiore di riferimento del laboratorio. Eseguita ecografia compressiva, risultata non dirimente per artefatti tecnici. Eseguita successivamente flebografia con",
+    "agent1_seconds": 7.2,
+    "brighton_context": "",
+    "agent2_seconds": 17.4,
+    "answer_conflict": null,
+    "reasoning": "DETAILS_PRESENT: yes\nThe evidence explicitly describes specific clinical findings supporting the diagnosis of deep vein thrombosis (DVT). It details the results of a contrast venography (\"flebografia\") showing a \"central filling defect in the right popliteal vein\" (\"difetto di riempimento centrale a carico della vena poplitea destra\"), which is compatible with DVT. Additionally, it provides laboratory data (elevated D-dimer) and physical examination findings (edema, pain). Therefore, the diagnosis is not a bare conclusion but is supported by specific imaging and clinical details.\n\nFINAL_OPTION: No\nFINAL_ANSWER: 2",
+    "result": {
+      "answer": "No"
+    }
+  },
+  "X": {
+    "query": "possible alternative etiologies; clinical syndromes to be differentiated from thrombosis; conditions explaining calf pain, redness, warmth or ankle edema other than DVT",
+    "evidence": "Anamnesi patologica remota: Donna di 47 anni. Nessun intervento chirurgico recente. Non allergie farmacologiche note. Anamnesi farmacologica: levotiroxina 75 mcg al mattino. Anamnesi Prossima: Da 4 giorni dolore al polpaccio ed edema dell'arto inferiore destro. Nega trauma, febbre, dolore toracico e dispnea. Esame obiettivo all'ingresso: Paziente vigile, orientata e collaborante. PA 120/76 mmHg, FC 76 bpm, FR 16 atti/min, SpO2 98% in aria ambiente, TC 36,6°C. Arto inferiore destro con edema del polpaccio e dolorabilita' alla palpazione. Addome trattabile, non dolente. Esami di laboratorio: D-dimero 2.400 ng/mL, superiore al limite superiore di riferimento del laboratorio. Eseguita ecografia compressiva, risultata non dirimente per artefatti tecnici. Eseguita successivamente flebografia con\n\nriferimento del laboratorio. Eseguita ecografia compressiva, risultata non dirimente per artefatti tecnici. Eseguita successivamente flebografia con mezzo di contrasto dell'arto inferiore destro: difetto di riempimento centrale a carico della vena poplitea destra, compatibile con trombosi venosa profonda.",
+    "agent1_seconds": 6.8,
+    "brighton_context": "",
+    "agent2_seconds": 17.0,
+    "answer_conflict": null,
+    "reasoning": "The clinical evidence describes a patient presenting with right lower limb pain and edema, elevated D-dimer, and subsequent imaging findings (venography) showing a filling defect in the popliteal vein compatible with deep vein thrombosis (DVT). The text explicitly identifies DVT as the condition compatible with the findings. There is no mention of any other disease process being identified as the cause of the acute illness, nor is an alternative diagnosis presented as the final explanation for the symptoms. Therefore, no alternative diagnosis was found to explain the acute illness; the illness is explained by DVT.\n\nFINAL_OPTION: No alternative diagnosis was found to explain the acute illness\nFINAL_ANSWER: 2",
+    "result": {
+      "answer": "No alternative diagnosis was found to explain the acute illness"
+    }
+  },
+  "_run_config": {
+    "extractor_mode": "agentic_graph",
+    "section_gates_enabled": {
+      "keyword": true,
+      "details": false,
+      "absent_pulses": true
+    },
+    "brighton_context_enabled": false,
+    "section_hints_enabled": true,
+    "section_hints_disabled": [
+      "B2"
+    ],
+    "section_hints_fingerprint": {
+      "A1": "94 fc56153ea429",
+      "A2": "226 c42c3b188a45",
+      "A3_1": "277 c59144334788",
+      "A3_2": "143 023c43c73783",
+      "B1_1": "513 a65c3a0069c5",
+      "C": "342 7e8efb23dfc0",
+      "F": "1216 4d54ff2a7269",
+      "X": "260 e4ce4dddf649",
+      "all": "ab63b8e5f5af"
+    },
+    "cross_section_rules_applied": true,
+    "models": {
+      "extractor": "llama3.1:8b-instruct-q4_0",
+      "evaluator": "qwen3.6:27b",
+      "embeddings": "intfloat/multilingual-e5-small"
+    },
+    "environment": {
+      "hostname": "mari",
+      "ollama_version": "ollama version is 0.32.1"
+    },
+    "generation": {
+      "temperature": 0.0,
+      "num_predict": 1024,
+      "num_gpu": 999,
+      "reasoning": false
+    },
+    "retrieval": {
+      "ehr_chunk_size": 800,
+      "ehr_chunk_overlap": 150,
+      "ehr_retriever_k": 5,
+      "brighton_retriever_k": 5
+    }
+  }
+}

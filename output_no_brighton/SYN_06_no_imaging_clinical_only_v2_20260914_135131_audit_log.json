@@ -1,0 +1,173 @@
+{
+  "A1": {
+    "query": "autopsy report, necropsy, post-mortem examination, autoptic findings",
+    "evidence": "Anamnesi patologica remota: Uomo di 39 anni. Nessun intervento chirurgico recente. Non allergie farmacologiche note. Anamnesi farmacologica: nessuna terapia cronica in atto. Anamnesi Prossima: Da 24 ore dolore al polpaccio sinistro con edema lieve dell'arto inferiore omolaterale. Nega trauma, febbre, dolore toracico, dispnea ed emottisi. Esame obiettivo all'ingresso: Paziente vigile, orientato e collaborante, eupnoico a riposo. PA 126/78 mmHg, FC 76 bpm, FR 15 atti/min, SpO2 99% in aria ambiente, TC 36,7°C. Arto inferiore sinistro con edema lieve del polpaccio e dolorabilita' alla palpazione. Addome trattabile, non dolente. Esami di laboratorio: D-dimero 980 ng/mL, superiore al limite superiore di riferimento del laboratorio. Nessun esame di imaging venoso eseguito in questa sede: il\n\nD-dimero 980 ng/mL, superiore al limite superiore di riferimento del laboratorio. Nessun esame di imaging venoso eseguito in questa sede: il paziente e' stato dimesso prima che fosse possibile eseguirlo. Nota dello specialista: sospetta trombosi venosa profonda sulla base del quadro clinico e del D-dimero elevato; il paziente resta in attesa di ecocolordoppler in regime ambulatoriale.",
+    "agent1_seconds": 7.0,
+    "brighton_context": "",
+    "agent2_seconds": 15.7,
+    "answer_conflict": null,
+    "reasoning": "The evidence describes a living patient who was discharged from the hospital and is awaiting outpatient follow-up. There is no mention of the patient's death or any post-mortem examination. Since an autopsy is defined as a post-mortem procedure, and the text explicitly states the patient was alive and discharged, no autopsy was performed. Therefore, the status regarding autopsy findings is that none was done.\n\nFINAL_OPTION: No autopsy done, unknown if done, or done but results unavailable\nFINAL_ANSWER: 3",
+    "result": {
+      "answer": "No autopsy done, unknown if done, or done but results unavailable"
+    }
+  },
+  "A2": {
+    "query": "thrombectomy, surgical procedure related to DVT",
+    "evidence": "D-dimero 980 ng/mL, superiore al limite superiore di riferimento del laboratorio. Nessun esame di imaging venoso eseguito in questa sede: il paziente e' stato dimesso prima che fosse possibile eseguirlo. Nota dello specialista: sospetta trombosi venosa profonda sulla base del quadro clinico e del D-dimero elevato; il paziente resta in attesa di ecocolordoppler in regime ambulatoriale.\n\nAnamnesi patologica remota: Uomo di 39 anni. Nessun intervento chirurgico recente. Non allergie farmacologiche note. Anamnesi farmacologica: nessuna terapia cronica in atto. Anamnesi Prossima: Da 24 ore dolore al polpaccio sinistro con edema lieve dell'arto inferiore omolaterale. Nega trauma, febbre, dolore toracico, dispnea ed emottisi. Esame obiettivo all'ingresso: Paziente vigile, orientato e collaborante, eupnoico a riposo. PA 126/78 mmHg, FC 76 bpm, FR 15 atti/min, SpO2 99% in aria ambiente, TC 36,7°C. Arto inferiore sinistro con edema lieve del polpaccio e dolorabilita' alla palpazione. Addome trattabile, non dolente. Esami di laboratorio: D-dimero 980 ng/mL, superiore al limite superiore di riferimento del laboratorio. Nessun esame di imaging venoso eseguito in questa sede: il",
+    "agent1_seconds": 6.9,
+    "brighton_context": "",
+    "agent2_seconds": 17.1,
+    "answer_conflict": null,
+    "reasoning": "The evidence explicitly states \"Nessun esame di imaging venoso eseguito\" (No venous imaging exam performed) and notes that the patient was discharged before it could be done. Furthermore, the anamnesis states \"Nessun intervento chirurgico recente\" (No recent surgical intervention). Since no surgical procedure or diagnostic imaging confirming DVT was performed during this encounter, and the text explicitly negates the performance of these procedures, option 3 is the correct choice.\n\nFINAL_OPTION: No surgical procedure done; or, done but either did not confirm presence of DVT or findings unknown; or unknown if done\nFINAL_ANSWER: 3",
+    "result": {
+      "answer": "No surgical procedure done; or, done but either did not confirm presence of DVT or findings unknown; or unknown if done"
+    }
+  },
+  "A3_1": {
+    "query": "ultrasound, CT, MRI, venography: imaging outcome for deep vein thrombosis",
+    "evidence": "D-dimero 980 ng/mL, superiore al limite superiore di riferimento del laboratorio. Nessun esame di imaging venoso eseguito in questa sede: il paziente e' stato dimesso prima che fosse possibile eseguirlo. Nota dello specialista: sospetta trombosi venosa profonda sulla base del quadro clinico e del D-dimero elevato; il paziente resta in attesa di ecocolordoppler in regime ambulatoriale.\n\nAnamnesi patologica remota: Uomo di 39 anni. Nessun intervento chirurgico recente. Non allergie farmacologiche note. Anamnesi farmacologica: nessuna terapia cronica in atto. Anamnesi Prossima: Da 24 ore dolore al polpaccio sinistro con edema lieve dell'arto inferiore omolaterale. Nega trauma, febbre, dolore toracico, dispnea ed emottisi. Esame obiettivo all'ingresso: Paziente vigile, orientato e collaborante, eupnoico a riposo. PA 126/78 mmHg, FC 76 bpm, FR 15 atti/min, SpO2 99% in aria ambiente, TC 36,7°C. Arto inferiore sinistro con edema lieve del polpaccio e dolorabilita' alla palpazione. Addome trattabile, non dolente. Esami di laboratorio: D-dimero 980 ng/mL, superiore al limite superiore di riferimento del laboratorio. Nessun esame di imaging venoso eseguito in questa sede: il",
+    "agent1_seconds": 7.0,
+    "brighton_context": "",
+    "agent2_seconds": 16.1,
+    "answer_conflict": null,
+    "reasoning": "The evidence explicitly states \"Nessun esame di imaging venoso eseguito in questa sede\" (No venous imaging exam performed at this site) and notes that the patient was discharged before it could be performed. Although a specialist suspects DVT based on clinical presentation and elevated D-dimer, no imaging study (such as ultrasound or CT) was actually conducted to confirm or rule out the diagnosis during this encounter. Therefore, no imaging studies were done.\n\nFINAL_OPTION: No imaging studies done, unknown if done, or done but results unknown\nFINAL_ANSWER: 3",
+    "result": {
+      "answer": "No imaging studies done, unknown if done, or done but results unknown"
+    }
+  },
+  "A3_2": {
+    "query": "type of imaging study performed: compression ultrasonography, doppler, venography",
+    "evidence": "D-dimero 980 ng/mL, superiore al limite superiore di riferimento del laboratorio. Nessun esame di imaging venoso eseguito in questa sede: il paziente e' stato dimesso prima che fosse possibile eseguirlo. Nota dello specialista: sospetta trombosi venosa profonda sulla base del quadro clinico e del D-dimero elevato; il paziente resta in attesa di ecocolordoppler in regime ambulatoriale.\n\nAnamnesi patologica remota: Uomo di 39 anni. Nessun intervento chirurgico recente. Non allergie farmacologiche note. Anamnesi farmacologica: nessuna terapia cronica in atto. Anamnesi Prossima: Da 24 ore dolore al polpaccio sinistro con edema lieve dell'arto inferiore omolaterale. Nega trauma, febbre, dolore toracico, dispnea ed emottisi. Esame obiettivo all'ingresso: Paziente vigile, orientato e collaborante, eupnoico a riposo. PA 126/78 mmHg, FC 76 bpm, FR 15 atti/min, SpO2 99% in aria ambiente, TC 36,7°C. Arto inferiore sinistro con edema lieve del polpaccio e dolorabilita' alla palpazione. Addome trattabile, non dolente. Esami di laboratorio: D-dimero 980 ng/mL, superiore al limite superiore di riferimento del laboratorio. Nessun esame di imaging venoso eseguito in questa sede: il",
+    "agent1_seconds": 7.0,
+    "brighton_context": "",
+    "agent2_seconds": 19.6,
+    "answer_conflict": null,
+    "reasoning": "The evidence explicitly states \"Nessun esame di imaging venoso eseguito in questa sede\" (No venous imaging exam performed at this site) and notes that the patient was discharged before it could be performed. Although a Doppler ultrasound is mentioned, it is described as pending (\"in attesa di\") for an outpatient setting, meaning it has not yet been performed. Therefore, none of the specific imaging modalities listed (Compression ultrasonography, CT/MR venography, Contrast venography, or Doppler/Duplex Ultrasound) were actually executed to confirm or rule out DVT in this encounter. Since no imaging was done, options 1-4 are incorrect. Option 5 ('Other') is defined as an imaging test that *is* performed but is not one of the four named modalities; since no imaging was performed at all, 'Other' does not apply either.\n\nFINAL_OPTION: none\nFINAL_ANSWER: none",
+    "result": {
+      "studies": []
+    }
+  },
+  "B1_1": {
+    "query": "reported symptoms or signs of deep vein thrombosis",
+    "evidence": "D-dimero 980 ng/mL, superiore al limite superiore di riferimento del laboratorio. Nessun esame di imaging venoso eseguito in questa sede: il paziente e' stato dimesso prima che fosse possibile eseguirlo. Nota dello specialista: sospetta trombosi venosa profonda sulla base del quadro clinico e del D-dimero elevato; il paziente resta in attesa di ecocolordoppler in regime ambulatoriale.\n\nAnamnesi patologica remota: Uomo di 39 anni. Nessun intervento chirurgico recente. Non allergie farmacologiche note. Anamnesi farmacologica: nessuna terapia cronica in atto. Anamnesi Prossima: Da 24 ore dolore al polpaccio sinistro con edema lieve dell'arto inferiore omolaterale. Nega trauma, febbre, dolore toracico, dispnea ed emottisi. Esame obiettivo all'ingresso: Paziente vigile, orientato e collaborante, eupnoico a riposo. PA 126/78 mmHg, FC 76 bpm, FR 15 atti/min, SpO2 99% in aria ambiente, TC 36,7°C. Arto inferiore sinistro con edema lieve del polpaccio e dolorabilita' alla palpazione. Addome trattabile, non dolente. Esami di laboratorio: D-dimero 980 ng/mL, superiore al limite superiore di riferimento del laboratorio. Nessun esame di imaging venoso eseguito in questa sede: il",
+    "agent1_seconds": 7.0,
+    "brighton_context": "",
+    "agent2_seconds": 16.5,
+    "answer_conflict": null,
+    "reasoning": "The evidence explicitly reports symptoms and signs consistent with DVT in the \"Anamnesi Prossima\" and \"Esame obiettivo\" sections. Specifically, it notes \"dolore al polpaccio sinistro\" (left calf pain), \"edema lieve dell'arto inferiore omolaterale\" (mild edema of the ipsilateral lower limb), and \"dolorabilita' alla palpazione\" (pain on palpation). Since these are recognized signs and symptoms of DVT, there is a report of them.\n\nFINAL_OPTION: ≥1 symptom or sign of DVT was reported\nFINAL_ANSWER: 1",
+    "result": {
+      "answer": "≥1 symptom or sign of DVT was reported"
+    }
+  },
+  "B1_2": {
+    "query": "deep vein thrombosis lower extremity or upper extremity",
+    "evidence": "D-dimero 980 ng/mL, superiore al limite superiore di riferimento del laboratorio. Nessun esame di imaging venoso eseguito in questa sede: il paziente e' stato dimesso prima che fosse possibile eseguirlo. Nota dello specialista: sospetta trombosi venosa profonda sulla base del quadro clinico e del D-dimero elevato; il paziente resta in attesa di ecocolordoppler in regime ambulatoriale.\n\nAnamnesi patologica remota: Uomo di 39 anni. Nessun intervento chirurgico recente. Non allergie farmacologiche note. Anamnesi farmacologica: nessuna terapia cronica in atto. Anamnesi Prossima: Da 24 ore dolore al polpaccio sinistro con edema lieve dell'arto inferiore omolaterale. Nega trauma, febbre, dolore toracico, dispnea ed emottisi. Esame obiettivo all'ingresso: Paziente vigile, orientato e collaborante, eupnoico a riposo. PA 126/78 mmHg, FC 76 bpm, FR 15 atti/min, SpO2 99% in aria ambiente, TC 36,7°C. Arto inferiore sinistro con edema lieve del polpaccio e dolorabilita' alla palpazione. Addome trattabile, non dolente. Esami di laboratorio: D-dimero 980 ng/mL, superiore al limite superiore di riferimento del laboratorio. Nessun esame di imaging venoso eseguito in questa sede: il",
+    "agent1_seconds": 7.1,
+    "brighton_context": "",
+    "agent2_seconds": 18.7,
+    "answer_conflict": null,
+    "reasoning": "The evidence describes a 39-year-old male presenting with left calf pain and mild edema of the lower limb, along with an elevated D-dimer. The specialist notes a suspicion of deep vein thrombosis (DVT) based on this clinical picture. The symptoms (calf pain, lower limb edema) and the specific mention of waiting for an \"ecocolordoppler\" (venous ultrasound) in an outpatient setting strongly point towards a suspected DVT in the lower extremity. There is no mention of upper extremity symptoms or suspicion. Although imaging was not performed during this visit to confirm the diagnosis, the clinical presentation and specialist note align with Option 1 (Lower extremity DVT) as the condition being evaluated/suspected, whereas Option 2 is not supported by any evidence.\n\nFINAL_OPTION: Lower extremity DVT\nFINAL_ANSWER: 1",
+    "result": {
+      "types": [
+        "Lower extremity DVT"
+      ]
+    }
+  },
+  "B2": {
+    "query": "calf pain, swelling, oedema, redness, warmth, absent pulses",
+    "evidence": "Anamnesi patologica remota: Uomo di 39 anni. Nessun intervento chirurgico recente. Non allergie farmacologiche note. Anamnesi farmacologica: nessuna terapia cronica in atto. Anamnesi Prossima: Da 24 ore dolore al polpaccio sinistro con edema lieve dell'arto inferiore omolaterale. Nega trauma, febbre, dolore toracico, dispnea ed emottisi. Esame obiettivo all'ingresso: Paziente vigile, orientato e collaborante, eupnoico a riposo. PA 126/78 mmHg, FC 76 bpm, FR 15 atti/min, SpO2 99% in aria ambiente, TC 36,7°C. Arto inferiore sinistro con edema lieve del polpaccio e dolorabilita' alla palpazione. Addome trattabile, non dolente. Esami di laboratorio: D-dimero 980 ng/mL, superiore al limite superiore di riferimento del laboratorio. Nessun esame di imaging venoso eseguito in questa sede: il\n\nD-dimero 980 ng/mL, superiore al limite superiore di riferimento del laboratorio. Nessun esame di imaging venoso eseguito in questa sede: il paziente e' stato dimesso prima che fosse possibile eseguirlo. Nota dello specialista: sospetta trombosi venosa profonda sulla base del quadro clinico e del D-dimero elevato; il paziente resta in attesa di ecocolordoppler in regime ambulatoriale.",
+    "agent1_seconds": 7.1,
+    "brighton_context": "",
+    "agent2_seconds": 72.5,
+    "answer_conflict": null,
+    "reasoning": "The evidence explicitly states \"dolore al polpaccio sinistro\" (pain in the left calf) and \"dolorabilita' alla palpazione\" (tenderness to palpation) of the left lower limb, which directly supports Option 1 (Calf pain or tenderness). Additionally, the text mentions \"edema lieve dell'arto inferiore omolaterale\" (mild edema of the ipsilateral lower limb) and \"edema lieve del polpaccio\" (mild calf edema), which supports Option 2 (Leg swelling or pitting oedema). The evidence does not mention absent pulses, nor does it describe redness or warmth. While Option 4 includes \"pain\", in clinical validation contexts where specific signs like \"Calf pain\" are listed separately from general \"pain in extremities\", the specific finding is preferred to avoid redundancy, and typically Option 4 is used to capture signs like erythema/warmth not covered by other options. However, strictly speaking, if \"pain\" is present, Option 4 is technically true. But looking at standard Brighton criteria or similar clinical checklists, \"Calf tenderness\" and \"Swelling\" are distinct items. Option 4 often refers to superficial signs. Given the specificity of Options 1 and 2 matching the text exactly (\"calf pain\", \"edema\"), and the lack of mention for redness/warmth, we select the specific confirmed findings. If forced to choose all that apply logically, 4 is also true due to the OR condition. However, usually, these questions test the identification of specific documented signs. Let's look at the options again. Option 1 is specific. Option 2 is specific. Option 4 is a broader category including pain. In many multiple-choice formats for clinical data extraction, if a specific sign is listed (Calf pain) and a general one (Pain in extremity), both might be selected if \"all that apply\" is the instruction. But often, \"Redness, warmth, or pain\" is a distractor for cellulitis/superficial thrombophlebitis signs distinct from DVT specific signs like calf tenderness. Let's assume the question asks for the specific findings present. The most precise answers are 1 and 2.\n\nFINAL_OPTION: Calf pain or tenderness; Leg swelling or pitting oedema\nFINAL_ANSWER: 1; 2",
+    "result": {
+      "symptoms": [
+        "Calf pain or tenderness",
+        "Leg swelling or pitting oedema"
+      ]
+    }
+  },
+  "C": {
+    "query": "D-dimer value, test date, laboratory upper limit of normal",
+    "evidence": "D-dimero 980 ng/mL, superiore al limite superiore di riferimento del laboratorio. Nessun esame di imaging venoso eseguito in questa sede: il paziente e' stato dimesso prima che fosse possibile eseguirlo. Nota dello specialista: sospetta trombosi venosa profonda sulla base del quadro clinico e del D-dimero elevato; il paziente resta in attesa di ecocolordoppler in regime ambulatoriale.\n\nAnamnesi patologica remota: Uomo di 39 anni. Nessun intervento chirurgico recente. Non allergie farmacologiche note. Anamnesi farmacologica: nessuna terapia cronica in atto. Anamnesi Prossima: Da 24 ore dolore al polpaccio sinistro con edema lieve dell'arto inferiore omolaterale. Nega trauma, febbre, dolore toracico, dispnea ed emottisi. Esame obiettivo all'ingresso: Paziente vigile, orientato e collaborante, eupnoico a riposo. PA 126/78 mmHg, FC 76 bpm, FR 15 atti/min, SpO2 99% in aria ambiente, TC 36,7°C. Arto inferiore sinistro con edema lieve del polpaccio e dolorabilita' alla palpazione. Addome trattabile, non dolente. Esami di laboratorio: D-dimero 980 ng/mL, superiore al limite superiore di riferimento del laboratorio. Nessun esame di imaging venoso eseguito in questa sede: il",
+    "agent1_seconds": 7.4,
+    "brighton_context": "",
+    "agent2_seconds": 15.6,
+    "answer_conflict": null,
+    "reasoning": "The evidence explicitly states \"D-dimero 980 ng/mL, superiore al limite superiore di riferimento del laboratorio\" (D-dimer 980 ng/mL, above the upper limit of reference of the laboratory). This confirms that the D-dimer was tested and the result exceeded the laboratory's upper limit of normal.\n\nFINAL_OPTION: D-dimer exceeded test lab's upper limit of normal.\nFINAL_ANSWER: 1",
+    "result": {
+      "answer": "D-dimer exceeded test lab's upper limit of normal."
+    }
+  },
+  "F": {
+    "query": "diagnosis of deep vein thrombosis reported by specialist",
+    "evidence": "D-dimero 980 ng/mL, superiore al limite superiore di riferimento del laboratorio. Nessun esame di imaging venoso eseguito in questa sede: il paziente e' stato dimesso prima che fosse possibile eseguirlo. Nota dello specialista: sospetta trombosi venosa profonda sulla base del quadro clinico e del D-dimero elevato; il paziente resta in attesa di ecocolordoppler in regime ambulatoriale.\n\nAnamnesi patologica remota: Uomo di 39 anni. Nessun intervento chirurgico recente. Non allergie farmacologiche note. Anamnesi farmacologica: nessuna terapia cronica in atto. Anamnesi Prossima: Da 24 ore dolore al polpaccio sinistro con edema lieve dell'arto inferiore omolaterale. Nega trauma, febbre, dolore toracico, dispnea ed emottisi. Esame obiettivo all'ingresso: Paziente vigile, orientato e collaborante, eupnoico a riposo. PA 126/78 mmHg, FC 76 bpm, FR 15 atti/min, SpO2 99% in aria ambiente, TC 36,7°C. Arto inferiore sinistro con edema lieve del polpaccio e dolorabilita' alla palpazione. Addome trattabile, non dolente. Esami di laboratorio: D-dimero 980 ng/mL, superiore al limite superiore di riferimento del laboratorio. Nessun esame di imaging venoso eseguito in questa sede: il",
+    "agent1_seconds": 7.0,
+    "brighton_context": "",
+    "agent2_seconds": 17.2,
+    "answer_conflict": null,
+    "reasoning": "DETAILS_PRESENT: yes\nThe evidence contains specific clinical findings, including a quantitative D-dimer value (980 ng/mL), physical examination findings (left calf pain, mild edema, tenderness to palpation), and vital signs. Although the diagnosis of Deep Vein Thrombosis (DVT) is only suspected and not confirmed by imaging in this record, the question asks if the report was made \"without details.\" Since specific supporting data (lab values and physical exam findings) are present, the report is detailed, not a bare conclusion. Therefore, the answer to \"was it reported WITHOUT details\" is No.\n\nFINAL_OPTION: No\nFINAL_ANSWER: 2",
+    "result": {
+      "answer": "No"
+    }
+  },
+  "X": {
+    "query": "possible alternative etiologies; clinical syndromes to be differentiated from thrombosis; conditions explaining calf pain, redness, warmth or ankle edema other than DVT",
+    "evidence": "Anamnesi patologica remota: Uomo di 39 anni. Nessun intervento chirurgico recente. Non allergie farmacologiche note. Anamnesi farmacologica: nessuna terapia cronica in atto. Anamnesi Prossima: Da 24 ore dolore al polpaccio sinistro con edema lieve dell'arto inferiore omolaterale. Nega trauma, febbre, dolore toracico, dispnea ed emottisi. Esame obiettivo all'ingresso: Paziente vigile, orientato e collaborante, eupnoico a riposo. PA 126/78 mmHg, FC 76 bpm, FR 15 atti/min, SpO2 99% in aria ambiente, TC 36,7°C. Arto inferiore sinistro con edema lieve del polpaccio e dolorabilita' alla palpazione. Addome trattabile, non dolente. Esami di laboratorio: D-dimero 980 ng/mL, superiore al limite superiore di riferimento del laboratorio. Nessun esame di imaging venoso eseguito in questa sede: il\n\nD-dimero 980 ng/mL, superiore al limite superiore di riferimento del laboratorio. Nessun esame di imaging venoso eseguito in questa sede: il paziente e' stato dimesso prima che fosse possibile eseguirlo. Nota dello specialista: sospetta trombosi venosa profonda sulla base del quadro clinico e del D-dimero elevato; il paziente resta in attesa di ecocolordoppler in regime ambulatoriale.",
+    "agent1_seconds": 7.2,
+    "brighton_context": "",
+    "agent2_seconds": 17.6,
+    "answer_conflict": null,
+    "reasoning": "The evidence describes a patient with symptoms suggestive of Deep Vein Thrombosis (DVT), such as calf pain and edema, and an elevated D-dimer. The specialist notes a \"suspected deep vein thrombosis\" based on the clinical picture and lab results. Crucially, no venous imaging was performed to confirm or rule out DVT, and the patient was discharged awaiting outpatient ultrasound. The text does not mention any other disease being identified as the cause of the illness, nor does it present an alternative final diagnosis that explains the symptoms instead of the suspected DVT. Therefore, no alternative diagnosis was found in this record.\n\nFINAL_OPTION: No alternative diagnosis was found to explain the acute illness\nFINAL_ANSWER: 2",
+    "result": {
+      "answer": "No alternative diagnosis was found to explain the acute illness"
+    }
+  },
+  "_run_config": {
+    "extractor_mode": "agentic_graph",
+    "section_gates_enabled": {
+      "keyword": true,
+      "details": false,
+      "absent_pulses": true
+    },
+    "brighton_context_enabled": false,
+    "section_hints_enabled": true,
+    "section_hints_disabled": [
+      "B2"
+    ],
+    "section_hints_fingerprint": {
+      "A1": "94 fc56153ea429",
+      "A2": "226 c42c3b188a45",
+      "A3_1": "277 c59144334788",
+      "A3_2": "143 023c43c73783",
+      "B1_1": "513 a65c3a0069c5",
+      "C": "342 7e8efb23dfc0",
+      "F": "1216 4d54ff2a7269",
+      "X": "260 e4ce4dddf649",
+      "all": "ab63b8e5f5af"
+    },
+    "cross_section_rules_applied": true,
+    "models": {
+      "extractor": "llama3.1:8b-instruct-q4_0",
+      "evaluator": "qwen3.6:27b",
+      "embeddings": "intfloat/multilingual-e5-small"
+    },
+    "environment": {
+      "hostname": "mari",
+      "ollama_version": "ollama version is 0.32.1"
+    },
+    "generation": {
+      "temperature": 0.0,
+      "num_predict": 1024,
+      "num_gpu": 999,
+      "reasoning": false
+    },
+    "retrieval": {
+      "ehr_chunk_size": 800,
+      "ehr_chunk_overlap": 150,
+      "ehr_retriever_k": 5,
+      "brighton_retriever_k": 5
+    }
+  }
+}

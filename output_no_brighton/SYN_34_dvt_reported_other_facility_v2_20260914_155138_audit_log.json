@@ -1,0 +1,172 @@
+{
+  "A1": {
+    "query": "autopsy report, necropsy, post-mortem examination, autoptic findings",
+    "evidence": "Segnalazione di presa in carico. Paziente donna di 66 anni, riferita con diagnosi di trombosi venosa profonda dell'arto inferiore sinistro posta presso altra struttura. Nessun intervento chirurgico recente. Non e' pervenuta alcuna documentazione clinica, di laboratorio o strumentale a supporto della diagnosi comunicata.",
+    "agent1_seconds": 6.7,
+    "brighton_context": "",
+    "agent2_seconds": 15.9,
+    "answer_conflict": null,
+    "reasoning": "The evidence describes a living patient referred with a diagnosis of DVT but explicitly states that no clinical, laboratory, or instrumental documentation was received to support this diagnosis. Crucially, the text does not mention death, nor does it mention an autopsy being performed. Since the prompt specifies that only post-mortem findings count and the evidence provides no information regarding an autopsy (neither confirming it was done nor providing results), the correct classification is that no autopsy was done or the status/results are unknown.\n\nFINAL_OPTION: No autopsy done, unknown if done, or done but results unavailable\nFINAL_ANSWER: 3",
+    "result": {
+      "answer": "No autopsy done, unknown if done, or done but results unavailable"
+    }
+  },
+  "A2": {
+    "query": "thrombectomy, surgical procedure related to DVT",
+    "evidence": "Segnalazione di presa in carico. Paziente donna di 66 anni, riferita con diagnosi di trombosi venosa profonda dell'arto inferiore sinistro posta presso altra struttura. Nessun intervento chirurgico recente. Non e' pervenuta alcuna documentazione clinica, di laboratorio o strumentale a supporto della diagnosi comunicata.",
+    "agent1_seconds": 6.6,
+    "brighton_context": "",
+    "agent2_seconds": 15.8,
+    "answer_conflict": null,
+    "reasoning": "The evidence explicitly states \"Nessun intervento chirurgico recente\" (No recent surgical intervention). According to the instructions, if a surgical procedure is explicitly negated or stated as absent, we must not select options indicating a procedure was performed. Therefore, despite the referral diagnosis of DVT, no surgical procedure was done to confirm it in this context.\n\nFINAL_OPTION: No surgical procedure done; or, done but either did not confirm presence of DVT or findings unknown; or unknown if done\nFINAL_ANSWER: 3",
+    "result": {
+      "answer": "No surgical procedure done; or, done but either did not confirm presence of DVT or findings unknown; or unknown if done"
+    }
+  },
+  "A3_1": {
+    "query": "ultrasound, CT, MRI, venography: imaging outcome for deep vein thrombosis",
+    "evidence": "Segnalazione di presa in carico. Paziente donna di 66 anni, riferita con diagnosi di trombosi venosa profonda dell'arto inferiore sinistro posta presso altra struttura. Nessun intervento chirurgico recente. Non e' pervenuta alcuna documentazione clinica, di laboratorio o strumentale a supporto della diagnosi comunicata.",
+    "agent1_seconds": 6.7,
+    "brighton_context": "",
+    "agent2_seconds": 17.0,
+    "answer_conflict": null,
+    "reasoning": "The evidence states that the patient was referred with a diagnosis of deep vein thrombosis (DVT) from another facility, but explicitly notes that \"no clinical, laboratory, or instrumental documentation supporting the communicated diagnosis has arrived\" (\"Non e' pervenuta alcuna documentazione clinica, di laboratorio o strumentale a supporto della diagnosi comunicata\"). Since no imaging reports or results are present in the current record, it is impossible to determine if an imaging study was performed or what its results were. Therefore, the status falls under \"unknown if done, or done but results unknown.\"\n\nFINAL_OPTION: No imaging studies done, unknown if done, or done but results unknown\nFINAL_ANSWER: 3",
+    "result": {
+      "answer": "No imaging studies done, unknown if done, or done but results unknown"
+    }
+  },
+  "A3_2": {
+    "query": "type of imaging study performed: compression ultrasonography, doppler, venography",
+    "evidence": "Segnalazione di presa in carico. Paziente donna di 66 anni, riferita con diagnosi di trombosi venosa profonda dell'arto inferiore sinistro posta presso altra struttura. Nessun intervento chirurgico recente. Non e' pervenuta alcuna documentazione clinica, di laboratorio o strumentale a supporto della diagnosi comunicata.",
+    "agent1_seconds": 6.5,
+    "brighton_context": "",
+    "agent2_seconds": 19.4,
+    "answer_conflict": null,
+    "reasoning": "The evidence states that the patient was referred with a diagnosis of deep vein thrombosis (DVT) from another facility, but explicitly notes that \"No clinical, laboratory, or instrumental documentation has arrived to support the communicated diagnosis\" (\"Non e' pervenuta alcuna documentazione clinica, di laboratorio o strumentale a supporto della diagnosi comunicata\"). This means no imaging results are available in this record. Furthermore, the text does not mention any specific imaging modality (such as ultrasound, CT, or venography) being performed or reviewed. Since no specific method is mentioned as having been used to confirm the diagnosis in this context, and no documentation exists, none of the specific imaging options (1-4) can be selected. The option \"Other\" typically applies when a specific test *other* than the main four was performed and documented. Here, no test is documented at all. Therefore, none of the options describing a performed or confirmed method apply.\n\nFINAL_OPTION: none\nFINAL_ANSWER: none",
+    "result": {
+      "studies": []
+    }
+  },
+  "B1_1": {
+    "query": "reported symptoms or signs of deep vein thrombosis",
+    "evidence": "Segnalazione di presa in carico. Paziente donna di 66 anni, riferita con diagnosi di trombosi venosa profonda dell'arto inferiore sinistro posta presso altra struttura. Nessun intervento chirurgico recente. Non e' pervenuta alcuna documentazione clinica, di laboratorio o strumentale a supporto della diagnosi comunicata.",
+    "agent1_seconds": 7.0,
+    "brighton_context": "",
+    "agent2_seconds": 17.1,
+    "answer_conflict": null,
+    "reasoning": "The evidence states that no clinical, laboratory, or instrumental documentation was received to support the diagnosis (\"Non e' pervenuta alcuna documentazione...\"). Consequently, there is no record of specific symptoms or signs (such as swelling or pain) being reported in this document. The text does not explicitly state that the patient lacked symptoms (which would imply Option 2), nor does it provide any positive report of symptoms (Option 1). Since the document is silent on the presence or absence of specific clinical findings due to the lack of supporting documentation, it is unknown whether a DVT syndrome was reported in terms of signs/symptoms.\n\nFINAL_OPTION: It is unknown if there was a report of a DVT syndrome\nFINAL_ANSWER: 3",
+    "result": {
+      "answer": "It is unknown if there was a report of a DVT syndrome"
+    }
+  },
+  "B1_2": {
+    "query": "deep vein thrombosis lower extremity or upper extremity",
+    "evidence": "Segnalazione di presa in carico. Paziente donna di 66 anni, riferita con diagnosi di trombosi venosa profonda dell'arto inferiore sinistro posta presso altra struttura. Nessun intervento chirurgico recente. Non e' pervenuta alcuna documentazione clinica, di laboratorio o strumentale a supporto della diagnosi comunicata.",
+    "agent1_seconds": 6.9,
+    "brighton_context": "",
+    "agent2_seconds": 15.9,
+    "answer_conflict": null,
+    "reasoning": "The evidence explicitly states that the patient was referred with a diagnosis of \"trombosi venosa profonda dell'arto inferiore sinistro\" (deep vein thrombosis of the left lower limb). Although no supporting clinical, laboratory, or instrumental documentation has arrived to confirm this diagnosis, the reported condition specifically concerns the lower extremity. There is no mention of upper extremity involvement. Therefore, based on the stated diagnosis in the referral, the condition corresponds to lower extremity DVT.\n\nFINAL_OPTION: Lower extremity DVT\nFINAL_ANSWER: 1",
+    "result": {
+      "types": [
+        "Lower extremity DVT"
+      ]
+    }
+  },
+  "B2": {
+    "query": "calf pain, swelling, oedema, redness, warmth, absent pulses",
+    "evidence": "Segnalazione di presa in carico. Paziente donna di 66 anni, riferita con diagnosi di trombosi venosa profonda dell'arto inferiore sinistro posta presso altra struttura. Nessun intervento chirurgico recente. Non e' pervenuta alcuna documentazione clinica, di laboratorio o strumentale a supporto della diagnosi comunicata.",
+    "agent1_seconds": 6.6,
+    "brighton_context": "",
+    "agent2_seconds": 17.1,
+    "answer_conflict": null,
+    "reasoning": "The provided evidence states that the patient was referred with a diagnosis of deep vein thrombosis (DVT) but explicitly notes that \"no clinical, laboratory, or instrumental documentation has arrived to support the communicated diagnosis.\" Consequently, there is no information regarding specific symptoms such as calf pain, leg swelling, absent pulses, or redness/warmth. Since these findings are not mentioned in the text, their presence or absence cannot be determined from the evidence provided. Therefore, it is unknown if any of the specific symptoms listed in options 1-4 were present.\n\nFINAL_OPTION: None of the above were present or it is unknown if any of 1-4 were present\nFINAL_ANSWER: 5",
+    "result": {
+      "symptoms": [
+        "None of the above were present or it is unknown if any of 1-4 were present"
+      ]
+    }
+  },
+  "C": {
+    "query": "D-dimer value, test date, laboratory upper limit of normal",
+    "evidence": "Segnalazione di presa in carico. Paziente donna di 66 anni, riferita con diagnosi di trombosi venosa profonda dell'arto inferiore sinistro posta presso altra struttura. Nessun intervento chirurgico recente. Non e' pervenuta alcuna documentazione clinica, di laboratorio o strumentale a supporto della diagnosi comunicata.",
+    "agent1_seconds": 6.7,
+    "brighton_context": "",
+    "agent2_seconds": 15.8,
+    "answer_conflict": null,
+    "reasoning": "The evidence explicitly states that \"Non e' pervenuta alcuna documentazione clinica, di laboratorio o strumentale a supporto della diagnosi comunicata\" (No clinical, laboratory, or instrumental documentation has arrived to support the communicated diagnosis). This means no laboratory results, including D-dimer, are available or mentioned in the provided text. Therefore, the D-dimer was either not tested or the results are unknown/not available.\n\nFINAL_OPTION: D-dimer not tested, or tested but results unknown or not available\nFINAL_ANSWER: 3",
+    "result": {
+      "answer": "D-dimer not tested, or tested but results unknown or not available"
+    }
+  },
+  "F": {
+    "query": "diagnosis of deep vein thrombosis reported by specialist",
+    "evidence": "Segnalazione di presa in carico. Paziente donna di 66 anni, riferita con diagnosi di trombosi venosa profonda dell'arto inferiore sinistro posta presso altra struttura. Nessun intervento chirurgico recente. Non e' pervenuta alcuna documentazione clinica, di laboratorio o strumentale a supporto della diagnosi comunicata.",
+    "agent1_seconds": 7.0,
+    "brighton_context": "",
+    "agent2_seconds": 16.4,
+    "answer_conflict": null,
+    "reasoning": "DETAILS_PRESENT: no\n\nThe evidence states that the patient was referred with a diagnosis of deep vein thrombosis (DVT) but explicitly notes that \"no clinical, laboratory, or instrumental documentation has arrived to support the communicated diagnosis.\" This means there are no specific clinical findings, imaging results, or lab values provided in this record to substantiate the diagnosis. The diagnosis is presented as a bare conclusion from an external source without any supporting details within this text. Therefore, the diagnosis was reported without details.\n\nFINAL_OPTION: Yes\nFINAL_ANSWER: 1",
+    "result": {
+      "answer": "Yes"
+    }
+  },
+  "X": {
+    "query": "possible alternative etiologies; clinical syndromes to be differentiated from thrombosis; conditions explaining calf pain, redness, warmth or ankle edema other than DVT",
+    "evidence": "Segnalazione di presa in carico. Paziente donna di 66 anni, riferita con diagnosi di trombosi venosa profonda dell'arto inferiore sinistro posta presso altra struttura. Nessun intervento chirurgico recente. Non e' pervenuta alcuna documentazione clinica, di laboratorio o strumentale a supporto della diagnosi comunicata.",
+    "agent1_seconds": 6.7,
+    "brighton_context": "",
+    "agent2_seconds": 15.5,
+    "answer_conflict": null,
+    "reasoning": "The evidence states that the patient was referred with a diagnosis of deep vein thrombosis (DVT) but explicitly notes that no clinical, laboratory, or instrumental documentation arrived to support this communicated diagnosis. The text does not mention any other disease being identified as the cause of the illness, nor does it present an alternative final diagnosis. Since no alternative diagnosis is mentioned or found in the provided evidence, we cannot conclude that one was found.\n\nFINAL_OPTION: No alternative diagnosis was found to explain the acute illness\nFINAL_ANSWER: 2",
+    "result": {
+      "answer": "No alternative diagnosis was found to explain the acute illness"
+    }
+  },
+  "_run_config": {
+    "extractor_mode": "agentic_graph",
+    "section_gates_enabled": {
+      "keyword": true,
+      "details": false,
+      "absent_pulses": true
+    },
+    "brighton_context_enabled": false,
+    "section_hints_enabled": true,
+    "section_hints_disabled": [
+      "B2"
+    ],
+    "section_hints_fingerprint": {
+      "A1": "94 fc56153ea429",
+      "A2": "226 c42c3b188a45",
+      "A3_1": "277 c59144334788",
+      "A3_2": "143 023c43c73783",
+      "B1_1": "513 a65c3a0069c5",
+      "C": "342 7e8efb23dfc0",
+      "F": "1216 4d54ff2a7269",
+      "X": "260 e4ce4dddf649",
+      "all": "ab63b8e5f5af"
+    },
+    "cross_section_rules_applied": true,
+    "models": {
+      "extractor": "llama3.1:8b-instruct-q4_0",
+      "evaluator": "qwen3.6:27b",
+      "embeddings": "intfloat/multilingual-e5-small"
+    },
+    "environment": {
+      "hostname": "mari",
+      "ollama_version": "ollama version is 0.32.1"
+    },
+    "generation": {
+      "temperature": 0.0,
+      "num_predict": 1024,
+      "num_gpu": 999,
+      "reasoning": false
+    },
+    "retrieval": {
+      "ehr_chunk_size": 800,
+      "ehr_chunk_overlap": 150,
+      "ehr_retriever_k": 5,
+      "brighton_retriever_k": 5
+    }
+  }
+}

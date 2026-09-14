@@ -1,0 +1,176 @@
+{
+  "A1": {
+    "query": "autopsy report, necropsy, post-mortem examination, autoptic findings",
+    "evidence": "PA 124/76 mmHg, FC 72 bpm, FR 15 atti/min, SpO2 99% in aria ambiente, TC 36,6°C. Arto inferiore destro con edema del polpaccio e aumento della temperatura cutanea locale in sede omolaterale; dolorabilita' alla palpazione del polpaccio. Addome trattabile, non dolente. Esami di laboratorio: D-dimero 2.100 ng/mL, superiore al limite superiore di riferimento del laboratorio. Eseguito ecocolordoppler venoso dell'arto inferiore destro: trombosi venosa a carico della vena poplitea destra, con flusso assente nel segmento trombizzato.\n\nAnamnesi patologica remota: Donna di 58 anni. Non allergie farmacologiche note. Nessun intervento chirurgico recente. Anamnesi farmacologica: levotiroxina 50 mcg, pantoprazolo 20 mg al bisogno. Riferisce volo intercontinentale di 9 ore effettuato 5 giorni prima dell'esordio della sintomatologia. Anamnesi Prossima: Da circa 3 giorni comparsa di dolore al polpaccio destro, associato a edema progressivo dell'arto inferiore omolaterale. Nega trauma, dolore toracico, dispnea o emottisi. Si presenta in ambulatorio per il peggioramento della tumefazione. Esame obiettivo all'ingresso: Paziente vigile, orientata e collaborante. Parametri vitali stabili: PA 124/76 mmHg, FC 72 bpm, FR 15 atti/min, SpO2 99% in aria ambiente, TC 36,6°C. Arto inferiore destro con edema del polpaccio e aumento della",
+    "agent1_seconds": 5.6,
+    "brighton_context": "",
+    "agent2_seconds": 16.4,
+    "answer_conflict": null,
+    "reasoning": "The evidence describes a living patient presenting with symptoms of deep vein thrombosis (DVT), confirmed by venous color Doppler ultrasound (\"ecocolordoppler\"). The text details vital signs, physical examination findings, laboratory results, and imaging performed on the living subject. There is no mention of the patient's death, nor any description of an autopsy being performed. Since the prompt specifies that only post-mortem findings count for an autopsy option, and the evidence clearly pertains to a living patient undergoing diagnostic imaging, no autopsy was done.\n\nFINAL_OPTION: No autopsy done, unknown if done, or done but results unavailable\nFINAL_ANSWER: 3",
+    "result": {
+      "answer": "No autopsy done, unknown if done, or done but results unavailable"
+    }
+  },
+  "A2": {
+    "query": "thrombectomy, surgical procedure related to DVT",
+    "evidence": "PA 124/76 mmHg, FC 72 bpm, FR 15 atti/min, SpO2 99% in aria ambiente, TC 36,6°C. Arto inferiore destro con edema del polpaccio e aumento della temperatura cutanea locale in sede omolaterale; dolorabilita' alla palpazione del polpaccio. Addome trattabile, non dolente. Esami di laboratorio: D-dimero 2.100 ng/mL, superiore al limite superiore di riferimento del laboratorio. Eseguito ecocolordoppler venoso dell'arto inferiore destro: trombosi venosa a carico della vena poplitea destra, con flusso assente nel segmento trombizzato.\n\nAnamnesi patologica remota: Donna di 58 anni. Non allergie farmacologiche note. Nessun intervento chirurgico recente. Anamnesi farmacologica: levotiroxina 50 mcg, pantoprazolo 20 mg al bisogno. Riferisce volo intercontinentale di 9 ore effettuato 5 giorni prima dell'esordio della sintomatologia. Anamnesi Prossima: Da circa 3 giorni comparsa di dolore al polpaccio destro, associato a edema progressivo dell'arto inferiore omolaterale. Nega trauma, dolore toracico, dispnea o emottisi. Si presenta in ambulatorio per il peggioramento della tumefazione. Esame obiettivo all'ingresso: Paziente vigile, orientata e collaborante. Parametri vitali stabili: PA 124/76 mmHg, FC 72 bpm, FR 15 atti/min, SpO2 99% in aria ambiente, TC 36,6°C. Arto inferiore destro con edema del polpaccio e aumento della",
+    "agent1_seconds": 7.3,
+    "brighton_context": "",
+    "agent2_seconds": 33.2,
+    "answer_conflict": null,
+    "reasoning": "The evidence explicitly states that a venous color Doppler ultrasound (\"ecocolordoppler venoso\") was performed and confirmed thrombosis in the right popliteal vein. However, the question asks specifically about surgical procedures or other procedures confirming DVT. The text mentions \"Nessun intervento chirurgico recente\" (No recent surgical intervention) in the remote history, and there is no mention of any surgical procedure (such as thrombectomy) being performed during this admission. While an ultrasound was done, it is a diagnostic imaging modality, not typically classified under \"surgical procedure\" or \"thrombectomy\" in this context. More importantly, looking at the options: Option 1 is Thrombectomy (a surgical/interventional procedure), which was not performed. Option 2 is \"Other procedure done that confirmed presence of DVT\". The ultrasound confirmed the DVT. Is ultrasound considered a \"procedure\" in this specific classification? Usually, in these clinical validation tasks, \"procedure\" often refers to invasive interventions or surgeries unless specified otherwise. However, let's look at Option 3: \"No surgical procedure done...\". The prompt asks to determine if a *surgical* procedure was done. The text says no recent surgery. It does not mention any surgery being done now. Therefore, no surgical procedure was done. The ultrasound is a diagnostic test, not a surgical procedure. Thus, the correct categorization regarding *surgical* procedures is that none were done.\n\nWait, let's re-read the options carefully.\n1. Thrombectomy related to DVT performed\n2. Other procedure done that confirmed presence of DVT\n3. No surgical procedure done; or, done but either did not confirm presence of DVT or findings unknown; or unknown if done\n\nThe evidence confirms DVT via ultrasound. Ultrasound is a diagnostic procedure. Does \"Other procedure\" include diagnostic imaging? In many medical coding contexts, \"procedure\" can be broad. However, the prompt's critical instruction says: \"Pay extreme attention to ANY negations preceding surgical terms... If the clinical record explicitly states that a surgical procedure was denied... you MUST NOT select options 1 or 2.\" This implies Options 1 and 2 are considered *surgical* or *interventional* procedures in this context. Option 3 is the \"No surgical procedure done\" option. Since the text explicitly says \"Nessun intervento chirurgico recente\" (No recent surgical intervention) and describes only a diagnostic ultrasound, no surgical procedure was performed. The confirmation came from imaging, not surgery. Therefore, Option 3 is the correct choice because it covers the scenario where no surgical procedure was done.\n\nFINAL_OPTION: No surgical procedure done; or, done but either did not confirm presence of DVT or findings unknown; or unknown if done\nFINAL_ANSWER: 3",
+    "result": {
+      "answer": "No surgical procedure done; or, done but either did not confirm presence of DVT or findings unknown; or unknown if done"
+    }
+  },
+  "A3_1": {
+    "query": "ultrasound, CT, MRI, venography: imaging outcome for deep vein thrombosis",
+    "evidence": "PA 124/76 mmHg, FC 72 bpm, FR 15 atti/min, SpO2 99% in aria ambiente, TC 36,6°C. Arto inferiore destro con edema del polpaccio e aumento della temperatura cutanea locale in sede omolaterale; dolorabilita' alla palpazione del polpaccio. Addome trattabile, non dolente. Esami di laboratorio: D-dimero 2.100 ng/mL, superiore al limite superiore di riferimento del laboratorio. Eseguito ecocolordoppler venoso dell'arto inferiore destro: trombosi venosa a carico della vena poplitea destra, con flusso assente nel segmento trombizzato.\n\nAnamnesi patologica remota: Donna di 58 anni. Non allergie farmacologiche note. Nessun intervento chirurgico recente. Anamnesi farmacologica: levotiroxina 50 mcg, pantoprazolo 20 mg al bisogno. Riferisce volo intercontinentale di 9 ore effettuato 5 giorni prima dell'esordio della sintomatologia. Anamnesi Prossima: Da circa 3 giorni comparsa di dolore al polpaccio destro, associato a edema progressivo dell'arto inferiore omolaterale. Nega trauma, dolore toracico, dispnea o emottisi. Si presenta in ambulatorio per il peggioramento della tumefazione. Esame obiettivo all'ingresso: Paziente vigile, orientata e collaborante. Parametri vitali stabili: PA 124/76 mmHg, FC 72 bpm, FR 15 atti/min, SpO2 99% in aria ambiente, TC 36,6°C. Arto inferiore destro con edema del polpaccio e aumento della",
+    "agent1_seconds": 7.3,
+    "brighton_context": "",
+    "agent2_seconds": 15.9,
+    "answer_conflict": null,
+    "reasoning": "The evidence explicitly states that a venous color Doppler ultrasound (\"ecocolordoppler venoso\") was performed on the right lower limb. The results of this imaging study confirmed \"trombosi venosa\" (venous thrombosis) in the right popliteal vein with absent flow in the thrombosed segment. Since an imaging study was performed and it confirmed the presence of DVT, Option 1 is the correct choice.\n\nFINAL_OPTION: ≥1 imaging study was done and confirmed DVT\nFINAL_ANSWER: 1",
+    "result": {
+      "answer": "≥1 imaging study was done and confirmed DVT"
+    }
+  },
+  "A3_2": {
+    "query": "type of imaging study performed: compression ultrasonography, doppler, venography",
+    "evidence": "PA 124/76 mmHg, FC 72 bpm, FR 15 atti/min, SpO2 99% in aria ambiente, TC 36,6°C. Arto inferiore destro con edema del polpaccio e aumento della temperatura cutanea locale in sede omolaterale; dolorabilita' alla palpazione del polpaccio. Addome trattabile, non dolente. Esami di laboratorio: D-dimero 2.100 ng/mL, superiore al limite superiore di riferimento del laboratorio. Eseguito ecocolordoppler venoso dell'arto inferiore destro: trombosi venosa a carico della vena poplitea destra, con flusso assente nel segmento trombizzato.\n\nAnamnesi patologica remota: Donna di 58 anni. Non allergie farmacologiche note. Nessun intervento chirurgico recente. Anamnesi farmacologica: levotiroxina 50 mcg, pantoprazolo 20 mg al bisogno. Riferisce volo intercontinentale di 9 ore effettuato 5 giorni prima dell'esordio della sintomatologia. Anamnesi Prossima: Da circa 3 giorni comparsa di dolore al polpaccio destro, associato a edema progressivo dell'arto inferiore omolaterale. Nega trauma, dolore toracico, dispnea o emottisi. Si presenta in ambulatorio per il peggioramento della tumefazione. Esame obiettivo all'ingresso: Paziente vigile, orientata e collaborante. Parametri vitali stabili: PA 124/76 mmHg, FC 72 bpm, FR 15 atti/min, SpO2 99% in aria ambiente, TC 36,6°C. Arto inferiore destro con edema del polpaccio e aumento della",
+    "agent1_seconds": 7.2,
+    "brighton_context": "",
+    "agent2_seconds": 16.3,
+    "answer_conflict": null,
+    "reasoning": "The evidence explicitly states \"Eseguito ecocolordoppler venoso dell'arto inferiore destro\" (Venous color Doppler ultrasound of the right lower limb was performed). This modality corresponds to Doppler/Duplex Ultrasound. The text does not mention compression ultrasonography as a distinct separate test, nor does it mention CT/MR venography or contrast venography. Therefore, only option 4 is supported by the evidence.\n\nFINAL_OPTION: Doppler/Duplex Ultrasound\nFINAL_ANSWER: 4",
+    "result": {
+      "studies": [
+        "Doppler/Duplex Ultrasound"
+      ]
+    }
+  },
+  "B1_1": {
+    "query": "reported symptoms or signs of deep vein thrombosis",
+    "evidence": "PA 124/76 mmHg, FC 72 bpm, FR 15 atti/min, SpO2 99% in aria ambiente, TC 36,6°C. Arto inferiore destro con edema del polpaccio e aumento della temperatura cutanea locale in sede omolaterale; dolorabilita' alla palpazione del polpaccio. Addome trattabile, non dolente. Esami di laboratorio: D-dimero 2.100 ng/mL, superiore al limite superiore di riferimento del laboratorio. Eseguito ecocolordoppler venoso dell'arto inferiore destro: trombosi venosa a carico della vena poplitea destra, con flusso assente nel segmento trombizzato.\n\nAnamnesi patologica remota: Donna di 58 anni. Non allergie farmacologiche note. Nessun intervento chirurgico recente. Anamnesi farmacologica: levotiroxina 50 mcg, pantoprazolo 20 mg al bisogno. Riferisce volo intercontinentale di 9 ore effettuato 5 giorni prima dell'esordio della sintomatologia. Anamnesi Prossima: Da circa 3 giorni comparsa di dolore al polpaccio destro, associato a edema progressivo dell'arto inferiore omolaterale. Nega trauma, dolore toracico, dispnea o emottisi. Si presenta in ambulatorio per il peggioramento della tumefazione. Esame obiettivo all'ingresso: Paziente vigile, orientata e collaborante. Parametri vitali stabili: PA 124/76 mmHg, FC 72 bpm, FR 15 atti/min, SpO2 99% in aria ambiente, TC 36,6°C. Arto inferiore destro con edema del polpaccio e aumento della",
+    "agent1_seconds": 7.1,
+    "brighton_context": "",
+    "agent2_seconds": 17.1,
+    "answer_conflict": null,
+    "reasoning": "The evidence explicitly describes clinical signs and symptoms consistent with Deep Vein Thrombosis (DVT). Specifically, it notes \"edema del polpaccio\" (calf edema), \"aumento della temperatura cutanea locale\" (increased local skin temperature), and \"dolorabilita' alla palpazione del polpaccio\" (pain on palpation of the calf) in the right lower limb. Additionally, the patient's history mentions the onset of pain and progressive swelling. Therefore, there is a clear report of recognized DVT symptoms/signs.\n\nFINAL_OPTION: ≥1 symptom or sign of DVT was reported\nFINAL_ANSWER: 1",
+    "result": {
+      "answer": "≥1 symptom or sign of DVT was reported"
+    }
+  },
+  "B1_2": {
+    "query": "deep vein thrombosis lower extremity or upper extremity",
+    "evidence": "PA 124/76 mmHg, FC 72 bpm, FR 15 atti/min, SpO2 99% in aria ambiente, TC 36,6°C. Arto inferiore destro con edema del polpaccio e aumento della temperatura cutanea locale in sede omolaterale; dolorabilita' alla palpazione del polpaccio. Addome trattabile, non dolente. Esami di laboratorio: D-dimero 2.100 ng/mL, superiore al limite superiore di riferimento del laboratorio. Eseguito ecocolordoppler venoso dell'arto inferiore destro: trombosi venosa a carico della vena poplitea destra, con flusso assente nel segmento trombizzato.\n\nAnamnesi patologica remota: Donna di 58 anni. Non allergie farmacologiche note. Nessun intervento chirurgico recente. Anamnesi farmacologica: levotiroxina 50 mcg, pantoprazolo 20 mg al bisogno. Riferisce volo intercontinentale di 9 ore effettuato 5 giorni prima dell'esordio della sintomatologia. Anamnesi Prossima: Da circa 3 giorni comparsa di dolore al polpaccio destro, associato a edema progressivo dell'arto inferiore omolaterale. Nega trauma, dolore toracico, dispnea o emottisi. Si presenta in ambulatorio per il peggioramento della tumefazione. Esame obiettivo all'ingresso: Paziente vigile, orientata e collaborante. Parametri vitali stabili: PA 124/76 mmHg, FC 72 bpm, FR 15 atti/min, SpO2 99% in aria ambiente, TC 36,6°C. Arto inferiore destro con edema del polpaccio e aumento della",
+    "agent1_seconds": 7.2,
+    "brighton_context": "",
+    "agent2_seconds": 16.3,
+    "answer_conflict": null,
+    "reasoning": "The evidence explicitly states that a venous color Doppler ultrasound of the right lower limb was performed (\"Eseguito ecocolordoppler venoso dell'arto inferiore destro\") and confirmed thrombosis of the right popliteal vein (\"trombosi venosa a carico della vena poplitea destra\"). The popliteal vein is located in the lower extremity. Therefore, the diagnosis is Lower extremity DVT. There is no mention of upper extremity involvement.\n\nFINAL_OPTION: Lower extremity DVT\nFINAL_ANSWER: 1",
+    "result": {
+      "types": [
+        "Lower extremity DVT"
+      ]
+    }
+  },
+  "B2": {
+    "query": "calf pain, swelling, oedema, redness, warmth, absent pulses",
+    "evidence": "PA 124/76 mmHg, FC 72 bpm, FR 15 atti/min, SpO2 99% in aria ambiente, TC 36,6°C. Arto inferiore destro con edema del polpaccio e aumento della temperatura cutanea locale in sede omolaterale; dolorabilita' alla palpazione del polpaccio. Addome trattabile, non dolente. Esami di laboratorio: D-dimero 2.100 ng/mL, superiore al limite superiore di riferimento del laboratorio. Eseguito ecocolordoppler venoso dell'arto inferiore destro: trombosi venosa a carico della vena poplitea destra, con flusso assente nel segmento trombizzato.\n\nAnamnesi patologica remota: Donna di 58 anni. Non allergie farmacologiche note. Nessun intervento chirurgico recente. Anamnesi farmacologica: levotiroxina 50 mcg, pantoprazolo 20 mg al bisogno. Riferisce volo intercontinentale di 9 ore effettuato 5 giorni prima dell'esordio della sintomatologia. Anamnesi Prossima: Da circa 3 giorni comparsa di dolore al polpaccio destro, associato a edema progressivo dell'arto inferiore omolaterale. Nega trauma, dolore toracico, dispnea o emottisi. Si presenta in ambulatorio per il peggioramento della tumefazione. Esame obiettivo all'ingresso: Paziente vigile, orientata e collaborante. Parametri vitali stabili: PA 124/76 mmHg, FC 72 bpm, FR 15 atti/min, SpO2 99% in aria ambiente, TC 36,6°C. Arto inferiore destro con edema del polpaccio e aumento della",
+    "agent1_seconds": 7.1,
+    "brighton_context": "",
+    "agent2_seconds": 18.8,
+    "answer_conflict": null,
+    "reasoning": "The evidence explicitly states \"dolorabilita' alla palpazione del polpaccio\" (tenderness upon palpation of the calf) and \"dolore al polpaccio destro\" (pain in the right calf), which supports Option 1. It also describes \"edema del polpaccio\" (calf edema) and \"tumefazione\" (swelling), supporting Option 2. Furthermore, it notes \"aumento della temperatura cutanea locale\" (increased local skin temperature/warmth) in the affected leg, which supports Option 4. There is no mention of absent pulses, so Option 3 is not supported.\n\nFINAL_OPTION: Calf pain or tenderness; Leg swelling or pitting oedema; Redness, warmth, or pain in one or more extremities\nFINAL_ANSWER: 1; 2; 4",
+    "result": {
+      "symptoms": [
+        "Calf pain or tenderness",
+        "Leg swelling or pitting oedema",
+        "Redness, warmth, or pain in one or more extremities"
+      ]
+    }
+  },
+  "C": {
+    "query": "D-dimer value, test date, laboratory upper limit of normal",
+    "evidence": "PA 124/76 mmHg, FC 72 bpm, FR 15 atti/min, SpO2 99% in aria ambiente, TC 36,6°C. Arto inferiore destro con edema del polpaccio e aumento della temperatura cutanea locale in sede omolaterale; dolorabilita' alla palpazione del polpaccio. Addome trattabile, non dolente. Esami di laboratorio: D-dimero 2.100 ng/mL, superiore al limite superiore di riferimento del laboratorio. Eseguito ecocolordoppler venoso dell'arto inferiore destro: trombosi venosa a carico della vena poplitea destra, con flusso assente nel segmento trombizzato.\n\nAnamnesi patologica remota: Donna di 58 anni. Non allergie farmacologiche note. Nessun intervento chirurgico recente. Anamnesi farmacologica: levotiroxina 50 mcg, pantoprazolo 20 mg al bisogno. Riferisce volo intercontinentale di 9 ore effettuato 5 giorni prima dell'esordio della sintomatologia. Anamnesi Prossima: Da circa 3 giorni comparsa di dolore al polpaccio destro, associato a edema progressivo dell'arto inferiore omolaterale. Nega trauma, dolore toracico, dispnea o emottisi. Si presenta in ambulatorio per il peggioramento della tumefazione. Esame obiettivo all'ingresso: Paziente vigile, orientata e collaborante. Parametri vitali stabili: PA 124/76 mmHg, FC 72 bpm, FR 15 atti/min, SpO2 99% in aria ambiente, TC 36,6°C. Arto inferiore destro con edema del polpaccio e aumento della",
+    "agent1_seconds": 7.0,
+    "brighton_context": "",
+    "agent2_seconds": 15.8,
+    "answer_conflict": null,
+    "reasoning": "The evidence explicitly states \"D-dimero 2.100 ng/mL, superiore al limite superiore di riferimento del laboratorio\" (D-dimer 2,100 ng/mL, above the upper limit of reference of the laboratory). This confirms that the D-dimer was tested and the result exceeded the laboratory's upper limit of normal.\n\nFINAL_OPTION: D-dimer exceeded test lab's upper limit of normal.\nFINAL_ANSWER: 1",
+    "result": {
+      "answer": "D-dimer exceeded test lab's upper limit of normal."
+    }
+  },
+  "F": {
+    "query": "diagnosis of deep vein thrombosis reported by specialist",
+    "evidence": "PA 124/76 mmHg, FC 72 bpm, FR 15 atti/min, SpO2 99% in aria ambiente, TC 36,6°C. Arto inferiore destro con edema del polpaccio e aumento della temperatura cutanea locale in sede omolaterale; dolorabilita' alla palpazione del polpaccio. Addome trattabile, non dolente. Esami di laboratorio: D-dimero 2.100 ng/mL, superiore al limite superiore di riferimento del laboratorio. Eseguito ecocolordoppler venoso dell'arto inferiore destro: trombosi venosa a carico della vena poplitea destra, con flusso assente nel segmento trombizzato.\n\nAnamnesi patologica remota: Donna di 58 anni. Non allergie farmacologiche note. Nessun intervento chirurgico recente. Anamnesi farmacologica: levotiroxina 50 mcg, pantoprazolo 20 mg al bisogno. Riferisce volo intercontinentale di 9 ore effettuato 5 giorni prima dell'esordio della sintomatologia. Anamnesi Prossima: Da circa 3 giorni comparsa di dolore al polpaccio destro, associato a edema progressivo dell'arto inferiore omolaterale. Nega trauma, dolore toracico, dispnea o emottisi. Si presenta in ambulatorio per il peggioramento della tumefazione. Esame obiettivo all'ingresso: Paziente vigile, orientata e collaborante. Parametri vitali stabili: PA 124/76 mmHg, FC 72 bpm, FR 15 atti/min, SpO2 99% in aria ambiente, TC 36,6°C. Arto inferiore destro con edema del polpaccio e aumento della",
+    "agent1_seconds": 7.4,
+    "brighton_context": "",
+    "agent2_seconds": 17.0,
+    "answer_conflict": null,
+    "reasoning": "DETAILS_PRESENT: yes\nThe evidence explicitly reports specific clinical findings supporting the diagnosis of DVT. It details physical examination findings such as edema and tenderness in the right calf, elevated D-dimer levels (2.100 ng/mL), and, most importantly, specific imaging results from a venous color Doppler ultrasound showing \"venous thrombosis involving the right popliteal vein with absent flow in the thrombosed segment.\" Since these are specific supporting details rather than a bare conclusion, the diagnosis was not reported without details.\n\nFINAL_OPTION: No\nFINAL_ANSWER: 2",
+    "result": {
+      "answer": "No"
+    }
+  },
+  "X": {
+    "query": "possible alternative etiologies; clinical syndromes to be differentiated from thrombosis; conditions explaining calf pain, redness, warmth or ankle edema other than DVT",
+    "evidence": "PA 124/76 mmHg, FC 72 bpm, FR 15 atti/min, SpO2 99% in aria ambiente, TC 36,6°C. Arto inferiore destro con edema del polpaccio e aumento della temperatura cutanea locale in sede omolaterale; dolorabilita' alla palpazione del polpaccio. Addome trattabile, non dolente. Esami di laboratorio: D-dimero 2.100 ng/mL, superiore al limite superiore di riferimento del laboratorio. Eseguito ecocolordoppler venoso dell'arto inferiore destro: trombosi venosa a carico della vena poplitea destra, con flusso assente nel segmento trombizzato.\n\nAnamnesi patologica remota: Donna di 58 anni. Non allergie farmacologiche note. Nessun intervento chirurgico recente. Anamnesi farmacologica: levotiroxina 50 mcg, pantoprazolo 20 mg al bisogno. Riferisce volo intercontinentale di 9 ore effettuato 5 giorni prima dell'esordio della sintomatologia. Anamnesi Prossima: Da circa 3 giorni comparsa di dolore al polpaccio destro, associato a edema progressivo dell'arto inferiore omolaterale. Nega trauma, dolore toracico, dispnea o emottisi. Si presenta in ambulatorio per il peggioramento della tumefazione. Esame obiettivo all'ingresso: Paziente vigile, orientata e collaborante. Parametri vitali stabili: PA 124/76 mmHg, FC 72 bpm, FR 15 atti/min, SpO2 99% in aria ambiente, TC 36,6°C. Arto inferiore destro con edema del polpaccio e aumento della",
+    "agent1_seconds": 7.4,
+    "brighton_context": "",
+    "agent2_seconds": 16.7,
+    "answer_conflict": null,
+    "reasoning": "The clinical evidence describes a patient presenting with right calf pain and swelling, elevated D-dimer, and a venous color Doppler ultrasound confirming thrombosis of the right popliteal vein. The diagnosis is explicitly stated as deep vein thrombosis (DVT). There is no mention of any other disease process being identified as the cause of the acute illness; in fact, symptoms suggesting alternative diagnoses like pulmonary embolism (chest pain, dyspnea) are explicitly denied. Therefore, no alternative diagnosis was found to explain the acute illness.\n\nFINAL_OPTION: No alternative diagnosis was found to explain the acute illness\nFINAL_ANSWER: 2",
+    "result": {
+      "answer": "No alternative diagnosis was found to explain the acute illness"
+    }
+  },
+  "_run_config": {
+    "extractor_mode": "agentic_graph",
+    "section_gates_enabled": {
+      "keyword": true,
+      "details": false,
+      "absent_pulses": true
+    },
+    "brighton_context_enabled": false,
+    "section_hints_enabled": true,
+    "section_hints_disabled": [
+      "B2"
+    ],
+    "section_hints_fingerprint": {
+      "A1": "94 fc56153ea429",
+      "A2": "226 c42c3b188a45",
+      "A3_1": "277 c59144334788",
+      "A3_2": "143 023c43c73783",
+      "B1_1": "513 a65c3a0069c5",
+      "C": "342 7e8efb23dfc0",
+      "F": "1216 4d54ff2a7269",
+      "X": "260 e4ce4dddf649",
+      "all": "ab63b8e5f5af"
+    },
+    "cross_section_rules_applied": true,
+    "models": {
+      "extractor": "llama3.1:8b-instruct-q4_0",
+      "evaluator": "qwen3.6:27b",
+      "embeddings": "intfloat/multilingual-e5-small"
+    },
+    "environment": {
+      "hostname": "mari",
+      "ollama_version": "ollama version is 0.32.1"
+    },
+    "generation": {
+      "temperature": 0.0,
+      "num_predict": 1024,
+      "num_gpu": 999,
+      "reasoning": false
+    },
+    "retrieval": {
+      "ehr_chunk_size": 800,
+      "ehr_chunk_overlap": 150,
+      "ehr_retriever_k": 5,
+      "brighton_retriever_k": 5
+    }
+  }
+}

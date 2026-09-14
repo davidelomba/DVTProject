@@ -1,0 +1,172 @@
+{
+  "A1": {
+    "query": "autopsy report, necropsy, post-mortem examination, autoptic findings",
+    "evidence": "Lettera di dimissione trasmessa da altro reparto. Paziente donna di 71 anni. Fra le diagnosi di dimissione figura una trombosi venosa profonda dell'arto inferiore destro. Nessun intervento chirurgico recente. Il documento non riporta sintomi, rilievi dell'esame obiettivo, esami di laboratorio ne' referti di imaging a sostegno di tale diagnosi.",
+    "agent1_seconds": 6.8,
+    "brighton_context": "",
+    "agent2_seconds": 16.7,
+    "answer_conflict": null,
+    "reasoning": "The evidence provided is a discharge letter for a living patient (\"Paziente donna di 71 anni\") describing a diagnosis of deep vein thrombosis (DVT) but explicitly stating that no imaging or laboratory results are included to support it. The prompt specifies that only post-mortem findings count as an autopsy and that imaging on a living patient is not an autopsy. Since the patient is alive at the time of discharge and there is no mention of death or a post-mortem examination, an autopsy was not performed. Therefore, the correct classification is that no autopsy was done.\n\nFINAL_OPTION: No autopsy done, unknown if done, or done but results unavailable\nFINAL_ANSWER: 3",
+    "result": {
+      "answer": "No autopsy done, unknown if done, or done but results unavailable"
+    }
+  },
+  "A2": {
+    "query": "thrombectomy, surgical procedure related to DVT",
+    "evidence": "Lettera di dimissione trasmessa da altro reparto. Paziente donna di 71 anni. Fra le diagnosi di dimissione figura una trombosi venosa profonda dell'arto inferiore destro. Nessun intervento chirurgico recente. Il documento non riporta sintomi, rilievi dell'esame obiettivo, esami di laboratorio ne' referti di imaging a sostegno di tale diagnosi.",
+    "agent1_seconds": 6.7,
+    "brighton_context": "",
+    "agent2_seconds": 17.0,
+    "answer_conflict": null,
+    "reasoning": "The evidence explicitly states \"Nessun intervento chirurgico recente\" (No recent surgical intervention). According to the instructions, if a surgical procedure is explicitly negated or stated as not performed, we must not select options indicating a procedure was done. Although DVT is listed in the discharge diagnoses, no specific procedure (such as thrombectomy or other confirmatory surgery) is mentioned as having been performed; in fact, surgery is denied. Therefore, the correct classification is that no surgical procedure was done or findings are unknown regarding such a procedure.\n\nFINAL_OPTION: No surgical procedure done; or, done but either did not confirm presence of DVT or findings unknown; or unknown if done\nFINAL_ANSWER: 3",
+    "result": {
+      "answer": "No surgical procedure done; or, done but either did not confirm presence of DVT or findings unknown; or unknown if done"
+    }
+  },
+  "A3_1": {
+    "query": "ultrasound, CT, MRI, venography: imaging outcome for deep vein thrombosis",
+    "evidence": "Lettera di dimissione trasmessa da altro reparto. Paziente donna di 71 anni. Fra le diagnosi di dimissione figura una trombosi venosa profonda dell'arto inferiore destro. Nessun intervento chirurgico recente. Il documento non riporta sintomi, rilievi dell'esame obiettivo, esami di laboratorio ne' referti di imaging a sostegno di tale diagnosi.",
+    "agent1_seconds": 6.9,
+    "brighton_context": "",
+    "agent2_seconds": 16.0,
+    "answer_conflict": null,
+    "reasoning": "The evidence explicitly states that the discharge document does not report any imaging reports (\"referti di imaging\") to support the diagnosis of deep vein thrombosis. Since there is no mention of an imaging study being performed or its results being available, we cannot confirm that an imaging study was done or what its result was. Therefore, the correct classification is that no imaging studies are reported as done, or their status/results are unknown.\n\nFINAL_OPTION: No imaging studies done, unknown if done, or done but results unknown\nFINAL_ANSWER: 3",
+    "result": {
+      "answer": "No imaging studies done, unknown if done, or done but results unknown"
+    }
+  },
+  "A3_2": {
+    "query": "type of imaging study performed: compression ultrasonography, doppler, venography",
+    "evidence": "Lettera di dimissione trasmessa da altro reparto. Paziente donna di 71 anni. Fra le diagnosi di dimissione figura una trombosi venosa profonda dell'arto inferiore destro. Nessun intervento chirurgico recente. Il documento non riporta sintomi, rilievi dell'esame obiettivo, esami di laboratorio ne' referti di imaging a sostegno di tale diagnosi.",
+    "agent1_seconds": 6.6,
+    "brighton_context": "",
+    "agent2_seconds": 18.3,
+    "answer_conflict": null,
+    "reasoning": "The evidence explicitly states that the discharge document does not report any imaging reports (\"referti di imaging\") to support the diagnosis of deep vein thrombosis (DVT). Since no specific imaging modality (such as ultrasound, CT, MR, or venography) is mentioned as having been performed or reported, none of the specific options 1 through 4 can be confirmed. Furthermore, option 5 (\"Other\") refers to an imaging test that *was* performed but was not one of the four named modalities. Since the text states no imaging reports are present at all, we cannot assume an \"other\" type of imaging was done. Therefore, none of the listed options describing a specific performed imaging test apply because the evidence indicates no imaging evidence is provided in the document.\n\nFINAL_OPTION: none\nFINAL_ANSWER: none",
+    "result": {
+      "studies": []
+    }
+  },
+  "B1_1": {
+    "query": "reported symptoms or signs of deep vein thrombosis",
+    "evidence": "Lettera di dimissione trasmessa da altro reparto. Paziente donna di 71 anni. Fra le diagnosi di dimissione figura una trombosi venosa profonda dell'arto inferiore destro. Nessun intervento chirurgico recente. Il documento non riporta sintomi, rilievi dell'esame obiettivo, esami di laboratorio ne' referti di imaging a sostegno di tale diagnosi.",
+    "agent1_seconds": 7.0,
+    "brighton_context": "",
+    "agent2_seconds": 17.8,
+    "answer_conflict": null,
+    "reasoning": "The evidence states that the discharge letter lists a diagnosis of deep vein thrombosis (DVT) but explicitly notes that the document does not report symptoms, physical examination findings, laboratory tests, or imaging reports to support this diagnosis. The prompt instructions clarify that if the record is silent on the matter or states it contains no symptom section, the correct classification is \"It is unknown,\" because the absence of a report is not a report of absence (which would imply the patient was explicitly documented as having no symptoms). Since the document does not provide information regarding the presence or absence of clinical signs/symptoms, we cannot determine if they were reported.\n\nFINAL_OPTION: It is unknown if there was a report of a DVT syndrome\nFINAL_ANSWER: 3",
+    "result": {
+      "answer": "It is unknown if there was a report of a DVT syndrome"
+    }
+  },
+  "B1_2": {
+    "query": "deep vein thrombosis lower extremity or upper extremity",
+    "evidence": "Lettera di dimissione trasmessa da altro reparto. Paziente donna di 71 anni. Fra le diagnosi di dimissione figura una trombosi venosa profonda dell'arto inferiore destro. Nessun intervento chirurgico recente. Il documento non riporta sintomi, rilievi dell'esame obiettivo, esami di laboratorio ne' referti di imaging a sostegno di tale diagnosi.",
+    "agent1_seconds": 7.0,
+    "brighton_context": "",
+    "agent2_seconds": 15.2,
+    "answer_conflict": null,
+    "reasoning": "The evidence explicitly states that among the discharge diagnoses is \"trombosi venosa profonda dell'arto inferiore destro\" (deep vein thrombosis of the right lower limb). Although the document lacks supporting symptoms, objective findings, lab results, or imaging reports, the diagnosis itself is clearly recorded as a lower extremity DVT. There is no mention of upper extremity involvement. Therefore, option 1 applies.\n\nFINAL_OPTION: Lower extremity DVT\nFINAL_ANSWER: 1",
+    "result": {
+      "types": [
+        "Lower extremity DVT"
+      ]
+    }
+  },
+  "B2": {
+    "query": "calf pain, swelling, oedema, redness, warmth, absent pulses",
+    "evidence": "Lettera di dimissione trasmessa da altro reparto. Paziente donna di 71 anni. Fra le diagnosi di dimissione figura una trombosi venosa profonda dell'arto inferiore destro. Nessun intervento chirurgico recente. Il documento non riporta sintomi, rilievi dell'esame obiettivo, esami di laboratorio ne' referti di imaging a sostegno di tale diagnosi.",
+    "agent1_seconds": 7.0,
+    "brighton_context": "",
+    "agent2_seconds": 16.9,
+    "answer_conflict": null,
+    "reasoning": "The evidence explicitly states that the discharge document \"does not report symptoms, physical examination findings, laboratory tests, or imaging reports\" to support the diagnosis of deep vein thrombosis (DVT). Since there is no mention of calf pain, leg swelling, absent pulses, or redness/warmth, and the text specifically notes the absence of these clinical details, we cannot assume any of these symptoms were present. Therefore, it is unknown if any of the specific symptoms listed in options 1-4 were present.\n\nFINAL_OPTION: None of the above were present or it is unknown if any of 1-4 were present\nFINAL_ANSWER: 5",
+    "result": {
+      "symptoms": [
+        "None of the above were present or it is unknown if any of 1-4 were present"
+      ]
+    }
+  },
+  "C": {
+    "query": "D-dimer value, test date, laboratory upper limit of normal",
+    "evidence": "Lettera di dimissione trasmessa da altro reparto. Paziente donna di 71 anni. Fra le diagnosi di dimissione figura una trombosi venosa profonda dell'arto inferiore destro. Nessun intervento chirurgico recente. Il documento non riporta sintomi, rilievi dell'esame obiettivo, esami di laboratorio ne' referti di imaging a sostegno di tale diagnosi.",
+    "agent1_seconds": 6.6,
+    "brighton_context": "",
+    "agent2_seconds": 14.6,
+    "answer_conflict": null,
+    "reasoning": "The evidence explicitly states that the discharge document does not report laboratory tests (\"esami di laboratorio\") to support the diagnosis of deep vein thrombosis. Since D-dimer is a laboratory test and there is no mention of it being performed or its results, it must be considered not tested or unavailable.\n\nFINAL_OPTION: D-dimer not tested, or tested but results unknown or not available\nFINAL_ANSWER: 3",
+    "result": {
+      "answer": "D-dimer not tested, or tested but results unknown or not available"
+    }
+  },
+  "F": {
+    "query": "diagnosis of deep vein thrombosis reported by specialist",
+    "evidence": "Lettera di dimissione trasmessa da altro reparto. Paziente donna di 71 anni. Fra le diagnosi di dimissione figura una trombosi venosa profonda dell'arto inferiore destro. Nessun intervento chirurgico recente. Il documento non riporta sintomi, rilievi dell'esame obiettivo, esami di laboratorio ne' referti di imaging a sostegno di tale diagnosi.",
+    "agent1_seconds": 6.9,
+    "brighton_context": "",
+    "agent2_seconds": 15.7,
+    "answer_conflict": null,
+    "reasoning": "DETAILS_PRESENT: no\n\nThe evidence explicitly states that the discharge document lists a diagnosis of deep vein thrombosis (DVT) but does not report any symptoms, physical examination findings, laboratory tests, or imaging reports to support this diagnosis. Since there are no specific clinical findings mentioned, the diagnosis is presented as a bare conclusion without supporting details. Therefore, the criterion for being reported \"without details\" is met.\n\nFINAL_OPTION: Yes\nFINAL_ANSWER: 1",
+    "result": {
+      "answer": "Yes"
+    }
+  },
+  "X": {
+    "query": "possible alternative etiologies; clinical syndromes to be differentiated from thrombosis; conditions explaining calf pain, redness, warmth or ankle edema other than DVT",
+    "evidence": "Lettera di dimissione trasmessa da altro reparto. Paziente donna di 71 anni. Fra le diagnosi di dimissione figura una trombosi venosa profonda dell'arto inferiore destro. Nessun intervento chirurgico recente. Il documento non riporta sintomi, rilievi dell'esame obiettivo, esami di laboratorio ne' referti di imaging a sostegno di tale diagnosi.",
+    "agent1_seconds": 7.0,
+    "brighton_context": "",
+    "agent2_seconds": 15.1,
+    "answer_conflict": null,
+    "reasoning": "The evidence explicitly states that \"deep vein thrombosis of the right lower limb\" is listed among the discharge diagnoses. The text does not mention any other disease or condition being named as the cause of the illness or serving as an alternative explanation. Since no competing diagnosis is identified in the provided record, there is no evidence of an alternative diagnosis explaining the acute illness.\n\nFINAL_OPTION: No alternative diagnosis was found to explain the acute illness\nFINAL_ANSWER: 2",
+    "result": {
+      "answer": "No alternative diagnosis was found to explain the acute illness"
+    }
+  },
+  "_run_config": {
+    "extractor_mode": "agentic_graph",
+    "section_gates_enabled": {
+      "keyword": true,
+      "details": false,
+      "absent_pulses": true
+    },
+    "brighton_context_enabled": false,
+    "section_hints_enabled": true,
+    "section_hints_disabled": [
+      "B2"
+    ],
+    "section_hints_fingerprint": {
+      "A1": "94 fc56153ea429",
+      "A2": "226 c42c3b188a45",
+      "A3_1": "277 c59144334788",
+      "A3_2": "143 023c43c73783",
+      "B1_1": "513 a65c3a0069c5",
+      "C": "342 7e8efb23dfc0",
+      "F": "1216 4d54ff2a7269",
+      "X": "260 e4ce4dddf649",
+      "all": "ab63b8e5f5af"
+    },
+    "cross_section_rules_applied": true,
+    "models": {
+      "extractor": "llama3.1:8b-instruct-q4_0",
+      "evaluator": "qwen3.6:27b",
+      "embeddings": "intfloat/multilingual-e5-small"
+    },
+    "environment": {
+      "hostname": "mari",
+      "ollama_version": "ollama version is 0.32.1"
+    },
+    "generation": {
+      "temperature": 0.0,
+      "num_predict": 1024,
+      "num_gpu": 999,
+      "reasoning": false
+    },
+    "retrieval": {
+      "ehr_chunk_size": 800,
+      "ehr_chunk_overlap": 150,
+      "ehr_retriever_k": 5,
+      "brighton_retriever_k": 5
+    }
+  }
+}

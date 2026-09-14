@@ -1,0 +1,175 @@
+{
+  "A1": {
+    "query": "autopsy report, necropsy, post-mortem examination, autoptic findings",
+    "evidence": "dolente alla palpazione. Toni cardiaci validi e ritmici. Esami di laboratorio: D-dimero 5.800 ng/mL, superiore al limite superiore di riferimento del laboratorio. Eseguito ecocolordoppler venoso in urgenza: trombosi ileo-femorale sinistra estesa, con interessamento della vena cava inferiore. La paziente e' stata sottoposta a trombectomia chirurgica d'urgenza, con conferma intraoperatoria del trombo.\n\nAnamnesi patologica remota: Donna di 31 anni, in puerperio, a 3 settimane da parto cesareo. Nessuna autopsia. Non allergie farmacologiche note. Anamnesi farmacologica: supplementazione marziale, paracetamolo al bisogno. Anamnesi Prossima: Da 1 giorno dolore severo al polpaccio ed edema massivo dell'intero arto inferiore sinistro, con cute tesa e dolente. Nega trauma, febbre, dolore toracico e dispnea. Esame obiettivo all'ingresso: Paziente vigile, orientata e collaborante. PA 118/76 mmHg, FC 94 bpm, FR 17 atti/min, SpO2 98% in aria ambiente, TC 36,9°C. Arto inferiore sinistro con edema massivo esteso alla radice della coscia, cute tesa e dolente alla palpazione. Toni cardiaci validi e ritmici. Esami di laboratorio: D-dimero 5.800 ng/mL, superiore al limite superiore di riferimento del",
+    "agent1_seconds": 6.9,
+    "brighton_context": "",
+    "agent2_seconds": 15.7,
+    "answer_conflict": null,
+    "reasoning": "The evidence explicitly states \"Nessuna autopsia\" (No autopsy) in the remote pathological history section. Furthermore, the prompt instructions specify that only post-mortem findings count for an autopsy and that imaging performed on a living patient is not an autopsy. Since no autopsy was performed, we cannot determine if it showed DVT or not based on autopsy findings.\n\nFINAL_OPTION: No autopsy done, unknown if done, or done but results unavailable\nFINAL_ANSWER: 3",
+    "result": {
+      "answer": "No autopsy done, unknown if done, or done but results unavailable"
+    }
+  },
+  "A2": {
+    "query": "thrombectomy, surgical procedure related to DVT",
+    "evidence": "dolente alla palpazione. Toni cardiaci validi e ritmici. Esami di laboratorio: D-dimero 5.800 ng/mL, superiore al limite superiore di riferimento del laboratorio. Eseguito ecocolordoppler venoso in urgenza: trombosi ileo-femorale sinistra estesa, con interessamento della vena cava inferiore. La paziente e' stata sottoposta a trombectomia chirurgica d'urgenza, con conferma intraoperatoria del trombo.\n\nAnamnesi patologica remota: Donna di 31 anni, in puerperio, a 3 settimane da parto cesareo. Nessuna autopsia. Non allergie farmacologiche note. Anamnesi farmacologica: supplementazione marziale, paracetamolo al bisogno. Anamnesi Prossima: Da 1 giorno dolore severo al polpaccio ed edema massivo dell'intero arto inferiore sinistro, con cute tesa e dolente. Nega trauma, febbre, dolore toracico e dispnea. Esame obiettivo all'ingresso: Paziente vigile, orientata e collaborante. PA 118/76 mmHg, FC 94 bpm, FR 17 atti/min, SpO2 98% in aria ambiente, TC 36,9°C. Arto inferiore sinistro con edema massivo esteso alla radice della coscia, cute tesa e dolente alla palpazione. Toni cardiaci validi e ritmici. Esami di laboratorio: D-dimero 5.800 ng/mL, superiore al limite superiore di riferimento del",
+    "agent1_seconds": 7.5,
+    "brighton_context": "",
+    "agent2_seconds": 15.6,
+    "answer_conflict": null,
+    "reasoning": "The evidence explicitly states that the patient underwent an urgent surgical thrombectomy (\"trombectomia chirurgica d'urgenza\") and that there was intraoperative confirmation of the thrombus (\"con conferma intraoperatoria del trombo\"). This directly satisfies the criteria for a thrombectomy related to DVT being performed. There are no negations regarding this specific procedure; in fact, it is affirmed.\n\nFINAL_OPTION: Thrombectomy related to DVT performed\nFINAL_ANSWER: 1",
+    "result": {
+      "answer": "Thrombectomy related to DVT performed"
+    }
+  },
+  "A3_1": {
+    "query": "ultrasound, CT, MRI, venography: imaging outcome for deep vein thrombosis",
+    "evidence": "dolente alla palpazione. Toni cardiaci validi e ritmici. Esami di laboratorio: D-dimero 5.800 ng/mL, superiore al limite superiore di riferimento del laboratorio. Eseguito ecocolordoppler venoso in urgenza: trombosi ileo-femorale sinistra estesa, con interessamento della vena cava inferiore. La paziente e' stata sottoposta a trombectomia chirurgica d'urgenza, con conferma intraoperatoria del trombo.\n\nAnamnesi patologica remota: Donna di 31 anni, in puerperio, a 3 settimane da parto cesareo. Nessuna autopsia. Non allergie farmacologiche note. Anamnesi farmacologica: supplementazione marziale, paracetamolo al bisogno. Anamnesi Prossima: Da 1 giorno dolore severo al polpaccio ed edema massivo dell'intero arto inferiore sinistro, con cute tesa e dolente. Nega trauma, febbre, dolore toracico e dispnea. Esame obiettivo all'ingresso: Paziente vigile, orientata e collaborante. PA 118/76 mmHg, FC 94 bpm, FR 17 atti/min, SpO2 98% in aria ambiente, TC 36,9°C. Arto inferiore sinistro con edema massivo esteso alla radice della coscia, cute tesa e dolente alla palpazione. Toni cardiaci validi e ritmici. Esami di laboratorio: D-dimero 5.800 ng/mL, superiore al limite superiore di riferimento del",
+    "agent1_seconds": 7.3,
+    "brighton_context": "",
+    "agent2_seconds": 15.8,
+    "answer_conflict": null,
+    "reasoning": "The evidence explicitly states that an urgent venous color Doppler ultrasound (\"ecocolordoppler venoso\") was performed. The results of this imaging study showed \"trombosi ileo-femorale sinistra estesa\" (extensive left iliofemoral thrombosis), which confirms the presence of Deep Vein Thrombosis (DVT). Therefore, an imaging study was done and it confirmed DVT.\n\nFINAL_OPTION: ≥1 imaging study was done and confirmed DVT\nFINAL_ANSWER: 1",
+    "result": {
+      "answer": "≥1 imaging study was done and confirmed DVT"
+    }
+  },
+  "A3_2": {
+    "query": "type of imaging study performed: compression ultrasonography, doppler, venography",
+    "evidence": "dolente alla palpazione. Toni cardiaci validi e ritmici. Esami di laboratorio: D-dimero 5.800 ng/mL, superiore al limite superiore di riferimento del laboratorio. Eseguito ecocolordoppler venoso in urgenza: trombosi ileo-femorale sinistra estesa, con interessamento della vena cava inferiore. La paziente e' stata sottoposta a trombectomia chirurgica d'urgenza, con conferma intraoperatoria del trombo.\n\nAnamnesi patologica remota: Donna di 31 anni, in puerperio, a 3 settimane da parto cesareo. Nessuna autopsia. Non allergie farmacologiche note. Anamnesi farmacologica: supplementazione marziale, paracetamolo al bisogno. Anamnesi Prossima: Da 1 giorno dolore severo al polpaccio ed edema massivo dell'intero arto inferiore sinistro, con cute tesa e dolente. Nega trauma, febbre, dolore toracico e dispnea. Esame obiettivo all'ingresso: Paziente vigile, orientata e collaborante. PA 118/76 mmHg, FC 94 bpm, FR 17 atti/min, SpO2 98% in aria ambiente, TC 36,9°C. Arto inferiore sinistro con edema massivo esteso alla radice della coscia, cute tesa e dolente alla palpazione. Toni cardiaci validi e ritmici. Esami di laboratorio: D-dimero 5.800 ng/mL, superiore al limite superiore di riferimento del",
+    "agent1_seconds": 7.2,
+    "brighton_context": "",
+    "agent2_seconds": 17.3,
+    "answer_conflict": null,
+    "reasoning": "The evidence explicitly states \"Eseguito ecocolordoppler venoso in urgenza\" (Urgent color Doppler ultrasound performed). This confirms the use of Doppler/Duplex Ultrasound. While compression ultrasonography is often part of a standard venous ultrasound exam, the text specifically names \"ecocolordoppler\" (color Doppler), making Option 4 the most accurate and direct match to the provided evidence. No other imaging modalities like CT, MR, or contrast venography are mentioned as being performed for this diagnosis.\n\nFINAL_OPTION: Doppler/Duplex Ultrasound\nFINAL_ANSWER: 4",
+    "result": {
+      "studies": [
+        "Doppler/Duplex Ultrasound"
+      ]
+    }
+  },
+  "B1_1": {
+    "query": "reported symptoms or signs of deep vein thrombosis",
+    "evidence": "dolente alla palpazione. Toni cardiaci validi e ritmici. Esami di laboratorio: D-dimero 5.800 ng/mL, superiore al limite superiore di riferimento del laboratorio. Eseguito ecocolordoppler venoso in urgenza: trombosi ileo-femorale sinistra estesa, con interessamento della vena cava inferiore. La paziente e' stata sottoposta a trombectomia chirurgica d'urgenza, con conferma intraoperatoria del trombo.\n\nAnamnesi patologica remota: Donna di 31 anni, in puerperio, a 3 settimane da parto cesareo. Nessuna autopsia. Non allergie farmacologiche note. Anamnesi farmacologica: supplementazione marziale, paracetamolo al bisogno. Anamnesi Prossima: Da 1 giorno dolore severo al polpaccio ed edema massivo dell'intero arto inferiore sinistro, con cute tesa e dolente. Nega trauma, febbre, dolore toracico e dispnea. Esame obiettivo all'ingresso: Paziente vigile, orientata e collaborante. PA 118/76 mmHg, FC 94 bpm, FR 17 atti/min, SpO2 98% in aria ambiente, TC 36,9°C. Arto inferiore sinistro con edema massivo esteso alla radice della coscia, cute tesa e dolente alla palpazione. Toni cardiaci validi e ritmici. Esami di laboratorio: D-dimero 5.800 ng/mL, superiore al limite superiore di riferimento del",
+    "agent1_seconds": 7.1,
+    "brighton_context": "",
+    "agent2_seconds": 16.6,
+    "answer_conflict": null,
+    "reasoning": "The evidence explicitly describes the patient presenting with \"severe calf pain and massive edema of the entire left lower limb\" (\"dolore severo al polpaccio ed edema massivo dell'intero arto inferiore sinistro\") and notes that the leg was \"tense and painful to palpation\" (\"cute tesa e dolente alla palpazione\"). These are classic signs and symptoms of Deep Vein Thrombosis (DVT). Therefore, there is a clear report of recognized DVT symptoms.\n\nFINAL_OPTION: ≥1 symptom or sign of DVT was reported\nFINAL_ANSWER: 1",
+    "result": {
+      "answer": "≥1 symptom or sign of DVT was reported"
+    }
+  },
+  "B1_2": {
+    "query": "deep vein thrombosis lower extremity or upper extremity",
+    "evidence": "dolente alla palpazione. Toni cardiaci validi e ritmici. Esami di laboratorio: D-dimero 5.800 ng/mL, superiore al limite superiore di riferimento del laboratorio. Eseguito ecocolordoppler venoso in urgenza: trombosi ileo-femorale sinistra estesa, con interessamento della vena cava inferiore. La paziente e' stata sottoposta a trombectomia chirurgica d'urgenza, con conferma intraoperatoria del trombo.\n\nAnamnesi patologica remota: Donna di 31 anni, in puerperio, a 3 settimane da parto cesareo. Nessuna autopsia. Non allergie farmacologiche note. Anamnesi farmacologica: supplementazione marziale, paracetamolo al bisogno. Anamnesi Prossima: Da 1 giorno dolore severo al polpaccio ed edema massivo dell'intero arto inferiore sinistro, con cute tesa e dolente. Nega trauma, febbre, dolore toracico e dispnea. Esame obiettivo all'ingresso: Paziente vigile, orientata e collaborante. PA 118/76 mmHg, FC 94 bpm, FR 17 atti/min, SpO2 98% in aria ambiente, TC 36,9°C. Arto inferiore sinistro con edema massivo esteso alla radice della coscia, cute tesa e dolente alla palpazione. Toni cardiaci validi e ritmici. Esami di laboratorio: D-dimero 5.800 ng/mL, superiore al limite superiore di riferimento del",
+    "agent1_seconds": 7.2,
+    "brighton_context": "",
+    "agent2_seconds": 16.9,
+    "answer_conflict": null,
+    "reasoning": "The evidence explicitly describes a \"trombosi ileo-femorale sinistra\" (left iliofemoral thrombosis) confirmed by venous color Doppler ultrasound and intraoperative findings. The iliofemoral veins are part of the deep venous system of the lower extremity. Additionally, the patient presented with severe pain and massive edema in the left lower limb (\"arto inferiore sinistro\"). There is no mention of thrombosis in the upper extremities. Therefore, the condition corresponds to Lower extremity DVT.\n\nFINAL_OPTION: Lower extremity DVT\nFINAL_ANSWER: 1",
+    "result": {
+      "types": [
+        "Lower extremity DVT"
+      ]
+    }
+  },
+  "B2": {
+    "query": "calf pain, swelling, oedema, redness, warmth, absent pulses",
+    "evidence": "Anamnesi patologica remota: Donna di 31 anni, in puerperio, a 3 settimane da parto cesareo. Nessuna autopsia. Non allergie farmacologiche note. Anamnesi farmacologica: supplementazione marziale, paracetamolo al bisogno. Anamnesi Prossima: Da 1 giorno dolore severo al polpaccio ed edema massivo dell'intero arto inferiore sinistro, con cute tesa e dolente. Nega trauma, febbre, dolore toracico e dispnea. Esame obiettivo all'ingresso: Paziente vigile, orientata e collaborante. PA 118/76 mmHg, FC 94 bpm, FR 17 atti/min, SpO2 98% in aria ambiente, TC 36,9°C. Arto inferiore sinistro con edema massivo esteso alla radice della coscia, cute tesa e dolente alla palpazione. Toni cardiaci validi e ritmici. Esami di laboratorio: D-dimero 5.800 ng/mL, superiore al limite superiore di riferimento del\n\ndolente alla palpazione. Toni cardiaci validi e ritmici. Esami di laboratorio: D-dimero 5.800 ng/mL, superiore al limite superiore di riferimento del laboratorio. Eseguito ecocolordoppler venoso in urgenza: trombosi ileo-femorale sinistra estesa, con interessamento della vena cava inferiore. La paziente e' stata sottoposta a trombectomia chirurgica d'urgenza, con conferma intraoperatoria del trombo.",
+    "agent1_seconds": 7.2,
+    "brighton_context": "",
+    "agent2_seconds": 20.7,
+    "answer_conflict": null,
+    "reasoning": "The patient presents with \"dolore severo al polpaccio\" (severe calf pain), which directly supports Option 1 (Calf pain or tenderness). The evidence also describes \"edema massivo dell'intero arto inferiore sinistro\" (massive edema of the entire left lower limb) and \"Arto inferiore sinistro con edema massivo\", which supports Option 2 (Leg swelling or pitting oedema). Regarding Option 4, while the skin is described as \"dolente alla palpazione\" (painful to palpation), there is no explicit mention of redness (erythema) or warmth (calor); therefore, Option 4 is not fully supported by the text provided. Option 3 is not mentioned, and pulses are not explicitly stated as absent (vital signs show normal heart rate and blood pressure, implying perfusion, though specific pulse status isn't detailed, we do not assume absence). Thus, only options 1 and 2 are explicitly confirmed.\n\nFINAL_OPTION: Calf pain or tenderness; Leg swelling or pitting oedema\nFINAL_ANSWER: 1; 2",
+    "result": {
+      "symptoms": [
+        "Calf pain or tenderness",
+        "Leg swelling or pitting oedema"
+      ]
+    }
+  },
+  "C": {
+    "query": "D-dimer value, test date, laboratory upper limit of normal",
+    "evidence": "dolente alla palpazione. Toni cardiaci validi e ritmici. Esami di laboratorio: D-dimero 5.800 ng/mL, superiore al limite superiore di riferimento del laboratorio. Eseguito ecocolordoppler venoso in urgenza: trombosi ileo-femorale sinistra estesa, con interessamento della vena cava inferiore. La paziente e' stata sottoposta a trombectomia chirurgica d'urgenza, con conferma intraoperatoria del trombo.\n\nAnamnesi patologica remota: Donna di 31 anni, in puerperio, a 3 settimane da parto cesareo. Nessuna autopsia. Non allergie farmacologiche note. Anamnesi farmacologica: supplementazione marziale, paracetamolo al bisogno. Anamnesi Prossima: Da 1 giorno dolore severo al polpaccio ed edema massivo dell'intero arto inferiore sinistro, con cute tesa e dolente. Nega trauma, febbre, dolore toracico e dispnea. Esame obiettivo all'ingresso: Paziente vigile, orientata e collaborante. PA 118/76 mmHg, FC 94 bpm, FR 17 atti/min, SpO2 98% in aria ambiente, TC 36,9°C. Arto inferiore sinistro con edema massivo esteso alla radice della coscia, cute tesa e dolente alla palpazione. Toni cardiaci validi e ritmici. Esami di laboratorio: D-dimero 5.800 ng/mL, superiore al limite superiore di riferimento del",
+    "agent1_seconds": 7.2,
+    "brighton_context": "",
+    "agent2_seconds": 16.2,
+    "answer_conflict": null,
+    "reasoning": "The evidence explicitly states \"D-dimero 5.800 ng/mL, superiore al limite superiore di riferimento del laboratorio\" (D-dimer 5,800 ng/mL, above the laboratory's upper reference limit). This confirms that the test was performed and the result exceeded the normal range defined by the lab. Therefore, option 1 is the correct description of the findings.\n\nFINAL_OPTION: D-dimer exceeded test lab's upper limit of normal.\nFINAL_ANSWER: 1",
+    "result": {
+      "answer": "D-dimer exceeded test lab's upper limit of normal."
+    }
+  },
+  "F": {
+    "query": "diagnosis of deep vein thrombosis reported by specialist",
+    "evidence": "dolente alla palpazione. Toni cardiaci validi e ritmici. Esami di laboratorio: D-dimero 5.800 ng/mL, superiore al limite superiore di riferimento del laboratorio. Eseguito ecocolordoppler venoso in urgenza: trombosi ileo-femorale sinistra estesa, con interessamento della vena cava inferiore. La paziente e' stata sottoposta a trombectomia chirurgica d'urgenza, con conferma intraoperatoria del trombo.\n\nAnamnesi patologica remota: Donna di 31 anni, in puerperio, a 3 settimane da parto cesareo. Nessuna autopsia. Non allergie farmacologiche note. Anamnesi farmacologica: supplementazione marziale, paracetamolo al bisogno. Anamnesi Prossima: Da 1 giorno dolore severo al polpaccio ed edema massivo dell'intero arto inferiore sinistro, con cute tesa e dolente. Nega trauma, febbre, dolore toracico e dispnea. Esame obiettivo all'ingresso: Paziente vigile, orientata e collaborante. PA 118/76 mmHg, FC 94 bpm, FR 17 atti/min, SpO2 98% in aria ambiente, TC 36,9°C. Arto inferiore sinistro con edema massivo esteso alla radice della coscia, cute tesa e dolente alla palpazione. Toni cardiaci validi e ritmici. Esami di laboratorio: D-dimero 5.800 ng/mL, superiore al limite superiore di riferimento del",
+    "agent1_seconds": 7.2,
+    "brighton_context": "",
+    "agent2_seconds": 17.4,
+    "answer_conflict": null,
+    "reasoning": "DETAILS_PRESENT: yes\nThe evidence provides extensive clinical details supporting the diagnosis of DVT, including specific symptoms (severe calf pain, massive edema), physical exam findings (tense and painful skin on the left lower limb), laboratory results (elevated D-dimer at 5.800 ng/mL), and definitive imaging confirmation via venous color Doppler ultrasound showing extensive ilio-femoral thrombosis with involvement of the inferior vena cava. Additionally, surgical thrombectomy confirmed the thrombus intraoperatively. Therefore, the diagnosis is not a bare conclusion but is supported by multiple specific findings.\n\nFINAL_OPTION: No\nFINAL_ANSWER: 2",
+    "result": {
+      "answer": "No"
+    }
+  },
+  "X": {
+    "query": "possible alternative etiologies; clinical syndromes to be differentiated from thrombosis; conditions explaining calf pain, redness, warmth or ankle edema other than DVT",
+    "evidence": "dolente alla palpazione. Toni cardiaci validi e ritmici. Esami di laboratorio: D-dimero 5.800 ng/mL, superiore al limite superiore di riferimento del laboratorio. Eseguito ecocolordoppler venoso in urgenza: trombosi ileo-femorale sinistra estesa, con interessamento della vena cava inferiore. La paziente e' stata sottoposta a trombectomia chirurgica d'urgenza, con conferma intraoperatoria del trombo.\n\nAnamnesi patologica remota: Donna di 31 anni, in puerperio, a 3 settimane da parto cesareo. Nessuna autopsia. Non allergie farmacologiche note. Anamnesi farmacologica: supplementazione marziale, paracetamolo al bisogno. Anamnesi Prossima: Da 1 giorno dolore severo al polpaccio ed edema massivo dell'intero arto inferiore sinistro, con cute tesa e dolente. Nega trauma, febbre, dolore toracico e dispnea. Esame obiettivo all'ingresso: Paziente vigile, orientata e collaborante. PA 118/76 mmHg, FC 94 bpm, FR 17 atti/min, SpO2 98% in aria ambiente, TC 36,9°C. Arto inferiore sinistro con edema massivo esteso alla radice della coscia, cute tesa e dolente alla palpazione. Toni cardiaci validi e ritmici. Esami di laboratorio: D-dimero 5.800 ng/mL, superiore al limite superiore di riferimento del",
+    "agent1_seconds": 7.1,
+    "brighton_context": "",
+    "agent2_seconds": 18.1,
+    "answer_conflict": null,
+    "reasoning": "The clinical evidence describes a patient with acute left leg pain and swelling, elevated D-dimer, and confirmed iliofemoral thrombosis extending to the inferior vena cava via venous color Doppler ultrasound. The diagnosis is explicitly stated as \"trombosi ileo-femorale sinistra\" (left iliofemoral thrombosis), which is a form of Deep Vein Thrombosis (DVT). There is no mention of any other disease process (such as cellulitis, Baker's cyst rupture, or malignancy) being identified as the primary cause of the acute illness. The text confirms DVT as the diagnosis and does not present an alternative explanation for the symptoms.\n\nFINAL_OPTION: No alternative diagnosis was found to explain the acute illness\nFINAL_ANSWER: 2",
+    "result": {
+      "answer": "No alternative diagnosis was found to explain the acute illness"
+    }
+  },
+  "_run_config": {
+    "extractor_mode": "agentic_graph",
+    "section_gates_enabled": {
+      "keyword": true,
+      "details": false,
+      "absent_pulses": true
+    },
+    "brighton_context_enabled": false,
+    "section_hints_enabled": true,
+    "section_hints_disabled": [
+      "B2"
+    ],
+    "section_hints_fingerprint": {
+      "A1": "94 fc56153ea429",
+      "A2": "226 c42c3b188a45",
+      "A3_1": "277 c59144334788",
+      "A3_2": "143 023c43c73783",
+      "B1_1": "513 a65c3a0069c5",
+      "C": "342 7e8efb23dfc0",
+      "F": "1216 4d54ff2a7269",
+      "X": "260 e4ce4dddf649",
+      "all": "ab63b8e5f5af"
+    },
+    "cross_section_rules_applied": true,
+    "models": {
+      "extractor": "llama3.1:8b-instruct-q4_0",
+      "evaluator": "qwen3.6:27b",
+      "embeddings": "intfloat/multilingual-e5-small"
+    },
+    "environment": {
+      "hostname": "mari",
+      "ollama_version": "ollama version is 0.32.1"
+    },
+    "generation": {
+      "temperature": 0.0,
+      "num_predict": 1024,
+      "num_gpu": 999,
+      "reasoning": false
+    },
+    "retrieval": {
+      "ehr_chunk_size": 800,
+      "ehr_chunk_overlap": 150,
+      "ehr_retriever_k": 5,
+      "brighton_retriever_k": 5
+    }
+  }
+}
