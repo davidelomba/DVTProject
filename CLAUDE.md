@@ -204,14 +204,37 @@ Only an outside authority settles the difference.
   empty, and two sections that failed outright with `FINAL_ANSWER: 5` for a
   two-option field, the model having reasoned correctly that DVT was ruled out
   and having nowhere to put it.
-- **A weak first stage decides the score.** Four extraction modes, evaluator and
-  prompts identical: `agentic_graph` 398/400, `raw_record` 392/400, `full_text`
-  341/400 (`rag` not run). What separates them is not how much they search but
-  who filters the evidence. Letting the 8B extractor select it returns
-  `NO RELEVANT EVIDENCE FOUND.` on **143 sections out of 400**, and the errors
-  are omissions, 67 false negatives against 54. `raw_record` errs the other way,
-  6 against 4, on undifferentiated context. Agent 2 keeps reasoning correctly on
-  what it receives, so reading only the final answer hides the cause.
+- **A weak first stage decides the score.** The four extraction modes are the
+  four combinations of two choices, whether the 8B **rewrites** the evidence and
+  whether Agent 2 gets the whole record or the retrieved chunks:
+
+  ```
+                          whole record        retrieved chunks
+     8B rewrites          full_text  341      rag          341
+     verbatim evidence    raw_record 392      agentic      398
+  ```
+
+  Removing the rewriting is worth +51 and +57; adding retrieval is worth 0 with
+  it and +6 without, so the two factors interact. Letting the 8B write the
+  evidence returns `NO RELEVANT EVIDENCE FOUND.` on 143 sections out of 400 in
+  `full_text` and 142 in `rag`. Agent 2 keeps reasoning correctly on what it
+  receives, so reading only the final answer hides the cause. The chunks column
+  mixes fixed with model-chosen queries, so the +6 is not attributable to
+  retrieval rather than agency.
+- **Choosing is not writing.** `agentic_graph` belongs in the verbatim row even
+  though it has a model in the loop: `extract_evidence_agentic` returns the raw
+  tool observations, not the agent's final turn, so the 8B picks queries but the
+  evidence never passes through its tokens. What it still controls is coverage,
+  and that is inert on this corpus: 0 sections out of 400 without evidence,
+  `agent1_seconds` between 6.5 and 7.2 on every section (one tool call), and
+  retrieval returning the whole record each time. Chunk-level selection is
+  possible by design and has no measurable effect here, which is a property of
+  records that fit in one chunk rather than of the architecture.
+- **Two inputs that carry the same information are not the same input.**
+  `full_text` and `rag` both score 341/400 and differ on **35 sections**:
+  retrieval returns the whole record either way, but joining the chunks with a
+  separator and duplicating the overlap changes what the 8B extractor writes.
+  The rewriting noise is larger than the difference between the two modes.
 - **A correct safety net can amplify an error.** On SYN_28 the model gets A3.1
   wrong and the cross-section rule, behaving as designed, clears A3.2: one model
   error, two wrong sections. The same rules are worth 8 sections on this corpus,
