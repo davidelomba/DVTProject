@@ -1,0 +1,558 @@
+{
+  "records_compared": 40,
+  "sections": {
+    "A1": {
+      "compared": 40,
+      "changed": 0,
+      "correct_a": 40,
+      "correct_b": 40,
+      "stability": 1.0
+    },
+    "A2": {
+      "compared": 40,
+      "changed": 3,
+      "correct_a": 38,
+      "correct_b": 38,
+      "stability": 0.925
+    },
+    "A3_1": {
+      "compared": 40,
+      "changed": 2,
+      "correct_a": 37,
+      "correct_b": 39,
+      "stability": 0.95
+    },
+    "A3_2": {
+      "compared": 40,
+      "changed": 6,
+      "correct_a": 33,
+      "correct_b": 36,
+      "stability": 0.85
+    },
+    "B1_1": {
+      "compared": 40,
+      "changed": 14,
+      "correct_a": 22,
+      "correct_b": 36,
+      "stability": 0.65
+    },
+    "B1_2": {
+      "compared": 40,
+      "changed": 2,
+      "correct_a": 37,
+      "correct_b": 39,
+      "stability": 0.95
+    },
+    "B2": {
+      "compared": 40,
+      "changed": 14,
+      "correct_a": 27,
+      "correct_b": 39,
+      "stability": 0.65
+    },
+    "C": {
+      "compared": 40,
+      "changed": 0,
+      "correct_a": 40,
+      "correct_b": 40,
+      "stability": 1.0
+    },
+    "F": {
+      "compared": 40,
+      "changed": 1,
+      "correct_a": 32,
+      "correct_b": 33,
+      "stability": 0.975
+    },
+    "X": {
+      "compared": 40,
+      "changed": 5,
+      "correct_a": 35,
+      "correct_b": 40,
+      "stability": 0.875
+    }
+  },
+  "differences": [
+    {
+      "record_id": "SYN_01_lower_dvt_doppler_v2",
+      "section": "B2",
+      "run_a": [
+        "None of the above were present or it is unknown if any of 1-4 were present"
+      ],
+      "run_b": [
+        "Calf pain or tenderness",
+        "Leg swelling or pitting oedema",
+        "Redness, warmth, or pain in one or more extremities"
+      ]
+    },
+    {
+      "record_id": "SYN_02_dvt_ruled_out_cellulitis_v2",
+      "section": "X",
+      "run_a": [
+        "No alternative diagnosis was found to explain the acute illness"
+      ],
+      "run_b": [
+        "An alternative diagnosis was found that explained the acute illness"
+      ]
+    },
+    {
+      "record_id": "SYN_04_multi_imaging_confirmed_v2",
+      "section": "B2",
+      "run_a": [
+        "None of the above were present or it is unknown if any of 1-4 were present"
+      ],
+      "run_b": [
+        "Calf pain or tenderness",
+        "Leg swelling or pitting oedema"
+      ]
+    },
+    {
+      "record_id": "SYN_05_absent_flow_not_pulses_trap_v2",
+      "section": "B1_1",
+      "run_a": [
+        "It is unknown if there was a report of a DVT syndrome"
+      ],
+      "run_b": [
+        "≥1 symptom or sign of DVT was reported"
+      ]
+    },
+    {
+      "record_id": "SYN_05_absent_flow_not_pulses_trap_v2",
+      "section": "B2",
+      "run_a": [
+        "None of the above were present or it is unknown if any of 1-4 were present"
+      ],
+      "run_b": [
+        "Calf pain or tenderness",
+        "Leg swelling or pitting oedema"
+      ]
+    },
+    {
+      "record_id": "SYN_07_thrombectomy_positive_v2",
+      "section": "B2",
+      "run_a": [
+        "Calf pain or tenderness",
+        "Leg swelling or pitting oedema"
+      ],
+      "run_b": [
+        "Leg swelling or pitting oedema"
+      ]
+    },
+    {
+      "record_id": "SYN_08_autopsy_positive_v2",
+      "section": "B2",
+      "run_a": [
+        "None of the above were present or it is unknown if any of 1-4 were present"
+      ],
+      "run_b": [
+        "Calf pain or tenderness",
+        "Leg swelling or pitting oedema"
+      ]
+    },
+    {
+      "record_id": "SYN_09_risk_factor_not_alt_diagnosis_v2",
+      "section": "B2",
+      "run_a": [
+        "None of the above were present or it is unknown if any of 1-4 were present"
+      ],
+      "run_b": [
+        "Calf pain or tenderness",
+        "Leg swelling or pitting oedema"
+      ]
+    },
+    {
+      "record_id": "SYN_11_autopsy_negative_v2",
+      "section": "B1_1",
+      "run_a": [
+        "It is unknown if there was a report of a DVT syndrome"
+      ],
+      "run_b": [
+        "There was no report of a recognized DVT syndrome"
+      ]
+    },
+    {
+      "record_id": "SYN_12_other_procedure_positive_v2",
+      "section": "A2",
+      "run_a": [
+        "No surgical procedure done; or, done but either did not confirm presence of DVT or findings unknown; or unknown if done"
+      ],
+      "run_b": null
+    },
+    {
+      "record_id": "SYN_12_other_procedure_positive_v2",
+      "section": "A3_2",
+      "run_a": [
+        "Doppler/Duplex Ultrasound"
+      ],
+      "run_b": [
+        "Contrast venography",
+        "Doppler/Duplex Ultrasound"
+      ]
+    },
+    {
+      "record_id": "SYN_12_other_procedure_positive_v2",
+      "section": "B1_1",
+      "run_a": [
+        "It is unknown if there was a report of a DVT syndrome"
+      ],
+      "run_b": [
+        "≥1 symptom or sign of DVT was reported"
+      ]
+    },
+    {
+      "record_id": "SYN_12_other_procedure_positive_v2",
+      "section": "B2",
+      "run_a": [
+        "None of the above were present or it is unknown if any of 1-4 were present"
+      ],
+      "run_b": [
+        "Calf pain or tenderness",
+        "Leg swelling or pitting oedema"
+      ]
+    },
+    {
+      "record_id": "SYN_13_contrast_venography_only_v2",
+      "section": "A3_2",
+      "run_a": [
+        "Doppler/Duplex Ultrasound"
+      ],
+      "run_b": [
+        "Contrast venography"
+      ]
+    },
+    {
+      "record_id": "SYN_14_other_imaging_incidental_v2",
+      "section": "A2",
+      "run_a": [
+        "Thrombectomy related to DVT performed"
+      ],
+      "run_b": [
+        "No surgical procedure done; or, done but either did not confirm presence of DVT or findings unknown; or unknown if done"
+      ]
+    },
+    {
+      "record_id": "SYN_14_other_imaging_incidental_v2",
+      "section": "A3_2",
+      "run_a": [
+        "Doppler/Duplex Ultrasound"
+      ],
+      "run_b": []
+    },
+    {
+      "record_id": "SYN_15_ddimer_negative_low_probability_v2",
+      "section": "F",
+      "run_a": [
+        "Yes"
+      ],
+      "run_b": [
+        "No"
+      ]
+    },
+    {
+      "record_id": "SYN_16_no_dvt_syndrome_reported_v2",
+      "section": "B1_1",
+      "run_a": [
+        "It is unknown if there was a report of a DVT syndrome"
+      ],
+      "run_b": [
+        "There was no report of a recognized DVT syndrome"
+      ]
+    },
+    {
+      "record_id": "SYN_18_absent_pulses_true_positive_v2",
+      "section": "B2",
+      "run_a": [
+        "None of the above were present or it is unknown if any of 1-4 were present"
+      ],
+      "run_b": [
+        "Absent pulses in legs or arms",
+        "Calf pain or tenderness",
+        "Leg swelling or pitting oedema"
+      ]
+    },
+    {
+      "record_id": "SYN_19_autopsy_positive_upper_extremity_v2",
+      "section": "B1_2",
+      "run_a": [],
+      "run_b": [
+        "Upper extremity DVT"
+      ]
+    },
+    {
+      "record_id": "SYN_20_autopsy_negative_trauma_v2",
+      "section": "B1_1",
+      "run_a": [
+        "It is unknown if there was a report of a DVT syndrome"
+      ],
+      "run_b": [
+        "There was no report of a recognized DVT syndrome"
+      ]
+    },
+    {
+      "record_id": "SYN_21_alt_diagnosis_bakers_cyst_v2",
+      "section": "X",
+      "run_a": [
+        "No alternative diagnosis was found to explain the acute illness"
+      ],
+      "run_b": [
+        "An alternative diagnosis was found that explained the acute illness"
+      ]
+    },
+    {
+      "record_id": "SYN_23_other_procedure_ivc_filter_v2",
+      "section": "A2",
+      "run_a": [
+        "Other procedure done that confirmed presence of DVT"
+      ],
+      "run_b": [
+        "No surgical procedure done; or, done but either did not confirm presence of DVT or findings unknown; or unknown if done"
+      ]
+    },
+    {
+      "record_id": "SYN_23_other_procedure_ivc_filter_v2",
+      "section": "B1_1",
+      "run_a": [
+        "It is unknown if there was a report of a DVT syndrome"
+      ],
+      "run_b": [
+        "≥1 symptom or sign of DVT was reported"
+      ]
+    },
+    {
+      "record_id": "SYN_23_other_procedure_ivc_filter_v2",
+      "section": "B2",
+      "run_a": [
+        "None of the above were present or it is unknown if any of 1-4 were present"
+      ],
+      "run_b": [
+        "Calf pain or tenderness",
+        "Leg swelling or pitting oedema"
+      ]
+    },
+    {
+      "record_id": "SYN_25_thrombectomy_postpartum_v2",
+      "section": "B2",
+      "run_a": [
+        "Calf pain or tenderness",
+        "Leg swelling or pitting oedema",
+        "Redness, warmth, or pain in one or more extremities"
+      ],
+      "run_b": [
+        "Calf pain or tenderness",
+        "Leg swelling or pitting oedema"
+      ]
+    },
+    {
+      "record_id": "SYN_26_ct_venography_pregnancy_pelvic_v2",
+      "section": "A3_1",
+      "run_a": [
+        "≥1 imaging study was done but didn't confirm DVT"
+      ],
+      "run_b": [
+        "≥1 imaging study was done and confirmed DVT"
+      ]
+    },
+    {
+      "record_id": "SYN_26_ct_venography_pregnancy_pelvic_v2",
+      "section": "A3_2",
+      "run_a": [],
+      "run_b": [
+        "CT or MR venography"
+      ]
+    },
+    {
+      "record_id": "SYN_26_ct_venography_pregnancy_pelvic_v2",
+      "section": "B1_2",
+      "run_a": [],
+      "run_b": [
+        "Lower extremity DVT"
+      ]
+    },
+    {
+      "record_id": "SYN_27_contrast_venography_absent_pulses_v2",
+      "section": "A3_2",
+      "run_a": [
+        "Doppler/Duplex Ultrasound"
+      ],
+      "run_b": [
+        "Contrast venography"
+      ]
+    },
+    {
+      "record_id": "SYN_27_contrast_venography_absent_pulses_v2",
+      "section": "B1_1",
+      "run_a": [
+        "It is unknown if there was a report of a DVT syndrome"
+      ],
+      "run_b": [
+        "≥1 symptom or sign of DVT was reported"
+      ]
+    },
+    {
+      "record_id": "SYN_27_contrast_venography_absent_pulses_v2",
+      "section": "B2",
+      "run_a": [
+        "None of the above were present or it is unknown if any of 1-4 were present"
+      ],
+      "run_b": [
+        "Absent pulses in legs or arms",
+        "Calf pain or tenderness",
+        "Leg swelling or pitting oedema"
+      ]
+    },
+    {
+      "record_id": "SYN_30_confirmed_dvt_normal_ddimer_v2",
+      "section": "B1_1",
+      "run_a": [
+        "It is unknown if there was a report of a DVT syndrome"
+      ],
+      "run_b": [
+        "≥1 symptom or sign of DVT was reported"
+      ]
+    },
+    {
+      "record_id": "SYN_30_confirmed_dvt_normal_ddimer_v2",
+      "section": "B2",
+      "run_a": [
+        "None of the above were present or it is unknown if any of 1-4 were present"
+      ],
+      "run_b": [
+        "Calf pain or tenderness",
+        "Leg swelling or pitting oedema"
+      ]
+    },
+    {
+      "record_id": "SYN_32_discharge_letter_dvt_v2",
+      "section": "B1_1",
+      "run_a": [
+        "≥1 symptom or sign of DVT was reported"
+      ],
+      "run_b": [
+        "It is unknown if there was a report of a DVT syndrome"
+      ]
+    },
+    {
+      "record_id": "SYN_33_transfer_note_dvt_upper_v2",
+      "section": "B1_1",
+      "run_a": [
+        "≥1 symptom or sign of DVT was reported"
+      ],
+      "run_b": [
+        "It is unknown if there was a report of a DVT syndrome"
+      ]
+    },
+    {
+      "record_id": "SYN_34_dvt_reported_other_facility_v2",
+      "section": "B1_1",
+      "run_a": [
+        "≥1 symptom or sign of DVT was reported"
+      ],
+      "run_b": [
+        "It is unknown if there was a report of a DVT syndrome"
+      ]
+    },
+    {
+      "record_id": "SYN_35_specialist_note_dvt_lower_v2",
+      "section": "B1_1",
+      "run_a": [
+        "≥1 symptom or sign of DVT was reported"
+      ],
+      "run_b": [
+        "It is unknown if there was a report of a DVT syndrome"
+      ]
+    },
+    {
+      "record_id": "SYN_36_calf_muscle_tear_v2",
+      "section": "X",
+      "run_a": [
+        "No alternative diagnosis was found to explain the acute illness"
+      ],
+      "run_b": [
+        "An alternative diagnosis was found that explained the acute illness"
+      ]
+    },
+    {
+      "record_id": "SYN_37_lymphatic_obstruction_v2",
+      "section": "B1_1",
+      "run_a": [
+        "It is unknown if there was a report of a DVT syndrome"
+      ],
+      "run_b": [
+        "≥1 symptom or sign of DVT was reported"
+      ]
+    },
+    {
+      "record_id": "SYN_37_lymphatic_obstruction_v2",
+      "section": "B2",
+      "run_a": [
+        "None of the above were present or it is unknown if any of 1-4 were present"
+      ],
+      "run_b": [
+        "Leg swelling or pitting oedema"
+      ]
+    },
+    {
+      "record_id": "SYN_37_lymphatic_obstruction_v2",
+      "section": "X",
+      "run_a": [
+        "No alternative diagnosis was found to explain the acute illness"
+      ],
+      "run_b": [
+        "An alternative diagnosis was found that explained the acute illness"
+      ]
+    },
+    {
+      "record_id": "SYN_39_external_vein_compression_v2",
+      "section": "B1_1",
+      "run_a": null,
+      "run_b": [
+        "≥1 symptom or sign of DVT was reported"
+      ]
+    },
+    {
+      "record_id": "SYN_39_external_vein_compression_v2",
+      "section": "B2",
+      "run_a": [
+        "None of the above were present or it is unknown if any of 1-4 were present"
+      ],
+      "run_b": [
+        "Leg swelling or pitting oedema"
+      ]
+    },
+    {
+      "record_id": "SYN_39_external_vein_compression_v2",
+      "section": "X",
+      "run_a": [
+        "No alternative diagnosis was found to explain the acute illness"
+      ],
+      "run_b": [
+        "An alternative diagnosis was found that explained the acute illness"
+      ]
+    },
+    {
+      "record_id": "SYN_40_imaging_report_pending_v2",
+      "section": "A3_1",
+      "run_a": [
+        "≥1 imaging study was done and confirmed DVT"
+      ],
+      "run_b": [
+        "No imaging studies done, unknown if done, or done but results unknown"
+      ]
+    },
+    {
+      "record_id": "SYN_40_imaging_report_pending_v2",
+      "section": "A3_2",
+      "run_a": [
+        "Compression ultrasonography"
+      ],
+      "run_b": []
+    }
+  ],
+  "overall": {
+    "compared": 400,
+    "changed": 47,
+    "correct_a": 341,
+    "correct_b": 380,
+    "stability": 0.8825
+  }
+}

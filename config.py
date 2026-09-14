@@ -10,7 +10,7 @@ from pathlib import Path
 PROJECT_ROOT = Path(__file__).resolve().parent
 
 # LLM model names and parameters
-LLM_MODEL_NAME = "qwen3.6:27b"  # Agent 1 (extractor), "rag" and "full_text" only
+LLM_MODEL_NAME = "llama3:8b-instruct-q4_0"  # Agent 1 (extractor), "rag" and "full_text" only
 EVALUATOR_LLM_MODEL_NAME = "qwen3.6:27b"  # Agent 2 (evaluator), all modes
 AGENTIC_LLM_MODEL_NAME = "llama3.1:8b-instruct-q4_0"  # Agent 1's search step, "agentic_graph" mode only
 LLM_TEMPERATURE = 0.0  # deterministic output for all agents
@@ -41,7 +41,7 @@ EMBEDDING_MODEL_NAME = "intfloat/multilingual-e5-small"
 #   calling-capable model for the search step (AGENTIC_LLM_MODEL_NAME).
 # "raw_record": skips Agent 1. Agent 2 reads the record itself, so nothing
 #   selects the evidence and no extractor model is loaded.
-EXTRACTOR_MODE = "full_text"  # "full_text", "rag", "agentic_graph", "raw_record"
+EXTRACTOR_MODE = "agentic_graph"  # "full_text", "rag", "agentic_graph", "raw_record"
 AGENTIC_MAX_ITERATIONS = 5  # cap on tool calls per section, used by "agentic_graph" mode
 
 # Chunking for the clinical record (EHR)
