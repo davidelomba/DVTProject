@@ -1,0 +1,114 @@
+{
+  "records_compared": 40,
+  "sections": {
+    "A1": {
+      "compared": 40,
+      "changed": 0,
+      "correct_a": 40,
+      "correct_b": 40,
+      "stability": 1.0
+    },
+    "A2": {
+      "compared": 40,
+      "changed": 0,
+      "correct_a": 39,
+      "correct_b": 39,
+      "stability": 1.0
+    },
+    "A3_1": {
+      "compared": 40,
+      "changed": 0,
+      "correct_a": 40,
+      "correct_b": 40,
+      "stability": 1.0
+    },
+    "A3_2": {
+      "compared": 40,
+      "changed": 0,
+      "correct_a": 40,
+      "correct_b": 40,
+      "stability": 1.0
+    },
+    "B1_1": {
+      "compared": 40,
+      "changed": 0,
+      "correct_a": 39,
+      "correct_b": 39,
+      "stability": 1.0
+    },
+    "B1_2": {
+      "compared": 40,
+      "changed": 0,
+      "correct_a": 40,
+      "correct_b": 40,
+      "stability": 1.0
+    },
+    "B2": {
+      "compared": 40,
+      "changed": 0,
+      "correct_a": 40,
+      "correct_b": 40,
+      "stability": 1.0
+    },
+    "C": {
+      "compared": 40,
+      "changed": 0,
+      "correct_a": 40,
+      "correct_b": 40,
+      "stability": 1.0
+    },
+    "F": {
+      "compared": 40,
+      "changed": 0,
+      "correct_a": 40,
+      "correct_b": 40,
+      "stability": 1.0
+    },
+    "X": {
+      "compared": 40,
+      "changed": 3,
+      "correct_a": 37,
+      "correct_b": 40,
+      "stability": 0.925
+    }
+  },
+  "differences": [
+    {
+      "record_id": "SYN_11_autopsy_negative_v2",
+      "section": "X",
+      "run_a": [
+        "No alternative diagnosis was found to explain the acute illness"
+      ],
+      "run_b": [
+        "An alternative diagnosis was found that explained the acute illness"
+      ]
+    },
+    {
+      "record_id": "SYN_16_no_dvt_syndrome_reported_v2",
+      "section": "X",
+      "run_a": [
+        "No alternative diagnosis was found to explain the acute illness"
+      ],
+      "run_b": [
+        "An alternative diagnosis was found that explained the acute illness"
+      ]
+    },
+    {
+      "record_id": "SYN_20_autopsy_negative_trauma_v2",
+      "section": "X",
+      "run_a": [
+        "No alternative diagnosis was found to explain the acute illness"
+      ],
+      "run_b": [
+        "An alternative diagnosis was found that explained the acute illness"
+      ]
+    }
+  ],
+  "overall": {
+    "compared": 400,
+    "changed": 3,
+    "correct_a": 395,
+    "correct_b": 398,
+    "stability": 0.9925
+  }
+}
