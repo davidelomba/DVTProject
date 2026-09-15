@@ -44,9 +44,12 @@ but performs no evidence selection.
 
 ## Domain constraints
 
-- **`SECTION_KEYWORD_GATES["X"]` follows Table 2 of the Brighton paper**, the
-  DVT row. Add a term only when that row names it; the clinicians have still to
-  confirm Table 2 is the intended source.
+- **Criterion X asks whether any alternative diagnosis explains the acute
+  illness**, not whether one of Table 2's conditions does. Section 5.2.7 states
+  the criterion as no alternate etiology that could explain the clinical illness
+  and calls Table 2 a list of possible etiologies, so a condition outside that
+  list still counts. Table 2 reaches the evaluator through the context retrieved
+  for the section.
 - **Do not add schema-level "none of the above" options** for A3_2 or B1_2: the
   printed questionnaire does not have them.
 - **B1.1 and B1.2 record the presumed diagnosis of a specific syndrome**, DVT of
@@ -111,8 +114,11 @@ EXTRACTOR_MODE           = "agentic_graph"
 BRIGHTON_CONTEXT_ENABLED = True
 SECTION_HINTS_ENABLED    = True
 SECTION_HINTS_DISABLED   = {"B2"}
-SECTION_GATES_ENABLED    = {"keyword": True, "details": False, "absent_pulses": True}
+SECTION_GATES_ENABLED    = {"keyword": False, "details": False, "absent_pulses": True}
 ```
+
+All three per-section gates are off. Only the cross-section rules remain, and
+they encode the form's structure rather than a model weakness.
 
 Check it before every launch, since an arm left in place is how a run gets
 attributed to the wrong configuration:
@@ -232,6 +238,24 @@ Only an outside authority settles the difference.
   empty, and two sections that failed outright with `FINAL_ANSWER: 5` for a
   two-option field, the model having reasoned correctly that DVT was ruled out
   and having nowhere to put it.
+- **Seven configurations measured on the same base**, each varying one
+  component. `docs/RISULTATI_SPERIMENTALI.md` section 8 has the full per-section
+  table.
+
+  ```
+                                    exact     micro    macro kappa
+  agentic_graph (reference)        398/400    99.5%      0.982
+  agentic without the context      395/400    98.75%     0.970
+  raw_record                       392/400    98.0%      0.966
+  full_text + 27B extractor        380/400    95.2%      0.824
+  medgemma as evaluator            371/398    93.2%      0.837
+  rag                              341/400    85.3%      0.607
+  full_text                        341/400    85.5%      0.586
+  ```
+
+  Not letting the 8B rewrite the evidence is worth +51, a 27B extractor instead
+  of an 8B is worth +39 and still lands 12 below not extracting at all, and the
+  guideline context is worth +3.
 - **A weak first stage decides the score.** The four extraction modes are the
   four combinations of two choices, whether the 8B **rewrites** the evidence and
   whether Agent 2 gets the whole record or the retrieved chunks:
@@ -248,7 +272,19 @@ Only an outside authority settles the difference.
   `full_text` and 142 in `rag`. Agent 2 keeps reasoning correctly on what it
   receives, so reading only the final answer hides the cause. The chunks column
   mixes fixed with model-chosen queries, so the +6 is not attributable to
-  retrieval rather than agency.
+  retrieval rather than agency. An extractor exists in every mode but
+  `raw_record`; what `agentic_graph` discards is the agent's final turn, not the
+  model.
+- **The guideline context is worth +3, and reading only the errors predicted the
+  opposite.** Turning `BRIGHTON_CONTEXT_ENABLED` off takes the reference run
+  from 398 to 395, losing A3.2 (40 to 38, 2 false positives and 0 false
+  negatives) and B2 (40 to 39). Without the guideline the model over-selects
+  imaging modalities; with it, it does not — the opposite of medgemma, which
+  cited the same guideline to add options. The prediction that the context was
+  harmful came from audit logs of failures only, where it appears quoted in
+  wrong answers; the sections it silently got right are invisible to that
+  reading and are the majority. With the context on, A3.2 and B2 are at 40/40,
+  so a reranker or a larger embedding model has no headroom to recover.
 - **Choosing is not writing.** `agentic_graph` belongs in the verbatim row even
   though it has a model in the loop: `extract_evidence_agentic` returns the raw
   tool observations, not the agent's final turn, so the 8B picks queries but the
@@ -301,31 +337,45 @@ Only an outside authority settles the difference.
     was reported", or does the section stay unknown? SYN_10 turns on this: the
     ground truth says unknown, the model reads the discomfort as a symptom.
   - Does X mean an alternative diagnosis for the acute illness in general, or
-    one of the Table 2 conditions that mimic a DVT? The model reads it broadly
-    and the keyword gate overrides it on three records; the answer decides
-    whether that gate saves three answers or destroys three.
+    one of the Table 2 conditions that mimic a DVT? Acted on already, from
+    section 5.2.7 and the three records above, but worth confirming. Ask it
+    concretely: a patient dies of an acute myocardial infarction and the autopsy
+    excludes DVT — is X answered `An alternative diagnosis was found that
+    explained the acute illness`?
   - Does B2 option 4 apply when only calf pain is documented?
   - Is Table 2 of the Brighton paper the intended source for X's list?
-- **The gates have almost no purpose left under qwen3.6:27b.** Reconstructed
-  from the audit logs: all gates on 290/300, no gates at all 288/300. The
-  details gate is off. The absent-pulses gate never fires. All the remaining
-  value sits in the X keyword gate, worth 3 sections, and those are the three
-  records the X question above decides.
+- **All three per-section gates are now off.** The details gate reverted a
+  correct answer once the F hint gained its precondition. The absent-pulses gate
+  never fires. The keyword gate was removed on 2026-09-15 together with a
+  ground-truth correction: it fired 3 times in 400, always on X, on SYN_11
+  (death from acute myocardial infarction, autopsy excluding DVT), SYN_16 (chest
+  pain attributed to a musculoskeletal cause) and SYN_20 (death from traumatic
+  haemorrhage, stated as unrelated to VTE). In all three the model answered that
+  an alternative diagnosis was found and was right: section 5.2.7 of the paper
+  states the criterion as *no alternate etiology that could explain the clinical
+  illness* and calls Table 2 *a list of possible* etiologies. The gate and the
+  ground truth agreed because both were written from the same narrow reading of
+  Table 2, so their agreement was circular. Those three scenarios now carry
+  `An alternative diagnosis was found`, which keeps the reference run at 398.
+  Two further defects made the gate indefensible: Table 2's DVT row lists
+  *Physical trauma* as a general category and the keyword list encoded only the
+  specific diagnoses under it, so SYN_20 failed even on the narrow reading; and
+  in `rag` the gate overrode SYN_36 and SYN_39, whose keywords ARE in the list,
+  because the lossy extractor had already dropped the text containing them —
+  **the gate's reliability depends on the extractor's output**.
 - Test whether the TRANSCRIPTION RULE in `AGENTIC_EXTRACTOR_SYSTEM_PROMPT` does
   anything: it governs a string the code discards.
-- **Does the guideline context do anything?** Never measured.
-  `BRIGHTON_CONTEXT_ENABLED` makes it an ablation. The model names Brighton in
-  its reasoning on 5 sections out of 400, and every case where the context was
-  clearly decisive pushed it toward over-selection: medgemma citing compression
-  ultrasonography as the first-line test on A3.2, SYN_10 citing the guideline's
-  non-specific signs on B1.1, and B2's hint existing to say that the context
-  listing a symptom is not evidence the patient had it. Improving the retrieval
-  before knowing the sign would make the system better at delivering a document
-  that may be hurting it.
-- **Turning off the keyword gate** is a decision waiting on the X question, not
-  on a run: the gate fires 3 times in 400 and those are the three records that
-  question decides. Its effect is exactly reconstructible from the audit logs,
-  for every mode and under both readings, without any GPU time.
+- **The extractor prompt never says a negation is evidence**, while the
+  evaluator prompt does. On SYN_32 the same extractor hands B1.1 the sentence
+  stating the record contains no symptoms and hands F the bare diagnosis,
+  because the two section queries aim at different halves. F needs to know
+  whether details accompany the diagnosis and its query asks for the diagnosis.
+  This penalises the baselines, not the reference mode, where F is 40 of 40.
+- **Re-run the reference configuration** with `keyword: False` and the corrected
+  ground truth. The reconstruction predicts 398/400 unchanged, since the gate and
+  the three corrected records cancel out, but it has not been confirmed by a run.
+  `generate_synthetic_records.py` rewrites the ground-truth JSONs without calling
+  any model, so the corrected scenarios need that before the next evaluation.
 - **Two wrong sections in 400 is past what 40 records can resolve.** Each record
   is worth 0.25 points and the 95% interval on the total is [98, 100], so a
   one-section change is not a measurable difference. What is still worth reading
