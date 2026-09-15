@@ -71,8 +71,11 @@ SECTION_ORDER = [
 # CROSS_SECTION_RULES below are excluded on purpose and always apply.
 SECTION_GATES_ENABLED = {
     # Reverts a positive answer when the evidence never names the procedure
-    # (A1, A2, X: see SECTION_KEYWORD_GATES below).
-    "keyword": True,
+    # (A1, A2, X: see SECTION_KEYWORD_GATES below). On X it treats Table 2 as a
+    # closed list, which the paper calls a list of possible etiologies, and it
+    # reads a keyword missing from a lossy extraction as a condition absent
+    # from the record.
+    "keyword": False,
     # Derives section F's Yes/No from the model's own DETAILS_PRESENT line.
     # The mapping treats absent details as a bare conclusion, which is wrong
     # when no diagnosis was reported at all.
@@ -81,18 +84,17 @@ SECTION_GATES_ENABLED = {
     "absent_pulses": True,
 }
 
-# Deterministic keyword gates
+# Deterministic keyword gates, read only when SECTION_GATES_ENABLED["keyword"]
+# is True, and kept while it is False so the ablation can be repeated.
 # Sections asking whether one specific thing is present (A1 autopsy, A2
 # surgery, X an alternative diagnosis): a small model can answer positively
-# even when the evidence never names it. If none of the keywords appear in
-# Agent 1's evidence the section is forced to its negative default, without
-# an LLM call. A keyword being present changes nothing on its own: the
-# evidence could be negating it, so the model still evaluates normally.
+# even when the evidence never names it. When the gate is on it forces a section
+# back to its negative default if none of its keywords appear in Agent 1's
+# evidence, without an LLM call. A keyword being present changes
+# nothing on its own: the evidence could be negating it, so the model still
+# evaluates normally.
 # An optional "gated_options" names the answers the keywords can speak for.
 # Without it every answer other than the default is checked against them.
-# TODO: X's gate overrides the model on the records where it reads the section
-# more broadly than the ground truth. Whether it saves those answers or
-# destroys them depends on how broadly the clinicians say X should be read.
 SECTION_KEYWORD_GATES = {
     "A1": {
         "keywords": ["autops", "autoptic", "postmortem", "post-mortem", "necrosc"],

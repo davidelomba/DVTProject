@@ -454,7 +454,7 @@ SCENARIOS = [
             "b2": {"symptoms": ["None of the above were present or it is unknown if any of 1-4 were present"]},
             "c": {"answer": "D-dimer not tested, or tested but results unknown or not available"},
             "f": {"answer": "No"},
-            "x": {"answer": "No alternative diagnosis was found to explain the acute illness"},
+            "x": {"answer": "An alternative diagnosis was found that explained the acute illness"},
         },
     },
     {
@@ -579,7 +579,7 @@ SCENARIOS = [
             "b2": {"symptoms": ["None of the above were present or it is unknown if any of 1-4 were present"]},
             "c": {"answer": "D-dimer not tested, or tested but results unknown or not available"},
             "f": {"answer": "No"},
-            "x": {"answer": "No alternative diagnosis was found to explain the acute illness"},
+            "x": {"answer": "An alternative diagnosis was found that explained the acute illness"},
         },
     },
     {
@@ -678,7 +678,7 @@ SCENARIOS = [
             "b2": {"symptoms": ["None of the above were present or it is unknown if any of 1-4 were present"]},
             "c": {"answer": "D-dimer not tested, or tested but results unknown or not available"},
             "f": {"answer": "No"},
-            "x": {"answer": "No alternative diagnosis was found to explain the acute illness"},
+            "x": {"answer": "An alternative diagnosis was found that explained the acute illness"},
         },
     },
     {
