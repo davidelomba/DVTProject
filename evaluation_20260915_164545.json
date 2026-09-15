@@ -371,6 +371,6 @@
     "macro_kappa": 0.9818637502848029,
     "macro_majority_baseline": 0.655
   },
-  "ground_truth_dir": "/home/lombardi/DVTProject/data/synthetic_records",
-  "predictions_dir": "output_no_brighton"
+  "ground_truth_dir": "C:\\Users\\davil\\Desktop\\Tesi_magistrale\\DVTProject\\data\\synthetic_records",
+  "predictions_dir": "output"
 }
