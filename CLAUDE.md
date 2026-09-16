@@ -112,6 +112,7 @@ AGENTIC_LLM_MODEL_NAME   = "llama3.1:8b-instruct-q4_0"
 LLM_REASONING            = False
 EXTRACTOR_MODE           = "agentic_graph"
 BRIGHTON_CONTEXT_ENABLED = True
+SECTION_DESCRIPTIONS_ENABLED = False
 SECTION_HINTS_ENABLED    = True
 SECTION_HINTS_DISABLED   = {"B2"}
 SECTION_GATES_ENABLED    = {"keyword": False, "details": False, "absent_pulses": True}
@@ -124,7 +125,7 @@ Check it before every launch, since an arm left in place is how a run gets
 attributed to the wrong configuration:
 
 ```bash
-grep -E '^(LLM_MODEL_NAME|EVALUATOR_LLM_MODEL_NAME|AGENTIC_LLM_MODEL_NAME|LLM_REASONING|EXTRACTOR_MODE|BRIGHTON_CONTEXT_ENABLED|SECTION_HINTS_ENABLED|SECTION_HINTS_DISABLED)' config.py
+grep -E '^(LLM_MODEL_NAME|EVALUATOR_LLM_MODEL_NAME|AGENTIC_LLM_MODEL_NAME|LLM_REASONING|EXTRACTOR_MODE|BRIGHTON_CONTEXT_ENABLED|SECTION_DESCRIPTIONS_ENABLED|SECTION_HINTS_ENABLED|SECTION_HINTS_DISABLED)' config.py
 ```
 
 `_run_config` records all of it in every audit log, so a result file can always
@@ -324,6 +325,18 @@ Only an outside authority settles the difference.
   section above gives the two CSVs to compare. Only two of the 40 rows differ
   from the ground truth, `criteria_a2` on SYN_03 and `criteria_b1_1` on SYN_10,
   so the whole comparison turns on those.
+- **Agreement with an independent reviewer is not measurable yet.** Every number
+  here is scored against a ground truth written alongside the pipeline, so the
+  two are not independent and their agreement is not evidence. A validation study
+  reports the concordance between two blind reviewers instead, neither of them
+  treated as the truth; the SeValid myocarditis experiment reports 28 of 38, 74%.
+  Measuring it here takes a clinician filling the questionnaire on a subset of
+  the corpus without seeing the output or the ground truth, then agreement at
+  three levels, per section, per case decision and per LOC, the last one ordinal
+  and so quadratic weighted. Discordant records go to a second clinician, and
+  that adjudicated standard is what gives each reviewer a sensitivity. The two
+  sections left, A2 on SYN_03 and B1.1 on SYN_10, are disagreements argued from
+  the guideline, and accuracy scores them as errors.
 - **A2 and X still rest on few records**, 4 and 6 of 40. F went from 2 positives
   to 7 with the September expansion and now scores kappa 0.918.
 - **Questions for the clinicians.** The first two decide the only two wrong
@@ -363,6 +376,16 @@ Only an outside authority settles the difference.
   in `rag` the gate overrode SYN_36 and SYN_39, whose keywords ARE in the list,
   because the lossy extractor had already dropped the text containing them —
   **the gate's reliability depends on the extractor's output**.
+- **Agent 2 never sees the section heading.** `_build_reasoning_prompt` sends the
+  evidence, the guideline context, the hint and the numbered options, so the only
+  statement of what a section covers is the wording of the options. A2 is where
+  that shows: the word surgical appears only inside option 3, and on SYN_03 the
+  model reads "other procedure done that confirmed presence of DVT" as covering a
+  CT venography. The schema settles it, since option 3 reads "no surgical
+  procedure done", so the section is surgical and imaging belongs to A3.
+  `config.SECTION_DESCRIPTIONS_ENABLED` now sends each field's description from
+  `models.py` above its options; it is False, the value every recorded run was
+  produced with, and the arm has not been run.
 - Test whether the TRANSCRIPTION RULE in `AGENTIC_EXTRACTOR_SYSTEM_PROMPT` does
   anything: it governs a string the code discards.
 - **The extractor prompt never says a negation is evidence**, while the

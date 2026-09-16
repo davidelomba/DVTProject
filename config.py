@@ -71,10 +71,10 @@ SECTION_ORDER = [
 # CROSS_SECTION_RULES below are excluded on purpose and always apply.
 SECTION_GATES_ENABLED = {
     # Reverts a positive answer when the evidence never names the procedure
-    # (A1, A2, X: see SECTION_KEYWORD_GATES below). On X it treats Table 2 as a
-    # closed list, which the paper calls a list of possible etiologies, and it
-    # reads a keyword missing from a lossy extraction as a condition absent
-    # from the record.
+    # (A1, A2, X: see SECTION_KEYWORD_GATES below).
+    # Off: on X it enforces Table 2 as a closed list, which the paper presents
+    # as examples, and it reads a keyword missing from a lossy extraction as a
+    # condition absent from the record.
     "keyword": False,
     # Derives section F's Yes/No from the model's own DETAILS_PRESENT line.
     # The mapping treats absent details as a bare conclusion, which is wrong
@@ -84,15 +84,13 @@ SECTION_GATES_ENABLED = {
     "absent_pulses": True,
 }
 
-# Deterministic keyword gates, read only when SECTION_GATES_ENABLED["keyword"]
-# is True, and kept while it is False so the ablation can be repeated.
+# Deterministic keyword gates
 # Sections asking whether one specific thing is present (A1 autopsy, A2
 # surgery, X an alternative diagnosis): a small model can answer positively
-# even when the evidence never names it. When the gate is on it forces a section
-# back to its negative default if none of its keywords appear in Agent 1's
-# evidence, without an LLM call. A keyword being present changes
-# nothing on its own: the evidence could be negating it, so the model still
-# evaluates normally.
+# even when the evidence never names it. If none of the keywords appear in
+# Agent 1's evidence the section is forced to its negative default, without
+# an LLM call. A keyword being present changes nothing on its own: the
+# evidence could be negating it, so the model still evaluates normally.
 # An optional "gated_options" names the answers the keywords can speak for.
 # Without it every answer other than the default is checked against them.
 SECTION_KEYWORD_GATES = {
@@ -129,6 +127,13 @@ SECTION_KEYWORD_GATES = {
 # False sends no reference context at all, so the model answers from the
 # evidence and the options alone.
 BRIGHTON_CONTEXT_ENABLED = True
+
+# Whether Agent 2 receives the section's heading above the numbered options.
+# The heading is the description carried by each field in models.py, naming the
+# section as the printed questionnaire does. False sends the options alone, so
+# the only statement of what a section covers is the wording of the options
+# themselves, and is what every run recorded so far was produced with.
+SECTION_DESCRIPTIONS_ENABLED = False
 
 # Master switch for SECTION_HINTS, the counterpart of SECTION_GATES_ENABLED.
 # The hint for F asks for the DETAILS_PRESENT line that apply_details_gate

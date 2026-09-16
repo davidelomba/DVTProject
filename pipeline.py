@@ -130,6 +130,7 @@ def _run_config_snapshot() -> dict:
         "extractor_mode": config.EXTRACTOR_MODE,
         "section_gates_enabled": dict(config.SECTION_GATES_ENABLED),
         "brighton_context_enabled": config.BRIGHTON_CONTEXT_ENABLED,
+        "section_descriptions_enabled": config.SECTION_DESCRIPTIONS_ENABLED,
         "section_hints_enabled": config.SECTION_HINTS_ENABLED,
         "section_hints_disabled": sorted(config.SECTION_HINTS_DISABLED),
         "section_hints_fingerprint": _hint_fingerprint(),

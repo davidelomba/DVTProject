@@ -281,28 +281,33 @@ confirmed by other means."""
 
 
 def _get_field_info(section_model):
-    """Introspects a section's schema to find its field name and valid options.
+    """Introspects a section's schema to find its field, options and heading.
 
     Args:
         section_model: a Pydantic class from models.SECTION_MODELS.
 
     Returns:
-        (field_name, valid_options, is_multi_select). Multi-select sections are
-        typed List[Literal[...]], single-choice ones Literal[...] directly.
+        (field_name, valid_options, is_multi_select, description). Multi-select
+        sections are typed List[Literal[...]], single-choice ones Literal[...]
+        directly. description is the field's own description in models.py, the
+        section heading as the printed questionnaire words it, or "" when the
+        field carries none.
     """
     # Every section schema has exactly one field, read generically rather than
     # hardcoding "answer" vs "studies" vs "symptoms".
     field_name = next(iter(section_model.model_fields.keys()))
-    annotation = section_model.model_fields[field_name].annotation
+    field = section_model.model_fields[field_name]
+    annotation = field.annotation
+    description = field.description or ""
 
     if get_origin(annotation) is list:
         inner = get_args(annotation)[0]
         options = list(get_args(inner))
-        return field_name, options, True
+        return field_name, options, True, description
 
     # Single-choice fields are typed Literal[...] directly.
     options = list(get_args(annotation))
-    return field_name, options, False
+    return field_name, options, False, description
 
 
 def _build_reasoning_prompt(
@@ -311,6 +316,7 @@ def _build_reasoning_prompt(
     options: list[str],
     multi_select: bool,
     extra_instructions: str = "",
+    section_description: str = "",
 ) -> str:
     """Builds the prompt Agent 2 answers for one section.
 
@@ -327,6 +333,9 @@ def _build_reasoning_prompt(
         options: the section's valid options, in schema order.
         multi_select: whether several options may apply.
         extra_instructions: the section's hint from config.SECTION_HINTS.
+        section_description: the section heading from models.py, placed
+            directly above the options as the printed form has it. Empty when
+            config.SECTION_DESCRIPTIONS_ENABLED is False.
 
     Returns:
         The prompt string.
@@ -338,6 +347,10 @@ def _build_reasoning_prompt(
     # Per-section hint (config.SECTION_HINTS), if this section has one
     if extra_instructions:
         prompt += f"\n\n{extra_instructions}"
+    # Heading first, then its options, so the scope of an option is read off
+    # the section it belongs to rather than inferred from the other options.
+    if section_description:
+        prompt += f"\n\n{section_description}"
     prompt += f"\n\nOptions:\n{options_block}\n\n"
 
     base_instruction = "First explain your reasoning in a few sentences. Then, at the end of your response, write exactly two more lines, in this order:\n"
@@ -556,8 +569,12 @@ def evaluate_section(
         RuntimeError: if no attempt produced a parseable, valid answer.
     """
     # Introspection and prompt built once, outside the retry loop.
-    field_name, options, multi_select = _get_field_info(section_model)
-    prompt = _build_reasoning_prompt(evidence_text, brighton_context, options, multi_select, extra_instructions)
+    field_name, options, multi_select, description = _get_field_info(section_model)
+    section_description = description if config.SECTION_DESCRIPTIONS_ENABLED else ""
+    prompt = _build_reasoning_prompt(
+        evidence_text, brighton_context, options, multi_select, extra_instructions,
+        section_description,
+    )
 
     last_error = None
     last_content = None
