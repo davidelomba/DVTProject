@@ -133,7 +133,7 @@ BRIGHTON_CONTEXT_ENABLED = True
 # section as the printed questionnaire does. False sends the options alone, so
 # the only statement of what a section covers is the wording of the options
 # themselves, and is what every run recorded so far was produced with.
-SECTION_DESCRIPTIONS_ENABLED = False
+SECTION_DESCRIPTIONS_ENABLED = True
 
 # Master switch for SECTION_HINTS, the counterpart of SECTION_GATES_ENABLED.
 # The hint for F asks for the DETAILS_PRESENT line that apply_details_gate
