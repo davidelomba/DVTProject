@@ -1,0 +1,35 @@
+{
+  "record_id": "SYN_33_transfer_note_dvt_upper_v2",
+  "a1": {
+    "answer": "Autopsy done but showed no evidence of DVT"
+  },
+  "a2": {
+    "answer": "No surgical procedure done; or, done but either did not confirm presence of DVT or findings unknown; or unknown if done"
+  },
+  "a3_1": {
+    "answer": "≥1 imaging study was done but didn't confirm DVT"
+  },
+  "a3_2": {
+    "studies": []
+  },
+  "b1_1": {
+    "answer": "There was no report of a recognized DVT syndrome"
+  },
+  "b1_2": {
+    "types": [
+      "Upper extremity DVT"
+    ]
+  },
+  "b2": {
+    "symptoms": []
+  },
+  "c": {
+    "answer": "D-dimer not tested, or tested but results unknown or not available"
+  },
+  "f": {
+    "answer": "Yes"
+  },
+  "x": {
+    "answer": "An alternative diagnosis was found that explained the acute illness"
+  }
+}
