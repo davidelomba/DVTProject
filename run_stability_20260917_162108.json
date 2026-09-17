@@ -1,0 +1,1004 @@
+{
+  "records_compared": 40,
+  "sections": {
+    "A1": {
+      "compared": 40,
+      "changed": 25,
+      "correct_a": 14,
+      "correct_b": 39,
+      "stability": 0.375
+    },
+    "A2": {
+      "compared": 40,
+      "changed": 0,
+      "correct_a": 38,
+      "correct_b": 38,
+      "stability": 1.0
+    },
+    "A3_1": {
+      "compared": 40,
+      "changed": 0,
+      "correct_a": 28,
+      "correct_b": 28,
+      "stability": 1.0
+    },
+    "A3_2": {
+      "compared": 40,
+      "changed": 0,
+      "correct_a": 26,
+      "correct_b": 26,
+      "stability": 1.0
+    },
+    "B1_1": {
+      "compared": 40,
+      "changed": 0,
+      "correct_a": 31,
+      "correct_b": 31,
+      "stability": 1.0
+    },
+    "B1_2": {
+      "compared": 40,
+      "changed": 0,
+      "correct_a": 27,
+      "correct_b": 27,
+      "stability": 1.0
+    },
+    "B2": {
+      "compared": 40,
+      "changed": 0,
+      "correct_a": 29,
+      "correct_b": 29,
+      "stability": 1.0
+    },
+    "C": {
+      "compared": 40,
+      "changed": 0,
+      "correct_a": 34,
+      "correct_b": 34,
+      "stability": 1.0
+    },
+    "F": {
+      "compared": 40,
+      "changed": 39,
+      "correct_a": 7,
+      "correct_b": 32,
+      "stability": 0.025
+    },
+    "X": {
+      "compared": 40,
+      "changed": 28,
+      "correct_a": 6,
+      "correct_b": 32,
+      "stability": 0.3
+    }
+  },
+  "differences": [
+    {
+      "record_id": "SYN_01_lower_dvt_doppler_v2",
+      "section": "A1",
+      "run_a": [
+        "Autopsy showed presence of DVT"
+      ],
+      "run_b": [
+        "No autopsy done, unknown if done, or done but results unavailable"
+      ]
+    },
+    {
+      "record_id": "SYN_01_lower_dvt_doppler_v2",
+      "section": "F",
+      "run_a": [
+        "Yes"
+      ],
+      "run_b": [
+        "No"
+      ]
+    },
+    {
+      "record_id": "SYN_01_lower_dvt_doppler_v2",
+      "section": "X",
+      "run_a": [
+        "An alternative diagnosis was found that explained the acute illness"
+      ],
+      "run_b": [
+        "No alternative diagnosis was found to explain the acute illness"
+      ]
+    },
+    {
+      "record_id": "SYN_02_dvt_ruled_out_cellulitis_v2",
+      "section": "A1",
+      "run_a": [
+        "Autopsy done but showed no evidence of DVT"
+      ],
+      "run_b": [
+        "No autopsy done, unknown if done, or done but results unavailable"
+      ]
+    },
+    {
+      "record_id": "SYN_02_dvt_ruled_out_cellulitis_v2",
+      "section": "F",
+      "run_a": [
+        "Yes"
+      ],
+      "run_b": [
+        "No"
+      ]
+    },
+    {
+      "record_id": "SYN_03_upper_extremity_catheter_v2",
+      "section": "A1",
+      "run_a": [
+        "Autopsy done but showed no evidence of DVT"
+      ],
+      "run_b": [
+        "No autopsy done, unknown if done, or done but results unavailable"
+      ]
+    },
+    {
+      "record_id": "SYN_03_upper_extremity_catheter_v2",
+      "section": "F",
+      "run_a": [
+        "Yes"
+      ],
+      "run_b": [
+        "No"
+      ]
+    },
+    {
+      "record_id": "SYN_03_upper_extremity_catheter_v2",
+      "section": "X",
+      "run_a": [
+        "An alternative diagnosis was found that explained the acute illness"
+      ],
+      "run_b": [
+        "No alternative diagnosis was found to explain the acute illness"
+      ]
+    },
+    {
+      "record_id": "SYN_04_multi_imaging_confirmed_v2",
+      "section": "F",
+      "run_a": [
+        "Yes"
+      ],
+      "run_b": [
+        "No"
+      ]
+    },
+    {
+      "record_id": "SYN_04_multi_imaging_confirmed_v2",
+      "section": "X",
+      "run_a": [
+        "An alternative diagnosis was found that explained the acute illness"
+      ],
+      "run_b": [
+        "No alternative diagnosis was found to explain the acute illness"
+      ]
+    },
+    {
+      "record_id": "SYN_05_absent_flow_not_pulses_trap_v2",
+      "section": "A1",
+      "run_a": [
+        "Autopsy done but showed no evidence of DVT"
+      ],
+      "run_b": [
+        "No autopsy done, unknown if done, or done but results unavailable"
+      ]
+    },
+    {
+      "record_id": "SYN_05_absent_flow_not_pulses_trap_v2",
+      "section": "F",
+      "run_a": [
+        "Yes"
+      ],
+      "run_b": [
+        "No"
+      ]
+    },
+    {
+      "record_id": "SYN_05_absent_flow_not_pulses_trap_v2",
+      "section": "X",
+      "run_a": [
+        "An alternative diagnosis was found that explained the acute illness"
+      ],
+      "run_b": [
+        "No alternative diagnosis was found to explain the acute illness"
+      ]
+    },
+    {
+      "record_id": "SYN_06_no_imaging_clinical_only_v2",
+      "section": "A1",
+      "run_a": [
+        "Autopsy done but showed no evidence of DVT"
+      ],
+      "run_b": [
+        "No autopsy done, unknown if done, or done but results unavailable"
+      ]
+    },
+    {
+      "record_id": "SYN_06_no_imaging_clinical_only_v2",
+      "section": "F",
+      "run_a": [
+        "Yes"
+      ],
+      "run_b": [
+        "No"
+      ]
+    },
+    {
+      "record_id": "SYN_06_no_imaging_clinical_only_v2",
+      "section": "X",
+      "run_a": [
+        "An alternative diagnosis was found that explained the acute illness"
+      ],
+      "run_b": [
+        "No alternative diagnosis was found to explain the acute illness"
+      ]
+    },
+    {
+      "record_id": "SYN_07_thrombectomy_positive_v2",
+      "section": "F",
+      "run_a": [
+        "Yes"
+      ],
+      "run_b": [
+        "No"
+      ]
+    },
+    {
+      "record_id": "SYN_07_thrombectomy_positive_v2",
+      "section": "X",
+      "run_a": [
+        "An alternative diagnosis was found that explained the acute illness"
+      ],
+      "run_b": [
+        "No alternative diagnosis was found to explain the acute illness"
+      ]
+    },
+    {
+      "record_id": "SYN_08_autopsy_positive_v2",
+      "section": "F",
+      "run_a": [
+        "Yes"
+      ],
+      "run_b": [
+        "No"
+      ]
+    },
+    {
+      "record_id": "SYN_08_autopsy_positive_v2",
+      "section": "X",
+      "run_a": [
+        "An alternative diagnosis was found that explained the acute illness"
+      ],
+      "run_b": [
+        "No alternative diagnosis was found to explain the acute illness"
+      ]
+    },
+    {
+      "record_id": "SYN_09_risk_factor_not_alt_diagnosis_v2",
+      "section": "A1",
+      "run_a": [
+        "Autopsy done but showed no evidence of DVT"
+      ],
+      "run_b": [
+        "No autopsy done, unknown if done, or done but results unavailable"
+      ]
+    },
+    {
+      "record_id": "SYN_09_risk_factor_not_alt_diagnosis_v2",
+      "section": "F",
+      "run_a": [
+        "Yes"
+      ],
+      "run_b": [
+        "No"
+      ]
+    },
+    {
+      "record_id": "SYN_10_unclear_sparse_record_v2",
+      "section": "A1",
+      "run_a": [
+        "Autopsy done but showed no evidence of DVT"
+      ],
+      "run_b": [
+        "No autopsy done, unknown if done, or done but results unavailable"
+      ]
+    },
+    {
+      "record_id": "SYN_10_unclear_sparse_record_v2",
+      "section": "X",
+      "run_a": [
+        "An alternative diagnosis was found that explained the acute illness"
+      ],
+      "run_b": [
+        "No alternative diagnosis was found to explain the acute illness"
+      ]
+    },
+    {
+      "record_id": "SYN_11_autopsy_negative_v2",
+      "section": "F",
+      "run_a": [
+        "Yes"
+      ],
+      "run_b": [
+        "No"
+      ]
+    },
+    {
+      "record_id": "SYN_12_other_procedure_positive_v2",
+      "section": "F",
+      "run_a": [
+        "Yes"
+      ],
+      "run_b": [
+        "No"
+      ]
+    },
+    {
+      "record_id": "SYN_12_other_procedure_positive_v2",
+      "section": "X",
+      "run_a": [
+        "An alternative diagnosis was found that explained the acute illness"
+      ],
+      "run_b": [
+        "No alternative diagnosis was found to explain the acute illness"
+      ]
+    },
+    {
+      "record_id": "SYN_13_contrast_venography_only_v2",
+      "section": "A1",
+      "run_a": [
+        "Autopsy done but showed no evidence of DVT"
+      ],
+      "run_b": [
+        "No autopsy done, unknown if done, or done but results unavailable"
+      ]
+    },
+    {
+      "record_id": "SYN_13_contrast_venography_only_v2",
+      "section": "F",
+      "run_a": [
+        "Yes"
+      ],
+      "run_b": [
+        "No"
+      ]
+    },
+    {
+      "record_id": "SYN_13_contrast_venography_only_v2",
+      "section": "X",
+      "run_a": [
+        "An alternative diagnosis was found that explained the acute illness"
+      ],
+      "run_b": [
+        "No alternative diagnosis was found to explain the acute illness"
+      ]
+    },
+    {
+      "record_id": "SYN_14_other_imaging_incidental_v2",
+      "section": "A1",
+      "run_a": [
+        "Autopsy done but showed no evidence of DVT"
+      ],
+      "run_b": [
+        "No autopsy done, unknown if done, or done but results unavailable"
+      ]
+    },
+    {
+      "record_id": "SYN_14_other_imaging_incidental_v2",
+      "section": "F",
+      "run_a": [
+        "Yes"
+      ],
+      "run_b": [
+        "No"
+      ]
+    },
+    {
+      "record_id": "SYN_14_other_imaging_incidental_v2",
+      "section": "X",
+      "run_a": [
+        "An alternative diagnosis was found that explained the acute illness"
+      ],
+      "run_b": [
+        "No alternative diagnosis was found to explain the acute illness"
+      ]
+    },
+    {
+      "record_id": "SYN_15_ddimer_negative_low_probability_v2",
+      "section": "F",
+      "run_a": [
+        "Yes"
+      ],
+      "run_b": [
+        "No"
+      ]
+    },
+    {
+      "record_id": "SYN_16_no_dvt_syndrome_reported_v2",
+      "section": "A1",
+      "run_a": [
+        "Autopsy done but showed no evidence of DVT"
+      ],
+      "run_b": [
+        "No autopsy done, unknown if done, or done but results unavailable"
+      ]
+    },
+    {
+      "record_id": "SYN_16_no_dvt_syndrome_reported_v2",
+      "section": "F",
+      "run_a": [
+        "Yes"
+      ],
+      "run_b": [
+        "No"
+      ]
+    },
+    {
+      "record_id": "SYN_16_no_dvt_syndrome_reported_v2",
+      "section": "X",
+      "run_a": [
+        "An alternative diagnosis was found that explained the acute illness"
+      ],
+      "run_b": [
+        "No alternative diagnosis was found to explain the acute illness"
+      ]
+    },
+    {
+      "record_id": "SYN_17_diagnosis_no_details_v2",
+      "section": "A1",
+      "run_a": [
+        "Autopsy done but showed no evidence of DVT"
+      ],
+      "run_b": [
+        "No autopsy done, unknown if done, or done but results unavailable"
+      ]
+    },
+    {
+      "record_id": "SYN_17_diagnosis_no_details_v2",
+      "section": "F",
+      "run_a": [
+        "Yes"
+      ],
+      "run_b": [
+        "No"
+      ]
+    },
+    {
+      "record_id": "SYN_17_diagnosis_no_details_v2",
+      "section": "X",
+      "run_a": [
+        "An alternative diagnosis was found that explained the acute illness"
+      ],
+      "run_b": [
+        "No alternative diagnosis was found to explain the acute illness"
+      ]
+    },
+    {
+      "record_id": "SYN_18_absent_pulses_true_positive_v2",
+      "section": "A1",
+      "run_a": [
+        "Autopsy done but showed no evidence of DVT"
+      ],
+      "run_b": [
+        "No autopsy done, unknown if done, or done but results unavailable"
+      ]
+    },
+    {
+      "record_id": "SYN_18_absent_pulses_true_positive_v2",
+      "section": "F",
+      "run_a": [
+        "Yes"
+      ],
+      "run_b": [
+        "No"
+      ]
+    },
+    {
+      "record_id": "SYN_18_absent_pulses_true_positive_v2",
+      "section": "X",
+      "run_a": [
+        "An alternative diagnosis was found that explained the acute illness"
+      ],
+      "run_b": [
+        "No alternative diagnosis was found to explain the acute illness"
+      ]
+    },
+    {
+      "record_id": "SYN_19_autopsy_positive_upper_extremity_v2",
+      "section": "F",
+      "run_a": [
+        "Yes"
+      ],
+      "run_b": [
+        "No"
+      ]
+    },
+    {
+      "record_id": "SYN_19_autopsy_positive_upper_extremity_v2",
+      "section": "X",
+      "run_a": [
+        "An alternative diagnosis was found that explained the acute illness"
+      ],
+      "run_b": [
+        "No alternative diagnosis was found to explain the acute illness"
+      ]
+    },
+    {
+      "record_id": "SYN_20_autopsy_negative_trauma_v2",
+      "section": "F",
+      "run_a": [
+        "Yes"
+      ],
+      "run_b": [
+        "No"
+      ]
+    },
+    {
+      "record_id": "SYN_21_alt_diagnosis_bakers_cyst_v2",
+      "section": "A1",
+      "run_a": [
+        "Autopsy done but showed no evidence of DVT"
+      ],
+      "run_b": [
+        "No autopsy done, unknown if done, or done but results unavailable"
+      ]
+    },
+    {
+      "record_id": "SYN_21_alt_diagnosis_bakers_cyst_v2",
+      "section": "F",
+      "run_a": [
+        "Yes"
+      ],
+      "run_b": [
+        "No"
+      ]
+    },
+    {
+      "record_id": "SYN_22_upper_extremity_effort_thrombosis_v2",
+      "section": "A1",
+      "run_a": [
+        "Autopsy done but showed no evidence of DVT"
+      ],
+      "run_b": [
+        "No autopsy done, unknown if done, or done but results unavailable"
+      ]
+    },
+    {
+      "record_id": "SYN_22_upper_extremity_effort_thrombosis_v2",
+      "section": "F",
+      "run_a": [
+        "Yes"
+      ],
+      "run_b": [
+        "No"
+      ]
+    },
+    {
+      "record_id": "SYN_22_upper_extremity_effort_thrombosis_v2",
+      "section": "X",
+      "run_a": [
+        "An alternative diagnosis was found that explained the acute illness"
+      ],
+      "run_b": [
+        "No alternative diagnosis was found to explain the acute illness"
+      ]
+    },
+    {
+      "record_id": "SYN_23_other_procedure_ivc_filter_v2",
+      "section": "F",
+      "run_a": [
+        "Yes"
+      ],
+      "run_b": [
+        "No"
+      ]
+    },
+    {
+      "record_id": "SYN_23_other_procedure_ivc_filter_v2",
+      "section": "X",
+      "run_a": [
+        "An alternative diagnosis was found that explained the acute illness"
+      ],
+      "run_b": [
+        "No alternative diagnosis was found to explain the acute illness"
+      ]
+    },
+    {
+      "record_id": "SYN_24_imaging_inconclusive_no_alt_diagnosis_v2",
+      "section": "A1",
+      "run_a": [
+        "Autopsy done but showed no evidence of DVT"
+      ],
+      "run_b": [
+        "No autopsy done, unknown if done, or done but results unavailable"
+      ]
+    },
+    {
+      "record_id": "SYN_24_imaging_inconclusive_no_alt_diagnosis_v2",
+      "section": "F",
+      "run_a": [
+        "Yes"
+      ],
+      "run_b": [
+        "No"
+      ]
+    },
+    {
+      "record_id": "SYN_24_imaging_inconclusive_no_alt_diagnosis_v2",
+      "section": "X",
+      "run_a": [
+        "An alternative diagnosis was found that explained the acute illness"
+      ],
+      "run_b": [
+        "No alternative diagnosis was found to explain the acute illness"
+      ]
+    },
+    {
+      "record_id": "SYN_25_thrombectomy_postpartum_v2",
+      "section": "F",
+      "run_a": [
+        "Yes"
+      ],
+      "run_b": [
+        "No"
+      ]
+    },
+    {
+      "record_id": "SYN_25_thrombectomy_postpartum_v2",
+      "section": "X",
+      "run_a": [
+        "An alternative diagnosis was found that explained the acute illness"
+      ],
+      "run_b": [
+        "No alternative diagnosis was found to explain the acute illness"
+      ]
+    },
+    {
+      "record_id": "SYN_26_ct_venography_pregnancy_pelvic_v2",
+      "section": "A1",
+      "run_a": [
+        "Autopsy done but showed no evidence of DVT"
+      ],
+      "run_b": [
+        "No autopsy done, unknown if done, or done but results unavailable"
+      ]
+    },
+    {
+      "record_id": "SYN_26_ct_venography_pregnancy_pelvic_v2",
+      "section": "F",
+      "run_a": [
+        "Yes"
+      ],
+      "run_b": [
+        "No"
+      ]
+    },
+    {
+      "record_id": "SYN_26_ct_venography_pregnancy_pelvic_v2",
+      "section": "X",
+      "run_a": [
+        "An alternative diagnosis was found that explained the acute illness"
+      ],
+      "run_b": [
+        "No alternative diagnosis was found to explain the acute illness"
+      ]
+    },
+    {
+      "record_id": "SYN_27_contrast_venography_absent_pulses_v2",
+      "section": "F",
+      "run_a": [
+        "Yes"
+      ],
+      "run_b": [
+        "No"
+      ]
+    },
+    {
+      "record_id": "SYN_27_contrast_venography_absent_pulses_v2",
+      "section": "X",
+      "run_a": [
+        "An alternative diagnosis was found that explained the acute illness"
+      ],
+      "run_b": [
+        "No alternative diagnosis was found to explain the acute illness"
+      ]
+    },
+    {
+      "record_id": "SYN_28_other_modality_plethysmography_v2",
+      "section": "A1",
+      "run_a": [
+        "Autopsy done but showed no evidence of DVT"
+      ],
+      "run_b": [
+        "No autopsy done, unknown if done, or done but results unavailable"
+      ]
+    },
+    {
+      "record_id": "SYN_28_other_modality_plethysmography_v2",
+      "section": "F",
+      "run_a": [
+        "Yes"
+      ],
+      "run_b": [
+        "No"
+      ]
+    },
+    {
+      "record_id": "SYN_28_other_modality_plethysmography_v2",
+      "section": "X",
+      "run_a": [
+        "An alternative diagnosis was found that explained the acute illness"
+      ],
+      "run_b": [
+        "No alternative diagnosis was found to explain the acute illness"
+      ]
+    },
+    {
+      "record_id": "SYN_29_diagnosis_no_details_second_v2",
+      "section": "A1",
+      "run_a": [
+        "Autopsy showed presence of DVT"
+      ],
+      "run_b": [
+        "No autopsy done, unknown if done, or done but results unavailable"
+      ]
+    },
+    {
+      "record_id": "SYN_29_diagnosis_no_details_second_v2",
+      "section": "F",
+      "run_a": [
+        "Yes"
+      ],
+      "run_b": [
+        "No"
+      ]
+    },
+    {
+      "record_id": "SYN_29_diagnosis_no_details_second_v2",
+      "section": "X",
+      "run_a": [
+        "An alternative diagnosis was found that explained the acute illness"
+      ],
+      "run_b": [
+        "No alternative diagnosis was found to explain the acute illness"
+      ]
+    },
+    {
+      "record_id": "SYN_30_confirmed_dvt_normal_ddimer_v2",
+      "section": "A1",
+      "run_a": [
+        "Autopsy showed presence of DVT"
+      ],
+      "run_b": [
+        "No autopsy done, unknown if done, or done but results unavailable"
+      ]
+    },
+    {
+      "record_id": "SYN_30_confirmed_dvt_normal_ddimer_v2",
+      "section": "F",
+      "run_a": [
+        "Yes"
+      ],
+      "run_b": [
+        "No"
+      ]
+    },
+    {
+      "record_id": "SYN_31_diagnosis_no_details_upper_v2",
+      "section": "F",
+      "run_a": [
+        "Yes"
+      ],
+      "run_b": [
+        "No"
+      ]
+    },
+    {
+      "record_id": "SYN_31_diagnosis_no_details_upper_v2",
+      "section": "X",
+      "run_a": [
+        "An alternative diagnosis was found that explained the acute illness"
+      ],
+      "run_b": [
+        "No alternative diagnosis was found to explain the acute illness"
+      ]
+    },
+    {
+      "record_id": "SYN_32_discharge_letter_dvt_v2",
+      "section": "F",
+      "run_a": [
+        "Yes"
+      ],
+      "run_b": [
+        "No"
+      ]
+    },
+    {
+      "record_id": "SYN_32_discharge_letter_dvt_v2",
+      "section": "X",
+      "run_a": [
+        "An alternative diagnosis was found that explained the acute illness"
+      ],
+      "run_b": [
+        "No alternative diagnosis was found to explain the acute illness"
+      ]
+    },
+    {
+      "record_id": "SYN_33_transfer_note_dvt_upper_v2",
+      "section": "A1",
+      "run_a": [
+        "Autopsy done but showed no evidence of DVT"
+      ],
+      "run_b": [
+        "No autopsy done, unknown if done, or done but results unavailable"
+      ]
+    },
+    {
+      "record_id": "SYN_33_transfer_note_dvt_upper_v2",
+      "section": "F",
+      "run_a": [
+        "Yes"
+      ],
+      "run_b": [
+        "No"
+      ]
+    },
+    {
+      "record_id": "SYN_33_transfer_note_dvt_upper_v2",
+      "section": "X",
+      "run_a": [
+        "An alternative diagnosis was found that explained the acute illness"
+      ],
+      "run_b": [
+        "No alternative diagnosis was found to explain the acute illness"
+      ]
+    },
+    {
+      "record_id": "SYN_34_dvt_reported_other_facility_v2",
+      "section": "A1",
+      "run_a": [
+        "Autopsy done but showed no evidence of DVT"
+      ],
+      "run_b": [
+        "No autopsy done, unknown if done, or done but results unavailable"
+      ]
+    },
+    {
+      "record_id": "SYN_34_dvt_reported_other_facility_v2",
+      "section": "F",
+      "run_a": [
+        "Yes"
+      ],
+      "run_b": [
+        "No"
+      ]
+    },
+    {
+      "record_id": "SYN_34_dvt_reported_other_facility_v2",
+      "section": "X",
+      "run_a": [
+        "An alternative diagnosis was found that explained the acute illness"
+      ],
+      "run_b": [
+        "No alternative diagnosis was found to explain the acute illness"
+      ]
+    },
+    {
+      "record_id": "SYN_35_specialist_note_dvt_lower_v2",
+      "section": "A1",
+      "run_a": [
+        "Autopsy done but showed no evidence of DVT"
+      ],
+      "run_b": [
+        "No autopsy done, unknown if done, or done but results unavailable"
+      ]
+    },
+    {
+      "record_id": "SYN_35_specialist_note_dvt_lower_v2",
+      "section": "F",
+      "run_a": [
+        "Yes"
+      ],
+      "run_b": [
+        "No"
+      ]
+    },
+    {
+      "record_id": "SYN_36_calf_muscle_tear_v2",
+      "section": "A1",
+      "run_a": [
+        "Autopsy done but showed no evidence of DVT"
+      ],
+      "run_b": [
+        "No autopsy done, unknown if done, or done but results unavailable"
+      ]
+    },
+    {
+      "record_id": "SYN_36_calf_muscle_tear_v2",
+      "section": "F",
+      "run_a": [
+        "Yes"
+      ],
+      "run_b": [
+        "No"
+      ]
+    },
+    {
+      "record_id": "SYN_37_lymphatic_obstruction_v2",
+      "section": "F",
+      "run_a": [
+        "Yes"
+      ],
+      "run_b": [
+        "No"
+      ]
+    },
+    {
+      "record_id": "SYN_38_compartment_syndrome_v2",
+      "section": "A1",
+      "run_a": [
+        "Autopsy done but showed no evidence of DVT"
+      ],
+      "run_b": [
+        "No autopsy done, unknown if done, or done but results unavailable"
+      ]
+    },
+    {
+      "record_id": "SYN_38_compartment_syndrome_v2",
+      "section": "F",
+      "run_a": [
+        "Yes"
+      ],
+      "run_b": [
+        "No"
+      ]
+    },
+    {
+      "record_id": "SYN_39_external_vein_compression_v2",
+      "section": "A1",
+      "run_a": [
+        "Autopsy done but showed no evidence of DVT"
+      ],
+      "run_b": [
+        "No autopsy done, unknown if done, or done but results unavailable"
+      ]
+    },
+    {
+      "record_id": "SYN_39_external_vein_compression_v2",
+      "section": "F",
+      "run_a": [
+        "Yes"
+      ],
+      "run_b": [
+        "No"
+      ]
+    },
+    {
+      "record_id": "SYN_40_imaging_report_pending_v2",
+      "section": "F",
+      "run_a": [
+        "Yes"
+      ],
+      "run_b": [
+        "No"
+      ]
+    },
+    {
+      "record_id": "SYN_40_imaging_report_pending_v2",
+      "section": "X",
+      "run_a": [
+        "An alternative diagnosis was found that explained the acute illness"
+      ],
+      "run_b": [
+        "No alternative diagnosis was found to explain the acute illness"
+      ]
+    }
+  ],
+  "overall": {
+    "compared": 400,
+    "changed": 92,
+    "correct_a": 240,
+    "correct_b": 316,
+    "stability": 0.77
+  }
+}
