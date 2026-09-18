@@ -223,13 +223,15 @@ def print_report(report: dict):
     else:
         print("\nNo section changed between the two runs: output was fully reproducible.")
 
-    # The headline number for the thesis: any accuracy gap smaller than this
-    # can't be distinguished from run-to-run noise.
+    # The script cannot tell whether the two directories hold the same
+    # configuration, so it reports the share and leaves both readings open.
     if o["compared"]:
-        noise = o["changed"] / o["compared"] * 100
+        changed = o["changed"] / o["compared"] * 100
         print(
-            f"\nNoise floor: {noise:.1f}% of sections changed between two identical runs. "
-            f"Accuracy differences below this are not interpretable as real effects."
+            f"\n{changed:.1f}% of sections changed. When the two runs share a "
+            f"configuration that is the noise floor, and an accuracy gap below "
+            f"it is not a result; when they do not, it is the effect of the "
+            f"change."
         )
 
 

@@ -280,7 +280,7 @@ clinicians, not a fact about the form.
   empty, and two sections that failed outright with `FINAL_ANSWER: 5` for a
   two-option field, the model having reasoned correctly that DVT was ruled out
   and having nowhere to put it.
-- **Twelve configurations measured on the same base**, each varying one
+- **Fourteen configurations measured on the same base**, each varying one
   component. `docs/RISULTATI_SPERIMENTALI.md` section 8 has the full per-section
   table.
 
@@ -290,11 +290,13 @@ clinicians, not a fact about the form.
   agentic without the context      395/400    98.75%     0.970
   raw_record                       392/400    98.0%      0.966
   agentic with section headings    392/400    98.0%      0.940
+  agentic, chunks 200/40, k 3      382/400    95.5%      0.895
   full_text + 27B extractor        380/400    95.2%      0.824
   medgemma as evaluator            371/398    93.2%      0.837
   qwen without the hints           365/399    91.5%      0.780
   rag                              341/400    85.3%      0.607
   full_text                        341/400    85.5%      0.586
+  rag, chunks 200/40, k 3          337/399    84.5%      0.583
   llama3:8b evaluator, gates on    316/400    79.0%      0.497
   llama3:8b evaluator, no hints    283/400    70.75%     0.423
   llama3:8b evaluator, with hints  240/400    60.0%      0.373
@@ -319,7 +321,8 @@ clinicians, not a fact about the form.
   `full_text` and 142 in `rag`. Agent 2 keeps reasoning correctly on what it
   receives, so reading only the final answer hides the cause. The chunks column
   mixes fixed with model-chosen queries, so the +6 is not attributable to
-  retrieval rather than agency. An extractor exists in every mode but
+  retrieval rather than agency. All four cells were measured with retrieval
+  inert; made to select it costs 16 sections, which is the bullet below. An extractor exists in every mode but
   `raw_record`; what `agentic_graph` discards is the agent's final turn, not the
   model.
 - **The guideline context is worth +3, and reading only the errors predicted the
@@ -360,14 +363,39 @@ clinicians, not a fact about the form.
   and that is inert on this corpus: 0 sections out of 400 without evidence,
   `agent1_seconds` between 6.5 and 7.2 on every section (one tool call), and
   retrieval returning the whole record each time. It returns the whole record
-  because `EHR_RETRIEVER_K` is 5 while a record of this length splits into two
-  chunks, so the tool hands back both and there is nothing to select. Five
+  because `EHR_RETRIEVER_K` is 5 while a record of this corpus (317 to 1185
+  characters, median 970) splits into one or two chunks, so the tool hands back
+  all of them and there is nothing to select. Five
   chunks of 800 characters overlapping by 150 cover about 3400 characters, which
   is the length a record has to exceed before retrieval starts choosing at all.
   What does vary by section is the order: the tool joins the two chunks by
   relevance to the query the agent wrote, so the same halves reach Agent 2
   differently arranged. Checked on two records, identical across the four
   sections read on SYN_01 and reversed between A1 and X on SYN_23.
+- **Made to select, retrieval costs 16 sections, and costs them where the answer
+  needs the whole record.** `EHR_CHUNK_SIZE` 200, `EHR_CHUNK_OVERLAP` 40 and
+  `EHR_RETRIEVER_K` 3, everything else at the reference and the hint fingerprint
+  `ab63b8e5f5af` proving it, take `agentic_graph` from 398 to 382 of 400, micro
+  99.5% to 95.5%, macro kappa 0.982 to 0.895. The evidence reaching Agent 2 goes
+  from **100% of the record on all 400 sections to 66.4%**, so this is the first
+  run in which retrieval selects at all. The loss lands on the sections that
+  need exhaustive coverage: the three multi-select sections carry nine of the
+  sixteen (A3_2 -4, B2 -4, B1_2 -1), and X loses 4 in one direction, flipping to
+  `No alternative diagnosis` on SYN_11, SYN_37 and SYN_38 because a criterion of
+  exclusion cannot be settled on two thirds of the text. A1, B1_1, C and F do
+  not move, C and F staying at 40 of 40: their answer rests on one distinctive
+  token, which retrieval finds reliably. Under `rag` the same change moves the
+  score from 341/400 to 337/399 while **55 sections change answer**, because
+  coverage stays at 12.5% against 12.1%. That average is dominated by the
+  sections where the extractor returns nothing; where it returns something it
+  produces about 146 characters out of 944, one or two sentences, which is one
+  section's worth. **The size of the evidence is set by the task and not by the
+  input**, so changing retrieval does not change how much leaves the extractor,
+  only whether the fact it needed was inside what went in. Empty evidence falls
+  from 145 to 120 with no gain. What the arm does
+  not show is that retrieval hurts on real documents: shrinking the window
+  discards text that would have fit in the prompt anyway, so it reproduces the
+  selection pressure without its cause.
 - **Two inputs that carry the same information are not the same input.**
   `full_text` and `rag` both score 341/400 and differ on **35 sections**:
   retrieval returns the whole record either way, but joining the chunks with a
