@@ -18,6 +18,7 @@ criteria columns.
 USAGE
     python export_redcap_csv.py                                  # ./output -> ./redcap_import.csv
     python export_redcap_csv.py ./output ./redcap_import.csv     # explicit paths
+    python export_redcap_csv.py ./output/<result>.json one.csv    # a single file
     python export_redcap_csv.py --skip-empty-fields              # criteria columns only
 
 Standalone by design: imports models.py only, so it needs no langchain or
@@ -223,25 +224,30 @@ def row_from_result(result: dict, skip_empty_fields: bool = False) -> dict:
     return row
 
 
-def load_latest_results(directory: Path) -> list[dict]:
-    """Reads the most recent result file for each record in a directory.
+def load_latest_results(source: Path) -> list[dict]:
+    """Reads the most recent result file for each record.
 
     Re-running the pipeline timestamps every output rather than overwriting it,
     so a directory normally holds several runs; only the newest answers per
     record belong in an import.
 
     Args:
-        directory: where the pipeline wrote its results.
+        source: a directory holding the pipeline's results, or a single result
+            file.
 
     Returns:
         The parsed result dicts, sorted by record_id.
     """
 
-    if not directory.is_dir():
-        sys.exit(f"Not a directory: {directory}")
+    if source.is_file():
+        paths = [source]
+    elif source.is_dir():
+        paths = sorted(source.glob("*.json"))
+    else:
+        sys.exit(f"Not a file or directory: {source}")
 
     newest = defaultdict(list)
-    for path in sorted(directory.glob("*.json")):
+    for path in paths:
 
         # Audit logs share the prefix but are not form outputs; files without a
         # parseable timestamp are skipped rather than guessed at.
@@ -249,6 +255,15 @@ def load_latest_results(directory: Path) -> list[dict]:
             continue
         match = _OUTPUT_NAME_RE.match(path.name)
         if not match:
+
+            # A file named on the command line is meant to be exported, so an
+            # unreadable name fails here instead of being skipped.
+            if source.is_file():
+                sys.exit(
+                    f"{path.name} does not match "
+                    f"<record_id>_<YYYYMMDD>_<HHMMSS>.json; the timestamp is "
+                    f"read from the file name"
+                )
             continue
         data = json.loads(path.read_text(encoding="utf-8"))
         record_id = data.get("record_id") or match.group("record_id")
@@ -290,7 +305,8 @@ def main() -> None:
     )
     parser.add_argument(
         "input_dir", nargs="?", default="output", type=Path,
-        help="directory holding the pipeline's result files (default: output)",
+        help="directory holding the pipeline's result files, or one of them "
+             "(default: output)",
     )
     parser.add_argument(
         "destination", nargs="?", default="redcap_import.csv", type=Path,

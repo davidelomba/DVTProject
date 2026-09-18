@@ -44,12 +44,17 @@ but performs no evidence selection.
 
 ## Domain constraints
 
-- **Criterion X asks whether any alternative diagnosis explains the acute
-  illness**, not whether one of Table 2's conditions does. Section 5.2.7 states
-  the criterion as no alternate etiology that could explain the clinical illness
-  and calls Table 2 a list of possible etiologies, so a condition outside that
-  list still counts. Table 2 reaches the evaluator through the context retrieved
-  for the section.
+- **Criterion X asks whether an alternative diagnosis explains the acute
+  illness.** Section 5.2.7 states the criterion as no alternate etiology that
+  could explain the clinical illness, names Table 2 as a list of possible
+  alternate etiologies for each syndrome and its associated symptoms or signs,
+  and excludes the criterion from Level 1, which rests on proven thrombus
+  instead. A condition outside the table still counts, since the paper calls the
+  list possible rather than complete. What the paper leaves unsettled is whether
+  the alternative has to explain the symptoms that suggested thrombosis or only
+  the acute illness; Table 2 is built the first way, one row per syndrome
+  indexed by that syndrome's non-specific symptoms. Table 2 reaches the
+  evaluator through the context retrieved for the section.
 - **Do not add schema-level "none of the above" options** for A3_2 or B1_2: the
   printed questionnaire does not have them.
 - **B1.1 and B1.2 record the presumed diagnosis of a specific syndrome**, DVT of
@@ -118,8 +123,9 @@ SECTION_HINTS_DISABLED   = {"B2"}
 SECTION_GATES_ENABLED    = {"keyword": False, "details": False, "absent_pulses": True}
 ```
 
-All three per-section gates are off. Only the cross-section rules remain, and
-they encode the form's structure rather than a model weakness.
+The keyword and details gates are off. `absent_pulses` is on and has never fired
+on this corpus. The cross-section rules are outside the switch and encode the
+form's structure rather than a model weakness.
 
 Check it before every launch, since an arm left in place is how a run gets
 attributed to the wrong configuration:
@@ -168,32 +174,61 @@ same signature. Runs before 2026-09-08 lack it and are told apart by their date.
 
 ## What the measurements say
 
-Two evaluators on mari, 30 records each, everything else identical:
-
-```
-llama3:8b     micro 85.0%   macro kappa 0.628
-qwen3.6:27b   micro 96.7%   macro kappa 0.906
-```
-
-On the extended 40-record corpus, qwen3.6:27b scores micro 99.5%, macro kappa
+On the 40-record corpus, qwen3.6:27b scores micro 99.5%, macro kappa
 0.982, two wrong sections out of 400. Eight sections of ten are at 100%; A2 and
 B1.1 miss one record each. The ten scenarios added in September score at the
 same rate as the original thirty, so the sections that had been unmeasurable
 hold up.
 
-**Neither residual error is attributable to the model.** Both are readings of
-the questionnaire that differ from the ground truth, argued from the guideline
-text the model was given. SYN_03 calls a CT venography A2's "other procedure";
-SYN_10 counts an uncharacterised leg discomfort as a B1.1 symptom, citing the
-guideline's own list of non-specific signs. Both are open questions for the
-clinicians, so the pipeline has stopped making mistakes and started disagreeing.
-Only an outside authority settles the difference.
+**Both residual errors are readings the ground truth disagrees with.** SYN_03
+calls a CT venography A2's "other procedure"; SYN_10 counts an uncharacterised
+leg discomfort as a B1.1 symptom, citing the guideline's own list of
+non-specific signs. Neither is settled inside the project. A2 looked settled by
+the schema, since option 3 reads "no surgical procedure done", but sending the
+section heading to the evaluator showed what that reading costs: it corrects
+SYN_03 and breaks SYN_12 and SYN_23, whose ground truth calls a percutaneous
+IVC filter placement an "other procedure". The scope of A2 is a question for the
+clinicians, not a fact about the form.
 
-- **The model was the binding constraint, not the prompts.** A3_2 went from
-  46.7% to 83.3% and B2 from 63.3% to 96.7%, with non-overlapping confidence
-  intervals. F had kappa 0.000 on every run since August, answering the majority
-  class everywhere; it now answers both of its positive records correctly.
-  Text-vs-number answer conflicts went from 27 to 0.
+- **A hint's contribution changes sign with the model.** Evaluator and hints
+  crossed on the 40-record corpus, four runs, same extractor, same gates, same
+  machine, the two hintless arms carrying the same fingerprint `dbe3b41b6a5c`:
+
+  ```
+                       with hints        without hints
+  qwen3.6:27b          398/400  99.5%    365/399  91.5%
+  llama3:8b            240/400  60.0%    283/400  70.75%
+  ```
+
+  The hints are worth **+33 sections to the 27B and -43 to the 8B**. F carries
+  it on one section: the same hint is worth +23 to qwen, which drops to 17 of 39
+  without it, and -9 to the 8B, which rises from 7 to 16. X moves the 8B from 6
+  to 31 and leaves qwen at 40 either way; A1 moves it from 14 to 29; C is the
+  one hint the 8B uses well, 34 falling to 29. So the model gap is not a
+  constant either: **158 sections measured with the 27B's own prompts, 82
+  without any**. Close to half of what looks like model capability is prompt
+  tuning.
+- **The gates are worth 76 sections to the 8B and nothing to the 27B.** Turning
+  `keyword` and `details` back on under the 8B, everything else at the reference,
+  takes it from 240 to 316 of 400, micro 60.0% to 79.0%, macro kappa 0.373 to
+  0.497. The recovery is exactly and only where the gates reach: A1 goes from 14
+  to 39, X from 6 to 32, F from 7 to 32, and **the other seven sections are
+  identical figure for figure**. A2 does not move either, since the keyword gate
+  is scoped there to the thrombectomy option alone. The same two gates were
+  measured inert under qwen, which scores 398 with them on and 398 with them off.
+  They were scaffolding for one model, and removing them cost nothing only
+  because the model had changed.
+- **A hint and its gate were designed as a pair, and the hint alone is worse than
+  no hint.** Under the 8B, on each of the three sections the gates cover, the
+  hint on its own scores below the hintless run: A1 14 against 29, X 6 against
+  31, F 7 against 16. Add the gate and they reach 39, 32 and 32. F is coupled by
+  construction, since its hint is what asks for the DETAILS_PRESENT line
+  `apply_details_gate` reads, and `config.SECTION_HINTS_ENABLED` False therefore
+  disables that gate too. A1 and X are not: there the keyword gate reads the
+  evidence text and knows nothing of the hint, and simply reverts what the misled
+  model answered. Either way the component that carries the section is the gate,
+  and the hint measured beside it looks useful only because the gate is hiding
+  its cost.
 - **Sampling uncertainty binds.** With 30 records the 95% interval on a
   section's accuracy is 10 to 18 points wide. Generation noise does not:
   two identical runs on mari changed 0 sections out of 300.
@@ -203,13 +238,19 @@ Only an outside authority settles the difference.
   reconstructed the distinction in its own words on both, writing that the
   document notes the absence of reported symptoms rather than documenting their
   clinical absence in the patient.
-- **The hints help and hurt, section by section.** Dropping all of them takes
-  micro accuracy from 97.2% to 91.5%, but the total hides opposite effects: F
-  loses 53.9 points and inverts, kappa -0.324, since without the instruction the
-  model reads "reported without details" the intuitive way; B1.1 loses 12.5;
-  A3.2 gains 5.3 and B2 gains 2.5, both hints having been written against
-  llama3:8b failures; A1, A2, A3.1, C and X do not move, so about 3300 of the
-  7182 injected characters do nothing. Audit them one at a time, not as a block.
+- **The hints help and hurt, section by section.** Dropping all of them under
+  qwen takes the reference from 398 to 365, micro 99.5% to 91.5%, and the total
+  hides opposite effects. F carries most of it, 40 falling to 17 of 39, one
+  section failing outright because without the hint nothing asks for the
+  DETAILS_PRESENT line the answer is derived from. B1.1 loses 7, A3.2 loses 3,
+  and A1, A2, A3.1, B1_2, B2, C and X do not move at all, so 1199 of the 3071
+  injected characters do nothing under this model. Audit them one at a time, not
+  as a block. An earlier ablation recorded A3.2 gaining 5.3 and B2 gaining 2.5,
+  and neither reproduces, because neither hint is the same object any more. B2's
+  is in `SECTION_HINTS_DISABLED`, which that measurement is what caused, so
+  removing the rest cannot touch it. A3.2's was 1262 characters then and is 143
+  now, the contrastive clause having been cut in between: the two ablations
+  measured two different hints.
 - **An ablation is only valid for the configuration it was run in.** The details
   gate was measured inert under qwen3.6:27b, zero overrides on 40 records. After
   the F hint gained the precondition that the criterion needs a reported
@@ -239,7 +280,7 @@ Only an outside authority settles the difference.
   empty, and two sections that failed outright with `FINAL_ANSWER: 5` for a
   two-option field, the model having reasoned correctly that DVT was ruled out
   and having nowhere to put it.
-- **Seven configurations measured on the same base**, each varying one
+- **Twelve configurations measured on the same base**, each varying one
   component. `docs/RISULTATI_SPERIMENTALI.md` section 8 has the full per-section
   table.
 
@@ -248,10 +289,15 @@ Only an outside authority settles the difference.
   agentic_graph (reference)        398/400    99.5%      0.982
   agentic without the context      395/400    98.75%     0.970
   raw_record                       392/400    98.0%      0.966
+  agentic with section headings    392/400    98.0%      0.940
   full_text + 27B extractor        380/400    95.2%      0.824
   medgemma as evaluator            371/398    93.2%      0.837
+  qwen without the hints           365/399    91.5%      0.780
   rag                              341/400    85.3%      0.607
   full_text                        341/400    85.5%      0.586
+  llama3:8b evaluator, gates on    316/400    79.0%      0.497
+  llama3:8b evaluator, no hints    283/400    70.75%     0.423
+  llama3:8b evaluator, with hints  240/400    60.0%      0.373
   ```
 
   Not letting the 8B rewrite the evidence is worth +51, a 27B extractor instead
@@ -286,15 +332,42 @@ Only an outside authority settles the difference.
   wrong answers; the sections it silently got right are invisible to that
   reading and are the majority. With the context on, A3.2 and B2 are at 40/40,
   so a reranker or a larger embedding model has no headroom to recover.
+- **Correct information, correctly used, cost 6 sections.**
+  `SECTION_DESCRIPTIONS_ENABLED` sends each section's own heading from
+  `models.py` above its numbered options, the wording the printed form uses.
+  Everything else identical and the hint fingerprint proving it, the reference
+  run goes from 398 to 392, micro 99.5% to 98.0%, macro kappa 0.982 to 0.940.
+  Six records move. A2's heading names the section Surgical procedure, which
+  corrects SYN_03, where a CT venography had been called an "other procedure",
+  and breaks SYN_12 and SYN_23, where the ground truth calls a percutaneous IVC
+  filter placement one; the model's reasoning on SYN_23 cites the heading and
+  concludes that no *surgical* procedure confirmed the DVT, imaging did. A2's
+  "Other procedure" option is then never predicted correctly at all, kappa
+  0.649 against a 90% majority baseline. The other four are multi-select: A3_2
+  adds `Contrast venography` on the same two records, B1_2 fills SYN_40 where
+  the truth is empty, B2 adds an option on SYN_25 and drops one on SYN_07. Four
+  of those five are over-selection, and the three multi-select headings all end
+  in "check all that apply", so the heading carries an instruction about how
+  many boxes to tick and not only the section's name; SYN_07 goes the other way
+  and that reading does not cover it. Sections are separate evaluator calls, so
+  the A3_2 change is not a consequence of the A2 answer but a second effect of
+  the same edit. The switch is False. What the run demonstrates is that the
+  pipeline can be made more faithful to the form than the ground truth is.
 - **Choosing is not writing.** `agentic_graph` belongs in the verbatim row even
   though it has a model in the loop: `extract_evidence_agentic` returns the raw
   tool observations, not the agent's final turn, so the 8B picks queries but the
   evidence never passes through its tokens. What it still controls is coverage,
   and that is inert on this corpus: 0 sections out of 400 without evidence,
   `agent1_seconds` between 6.5 and 7.2 on every section (one tool call), and
-  retrieval returning the whole record each time. Chunk-level selection is
-  possible by design and has no measurable effect here, which is a property of
-  records that fit in one chunk rather than of the architecture.
+  retrieval returning the whole record each time. It returns the whole record
+  because `EHR_RETRIEVER_K` is 5 while a record of this length splits into two
+  chunks, so the tool hands back both and there is nothing to select. Five
+  chunks of 800 characters overlapping by 150 cover about 3400 characters, which
+  is the length a record has to exceed before retrieval starts choosing at all.
+  What does vary by section is the order: the tool joins the two chunks by
+  relevance to the query the agent wrote, so the same halves reach Agent 2
+  differently arranged. Checked on two records, identical across the four
+  sections read on SYN_01 and reversed between A1 and X on SYN_23.
 - **Two inputs that carry the same information are not the same input.**
   `full_text` and `rag` both score 341/400 and differ on **35 sections**:
   retrieval returns the whole record either way, but joining the chunks with a
@@ -318,13 +391,24 @@ Only an outside authority settles the difference.
 
 ## Open items
 
-- **The Level of Certainty is never measured.** REDCap computes it from the
-  answers and it is the only number a clinician acts on, but every metric here
-  is section-level, and the LOC is not a linear function of the sections: one
-  wrong answer can leave it unchanged or move it a whole level. The Commands
-  section above gives the two CSVs to compare. Only two of the 40 rows differ
-  from the ground truth, `criteria_a2` on SYN_03 and `criteria_b1_1` on SYN_10,
-  so the whole comparison turns on those.
+- **The Level of Certainty is left to REDCap, and measuring it here is out of
+  scope.** Table 3 of the paper is the calculation. Level 1 is reached through
+  any one of pathology, a procedure confirming a thrombus, or a confirmatory
+  imaging study, and the table notes that the classification is independent of
+  clinical findings; Levels 2 and 3 rest on the clinical presentation and both
+  require no alternative diagnosis; the D-dimer separates Level 2 from Level 3.
+  Read against the questionnaire, which the section lettering follows closely
+  enough that the correspondence looks intended rather than measured, a record
+  answered positively in any A section takes its level from that section alone,
+  and the answers to B, C, F and X never enter. That is why a section-level
+  score and the LOC are not the same measurement. Two REDCap round trips would
+  add little to it, since only two of the 40 rows differ from the ground truth,
+  `criteria_a2` on SYN_03 and `criteria_b1_1` on SYN_10. The claim worth making
+  is structural: count the ground-truth records carrying a positive A criterion,
+  and on those the errors left in B and X cannot propagate. What the pipeline
+  owes the study is a correct CSV, and that is verified, with the export read
+  back and its codes reconverted, 300 sections of 300 identical to the source
+  JSON.
 - **Agreement with an independent reviewer is not measurable yet.** Every number
   here is scored against a ground truth written alongside the pipeline, so the
   two are not independent and their agreement is not evidence. A validation study
@@ -337,29 +421,40 @@ Only an outside authority settles the difference.
   that adjudicated standard is what gives each reviewer a sensitivity. The two
   sections left, A2 on SYN_03 and B1.1 on SYN_10, are disagreements argued from
   the guideline, and accuracy scores them as errors.
-- **A2 and X still rest on few records**, 4 and 6 of 40. F went from 2 positives
-  to 7 with the September expansion and now scores kappa 0.918.
-- **Questions for the clinicians.** The first two decide the only two wrong
-  sections left.
-  - Which procedures count as A2's "other procedure done that confirmed
-    presence of DVT", given that Brighton asks for a procedure that confirms a
-    thrombus? SYN_03 turns on this: the model calls a CT venography one, the
-    ground truth puts imaging in A3.
+- **A2 still rests on few records**, 4 of 40. X went from 6 positives to 9 with
+  the ground-truth correction of 2026-09-15. F went from 2 positives to 7 with
+  the September expansion and now scores kappa 0.918.
+- **Questions for the clinicians.** The first three each decide how a record is
+  coded; the rest are conventions.
+  - Does A2's "other procedure done that confirmed presence of DVT" cover an
+    endovascular or interventional radiology procedure, or only open surgery
+    and thrombectomy? The section heading reads Surgical procedure and the
+    negative option reads "no surgical procedure done", yet the ground truth
+    answers "other procedure" for a percutaneous IVC filter placement on
+    SYN_23 and for SYN_12. With the heading in the prompt the model excludes
+    both, quoting it.
   - Does a vague, uncharacterised symptom, "a generic discomfort in the leg"
     with no site or intensity, count as B1.1's "at least one symptom or sign
     was reported", or does the section stay unknown? SYN_10 turns on this: the
     ground truth says unknown, the model reads the discomfort as a symptom.
-  - Does X mean an alternative diagnosis for the acute illness in general, or
-    one of the Table 2 conditions that mimic a DVT? Acted on already, from
-    section 5.2.7 and the three records above, but worth confirming. Ask it
-    concretely: a patient dies of an acute myocardial infarction and the autopsy
-    excludes DVT — is X answered `An alternative diagnosis was found that
-    explained the acute illness`?
+  - Must X's alternative etiology explain the symptoms that suggested
+    thrombosis, or is any diagnosis that explains the acute illness enough?
+    Acted on already in the second sense, and SYN_11 and SYN_16 rest on it.
+    Ask it concretely: a patient dies of an acute myocardial infarction, the
+    autopsy excludes DVT and no leg symptom was ever reported — is X answered
+    `An alternative diagnosis was found that explained the acute illness`, or
+    does the absence of a DVT presentation leave nothing for an alternative to
+    displace? Table 2 is organised the first way, one row per syndrome indexed
+    by that syndrome's own non-specific symptoms, and an infarction explains no
+    calf pain.
   - Does B2 option 4 apply when only calf pain is documented?
-  - Is Table 2 of the Brighton paper the intended source for X's list?
-- **All three per-section gates are now off.** The details gate reverted a
+  - Does B2's "Absent pulses in legs or arms" need a pulse examination, or does
+    absent flow on a Doppler study count?
+  - Is A3_2 or B1_2 meant to be left empty when no option applies, the printed
+    form offering no "none of the above" for either?
+- **Two of the three per-section gates are now off.** The details gate reverted a
   correct answer once the F hint gained its precondition. The absent-pulses gate
-  never fires. The keyword gate was removed on 2026-09-15 together with a
+  is still on and has never fired. The keyword gate was removed on 2026-09-15 together with a
   ground-truth correction: it fired 3 times in 400, always on X, on SYN_11
   (death from acute myocardial infarction, autopsy excluding DVT), SYN_16 (chest
   pain attributed to a musculoskeletal cause) and SYN_20 (death from traumatic
@@ -368,7 +463,10 @@ Only an outside authority settles the difference.
   states the criterion as *no alternate etiology that could explain the clinical
   illness* and calls Table 2 *a list of possible* etiologies. The gate and the
   ground truth agreed because both were written from the same narrow reading of
-  Table 2, so their agreement was circular. Those three scenarios now carry
+  Table 2, so their agreement was circular. Only SYN_20 falls in Table 2's DVT
+  row, under *Physical trauma*; SYN_11 and SYN_16 match rows written for
+  pulmonary embolism, so those two rest on the reading that the alternative need
+  not explain the DVT symptoms. Those three scenarios now carry
   `An alternative diagnosis was found`, which keeps the reference run at 398.
   Two further defects made the gate indefensible: Table 2's DVT row lists
   *Physical trauma* as a general category and the keyword list encoded only the
@@ -376,16 +474,6 @@ Only an outside authority settles the difference.
   in `rag` the gate overrode SYN_36 and SYN_39, whose keywords ARE in the list,
   because the lossy extractor had already dropped the text containing them —
   **the gate's reliability depends on the extractor's output**.
-- **Agent 2 never sees the section heading.** `_build_reasoning_prompt` sends the
-  evidence, the guideline context, the hint and the numbered options, so the only
-  statement of what a section covers is the wording of the options. A2 is where
-  that shows: the word surgical appears only inside option 3, and on SYN_03 the
-  model reads "other procedure done that confirmed presence of DVT" as covering a
-  CT venography. The schema settles it, since option 3 reads "no surgical
-  procedure done", so the section is surgical and imaging belongs to A3.
-  `config.SECTION_DESCRIPTIONS_ENABLED` now sends each field's description from
-  `models.py` above its options; it is False, the value every recorded run was
-  produced with, and the arm has not been run.
 - Test whether the TRANSCRIPTION RULE in `AGENTIC_EXTRACTOR_SYSTEM_PROMPT` does
   anything: it governs a string the code discards.
 - **The extractor prompt never says a negation is evidence**, while the
@@ -394,11 +482,15 @@ Only an outside authority settles the difference.
   because the two section queries aim at different halves. F needs to know
   whether details accompany the diagnosis and its query asks for the diagnosis.
   This penalises the baselines, not the reference mode, where F is 40 of 40.
-- **Re-run the reference configuration** with `keyword: False` and the corrected
-  ground truth. The reconstruction predicts 398/400 unchanged, since the gate and
-  the three corrected records cancel out, but it has not been confirmed by a run.
-  `generate_synthetic_records.py` rewrites the ground-truth JSONs without calling
-  any model, so the corrected scenarios need that before the next evaluation.
+- **The audit log cannot be retained on real records.** It holds the evidence
+  verbatim and the reasoning that quotes it, so on clinical documentation it is a
+  copy of patient data in a JSON file. Everything the project measures rests on
+  it, which makes the diagnosability a property of the testbed rather than of the
+  deployed system. What survives without reproducing the record is the chosen
+  answer, `answer_conflict`, the per-agent timings, whether the evidence came
+  back empty, and `_run_config`; those keep provenance and the reliability
+  flags, and lose the ability to reconstruct why an answer is wrong. The reduced
+  form has not been designed.
 - **Two wrong sections in 400 is past what 40 records can resolve.** Each record
   is worth 0.25 points and the 95% interval on the total is [98, 100], so a
   one-section change is not a measurable difference. What is still worth reading
