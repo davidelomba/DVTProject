@@ -1,0 +1,587 @@
+{
+  "records_compared": 40,
+  "sections": {
+    "A1": {
+      "compared": 40,
+      "changed": 1,
+      "correct_a": 39,
+      "correct_b": 40,
+      "stability": 0.975
+    },
+    "A2": {
+      "compared": 40,
+      "changed": 4,
+      "correct_a": 36,
+      "correct_b": 39,
+      "stability": 0.9
+    },
+    "A3_1": {
+      "compared": 40,
+      "changed": 10,
+      "correct_a": 31,
+      "correct_b": 36,
+      "stability": 0.75
+    },
+    "A3_2": {
+      "compared": 40,
+      "changed": 10,
+      "correct_a": 30,
+      "correct_b": 35,
+      "stability": 0.75
+    },
+    "B1_1": {
+      "compared": 40,
+      "changed": 12,
+      "correct_a": 29,
+      "correct_b": 37,
+      "stability": 0.7
+    },
+    "B1_2": {
+      "compared": 40,
+      "changed": 5,
+      "correct_a": 36,
+      "correct_b": 39,
+      "stability": 0.875
+    },
+    "B2": {
+      "compared": 40,
+      "changed": 5,
+      "correct_a": 31,
+      "correct_b": 33,
+      "stability": 0.875
+    },
+    "C": {
+      "compared": 40,
+      "changed": 1,
+      "correct_a": 39,
+      "correct_b": 40,
+      "stability": 0.975
+    },
+    "F": {
+      "compared": 40,
+      "changed": 1,
+      "correct_a": 31,
+      "correct_b": 32,
+      "stability": 0.975
+    },
+    "X": {
+      "compared": 40,
+      "changed": 3,
+      "correct_a": 35,
+      "correct_b": 38,
+      "stability": 0.925
+    }
+  },
+  "differences": [
+    {
+      "record_id": "SYN_03_upper_extremity_catheter_v2",
+      "section": "B1_1",
+      "run_a": [
+        "≥1 symptom or sign of DVT was reported"
+      ],
+      "run_b": [
+        "There was no report of a recognized DVT syndrome"
+      ]
+    },
+    {
+      "record_id": "SYN_03_upper_extremity_catheter_v2",
+      "section": "B2",
+      "run_a": [
+        "Redness, warmth, or pain in one or more extremities"
+      ],
+      "run_b": [
+        "None of the above were present or it is unknown if any of 1-4 were present"
+      ]
+    },
+    {
+      "record_id": "SYN_08_autopsy_positive_v2",
+      "section": "A3_1",
+      "run_a": [
+        "≥1 imaging study was done and confirmed DVT"
+      ],
+      "run_b": [
+        "No imaging studies done, unknown if done, or done but results unknown"
+      ]
+    },
+    {
+      "record_id": "SYN_08_autopsy_positive_v2",
+      "section": "B1_1",
+      "run_a": [
+        "It is unknown if there was a report of a DVT syndrome"
+      ],
+      "run_b": [
+        "≥1 symptom or sign of DVT was reported"
+      ]
+    },
+    {
+      "record_id": "SYN_08_autopsy_positive_v2",
+      "section": "B2",
+      "run_a": [
+        "None of the above were present or it is unknown if any of 1-4 were present"
+      ],
+      "run_b": [
+        "Calf pain or tenderness",
+        "Leg swelling or pitting oedema"
+      ]
+    },
+    {
+      "record_id": "SYN_10_unclear_sparse_record_v2",
+      "section": "B1_1",
+      "run_a": [
+        "It is unknown if there was a report of a DVT syndrome"
+      ],
+      "run_b": [
+        "≥1 symptom or sign of DVT was reported"
+      ]
+    },
+    {
+      "record_id": "SYN_11_autopsy_negative_v2",
+      "section": "A3_1",
+      "run_a": [
+        "≥1 imaging study was done and confirmed DVT"
+      ],
+      "run_b": [
+        "≥1 imaging study was done but didn't confirm DVT"
+      ]
+    },
+    {
+      "record_id": "SYN_11_autopsy_negative_v2",
+      "section": "A3_2",
+      "run_a": [
+        "Doppler/Duplex Ultrasound"
+      ],
+      "run_b": []
+    },
+    {
+      "record_id": "SYN_11_autopsy_negative_v2",
+      "section": "B1_1",
+      "run_a": [
+        "≥1 symptom or sign of DVT was reported"
+      ],
+      "run_b": [
+        "There was no report of a recognized DVT syndrome"
+      ]
+    },
+    {
+      "record_id": "SYN_11_autopsy_negative_v2",
+      "section": "B1_2",
+      "run_a": [
+        "Lower extremity DVT"
+      ],
+      "run_b": []
+    },
+    {
+      "record_id": "SYN_11_autopsy_negative_v2",
+      "section": "F",
+      "run_a": [
+        "Yes"
+      ],
+      "run_b": [
+        "No"
+      ]
+    },
+    {
+      "record_id": "SYN_12_other_procedure_positive_v2",
+      "section": "A3_2",
+      "run_a": [
+        "Doppler/Duplex Ultrasound"
+      ],
+      "run_b": [
+        "Contrast venography",
+        "Doppler/Duplex Ultrasound"
+      ]
+    },
+    {
+      "record_id": "SYN_12_other_procedure_positive_v2",
+      "section": "B2",
+      "run_a": null,
+      "run_b": [
+        "Calf pain or tenderness",
+        "Leg swelling or pitting oedema"
+      ]
+    },
+    {
+      "record_id": "SYN_13_contrast_venography_only_v2",
+      "section": "A3_1",
+      "run_a": [
+        "≥1 imaging study was done and confirmed DVT"
+      ],
+      "run_b": [
+        "No imaging studies done, unknown if done, or done but results unknown"
+      ]
+    },
+    {
+      "record_id": "SYN_13_contrast_venography_only_v2",
+      "section": "A3_2",
+      "run_a": [
+        "Compression ultrasonography"
+      ],
+      "run_b": []
+    },
+    {
+      "record_id": "SYN_14_other_imaging_incidental_v2",
+      "section": "A3_2",
+      "run_a": [
+        "Doppler/Duplex Ultrasound"
+      ],
+      "run_b": []
+    },
+    {
+      "record_id": "SYN_16_no_dvt_syndrome_reported_v2",
+      "section": "B1_1",
+      "run_a": [
+        "It is unknown if there was a report of a DVT syndrome"
+      ],
+      "run_b": [
+        "There was no report of a recognized DVT syndrome"
+      ]
+    },
+    {
+      "record_id": "SYN_17_diagnosis_no_details_v2",
+      "section": "A3_1",
+      "run_a": [
+        "≥1 imaging study was done and confirmed DVT"
+      ],
+      "run_b": [
+        "No imaging studies done, unknown if done, or done but results unknown"
+      ]
+    },
+    {
+      "record_id": "SYN_17_diagnosis_no_details_v2",
+      "section": "B1_1",
+      "run_a": [
+        "≥1 symptom or sign of DVT was reported"
+      ],
+      "run_b": [
+        "It is unknown if there was a report of a DVT syndrome"
+      ]
+    },
+    {
+      "record_id": "SYN_19_autopsy_positive_upper_extremity_v2",
+      "section": "B1_2",
+      "run_a": [
+        "Lower extremity DVT"
+      ],
+      "run_b": [
+        "Upper extremity DVT"
+      ]
+    },
+    {
+      "record_id": "SYN_20_autopsy_negative_trauma_v2",
+      "section": "A1",
+      "run_a": [
+        "No autopsy done, unknown if done, or done but results unavailable"
+      ],
+      "run_b": [
+        "Autopsy done but showed no evidence of DVT"
+      ]
+    },
+    {
+      "record_id": "SYN_20_autopsy_negative_trauma_v2",
+      "section": "B1_1",
+      "run_a": [
+        "It is unknown if there was a report of a DVT syndrome"
+      ],
+      "run_b": [
+        "There was no report of a recognized DVT syndrome"
+      ]
+    },
+    {
+      "record_id": "SYN_20_autopsy_negative_trauma_v2",
+      "section": "B1_2",
+      "run_a": [
+        "Lower extremity DVT"
+      ],
+      "run_b": []
+    },
+    {
+      "record_id": "SYN_20_autopsy_negative_trauma_v2",
+      "section": "X",
+      "run_a": [
+        "No alternative diagnosis was found to explain the acute illness"
+      ],
+      "run_b": [
+        "An alternative diagnosis was found that explained the acute illness"
+      ]
+    },
+    {
+      "record_id": "SYN_21_alt_diagnosis_bakers_cyst_v2",
+      "section": "A3_1",
+      "run_a": [
+        "≥1 imaging study was done and confirmed DVT"
+      ],
+      "run_b": [
+        "≥1 imaging study was done but didn't confirm DVT"
+      ]
+    },
+    {
+      "record_id": "SYN_21_alt_diagnosis_bakers_cyst_v2",
+      "section": "A3_2",
+      "run_a": [
+        "Compression ultrasonography"
+      ],
+      "run_b": []
+    },
+    {
+      "record_id": "SYN_23_other_procedure_ivc_filter_v2",
+      "section": "A2",
+      "run_a": [
+        "Thrombectomy related to DVT performed"
+      ],
+      "run_b": [
+        "No surgical procedure done; or, done but either did not confirm presence of DVT or findings unknown; or unknown if done"
+      ]
+    },
+    {
+      "record_id": "SYN_25_thrombectomy_postpartum_v2",
+      "section": "B2",
+      "run_a": [
+        "Leg swelling or pitting oedema",
+        "Redness, warmth, or pain in one or more extremities"
+      ],
+      "run_b": [
+        "Calf pain or tenderness",
+        "Leg swelling or pitting oedema",
+        "Redness, warmth, or pain in one or more extremities"
+      ]
+    },
+    {
+      "record_id": "SYN_26_ct_venography_pregnancy_pelvic_v2",
+      "section": "A2",
+      "run_a": [
+        "Thrombectomy related to DVT performed"
+      ],
+      "run_b": [
+        "No surgical procedure done; or, done but either did not confirm presence of DVT or findings unknown; or unknown if done"
+      ]
+    },
+    {
+      "record_id": "SYN_26_ct_venography_pregnancy_pelvic_v2",
+      "section": "A3_2",
+      "run_a": [
+        "Compression ultrasonography"
+      ],
+      "run_b": [
+        "CT or MR venography"
+      ]
+    },
+    {
+      "record_id": "SYN_26_ct_venography_pregnancy_pelvic_v2",
+      "section": "B2",
+      "run_a": [
+        "Calf pain or tenderness",
+        "Leg swelling or pitting oedema",
+        "Redness, warmth, or pain in one or more extremities"
+      ],
+      "run_b": [
+        "Calf pain or tenderness",
+        "Leg swelling or pitting oedema"
+      ]
+    },
+    {
+      "record_id": "SYN_27_contrast_venography_absent_pulses_v2",
+      "section": "A2",
+      "run_a": [
+        "Thrombectomy related to DVT performed"
+      ],
+      "run_b": [
+        "No surgical procedure done; or, done but either did not confirm presence of DVT or findings unknown; or unknown if done"
+      ]
+    },
+    {
+      "record_id": "SYN_28_other_modality_plethysmography_v2",
+      "section": "A2",
+      "run_a": [
+        "Thrombectomy related to DVT performed"
+      ],
+      "run_b": [
+        "No surgical procedure done; or, done but either did not confirm presence of DVT or findings unknown; or unknown if done"
+      ]
+    },
+    {
+      "record_id": "SYN_28_other_modality_plethysmography_v2",
+      "section": "A3_1",
+      "run_a": [
+        "≥1 imaging study was done and confirmed DVT"
+      ],
+      "run_b": [
+        "No imaging studies done, unknown if done, or done but results unknown"
+      ]
+    },
+    {
+      "record_id": "SYN_28_other_modality_plethysmography_v2",
+      "section": "A3_2",
+      "run_a": [
+        "Doppler/Duplex Ultrasound"
+      ],
+      "run_b": []
+    },
+    {
+      "record_id": "SYN_31_diagnosis_no_details_upper_v2",
+      "section": "B1_1",
+      "run_a": [
+        "≥1 symptom or sign of DVT was reported"
+      ],
+      "run_b": [
+        "It is unknown if there was a report of a DVT syndrome"
+      ]
+    },
+    {
+      "record_id": "SYN_32_discharge_letter_dvt_v2",
+      "section": "B1_1",
+      "run_a": [
+        "≥1 symptom or sign of DVT was reported"
+      ],
+      "run_b": [
+        "It is unknown if there was a report of a DVT syndrome"
+      ]
+    },
+    {
+      "record_id": "SYN_33_transfer_note_dvt_upper_v2",
+      "section": "B1_1",
+      "run_a": [
+        "≥1 symptom or sign of DVT was reported"
+      ],
+      "run_b": [
+        "It is unknown if there was a report of a DVT syndrome"
+      ]
+    },
+    {
+      "record_id": "SYN_34_dvt_reported_other_facility_v2",
+      "section": "A3_1",
+      "run_a": [
+        "≥1 imaging study was done and confirmed DVT"
+      ],
+      "run_b": [
+        "No imaging studies done, unknown if done, or done but results unknown"
+      ]
+    },
+    {
+      "record_id": "SYN_34_dvt_reported_other_facility_v2",
+      "section": "A3_2",
+      "run_a": [
+        "Doppler/Duplex Ultrasound"
+      ],
+      "run_b": []
+    },
+    {
+      "record_id": "SYN_34_dvt_reported_other_facility_v2",
+      "section": "B1_1",
+      "run_a": [
+        "≥1 symptom or sign of DVT was reported"
+      ],
+      "run_b": [
+        "It is unknown if there was a report of a DVT syndrome"
+      ]
+    },
+    {
+      "record_id": "SYN_35_specialist_note_dvt_lower_v2",
+      "section": "B1_1",
+      "run_a": [
+        "≥1 symptom or sign of DVT was reported"
+      ],
+      "run_b": [
+        "It is unknown if there was a report of a DVT syndrome"
+      ]
+    },
+    {
+      "record_id": "SYN_35_specialist_note_dvt_lower_v2",
+      "section": "C",
+      "run_a": [
+        "D-dimer exceeded test lab's upper limit of normal."
+      ],
+      "run_b": [
+        "D-dimer not tested, or tested but results unknown or not available"
+      ]
+    },
+    {
+      "record_id": "SYN_36_calf_muscle_tear_v2",
+      "section": "A3_1",
+      "run_a": [
+        "≥1 imaging study was done and confirmed DVT"
+      ],
+      "run_b": [
+        "≥1 imaging study was done but didn't confirm DVT"
+      ]
+    },
+    {
+      "record_id": "SYN_36_calf_muscle_tear_v2",
+      "section": "A3_2",
+      "run_a": [
+        "Doppler/Duplex Ultrasound"
+      ],
+      "run_b": []
+    },
+    {
+      "record_id": "SYN_36_calf_muscle_tear_v2",
+      "section": "B1_2",
+      "run_a": [
+        "Lower extremity DVT"
+      ],
+      "run_b": []
+    },
+    {
+      "record_id": "SYN_36_calf_muscle_tear_v2",
+      "section": "X",
+      "run_a": [
+        "No alternative diagnosis was found to explain the acute illness"
+      ],
+      "run_b": [
+        "An alternative diagnosis was found that explained the acute illness"
+      ]
+    },
+    {
+      "record_id": "SYN_37_lymphatic_obstruction_v2",
+      "section": "A3_1",
+      "run_a": [
+        "No imaging studies done, unknown if done, or done but results unknown"
+      ],
+      "run_b": [
+        "≥1 imaging study was done but didn't confirm DVT"
+      ]
+    },
+    {
+      "record_id": "SYN_39_external_vein_compression_v2",
+      "section": "X",
+      "run_a": [
+        "No alternative diagnosis was found to explain the acute illness"
+      ],
+      "run_b": [
+        "An alternative diagnosis was found that explained the acute illness"
+      ]
+    },
+    {
+      "record_id": "SYN_40_imaging_report_pending_v2",
+      "section": "A3_1",
+      "run_a": [
+        "≥1 imaging study was done and confirmed DVT"
+      ],
+      "run_b": [
+        "No imaging studies done, unknown if done, or done but results unknown"
+      ]
+    },
+    {
+      "record_id": "SYN_40_imaging_report_pending_v2",
+      "section": "A3_2",
+      "run_a": [
+        "Compression ultrasonography"
+      ],
+      "run_b": []
+    },
+    {
+      "record_id": "SYN_40_imaging_report_pending_v2",
+      "section": "B1_2",
+      "run_a": [],
+      "run_b": [
+        "Lower extremity DVT"
+      ]
+    }
+  ],
+  "overall": {
+    "compared": 400,
+    "changed": 52,
+    "correct_a": 337,
+    "correct_b": 369,
+    "stability": 0.87
+  }
+}
