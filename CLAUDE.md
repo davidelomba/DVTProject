@@ -89,9 +89,12 @@ python generate_synthetic_records.py --check      # fidelity audit, no LLM call
 python export_redcap_csv.py                       # results -> REDCap import CSV
 ```
 
-A record costs about 265 seconds on mari (2 x RTX 2080 Ti) under the 27B
-evaluator, so a full run over the 40 records is close to three hours. The 8B
-evaluator took 56 seconds a record there, and 715 on the laptop.
+Measured from the audit-log timestamps on mari (2 x RTX 2080 Ti), median per
+record: the reference costs 270 seconds, so a full run over the 40 records is
+3h00. `raw_record` costs 105 and runs in 1h10; the arms whose extractor is the
+same model as the evaluator cost about 165 and run in 1h50; every arm running
+two different models costs 250 to 310. Under the 8B evaluator a record costs 51
+seconds, 0h34 for the corpus, and took 715 on the laptop.
 
 A partial run is not a run: `evaluate_predictions` keeps the newest file per
 record, so scoring after `--only` mixes runs. Fine for a targeted check, not a
@@ -280,7 +283,7 @@ clinicians, not a fact about the form.
   empty, and two sections that failed outright with `FINAL_ANSWER: 5` for a
   two-option field, the model having reasoned correctly that DVT was ruled out
   and having nowhere to put it.
-- **Fourteen configurations measured on the same base**, each varying one
+- **Fifteen configurations measured on the same base**, each varying one
   component. `docs/RISULTATI_SPERIMENTALI.md` section 8 has the full per-section
   table.
 
@@ -291,35 +294,52 @@ clinicians, not a fact about the form.
   raw_record                       392/400    98.0%      0.966
   agentic with section headings    392/400    98.0%      0.940
   agentic, chunks 200/40, k 3      382/400    95.5%      0.895
-  full_text + 27B extractor        380/400    95.2%      0.824
+  full_text + 27B extractor        379/399    95.0%      0.816
   medgemma as evaluator            371/398    93.2%      0.837
+  rag 200/40/3, 27B extractor      369/400    92.2%      0.781
   qwen without the hints           365/399    91.5%      0.780
   rag                              341/400    85.3%      0.607
-  full_text                        341/400    85.5%      0.586
+  full_text                        338/399    84.7%      0.580
   rag, chunks 200/40, k 3          337/399    84.5%      0.583
   llama3:8b evaluator, gates on    316/400    79.0%      0.497
   llama3:8b evaluator, no hints    283/400    70.75%     0.423
   llama3:8b evaluator, with hints  240/400    60.0%      0.373
   ```
 
-  Not letting the 8B rewrite the evidence is worth +51, a 27B extractor instead
-  of an 8B is worth +39 and still lands 12 below not extracting at all, and the
-  guideline context is worth +3.
+  Not letting the 8B rewrite the evidence is worth +54, a 27B extractor instead
+  of an 8B is worth +41 and still lands 13 below not extracting at all, and the
+  guideline context is worth +3. Runs 2 to 7 carried the `keyword` gate and the
+  pre-2026-09-15 ground truth; they are reported reconstructed to the current
+  configuration, by undoing the gate's recorded overrides on the stored
+  predictions and rescoring. On `raw_record`, `rag` and the no-context arm the
+  gate and the ground-truth correction cancel and the published figure stands;
+  `full_text` and the 27B-extractor arm lose one section each on X, where the
+  lossy extractor had dropped the text the gate keyed on, so there is no
+  override to undo.
 - **A weak first stage decides the score.** The four extraction modes are the
   four combinations of two choices, whether the 8B **rewrites** the evidence and
   whether Agent 2 gets the whole record or the retrieved chunks:
 
   ```
                           whole record        retrieved chunks
-     8B rewrites          full_text  341      rag          341
+     8B rewrites          full_text  338      rag          341
      verbatim evidence    raw_record 392      agentic      398
   ```
 
-  Removing the rewriting is worth +51 and +57; adding retrieval is worth 0 with
+  Removing the rewriting is worth +54 and +57; adding retrieval is worth +3 with
   it and +6 without, so the two factors interact. Letting the 8B write the
   evidence returns `NO RELEVANT EVIDENCE FOUND.` on 143 sections out of 400 in
-  `full_text` and 142 in `rag`. Agent 2 keeps reasoning correctly on what it
-  receives, so reading only the final answer hides the cause. The chunks column
+  `full_text` and 142 in `rag`, and that is not where the loss is. Partition
+  the sections by whether the evidence came back empty and score the reference
+  on the same ones: on the empty partition the arm gets 93.0% against the
+  reference's 100%, losing 10 sections; on the partition with evidence it gets
+  80.1% against 99.2%, losing 49. **The rewriting costs five times more through
+  what it writes than through what it omits**, and the reference sits at 99-100%
+  in both partitions, so the empty sections are not the easy ones. An empty
+  evidence is usually correct behaviour, since on about a third of
+  section-record pairs there is nothing to extract for that criterion. Agent 2
+  keeps reasoning correctly on what it receives, so reading only the final
+  answer hides the cause. The chunks column
   mixes fixed with model-chosen queries, so the +6 is not attributable to
   retrieval rather than agency. All four cells were measured with retrieval
   inert; made to select it costs 16 sections, which is the bullet below. An extractor exists in every mode but
@@ -396,8 +416,42 @@ clinicians, not a fact about the form.
   not show is that retrieval hurts on real documents: shrinking the window
   discards text that would have fit in the prompt anyway, so it reproduces the
   selection pressure without its cause.
+- **The rewriting cost a bigger extractor cannot remove is 13 sections, in both
+  retrieval regimes.** Repeating the small-chunk `rag` arm with `qwen3.6:27b` as
+  extractor instead of the 8B, one variable and the same fingerprint, takes it
+  from 337/399 to **369/400**, micro 84.5% to 92.2%, macro kappa 0.583 to 0.781,
+  so a 27B extractor is worth +32 there against +41 at 800-character chunks. It
+  still lands 13 below `agentic_graph` in the same regime (382), and at 800
+  `full_text` + 27B lands 13 below `raw_record` (379 against 392). The 200-chunk
+  comparison is not a clean isolation, since `agentic` writes its own queries
+  while `rag` uses the fixed section query. **Extractor fidelity is a model
+  property**: on the identical input the 27B copies 96% of fragments verbatim
+  with 0 preambles against the 8B's 71% and 20, though the same 27B drops to 72%
+  when handed the whole record at 800, so fidelity depends on the regime too.
+  The 27B also returns **more** empty evidence, 144 against 120, while scoring
+  32 sections higher, which is the sharpest confirmation that an empty evidence
+  is usually correct behaviour rather than the damage. The partition holds:
+  against `agentic` in the same regime the 8B loses 36 sections where evidence
+  exists and 8 where it does not, the 27B 11 and 2. F does not move, 31 and 32
+  with kappa -0.046 against an 82.5% baseline, because the absence of detail it
+  asks about is a property of the record that no fragment carries.
+- **The accuracy-time frontier has two points, and neither rewrites the
+  evidence.** Comparing only the arms that vary the evidence path, with the
+  timings measured from the audit-log timestamps: `agentic_graph` 800/5 is the
+  most accurate at 398 and 270 seconds a record, `raw_record` the fastest at 392
+  and 105. **Everything else is dominated by `raw_record` on both axes**,
+  including the two 27B-extractor arms, which at 166 seconds are still slower
+  and 13 or 23 sections lower. Six sections is 1.5 points and the two Wilson
+  intervals overlap, so on this corpus `raw_record` is a defensible engineering
+  choice. `agent2` measures the same work in every arm yet costs 89 seconds with
+  no extractor, 143 when the extractor is the same model as the evaluator and
+  about 195 when it is a different one, while `raw_record` hands Agent 2 the
+  longest prompt of all; the ordering is consistent with the cost of swapping
+  models on the GPU, which is **not isolated**. The ranking is conditional on
+  the testbed: `raw_record` sits on the frontier because records run 317 to 1185
+  characters, and on real documentation that row may not exist at all.
 - **Two inputs that carry the same information are not the same input.**
-  `full_text` and `rag` both score 341/400 and differ on **35 sections**:
+  `full_text` and `rag` score 338 and 341 and differ on **35 sections**:
   retrieval returns the whole record either way, but joining the chunks with a
   separator and duplicating the overlap changes what the 8B extractor writes.
   The rewriting noise is larger than the difference between the two modes.
