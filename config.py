@@ -12,7 +12,7 @@ PROJECT_ROOT = Path(__file__).resolve().parent
 # LLM model names and parameters
 LLM_MODEL_NAME = "llama3:8b-instruct-q4_0"  # Agent 1 (extractor), "rag" and "full_text" only
 EVALUATOR_LLM_MODEL_NAME = "qwen3.6:27b"  # Agent 2 (evaluator), all modes
-AGENTIC_LLM_MODEL_NAME = "llama3.1:8b-instruct-q4_0"  # Agent 1's search step, "agentic_graph" mode only
+AGENTIC_LLM_MODEL_NAME = "qwen3.6:27b"  # Agent 1's search step, "agentic_graph" mode only
 LLM_TEMPERATURE = 0.0  # deterministic output for all agents
 LLM_NUM_PREDICT = 1024  # token cap: prevents runaway generation. The two
                         # answer lines close the response, so a cap the model
@@ -46,9 +46,9 @@ AGENTIC_MAX_ITERATIONS = 5  # cap on tool calls per section, used by "agentic_gr
 
 # Chunking for the clinical record (EHR)
 # Only used when EXTRACTOR_MODE is "rag" or "agentic_graph"
-EHR_CHUNK_SIZE = 800
-EHR_CHUNK_OVERLAP = 150
-EHR_RETRIEVER_K = 5
+EHR_CHUNK_SIZE = 200
+EHR_CHUNK_OVERLAP = 40
+EHR_RETRIEVER_K = 3
 EHR_KB_PERSIST_DIR = str(PROJECT_ROOT / "vectorstores" / "chroma_ehr_kb")
 
 # Chunking for the static reference KB (Brighton PDF)

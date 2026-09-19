@@ -175,6 +175,11 @@ of the hint each section actually received, plus an `all` digest of the whole
 set, so two runs whose hints were rewritten between them no longer carry the
 same signature. Runs before 2026-09-08 lack it and are told apart by their date.
 
+`_run_config.section_queries_fingerprint` does the same for `SECTION_QUERIES`,
+which is both the brief Agent 1 works from and the key that retrieves the
+guideline context. The current set digests to `39a5a3504655`; runs before
+2026-09-19 lack the field.
+
 ## What the measurements say
 
 On the 40-record corpus, qwen3.6:27b scores micro 99.5%, macro kappa
@@ -556,6 +561,26 @@ clinicians, not a fact about the form.
   in `rag` the gate overrode SYN_36 and SYN_39, whose keywords ARE in the list,
   because the lossy extractor had already dropped the text containing them —
   **the gate's reliability depends on the extractor's output**.
+- **Three section queries name only part of their section's options.** Audited
+  by comparing each query in `SECTION_QUERIES` against the options of its
+  section. A2's query is `thrombectomy, surgical procedure related to DVT` and
+  covers one of the two positive branches: `Other procedure done that confirmed
+  presence of DVT` shares no term with it, and that is the branch the ground
+  truth uses for the percutaneous IVC filter on SYN_12 and SYN_23 and the CT
+  venography on SYN_03. A3_2's `Other` option has no vocabulary in its query
+  either, and SYN_28 is a plethysmography, which matches none of the modalities
+  named. B2's query lists leg findings only, while option 3 reads `legs or arms`
+  and option 4 `one or more extremities`; SYN_03 is an upper-extremity case. The
+  queries were written from the finding expected rather than from the option
+  list, which works wherever the finding has a name and fails on every `other`
+  branch. A1, A3_1, C and B1_1 only lack verbs and are fine, and X omits
+  `diagnosis` and `acute illness` deliberately, being aimed at Table 2.
+  **Not measurable at the reference parameters**: retrieval returns the whole
+  record whatever the query asks, so rewriting one would change the guideline
+  context and nothing else. It would show in the 200-chunk regime, where A2 has
+  4 positives and the effect would sit inside the noise. Rewriting them now
+  buys an untestable change, so they stay as they are and the fingerprint above
+  is what makes a future rewrite traceable.
 - Test whether the TRANSCRIPTION RULE in `AGENTIC_EXTRACTOR_SYSTEM_PROMPT` does
   anything: it governs a string the code discards.
 - **The extractor prompt never says a negation is evidence**, while the

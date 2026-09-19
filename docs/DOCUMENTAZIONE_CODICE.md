@@ -503,8 +503,14 @@ insieme. Gli interruttori dicono quali hint sono stati inviati, non cosa
 dicevano, quindi senza questo due run i cui hint sono stati riscritti in mezzo
 porterebbero la stessa firma.
 
+**`_query_fingerprint()`** fa lo stesso per `SECTION_QUERIES`, che è insieme il
+brief da cui l'Agente 1 parte e la chiave con cui si recupera il contesto della
+linea guida. Nessun altro campo dello snapshot ne registra il testo, quindi
+senza questo due run le cui query sono state riscritte in mezzo porterebbero la
+stessa firma.
+
 **`_run_config_snapshot()`** cattura tutto ciò che determina cosa una run
-produce: modalità, gate, hint e loro fingerprint, modelli per ruolo (con
+produce: modalità, gate, hint e query con i rispettivi fingerprint, modelli per ruolo (con
 l'estrattore **effettivo**, che in modalità agentica è un modello diverso),
 ambiente, parametri di generazione, parametri di retrieval. Viene scritto
 nell'audit log sotto `_run_config`, chiave scelta per non poter collidere con un
