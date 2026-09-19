@@ -105,6 +105,29 @@ def _hint_fingerprint() -> dict:
     return per_section
 
 
+def _query_fingerprint() -> dict:
+    """Identifies the section queries a run was produced with.
+
+    SECTION_QUERIES is the brief Agent 1 works from and the key that retrieves
+    the guideline context. No other field records its text, so without this two
+    runs whose queries were rewritten between them carry the same signature.
+
+    Returns:
+        Section key -> "<chars> <first 12 hex of sha256>". `all` digests the
+        whole set, so two runs can be compared on one string.
+    """
+
+    digest = hashlib.sha256()
+    per_section = {}
+    for section_key in config.SECTION_ORDER:
+        query = SECTION_QUERIES[section_key]
+        digest.update(f"{section_key}:{query}\n".encode("utf-8"))
+        own = hashlib.sha256(query.encode("utf-8")).hexdigest()[:12]
+        per_section[section_key] = f"{len(query)} {own}"
+    per_section["all"] = digest.hexdigest()[:12]
+    return per_section
+
+
 def _run_config_snapshot() -> dict:
     """Captures the settings that determine what a run produces.
 
@@ -134,6 +157,7 @@ def _run_config_snapshot() -> dict:
         "section_hints_enabled": config.SECTION_HINTS_ENABLED,
         "section_hints_disabled": sorted(config.SECTION_HINTS_DISABLED),
         "section_hints_fingerprint": _hint_fingerprint(),
+        "section_queries_fingerprint": _query_fingerprint(),
         # Always applied, never switchable: recorded so a reader does not have
         # to know that to interpret the run.
         "cross_section_rules_applied": True,
