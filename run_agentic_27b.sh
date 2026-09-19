@@ -25,10 +25,28 @@ reference () {
 }
 trap reference EXIT INT TERM
 
-if ! ollama show qwen3.6:27b 2>/dev/null | grep -qi 'tools'; then
-  echo "!! qwen3.6:27b non dichiara il tool calling: il braccio non puo partire."
-  exit 1
-fi
+# Il modello dell'agente deve saper chiamare uno strumento. Verificato
+# eseguendo una tool call con lo stesso stack che usa la pipeline.
+"$PY" - <<'PROBE'
+import sys
+from langchain_ollama import ChatOllama
+from langchain_core.tools import tool
+
+@tool
+def probe(query: str) -> str:
+    """Cerca informazioni nel documento clinico."""
+    return "ok"
+
+try:
+    reply = ChatOllama(model="qwen3.6:27b", temperature=0).bind_tools([probe]).invoke(
+        "Cerca nel documento usando lo strumento probe con query: trombosi."
+    )
+except Exception as exc:
+    sys.exit(f"!! qwen3.6:27b non utilizzabile come agente: {type(exc).__name__}: {exc}")
+if not reply.tool_calls:
+    sys.exit("!! qwen3.6:27b non ha emesso alcuna tool call.")
+print(f"tool calling verificato: {reply.tool_calls}")
+PROBE
 
 reference
 set_str AGENTIC_LLM_MODEL_NAME "qwen3.6:27b"
