@@ -16,8 +16,9 @@ every pipeline role) from each scenario's facts and reviewed against them,
 after generated ones were repeatedly found to contradict their own ground
 truth. The writer model (WRITER_MODEL_NAME, a literal rather than a config
 import so it stays outside every pipeline role too) remains available for new
-scenarios, at a non-zero temperature for lexical variation. Records are only
-written when missing, unless --force, so a plain run cannot overwrite them.
+scenarios, at a non-zero temperature for lexical variation. Writing records is
+opt-in, behind --generate, and even then only the missing ones unless --force:
+a plain run refreshes the ground truth and writes no record.
 
 FIDELITY CHECK: a record is verified against its scenario's facts before being
 saved and regenerated if it fails; see check_record. The same checks run over
@@ -48,7 +49,8 @@ retrieval returns the whole record every time (measured median evidence length:
 input and cannot be compared on this dataset. Padding was tried and reverted:
 the comparison belongs on the real records expected from collaborators.
 
-Usage: python generate_synthetic_records.py [--check] [--force] [--only ID...]
+Usage: python generate_synthetic_records.py [--check] [--generate] [--force]
+                                            [--only ID...]
 Output: data/synthetic_records/<scenario_id>_<style_id>.txt and the matching
         _ground_truth.json.
 """
@@ -1429,8 +1431,9 @@ def check_existing_records() -> int:
 
 
 def main():
-    """Generates every scenario's record and ground truth or audits an
-    existing corpus when called with --check.
+    """Refreshes every scenario's ground truth, writes the missing records when
+    called with --generate, and audits an existing corpus when called with
+    --check.
 
     Records that still fail the fidelity check after WRITER_MAX_ATTEMPTS are
     saved anyway (a partial record is still worth inspecting) but are
@@ -1453,10 +1456,17 @@ def main():
              "spending a full generation run or disturbing the rest of the set.",
     )
     parser.add_argument(
+        "--generate", action="store_true",
+        help="Write the records that are missing, calling the writer model. "
+             "Without it the run only refreshes the ground truth, so adding a "
+             "scenario cannot put a generated record into the corpus by "
+             "accident.",
+    )
+    parser.add_argument(
         "--force", action="store_true",
-        help="Overwrite records that already exist. Without it only missing "
-             "ones are written, so an accidental run cannot destroy records "
-             "that were edited or authored by hand.",
+        help="With --generate, overwrite records that already exist. Without "
+             "it only missing ones are written, so an accidental run cannot "
+             "destroy records that were authored elsewhere.",
     )
     args = parser.parse_args()
 
@@ -1484,10 +1494,18 @@ def main():
                 encoding="utf-8",
             )
 
-    # Records are only written when missing, unless --force. Records edited or
-    # written by hand are indistinguishable from generated ones on disk and
-    # regenerating one silently replaces work that took real effort to get
-    # right.
+    # Writing records is opt-in. A record authored elsewhere is
+    # indistinguishable from a generated one on disk, so a scenario added
+    # without its record would otherwise get one from the writer on the next
+    # run that only meant to refresh the ground truth.
+    if not args.generate:
+        print(f"Ground truth refreshed for {len(scenarios)} scenario(s). "
+              f"Pass --generate to write the records that are missing.",
+              flush=True)
+        return
+
+    # Records are only written when missing, unless --force. Regenerating one
+    # silently replaces work that took real effort to get right.
     pending = [
         (scenario, style)
         for scenario in scenarios
