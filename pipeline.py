@@ -40,7 +40,8 @@ SECTION_QUERIES = {
     "A3_2": "type of imaging study performed: compression ultrasonography, doppler, venography",
     "B1_1": "reported symptoms or signs of deep vein thrombosis",
     "B1_2": "deep vein thrombosis lower extremity or upper extremity",
-    "B2": "calf pain, swelling, oedema, redness, warmth, absent pulses",
+    "B2": "calf pain or tenderness, leg swelling or pitting oedema, redness, "
+          "warmth or pain in any extremity, absent pulses in legs or arms",
     "C": "D-dimer value, test date, laboratory upper limit of normal",
     "F": "diagnosis of deep vein thrombosis reported by specialist",
     # Worded after Table 2 of the guideline, which lists these conditions under

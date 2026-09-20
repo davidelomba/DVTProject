@@ -90,11 +90,13 @@ python export_redcap_csv.py                       # results -> REDCap import CSV
 ```
 
 Measured from the audit-log timestamps on mari (2 x RTX 2080 Ti), median per
-record: the reference costs 270 seconds, so a full run over the 40 records is
-3h00. `raw_record` costs 105 and runs in 1h10; the arms whose extractor is the
-same model as the evaluator cost about 165 and run in 1h50; every arm running
-two different models costs 250 to 310. Under the 8B evaluator a record costs 51
-seconds, 0h34 for the corpus, and took 715 on the laptop.
+record: the reference costs 174 seconds, so a full run over the 40 records is
+1h56. What sets the cost is how many model tags a run loads. `raw_record` loads
+one and costs 105, 1h10 for the corpus; the arms whose Agent 1 and Agent 2 share
+a tag, the reference among them, cost 165 to 175 and run in 1h50 to 1h56; every
+arm running two different tags costs 250 to 310, close to three hours. Under the
+8B evaluator a record costs 51 seconds, 0h34 for the corpus, and took 715 on the
+laptop.
 
 A partial run is not a run: `evaluate_predictions` keeps the newest file per
 record, so scoring after `--only` mixes runs. Fine for a targeted check, not a
@@ -116,7 +118,7 @@ this is what `config.py` goes back to afterwards.
 ```python
 LLM_MODEL_NAME           = "llama3:8b-instruct-q4_0"
 EVALUATOR_LLM_MODEL_NAME = "qwen3.6:27b"
-AGENTIC_LLM_MODEL_NAME   = "llama3.1:8b-instruct-q4_0"
+AGENTIC_LLM_MODEL_NAME   = "qwen3.6:27b"
 LLM_REASONING            = False
 EXTRACTOR_MODE           = "agentic_graph"
 BRIGHTON_CONTEXT_ENABLED = True
@@ -129,6 +131,12 @@ SECTION_GATES_ENABLED    = {"keyword": False, "details": False, "absent_pulses":
 The keyword and details gates are off. `absent_pulses` is on and has never fired
 on this corpus. The cross-section rules are outside the switch and encode the
 form's structure rather than a model weakness.
+
+Agent 1 and Agent 2 run the same model tag, which is what makes the reference
+cost 1h56 rather than 3h00, but they stay two separate settings: change
+`AGENTIC_LLM_MODEL_NAME` alone to vary the agent and `EVALUATOR_LLM_MODEL_NAME`
+alone to vary the evaluator. `LLM_MODEL_NAME` is the extractor of the `rag` and
+`full_text` baselines and is untouched by the reference mode.
 
 Check it before every launch, since an arm left in place is how a run gets
 attributed to the wrong configuration:
@@ -177,8 +185,9 @@ same signature. Runs before 2026-09-08 lack it and are told apart by their date.
 
 `_run_config.section_queries_fingerprint` does the same for `SECTION_QUERIES`,
 which is both the brief Agent 1 works from and the key that retrieves the
-guideline context. The current set digests to `39a5a3504655`; runs before
-2026-09-19 lack the field.
+guideline context. The current set digests to `bfd9536a31fe`; the set every run
+before 2026-09-20 used digests to `39a5a3504655`, and runs before 2026-09-19
+lack the field.
 
 ## What the measurements say
 
@@ -289,13 +298,14 @@ narrower than the criterion it stands for.
   empty, and two sections that failed outright with `FINAL_ANSWER: 5` for a
   two-option field, the model having reasoned correctly that DVT was ruled out
   and having nowhere to put it.
-- **Eighteen configurations measured on the same base**, each varying one
+- **Nineteen configurations measured on the same base**, each varying one
   component. `docs/RISULTATI_SPERIMENTALI.md` section 8 has the full per-section
   table.
 
   ```
                                     exact     micro    macro kappa
   agentic_graph (reference)        398/400    99.5%      0.982
+  same, 8B agent and old B2 query  398/400    99.5%      0.982
   agentic without the context      395/400    98.75%     0.970
   raw_record                       392/400    98.0%      0.966
   agentic with section headings    392/400    98.0%      0.940
@@ -492,6 +502,21 @@ narrower than the criterion it stands for.
   mode and produces the run's only unparseable section in the other. Naming an
   `other` branch's instances does not make that branch reachable; it can push
   the model onto a different positive option.
+- **The reference moved to a 27B agent and B2's rewritten query, and no answer
+  changed.** The configuration in effect since 2026-09-20 runs `qwen3.6:27b` as
+  Agent 1 and carries `section_queries_fingerprint` `bfd9536a31fe`, B2's query
+  alone rewritten. It scores 398/400, micro 99.5%, macro kappa 0.982, with
+  **zero sections changed out of 400** against the arm it replaced. Not an
+  equivalent total: the same answers, record by record. Both edits were
+  predicted inert from the same mechanism, that with `k` 5 and records splitting
+  into one or two chunks retrieval returns everything, so neither the query nor
+  the agent's brief can change what Agent 2 sees. The run costs 174 seconds a
+  record against 270, **1h56 against 3h00**, and `agent2` lands on 89 seconds,
+  the same figure `raw_record` posts with no second model at all — a third
+  independent confirmation of the swapping cost, and the first at the reference
+  parameters. **Every delta measured against the old reference therefore stays
+  valid without recomputation**, since the answers it was computed from are the
+  same ones.
 - **The accuracy-time frontier has two points, and neither rewrites the
   evidence.** Comparing only the arms that vary the evidence path, with the
   timings measured from the audit-log timestamps: `agentic_graph` 800/5 is the
@@ -639,9 +664,8 @@ narrower than the criterion it stands for.
   record whatever the query asks, so rewriting one would change the guideline
   context and nothing else. Measured in the 200-chunk regime, where it does
   show: B2's rewrite is worth +5 and +2, A3_2's is 0 and -2, A2's is -1 and +1,
-  so **only B2's gap was a defect**. The queries in `SECTION_QUERIES` are still
-  the original set, `39a5a3504655`; adopting B2's rewrite alone would need the
-  reference rerun to stay comparable.
+  so **only B2's gap was a defect**. B2's rewrite is the one now in
+  `SECTION_QUERIES`; A2's and A3_2's were not adopted.
 - Test whether the TRANSCRIPTION RULE in `AGENTIC_EXTRACTOR_SYSTEM_PROMPT` does
   anything: it governs a string the code discards.
 - **The extractor prompt never says a negation is evidence**, while the

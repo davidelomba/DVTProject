@@ -31,7 +31,7 @@ DIGEST
 
 reference () {
   set_str LLM_MODEL_NAME "llama3:8b-instruct-q4_0"
-  set_str AGENTIC_LLM_MODEL_NAME "llama3.1:8b-instruct-q4_0"
+  set_str AGENTIC_LLM_MODEL_NAME "qwen3.6:27b"
   set_str EXTRACTOR_MODE "agentic_graph"
   set_num EHR_CHUNK_SIZE 800
   set_num EHR_CHUNK_OVERLAP 150

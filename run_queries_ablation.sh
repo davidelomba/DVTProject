@@ -1,8 +1,9 @@
 #!/usr/bin/env bash
 # Ablazione delle query di sezione nel regime a recupero selettivo.
-# Riscrive le tre query che l'audit ha trovato parziali - A2, A3_2, B2 - e le
-# misura su due configurazioni, ciascuna a una variabile rispetto a un braccio
-# gia in archivio:
+# Riscrive le due query che l'audit ha trovato parziali e che non sono state
+# adottate, A2 e A3_2, e le misura su due configurazioni, ciascuna a una
+# variabile rispetto a un braccio gia in archivio. La terza, B2, e nel
+# riferimento: le run gia archiviate la includevano nel braccio.
 #   A  rag 200/40/3, estrattore 27B      contro output_small_rag_27b  (369)
 #   B  agentic_graph 200/40/3            contro output_small_agentic  (382)
 # Riporta config.py e pipeline.py com'erano comunque vada.
@@ -34,7 +35,7 @@ DIGEST
 
 reference () {
   set_str LLM_MODEL_NAME "llama3:8b-instruct-q4_0"
-  set_str AGENTIC_LLM_MODEL_NAME "llama3.1:8b-instruct-q4_0"
+  set_str AGENTIC_LLM_MODEL_NAME "qwen3.6:27b"
   set_str EXTRACTOR_MODE "agentic_graph"
   set_num EHR_CHUNK_SIZE 800
   set_num EHR_CHUNK_OVERLAP 150
@@ -71,9 +72,6 @@ NEW = {
  '            "venography, contrast venography, plethysmography or any other "\n'
  '            "modality",',
 
- '    "B2": "calf pain, swelling, oedema, redness, warmth, absent pulses",':
- '    "B2": "calf pain or tenderness, leg swelling or pitting oedema, redness, "\n'
- '          "warmth or pain in any extremity, absent pulses in legs or arms",',
 }
 
 src = open("pipeline.py", encoding="utf-8").read()
