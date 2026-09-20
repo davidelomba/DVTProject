@@ -188,15 +188,16 @@ B1.1 miss one record each. The ten scenarios added in September score at the
 same rate as the original thirty, so the sections that had been unmeasurable
 hold up.
 
-**Both residual errors are readings the ground truth disagrees with.** SYN_03
+**One residual error is a genuine mistake, the other is a reading the ground
+truth disagrees with.** SYN_03
 calls a CT venography A2's "other procedure"; SYN_10 counts an uncharacterised
 leg discomfort as a B1.1 symptom, citing the guideline's own list of
-non-specific signs. Neither is settled inside the project. A2 looked settled by
-the schema, since option 3 reads "no surgical procedure done", but sending the
-section heading to the evaluator showed what that reading costs: it corrects
-SYN_03 and breaks SYN_12 and SYN_23, whose ground truth calls a percutaneous
-IVC filter placement an "other procedure". The scope of A2 is a question for the
-clinicians, not a fact about the form.
+non-specific signs. SYN_10 is not settled inside the project. **SYN_03 is:** a
+CT venography is an imaging study, not a procedure recovering a thrombus, and
+the ground truth is right. The wider scope of A2 is settled by section 4.1 of
+the paper, which names a *surgical or a catheterization procedure* together, so
+an endovascular intervention counts and the section heading's word Surgical is
+narrower than the criterion it stands for.
 
 - **A hint's contribution changes sign with the model.** Evaluator and hints
   crossed on the 40-record corpus, four runs, same extractor, same gates, same
@@ -288,7 +289,7 @@ clinicians, not a fact about the form.
   empty, and two sections that failed outright with `FINAL_ANSWER: 5` for a
   two-option field, the model having reasoned correctly that DVT was ruled out
   and having nowhere to put it.
-- **Fifteen configurations measured on the same base**, each varying one
+- **Eighteen configurations measured on the same base**, each varying one
   component. `docs/RISULTATI_SPERIMENTALI.md` section 8 has the full per-section
   table.
 
@@ -298,8 +299,11 @@ clinicians, not a fact about the form.
   agentic without the context      395/400    98.75%     0.970
   raw_record                       392/400    98.0%      0.966
   agentic with section headings    392/400    98.0%      0.940
+  agentic 200/40/3, 27B agent      383/400    95.8%      0.905
+  agentic 200/40/3, new queries    383/400    95.8%      0.902
   agentic, chunks 200/40, k 3      382/400    95.5%      0.895
   full_text + 27B extractor        379/399    95.0%      0.816
+  rag 200/40/3, 27B, new queries   374/399    93.7%      0.797
   medgemma as evaluator            371/398    93.2%      0.837
   rag 200/40/3, 27B extractor      369/400    92.2%      0.781
   qwen without the hints           365/399    91.5%      0.780
@@ -365,22 +369,37 @@ clinicians, not a fact about the form.
   `models.py` above its numbered options, the wording the printed form uses.
   Everything else identical and the hint fingerprint proving it, the reference
   run goes from 398 to 392, micro 99.5% to 98.0%, macro kappa 0.982 to 0.940.
-  Six records move. A2's heading names the section Surgical procedure, which
-  corrects SYN_03, where a CT venography had been called an "other procedure",
-  and breaks SYN_12 and SYN_23, where the ground truth calls a percutaneous IVC
-  filter placement one; the model's reasoning on SYN_23 cites the heading and
-  concludes that no *surgical* procedure confirmed the DVT, imaging did. A2's
-  "Other procedure" option is then never predicted correctly at all, kappa
-  0.649 against a 90% majority baseline. The other four are multi-select: A3_2
-  adds `Contrast venography` on the same two records, B1_2 fills SYN_40 where
-  the truth is empty, B2 adds an option on SYN_25 and drops one on SYN_07. Four
-  of those five are over-selection, and the three multi-select headings all end
-  in "check all that apply", so the heading carries an instruction about how
-  many boxes to tick and not only the section's name; SYN_07 goes the other way
-  and that reading does not cover it. Sections are separate evaluator calls, so
-  the A3_2 change is not a consequence of the A2 answer but a second effect of
-  the same edit. The switch is False. What the run demonstrates is that the
-  pipeline can be made more faithful to the form than the ground truth is.
+  Six records move, one gain and seven losses. A2's heading names the section
+  Surgical procedure, which corrects SYN_03, where a CT venography had been
+  called an "other procedure" and is a real gain. On SYN_12 and SYN_23 the model
+  refuses the ground truth's "other procedure" for a catheter thrombolysis and a
+  percutaneous IVC filter placement, reasoning that interventional radiology is
+  categorised apart from open surgery and citing "these Brighton criteria
+  validations" for it. **That citation is invented and section 4.1 of the paper
+  says the opposite**: the definitive pathologic diagnosis includes recovery of
+  a thrombus by *surgical or a catheterization procedure, such as thrombectomy*,
+  naming the two together. Those two sections are model errors, and they are
+  what takes A2's "Other procedure" option to never being predicted, kappa 0.649
+  against a 90% majority baseline. A3_2 on those same two records adds
+  `Contrast venography`,
+  and both records state that the intraprocedural venography confirmed the
+  thrombus, which is literally what A3.2 asks; the ground truth counts that
+  venography as a procedure in A2 and not as a study in A3_2, a convention that
+  avoids double counting but is written down nowhere. B2 on SYN_25 adds
+  `Redness, warmth, or pain in one or more extremities` where only calf pain
+  and taut painful skin are documented, which is clinician question four.
+  B1_2 on SYN_40 fills a section the truth leaves empty, arguable and probably
+  the truth's. SYN_07 is a model error too, dropping `Calf pain or tenderness`
+  because the record says diffuse tenderness rather than calf pain. Net of what
+  is settled the balance is +1 and -3, so **-2**. Sections are separate
+  evaluator calls, so the A3_2 change is not a consequence of the A2 answer but
+  a second effect of the same edit. The switch stays False, on A2 on the merits
+  as well. What the run demonstrates, in a sharper form than the score, is that
+  **the form's heading is narrower than the paper the form derives from**: the
+  model read the heading correctly and became less faithful to the primary
+  source. Worth remeasuring once a clinician-written reference exists, since the
+  three coding disagreements left are still scored against a ground truth that
+  is one of the parties to them.
 - **Choosing is not writing.** `agentic_graph` belongs in the verbatim row even
   though it has a model in the loop: `extract_evidence_agentic` returns the raw
   tool observations, not the agent's final turn, so the 8B picks queries but the
@@ -440,6 +459,39 @@ clinicians, not a fact about the form.
   exists and 8 where it does not, the 27B 11 and 2. F does not move, 31 and 32
   with kappa -0.046 against an 82.5% baseline, because the absence of detail it
   asks about is a property of the record that no fragment carries.
+- **A 27B agent buys one section and saves an hour, and that settles the model
+  swapping question.** Replacing `AGENTIC_LLM_MODEL_NAME` with `qwen3.6:27b` in
+  the 200/40/3 arm, so Agent 1 and Agent 2 share a tag, takes it from 382 to
+  383 of 400. **Exactly one section changes**, X from 36 to 37, and the other
+  nine are identical figure for figure: in a regime where the query decides
+  which three chunks of six arrive, a three times larger brief-writer is worth
+  one section in 400. The timing is the result. `agent1` **falls** from 70 to 64
+  seconds a record with the larger model, `agent2` from 192 to 91, close to
+  `raw_record`'s 89 with no second model at all, and the run takes 1h54 against
+  3h02. A bigger model being faster rules out generation cost: what the slow
+  arms pay is swapping two distinct models on the GPU twice a section. Practical
+  consequence: `llama3.1:8b` holds that slot because a tool-calling model was
+  needed, not because it was fast, and the 27B is **1.6 times quicker**. Decide
+  that swap on time, since one section in 400 is not a measurable difference.
+- **Of three under-covering queries the audit found, only one was worth
+  fixing.** Rewriting A2, A3_2 and B2 — fingerprint `a71fbd4109ec` — and
+  measuring both modes at 200/40/3: `rag` with the 27B extractor goes 369/400 to
+  374/399, `agentic_graph` 382 to 383. The totals hide three different effects.
+  **B2 works and works as predicted**: +5 in `rag` and +2 in `agentic`, naming
+  arms and extremities recovers the two upper-extremity records answered `None
+  of the above` (SYN_03, SYN_22) and the absent-pulses one (SYN_18), and drops
+  two false positives (SYN_07, SYN_25); in `rag` a sixth section follows
+  indirectly, B1.1 on SYN_03 turning positive because the cross-section rule
+  reads the symptom B2 now carries. **A3_2 does not**: 0 in `rag`, where it
+  trades the disputed `Contrast venography` on SYN_12 and SYN_23 for the
+  compression-versus-Doppler pairing on SYN_04 and SYN_26, and -2 in `agentic`
+  for the same pairing — **the failure mode the removed A3.2 contrastive clause
+  used to prevent, back through the query instead of the hint**. **A2 is
+  unstable**: +1 in `agentic` but -1 in `rag`, and on SYN_12 naming
+  catheter-directed intervention pushes the model onto `Thrombectomy` in one
+  mode and produces the run's only unparseable section in the other. Naming an
+  `other` branch's instances does not make that branch reachable; it can push
+  the model onto a different positive option.
 - **The accuracy-time frontier has two points, and neither rewrites the
   evidence.** Comparing only the arms that vary the evidence path, with the
   timings measured from the audit-log timestamps: `agentic_graph` 800/5 is the
@@ -505,21 +557,20 @@ clinicians, not a fact about the form.
   the corpus without seeing the output or the ground truth, then agreement at
   three levels, per section, per case decision and per LOC, the last one ordinal
   and so quadratic weighted. Discordant records go to a second clinician, and
-  that adjudicated standard is what gives each reviewer a sensitivity. The two
-  sections left, A2 on SYN_03 and B1.1 on SYN_10, are disagreements argued from
-  the guideline, and accuracy scores them as errors.
+  that adjudicated standard is what gives each reviewer a sensitivity. Of the
+  two sections left, A2 on SYN_03 is a genuine model error and B1.1 on SYN_10 a
+  disagreement argued from the guideline; accuracy scores both as errors.
 - **A2 still rests on few records**, 4 of 40. X went from 6 positives to 9 with
   the ground-truth correction of 2026-09-15. F went from 2 positives to 7 with
   the September expansion and now scores kappa 0.918.
 - **Questions for the clinicians.** The first three each decide how a record is
   coded; the rest are conventions.
-  - Does A2's "other procedure done that confirmed presence of DVT" cover an
-    endovascular or interventional radiology procedure, or only open surgery
-    and thrombectomy? The section heading reads Surgical procedure and the
-    negative option reads "no surgical procedure done", yet the ground truth
-    answers "other procedure" for a percutaneous IVC filter placement on
-    SYN_23 and for SYN_12. With the heading in the prompt the model excludes
-    both, quoting it.
+  - Section 4.1 of the paper puts a *surgical or a catheterization procedure*
+    on the same footing, so an endovascular intervention falls under A2 and the
+    ground truth is right on SYN_12 and SYN_23. What is left to confirm is
+    narrower: does the section heading's word Surgical deliberately restrict
+    what the paper allows, or is it shorthand? The heading is what led the model
+    to exclude both records.
   - Does a vague, uncharacterised symptom, "a generic discomfort in the leg"
     with no site or intensity, count as B1.1's "at least one symptom or sign
     was reported", or does the section stay unknown? SYN_10 turns on this: the
@@ -534,11 +585,20 @@ clinicians, not a fact about the form.
     displace? Table 2 is organised the first way, one row per syndrome indexed
     by that syndrome's own non-specific symptoms, and an infarction explains no
     calf pain.
+  - Does a venography performed during an interventional procedure, which the
+    record says confirmed the thrombus, belong in A3.2 among the studies that
+    confirmed DVT, or only in A2 as the procedure? SYN_12 and SYN_23 turn on
+    it: the ground truth counts it in A2 and not in A3_2, which avoids counting
+    one event twice but is a convention the form does not state.
   - Does B2 option 4 apply when only calf pain is documented?
   - Does B2's "Absent pulses in legs or arms" need a pulse examination, or does
     absent flow on a Doppler study count?
   - Is A3_2 or B1_2 meant to be left empty when no option applies, the printed
-    form offering no "none of the above" for either?
+    form offering no "none of the above" for either? SYN_40 is the concrete
+    case: symptoms are reported so B1.1 is positive, but the ultrasound report
+    is not yet available and no specialist diagnosis is on file, and the ground
+    truth leaves B1.2 empty. Is a reported syndrome with no specific type the
+    intended combination?
 - **Two of the three per-section gates are now off.** The details gate reverted a
   correct answer once the F hint gained its precondition. The absent-pulses gate
   is still on and has never fired. The keyword gate was removed on 2026-09-15 together with a
@@ -577,10 +637,11 @@ clinicians, not a fact about the form.
   `diagnosis` and `acute illness` deliberately, being aimed at Table 2.
   **Not measurable at the reference parameters**: retrieval returns the whole
   record whatever the query asks, so rewriting one would change the guideline
-  context and nothing else. It would show in the 200-chunk regime, where A2 has
-  4 positives and the effect would sit inside the noise. Rewriting them now
-  buys an untestable change, so they stay as they are and the fingerprint above
-  is what makes a future rewrite traceable.
+  context and nothing else. Measured in the 200-chunk regime, where it does
+  show: B2's rewrite is worth +5 and +2, A3_2's is 0 and -2, A2's is -1 and +1,
+  so **only B2's gap was a defect**. The queries in `SECTION_QUERIES` are still
+  the original set, `39a5a3504655`; adopting B2's rewrite alone would need the
+  reference rerun to stay comparable.
 - Test whether the TRANSCRIPTION RULE in `AGENTIC_EXTRACTOR_SYSTEM_PROMPT` does
   anything: it governs a string the code discards.
 - **The extractor prompt never says a negation is evidence**, while the
