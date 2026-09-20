@@ -10,11 +10,10 @@ models.py's exact Literal strings. No model ever guesses the reference, which
 is what makes it usable as one. The ground-truth JSONs are always rewritten,
 since producing them involves no LLM.
 
-RECORDS: the records in data/synthetic_records/ were not produced by the
-writer below. They were drafted with Claude (a general-purpose model, outside
-every pipeline role) from each scenario's facts and reviewed against them,
-after generated ones were repeatedly found to contradict their own ground
-truth. The writer model (WRITER_MODEL_NAME, a literal rather than a config
+RECORDS: the records in data/synthetic_records/ are not the writer's output.
+They are drafted from each scenario's facts with a general-purpose model
+outside every pipeline role, and checked against those facts before entering
+the corpus. The writer model (WRITER_MODEL_NAME, a literal rather than a config
 import so it stays outside every pipeline role too) remains available for new
 scenarios, at a non-zero temperature for lexical variation. Writing records is
 opt-in, behind --generate, and even then only the missing ones unless --force:
@@ -35,19 +34,19 @@ INTERPRETIVE ASSUMPTIONS, worth re-checking against the Brighton paper:
     scenarios count arm swelling toward no option rather than stretching
     "Leg swelling or pitting oedema".
 
-COVERAGE: every option of every section appears in at least two scenarios,
-verified programmatically. SYN_30 is there for a different reason: it breaks a
+COVERAGE: the scenarios are chosen so that every option of every section
+appears in at least two of them. SYN_30 is there for a different reason: it breaks a
 correlation rather than covering an option. Before it, an elevated D-dimer
 co-occurred with a confirmed DVT in every record, which per-option coverage
 cannot detect and which lets a model answer section C without reading the
 value.
 
-KNOWN LIMITATION: a record is around 1000 characters, about one
-config.EHR_CHUNK_SIZE chunk, while config.EHR_RETRIEVER_K asks for 5 --
-retrieval returns the whole record every time (measured median evidence length:
-1.00x the source). The three EXTRACTOR_MODEs therefore give Agent 2 the same
-input and cannot be compared on this dataset. Padding was tried and reverted:
-the comparison belongs on the real records expected from collaborators.
+KNOWN LIMITATION: records run 317 to 1185 characters, median 970, so with
+config.EHR_CHUNK_SIZE at 800 each splits into one or two chunks while
+config.EHR_RETRIEVER_K asks for 5: retrieval returns the whole record every
+time and the section query selects nothing. What the extraction modes differ
+in is therefore whether a model rewrites that text, not which part of it
+Agent 2 sees.
 
 Usage: python generate_synthetic_records.py [--check] [--generate] [--force]
                                             [--only ID...]
