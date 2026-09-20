@@ -94,9 +94,9 @@ record: the reference costs 174 seconds, so a full run over the 40 records is
 1h56. What sets the cost is how many model tags a run loads. `raw_record` loads
 one and costs 105, 1h10 for the corpus; the arms whose Agent 1 and Agent 2 share
 a tag, the reference among them, cost 165 to 175 and run in 1h50 to 1h56; every
-arm running two different tags costs 250 to 310, close to three hours. Under the
-8B evaluator a record costs 51 seconds, 0h34 for the corpus, and took 715 on the
-laptop.
+arm running two different tags costs 250 to 310, close to three hours for the
+corpus. Under the 8B evaluator a record costs 51 seconds, 0h34 for the corpus,
+and took 715 on the laptop.
 
 A partial run is not a run: `evaluate_predictions` keeps the newest file per
 record, so scoring after `--only` mixes runs. Fine for a targeted check, not a
@@ -132,11 +132,12 @@ The keyword and details gates are off. `absent_pulses` is on and has never fired
 on this corpus. The cross-section rules are outside the switch and encode the
 form's structure rather than a model weakness.
 
-Agent 1 and Agent 2 run the same model tag, which is what makes the reference
-cost 1h56 rather than 3h00, but they stay two separate settings: change
-`AGENTIC_LLM_MODEL_NAME` alone to vary the agent and `EVALUATOR_LLM_MODEL_NAME`
-alone to vary the evaluator. `LLM_MODEL_NAME` is the extractor of the `rag` and
-`full_text` baselines and is untouched by the reference mode.
+Agent 1 and Agent 2 run the same model tag, which is why the reference costs 174
+seconds a record against the 250 to 310 an arm with two tags pays. They stay two
+separate settings: change `AGENTIC_LLM_MODEL_NAME` alone to vary the agent and
+`EVALUATOR_LLM_MODEL_NAME` alone to vary the evaluator. `LLM_MODEL_NAME` is the
+extractor of the `rag` and `full_text` baselines and the reference mode does not
+load it.
 
 Check it before every launch, since an arm left in place is how a run gets
 attributed to the wrong configuration:
