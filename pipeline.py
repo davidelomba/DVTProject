@@ -23,7 +23,9 @@ from rag_setup import (
     make_ehr_retriever_tool,
     load_brighton_pdf_text,
     load_ehr_text,
+    resolve_guideline_anchors,
     retrieve_brighton_context,
+    section_is_anchored,
 )
 from agents import build_llm, evaluate_section, extract_evidence, extract_evidence_full_text
 from criteria_rules import apply_section_gates, apply_cross_section_rules
@@ -129,13 +131,45 @@ def _query_fingerprint() -> dict:
     return per_section
 
 
-def _run_config_snapshot() -> dict:
+def _anchor_fingerprint(guideline_anchors: dict) -> dict:
+    """Identifies the guideline passages a run was produced with.
+
+    Digests the resolved passages rather than the labels of
+    config.GUIDELINE_ANCHORS: a heading reaches different text depending on how
+    the PDF extracted, so the labels alone do not identify what Agent 2 read.
+
+    Args:
+        guideline_anchors: the mapping rag_setup.resolve_guideline_anchors
+            returned.
+
+    Returns:
+        Section key -> "<chars> <first 12 hex of sha256>", for the sections that
+        resolved. `all` digests the whole set.
+    """
+
+    digest = hashlib.sha256()
+    per_section = {}
+    for section_key in config.SECTION_ORDER:
+        passage = guideline_anchors.get(section_key)
+        if passage is None:
+            continue
+        digest.update(f"{section_key}:{passage}\n".encode("utf-8"))
+        own = hashlib.sha256(passage.encode("utf-8")).hexdigest()[:12]
+        per_section[section_key] = f"{len(passage)} {own}"
+    per_section["all"] = digest.hexdigest()[:12]
+    return per_section
+
+
+def _run_config_snapshot(guideline_anchors: dict = None) -> dict:
     """Captures the settings that determine what a run produces.
 
     Recorded in the audit log so an output file is self-describing: without it
     there is no way to tell, months later, whether a given result came from a
     run with the deterministic gates enabled, which model answered, or which
     extraction mode was used -- all of which are varied between experiments.
+
+    Args:
+        guideline_anchors: the resolved anchors, digested into the snapshot.
 
     Returns:
         A JSON-serialisable dict of the relevant config values.
@@ -159,6 +193,8 @@ def _run_config_snapshot() -> dict:
         "section_hints_disabled": sorted(config.SECTION_HINTS_DISABLED),
         "section_hints_fingerprint": _hint_fingerprint(),
         "section_queries_fingerprint": _query_fingerprint(),
+        "guideline_anchors_enabled": config.GUIDELINE_ANCHORS_ENABLED,
+        "guideline_anchors_fingerprint": _anchor_fingerprint(guideline_anchors or {}),
         # Always applied, never switchable: recorded so a reader does not have
         # to know that to interpret the run.
         "cross_section_rules_applied": True,
@@ -218,6 +254,10 @@ def run_pipeline(record_id: str, patient_ehr_path: str, brighton_pdf_path: str):
     # Brighton KB is always needed (every mode consults it for synonyms/context).
     brighton_kb = build_brighton_kb(brighton_text, embeddings=embeddings)
 
+    # Resolved from the same text the KB is built from, so the anchored and the
+    # retrieved context are two readings of one document.
+    guideline_anchors = resolve_guideline_anchors(brighton_text)
+
     # "rag" and "agentic_graph" both need the EHR chunked/embedded into a
     # vector store; "full_text" passes the raw record directly per section.
     # Only "agentic_graph" additionally needs the retriever wrapped as a
@@ -241,7 +281,7 @@ def run_pipeline(record_id: str, patient_ehr_path: str, brighton_pdf_path: str):
         form_data, audit_log = run_agentic_graph_pipeline(
             record_id, evaluator_llm=evaluator_llm, search_llm=search_llm,
             ehr_tool=ehr_tool, ehr_vectorstore=ehr_kb, brighton_kb=brighton_kb,
-            section_queries=SECTION_QUERIES,
+            section_queries=SECTION_QUERIES, guideline_anchors=guideline_anchors,
         )
     else:
         # Built only by the modes that call Agent 1, so "raw_record" keeps the
@@ -281,7 +321,9 @@ def run_pipeline(record_id: str, patient_ehr_path: str, brighton_pdf_path: str):
                 section_log["evidence"] = evidence
                 section_log["agent1_seconds"] = round(elapsed, 1)
 
-                brighton_context = retrieve_brighton_context(brighton_kb, query)
+                brighton_context = retrieve_brighton_context(
+                    brighton_kb, query, section_key, guideline_anchors
+                )
                 section_log["brighton_context"] = brighton_context
 
                 # Agent 2: evaluation constrained to the section's Pydantic schema
@@ -289,7 +331,8 @@ def run_pipeline(record_id: str, patient_ehr_path: str, brighton_pdf_path: str):
                 t0 = time.time()
                 extra_instructions = config.section_hint(section_key)
                 section_result, reasoning_text, answer_conflict = evaluate_section(
-                    evaluator_llm, section_model, evidence, brighton_context, extra_instructions
+                    evaluator_llm, section_model, evidence, brighton_context, extra_instructions,
+                    context_is_anchored=section_is_anchored(section_key, guideline_anchors),
                 )
                 elapsed = time.time() - t0
                 print(f"[{section_key}] Agent 2 done in {elapsed:.1f}s", flush=True)
@@ -329,7 +372,7 @@ def run_pipeline(record_id: str, patient_ehr_path: str, brighton_pdf_path: str):
     form_data = apply_cross_section_rules(form_data, audit_log)
 
     # Added last, so it cannot be mistaken for a section by the loops above.
-    audit_log[RUN_CONFIG_KEY] = _run_config_snapshot()
+    audit_log[RUN_CONFIG_KEY] = _run_config_snapshot(guideline_anchors)
 
     form = DVT_CriteriaForm(**form_data)
     return form, audit_log

@@ -190,6 +190,12 @@ guideline context. The current set digests to `bfd9536a31fe`; the set every run
 before 2026-09-20 used digests to `39a5a3504655`, and runs before 2026-09-19
 lack the field.
 
+`_run_config.guideline_anchors_fingerprint` digests the guideline passage each
+section resolved to, and `guideline_anchors_enabled` says whether Agent 2 read
+it. The labels are digested through their resolved text, since what a heading
+resolves to depends on how the PDF extracted. The current set digests to
+`53474edce307`. Runs before 2026-09-22 lack both fields.
+
 ## What the measurements say
 
 On the 40-record corpus, qwen3.6:27b scores micro 99.5%, macro kappa
@@ -556,6 +562,27 @@ narrower than the criterion it stands for.
 
 ## Open items
 
+- **The guideline retrieval selects hard and is keyed on the wrong string, and
+  the anchors that replace it are unmeasured.** The paper is 48,467 characters
+  in 76 chunks and `BRIGHTON_RETRIEVER_K` is 5, so each section reads 6.6% of
+  it, chosen by that section's `SECTION_QUERIES` entry — a string written to
+  find findings in a clinical record. The two retrieval paths are therefore in
+  opposite regimes: on the record, retrieval returns everything and only the
+  order varies; on the paper, it discards 93%. Measured on the 40-record
+  corpus, section 4.1, which states the criterion A1 and A2 rest on, reaches
+  Agent 2 on **0 records out of 40**, while A2's context opens on the paper's
+  preamble. X, C and A3_2 do receive their passage on all 40.
+  `config.GUIDELINE_ANCHORS` names the passage per section instead of searching
+  for it; `GUIDELINE_ANCHORS_ENABLED` is False and no run has been scored with
+  it on. B1.1, B1.2 and B2 anchor to Table 3, the case definition the
+  questionnaire follows, and A3_2 to Table 1, the techniques by location. An
+  anchored section also announces the block as the passage defining its
+  criterion rather than as synonyms, so the arm changes content and heading
+  together; with the switch off the prompt is unchanged. C and X are where the
+  effect should be nil, since their anchor carries the text they already
+  received. Text resolves with hyphenated line breaks
+  (`Dop-\npler`) in both paths, which de-hyphenating would change for both at
+  once and is therefore its own experiment.
 - **The Level of Certainty is left to REDCap, and measuring it here is out of
   scope.** Table 3 of the paper is the calculation. Level 1 is reached through
   any one of pathology, a procedure confirming a thrombus, or a confirmatory

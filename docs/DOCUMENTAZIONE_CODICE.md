@@ -86,6 +86,34 @@ referto; `BRIGHTON_CHUNK_SIZE`, `BRIGHTON_CHUNK_OVERLAP`, `BRIGHTON_RETRIEVER_K`
 con gli stessi valori per il paper. `EHR_KB_PERSIST_DIR` e
 `BRIGHTON_KB_PERSIST_DIR` sono le cartelle di Chroma.
 
+### `GUIDELINE_ANCHORS` e il suo interruttore
+
+`GUIDELINE_ANCHORS` associa a ogni sezione le etichette del passaggio del paper
+che ne definisce il criterio: un'intestazione numerata, che vale fino alla
+successiva che non sia una sua sottosezione, o una didascalia di tabella, che
+vale fino alla prossima intestazione. `GUIDELINE_ANCHORS_ENABLED`, spento,
+lascia il recupero per somiglianza.
+
+Il recupero usa come chiave la query di sezione, cioè una stringa scritta per
+nominare un reperto dentro una cartella clinica e non un criterio dentro un
+articolo; `RISULTATI_SPERIMENTALI.md` riporta quali passaggi raggiungono di
+fatto Agente 2 per questa via.
+
+Le etichette seguono la struttura del questionario. A1 e A2 puntano alla 4.1 e
+alla 5.2.2, che definiscono la diagnosi patologica e nominano insieme la
+procedura chirurgica e quella per cateterismo. B1.1, B1.2 e B2 puntano alla
+Table 3, la case definition da cui il questionario deriva: il suo livello 2
+enuncia la presumed diagnosis di una sindrome, TVP degli arti inferiori o
+superiori, che è ciò che B1.1 e B1.2 registrano, e i segni aspecifici
+dell'estremità che sono le opzioni di B2. La Table 2 affianca B2 perché la sua
+riga sulla TVP nomina il dolore al polpaccio. A3.2 punta alla Table 1, che
+elenca le tecniche per sede ed è la sua lista di opzioni.
+
+`F` non compare nella mappa: il suo criterio chiede se una diagnosi è stata
+riportata da uno specialista e se è accompagnata da dettagli, e il paper non ha
+un passaggio che lo definisca. Quella sezione ripiega sul recupero anche a
+interruttore acceso.
+
 ### `SECTION_ORDER`
 
 `["A1", "A2", "A3_1", "A3_2", "B1_1", "B1_2", "B2", "C", "F", "X"]`. Determina
@@ -258,6 +286,29 @@ un nome, URL, DOI, citazioni di volume). Se il filtro rimuoverebbe tutto,
 restituisce l'originale, così un chunk fatto di soli riferimenti produce
 comunque qualcosa e non un contesto vuoto.
 
+**`retrieve_brighton_context(...)`** produce il contesto che Agente 2 riceve per
+una sezione. Con `config.GUIDELINE_ANCHORS_ENABLED` a `False` interroga l'indice
+del paper con la query di sezione e restituisce i primi `BRIGHTON_RETRIEVER_K`
+chunk; a `True` restituisce il passaggio ancorato, e ripiega sul recupero per le
+sezioni che un'ancora non ce l'hanno.
+
+**`section_is_anchored(...)`** dice se una sezione legge un'ancora. La leggono
+sia `retrieve_brighton_context`, per scegliere il percorso, sia i suoi
+chiamanti, per annunciare il blocco ad Agente 2: l'espressione sta in un posto
+solo e le due decisioni non possono divergere.
+
+**`_paper_outline(...)`**, **`_anchor_span(...)`** e
+**`resolve_guideline_anchors(...)`** risolvono le etichette di
+`config.GUIDELINE_ANCHORS` in testo. `_paper_outline` individua le intestazioni
+numerate e tiene solo quelle il cui numero supera l'ultimo tenuto: le righe
+delle tabelle delle tecniche sono numerate allo stesso modo, e il confronto
+monotono le scarta. `_anchor_span` fa terminare un'intestazione alla prima
+successiva che non sia una sua sottosezione, e una didascalia di tabella, che
+l'outline non copre, alla prima intestazione successiva di qualunque livello.
+`resolve_guideline_anchors` concatena i passaggi di una sezione nell'ordine in
+cui sono elencati e li passa per `clean_brighton_context`; una sezione le cui
+etichette il paper non contiene resta fuori dalla mappa.
+
 **`load_ehr_text(...)`** legge il referto da un `.txt` in UTF-8.
 
 ---
@@ -332,6 +383,13 @@ disaccordo, dato che il modello a volte nomina un'opzione e scrive il numero di
 un'altra. Il prompt chiede inoltre esplicitamente che ogni opzione elencata sia
 tracciabile a una frase del ragionamento, e non inclusa per default o per
 margine di sicurezza.
+
+Il blocco della linea guida è annunciato da un'intestazione che dipende da cosa
+contiene: i chunk recuperati sono vocabolario da consultare e restano
+`Reference synonyms/terminology (Brighton)`, un passaggio ancorato enuncia il
+criterio e diventa `Guideline passage defining this criterion (Brighton)`.
+L'intestazione dice al modello cosa farne, e annunciare come sinonimi una
+definizione la fa trattare da glossario.
 
 Per le sezioni multi-scelta prive di un'opzione "nessuna delle precedenti", cioè
 A3.2 e B1.2, il prompt aggiunge come dire che nulla si applica: `FINAL_OPTION:
@@ -509,8 +567,13 @@ linea guida. Nessun altro campo dello snapshot ne registra il testo, quindi
 senza questo due run le cui query sono state riscritte in mezzo porterebbero la
 stessa firma.
 
-**`_run_config_snapshot()`** cattura tutto ciò che determina cosa una run
-produce: modalità, gate, hint e query con i rispettivi fingerprint, modelli per ruolo (con
+**`_anchor_fingerprint(...)`** fa lo stesso per le ancore, digerendo però il
+testo risolto e non le etichette: le etichette nominano intestazioni, e il testo
+a cui arrivano dipende da come il PDF si è estratto, quindi da sole non dicono
+cosa Agente 2 abbia letto. Le sezioni senza ancora non compaiono.
+
+**`_run_config_snapshot(...)`** cattura tutto ciò che determina cosa una run
+produce: modalità, gate, hint, query e ancore con i rispettivi fingerprint, modelli per ruolo (con
 l'estrattore **effettivo**, che in modalità agentica è un modello diverso),
 ambiente, parametri di generazione, parametri di retrieval. Viene scritto
 nell'audit log sotto `_run_config`, chiave scelta per non poter collidere con un

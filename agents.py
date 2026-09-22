@@ -317,6 +317,7 @@ def _build_reasoning_prompt(
     multi_select: bool,
     extra_instructions: str = "",
     section_description: str = "",
+    context_is_anchored: bool = False,
 ) -> str:
     """Builds the prompt Agent 2 answers for one section.
 
@@ -336,6 +337,9 @@ def _build_reasoning_prompt(
         section_description: the section heading from models.py, placed
             directly above the options as the printed form has it. Empty when
             config.SECTION_DESCRIPTIONS_ENABLED is False.
+        context_is_anchored: whether brighton_context is the passage named in
+            config.GUIDELINE_ANCHORS rather than retrieved chunks, which
+            decides how the block is announced.
 
     Returns:
         The prompt string.
@@ -343,7 +347,14 @@ def _build_reasoning_prompt(
     options_block = "\n".join(f"{i}. {opt}" for i, opt in enumerate(options, start=1))
     prompt = f"Evidence: {evidence_text}"
     if brighton_context:
-        prompt += f"\n\nReference synonyms/terminology (Brighton):\n{brighton_context}"
+        # The heading says what to do with the block. Retrieved chunks are
+        # vocabulary to consult; an anchored passage states the criterion.
+        heading = (
+            "Guideline passage defining this criterion (Brighton)"
+            if context_is_anchored
+            else "Reference synonyms/terminology (Brighton)"
+        )
+        prompt += f"\n\n{heading}:\n{brighton_context}"
     # Per-section hint (config.SECTION_HINTS), if this section has one
     if extra_instructions:
         prompt += f"\n\n{extra_instructions}"
@@ -545,6 +556,7 @@ def evaluate_section(
     brighton_context: str = "",
     extra_instructions: str = "",
     max_retries: int = 2,
+    context_is_anchored: bool = False,
 ):
     """Fills in one section's schema from the evidence (Agent 2).
 
@@ -556,6 +568,8 @@ def evaluate_section(
         extra_instructions: the section's hint from config.SECTION_HINTS.
         max_retries: extra attempts allowed after a parse or validation
             failure; each retry appends the error to the prompt.
+        context_is_anchored: whether brighton_context is an anchored passage,
+            which decides how the guideline block is announced.
 
     Returns:
         (section instance, reasoning_text, conflict). The full response is kept
@@ -573,7 +587,7 @@ def evaluate_section(
     section_description = description if config.SECTION_DESCRIPTIONS_ENABLED else ""
     prompt = _build_reasoning_prompt(
         evidence_text, brighton_context, options, multi_select, extra_instructions,
-        section_description,
+        section_description, context_is_anchored,
     )
 
     last_error = None

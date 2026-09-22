@@ -177,7 +177,113 @@ def clean_brighton_context(context: str) -> str:
     return cleaned if cleaned else context
 
 
-def retrieve_brighton_context(brighton_kb: Chroma, query: str) -> str:
+# A heading of the paper's outline: the number, then its title on the same
+# line. Rows of the technique tables are numbered the same way, so _paper_outline
+# keeps a match only when its number exceeds the last one kept.
+_NUMBERED_HEADING = re.compile(r"(?m)^[ \t]*((?:\d+\.)+)\s+(\S[^\n]{2,90})$")
+
+
+def _paper_outline(paper_text: str) -> list:
+    """Where each numbered heading of the paper starts.
+
+    Args:
+        paper_text: the guideline text as load_brighton_pdf_text returns it.
+
+    Returns:
+        (offset, label, number) triples in document order, label being the
+        heading as written ("4.5.1.") and number its integer tuple.
+    """
+
+    outline = []
+    highest = ()
+    for match in _NUMBERED_HEADING.finditer(paper_text):
+        number = tuple(int(part) for part in match.group(1).rstrip(".").split("."))
+        if number > highest:
+            outline.append((match.start(), match.group(1), number))
+            highest = number
+    return outline
+
+
+def _anchor_span(paper_text: str, outline: list, label: str):
+    """The stretch of the paper one label names.
+
+    Args:
+        paper_text: the guideline text.
+        outline: the triples _paper_outline returned for it.
+        label: a heading as written ("4.1.") or a table caption ("Table 2").
+
+    Returns:
+        (start, end) offsets, or None when the paper does not carry the label.
+        A heading runs up to the next heading that is not one of its own
+        subsections; a caption, which the outline does not cover, runs up to
+        the next heading of any level.
+    """
+
+    for index, (start, own_label, number) in enumerate(outline):
+        if own_label != label:
+            continue
+        for next_start, _, next_number in outline[index + 1:]:
+            if next_number[:len(number)] != number:
+                return start, next_start
+        return start, len(paper_text)
+
+    caption = re.search(rf"(?im)^[ \t]*{re.escape(label)}[ \t]*$", paper_text)
+    if caption is None:
+        return None
+    for next_start, _, _ in outline:
+        if next_start > caption.start():
+            return caption.start(), next_start
+    return caption.start(), len(paper_text)
+
+
+def resolve_guideline_anchors(paper_text: str) -> dict:
+    """The passage of the paper that defines each section's criterion.
+
+    Args:
+        paper_text: the guideline text as load_brighton_pdf_text returns it.
+
+    Returns:
+        Section key -> the text of its config.GUIDELINE_ANCHORS labels, in the
+        order they are listed and separated by a blank line. A section whose
+        labels the paper does not carry is left out, so retrieve_brighton_context
+        falls back to retrieval for it rather than sending nothing.
+    """
+
+    outline = _paper_outline(paper_text)
+    resolved = {}
+    for section_key, labels in config.GUIDELINE_ANCHORS.items():
+        spans = [_anchor_span(paper_text, outline, label) for label in labels]
+        if any(span is None for span in spans):
+            continue
+        passages = [paper_text[start:end].strip() for start, end in spans]
+        resolved[section_key] = clean_brighton_context("\n\n".join(passages))
+    return resolved
+
+
+def section_is_anchored(section_key: str, anchors: dict) -> bool:
+    """Whether one section's guideline context comes from an anchor.
+
+    Read by retrieve_brighton_context to choose the path and by its callers to
+    announce the block to Agent 2, so both decide on one expression.
+
+    Args:
+        section_key: the section being answered.
+        anchors: the mapping resolve_guideline_anchors returned, or None.
+
+    Returns:
+        True when config.GUIDELINE_ANCHORS_ENABLED is on and the section
+        resolved to a passage.
+    """
+
+    return bool(config.GUIDELINE_ANCHORS_ENABLED and anchors and section_key in anchors)
+
+
+def retrieve_brighton_context(
+    brighton_kb: Chroma,
+    query: str,
+    section_key: str = None,
+    anchors: dict = None,
+) -> str:
     """The guideline terminology to send with one section, already cleaned.
 
     Called by every execution mode, so the reference context is built the same
@@ -186,15 +292,22 @@ def retrieve_brighton_context(brighton_kb: Chroma, query: str) -> str:
     Args:
         brighton_kb: the guideline vector store.
         query: the section's retrieval query.
+        section_key: the section the context is for, which selects its anchor.
+        anchors: the mapping resolve_guideline_anchors returned, or None.
 
     Returns:
-        The retrieved chunks with bibliography lines stripped, or the empty
-        string when config.BRIGHTON_CONTEXT_ENABLED is False, which
+        The anchored passage when config.GUIDELINE_ANCHORS_ENABLED is True and
+        this section has one, otherwise the retrieved chunks, either way with
+        bibliography lines stripped. The empty string when
+        config.BRIGHTON_CONTEXT_ENABLED is False, which
         agents._build_reasoning_prompt then omits from the prompt.
     """
 
     if not config.BRIGHTON_CONTEXT_ENABLED:
         return ""
+
+    if section_is_anchored(section_key, anchors):
+        return anchors[section_key]
 
     docs = brighton_kb.as_retriever(
         search_kwargs={"k": config.BRIGHTON_RETRIEVER_K}

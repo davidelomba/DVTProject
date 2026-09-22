@@ -128,6 +128,38 @@ SECTION_KEYWORD_GATES = {
 # evidence and the options alone.
 BRIGHTON_CONTEXT_ENABLED = True
 
+# Whether the guideline context is the passage named in GUIDELINE_ANCHORS
+# instead of the chunks a similarity search returns.
+GUIDELINE_ANCHORS_ENABLED = False
+
+# The passage of the paper that defines each section's criterion, named rather
+# than searched for. A label is either a numbered heading, which spans up to the
+# next heading that is not one of its own subsections, or a table caption, which
+# spans up to the next numbered heading. A section absent from this mapping, or
+# whose labels the paper does not contain, falls back to retrieval.
+#
+# Retrieval keys the guideline on the section's own SECTION_QUERIES entry, a
+# string written to name a finding in a clinical record rather than a criterion
+# in a paper, and returns BRIGHTON_RETRIEVER_K chunks of it. Which passage a
+# section actually read is recorded per run under
+# _run_config.guideline_anchors_fingerprint.
+GUIDELINE_ANCHORS = {
+    "A1":   ("4.1.", "5.2.2."),
+    "A2":   ("4.1.", "5.2.2."),
+    "A3_1": ("5.2.3.", "4.2."),
+    # Table 1 lists the techniques by location, which is A3.2's option list.
+    "A3_2": ("5.2.3.", "Table 1"),
+    # Table 3 is the case definition the questionnaire follows: its Level 2
+    # states the presumed diagnosis of a syndrome, DVT of lower or upper limbs,
+    # which B1.1 and B1.2 record, and the non-specific extremity signs that are
+    # B2's options. Table 2's DVT row names calf pain among them.
+    "B1_1": ("Table 3",),
+    "B1_2": ("Table 3",),
+    "B2":   ("Table 3", "Table 2"),
+    "C":    ("4.3.",),
+    "X":    ("5.2.7.", "Table 2"),
+}
+
 # Whether Agent 2 receives the section's heading above the numbered options.
 # The heading is the description carried by each field in models.py, naming the
 # section as the printed questionnaire does. False sends the options alone, so
