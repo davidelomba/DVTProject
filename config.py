@@ -152,10 +152,10 @@ GUIDELINE_ANCHORS = {
     # Table 3 is the case definition the questionnaire follows: its Level 2
     # states the presumed diagnosis of a syndrome, DVT of lower or upper limbs,
     # which B1.1 and B1.2 record, and the non-specific extremity signs that are
-    # B2's options. Table 2's DVT row names calf pain among them.
+    # B2's options.
     "B1_1": ("Table 3",),
     "B1_2": ("Table 3",),
-    "B2":   ("Table 3", "Table 2"),
+    "B2":   ("Table 3",),
     "C":    ("4.3.",),
     "X":    ("5.2.7.", "Table 2"),
 }

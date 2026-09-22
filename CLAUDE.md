@@ -194,7 +194,7 @@ lack the field.
 section resolved to, and `guideline_anchors_enabled` says whether Agent 2 read
 it. The labels are digested through their resolved text, since what a heading
 resolves to depends on how the PDF extracted. The current set digests to
-`53474edce307`. Runs before 2026-09-22 lack both fields.
+`63c410d9cd34`. Runs before 2026-09-22 lack both fields.
 
 ## What the measurements say
 

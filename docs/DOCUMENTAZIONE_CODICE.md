@@ -105,9 +105,11 @@ procedura chirurgica e quella per cateterismo. B1.1, B1.2 e B2 puntano alla
 Table 3, la case definition da cui il questionario deriva: il suo livello 2
 enuncia la presumed diagnosis di una sindrome, TVP degli arti inferiori o
 superiori, che è ciò che B1.1 e B1.2 registrano, e i segni aspecifici
-dell'estremità che sono le opzioni di B2. La Table 2 affianca B2 perché la sua
-riga sulla TVP nomina il dolore al polpaccio. A3.2 punta alla Table 1, che
-elenca le tecniche per sede ed è la sua lista di opzioni.
+dell'estremità che sono le opzioni di B2. A3.2 punta alla Table 1, che elenca le
+tecniche per sede ed è la sua lista di opzioni.
+
+Le ancore stanno dentro la finestra di contesto: il prompt più lungo è quello di
+B1.2, e `RISULTATI_SPERIMENTALI.md` riporta la misura e il margine.
 
 `F` non compare nella mappa: il suo criterio chiede se una diagnosi è stata
 riportata da uno specialista e se è accompagnata da dettagli, e il paper non ha
