@@ -1,0 +1,15 @@
+{
+  "record_id": "C003_1a",
+  "e": {
+    "findings": [
+      "No abnormalities seen on ECG"
+    ]
+  },
+  "f": {
+    "findings": [
+      "Segmental wall motion abnormalities",
+      "Global systolic or diastolic function depression/abnormality - (*Decreased longitudinal and circumferential strain and strain rates on tissue Doppler)",
+      "Evidence of abnormal fluid collection or pericardial inflammation"
+    ]
+  }
+}

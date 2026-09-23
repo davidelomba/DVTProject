@@ -1,0 +1,18 @@
+A 19-year-old man with no prior medical conditions presented with five days of non-bloody, 
+ non-bilious vomiting and progressively worsening abdominal pain. On arrival, 
+his blood pressure was 80/47 mmHg, heart rate 124/min, temperature 98.2°F, 
+and oxygen saturation 93% on room air. EKG showed no ST/T abnormality. Serum cardiac biomarkers were markedly elevated, 
+with CK-MB 13.7 U/L (reference ≤10 U/L) and troponin 2.15 ng/ml (reference <0.012 ng/ml). 
+Computed tomography (CT) of the abdomen was unremarkable, while chest CT 
+demonstrated bilateral pulmonary edema.
+He was transferred to the intensive care unit with suspected cardiogenic shock and 
+treated with norepinephrine and dobutamine. Transthoracic echocardiography showed 
+a left ventricular ejection fraction (LVEF) of 20–24%, severe global hypokinesis,
+ and mild pericardial effusion. Chest X-ray revealed no pulmonary congestion, 
+pleural effusion, or cardiomegaly. SARS-CoV-2 RT-PCR was negative.
+On day 3, left heart catheterization showed 20–30% proximal and mid-LAD
+ stenosis without significant obstruction. Coxsackievirus B IgG and IgM were positive.
+ Cardiac MRI showed typical findings of acute myocarditis with subepicardial and 
+mid-myocardial late gadolinium enhancement in the inferolateral walls. 
+The patient was started on carvedilol and lisinopril, and repeat echocardiogram
+ showed normalization of cardiac output. He recovered fully and was discharged in stable condition.
