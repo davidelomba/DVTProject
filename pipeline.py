@@ -213,6 +213,7 @@ def _run_config_snapshot(guideline_anchors: dict = None) -> dict:
             "temperature": config.LLM_TEMPERATURE,
             "num_predict": config.LLM_NUM_PREDICT,
             "num_gpu": config.LLM_NUM_GPU,
+            "num_ctx": config.LLM_NUM_CTX,
             "reasoning": config.LLM_REASONING,
         },
         "retrieval": {

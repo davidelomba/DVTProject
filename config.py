@@ -26,6 +26,13 @@ LLM_NUM_GPU = 999
 # since the reasoning does not travel in the response body. None sends
 # nothing to Ollama, leaving the model's own default.
 LLM_REASONING = False
+# Size of the context window Ollama allocates for a request, in tokens. Named
+# here because Ollama's own default reaches no audit log, leaving the window a
+# run was produced under unknown once the machine has moved on. 4096 is the
+# figure `ollama ps` reports for qwen3.6:27b on mari, so this value is the one
+# already in force and every earlier run stays comparable. What Ollama does
+# with a prompt longer than the window has not been tested here.
+LLM_NUM_CTX = 4096
 LLM_REQUEST_TIMEOUT = 180  # seconds; allows time for reasoning on slower hardware
 
 # Multilingual embedding model. Used in every mode: the Brighton store is

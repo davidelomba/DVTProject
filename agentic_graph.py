@@ -55,6 +55,7 @@ def build_agentic_llm() -> ChatOllama:
         temperature=config.LLM_TEMPERATURE,
         num_predict=config.LLM_NUM_PREDICT,
         num_gpu=config.LLM_NUM_GPU,
+        num_ctx=config.LLM_NUM_CTX,
         request_timeout=config.LLM_REQUEST_TIMEOUT,
         **reasoning,
     )

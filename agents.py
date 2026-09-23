@@ -48,6 +48,7 @@ def build_llm(model_name: str = None, temperature: float = None,
         temperature=temperature if temperature is not None else config.LLM_TEMPERATURE,
         num_predict=num_predict if num_predict is not None else config.LLM_NUM_PREDICT,
         num_gpu=config.LLM_NUM_GPU,
+        num_ctx=config.LLM_NUM_CTX,
         request_timeout=config.LLM_REQUEST_TIMEOUT,
         **reasoning,
     )

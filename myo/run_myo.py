@@ -128,6 +128,12 @@ def main():
         help="send Agent 2 the context retrieved from the paper; off by default",
     )
     parser.add_argument(
+        "--num-ctx", type=int, default=None, metavar="TOKEN",
+        help="size of the context window, overriding config.LLM_NUM_CTX. The "
+             "guideline context adds about 3800 characters to every prompt, "
+             "which on the longest records puts the total near 4096 tokens",
+    )
+    parser.add_argument(
         "--brighton-pdf", type=Path, default=MYO_DIR / "main.pdf",
         help="the myocarditis case definition; indexed even when the context "
              "is off, and into myo/vectorstores rather than the shared store",
@@ -135,6 +141,8 @@ def main():
     args = parser.parse_args()
 
     pipeline = apply_domain(guideline=args.guideline)
+    if args.num_ctx is not None:
+        config.LLM_NUM_CTX = args.num_ctx
     from aggregation import form_to_json_summary
 
     record_paths = sorted(args.records_dir.glob("*.txt"))
@@ -151,7 +159,9 @@ def main():
           f"{config.AGENTIC_LLM_MODEL_NAME}, valutatore "
           f"{config.EVALUATOR_LLM_MODEL_NAME}\ncontesto linea guida "
           f"{config.BRIGHTON_CONTEXT_ENABLED} da {args.brighton_pdf.name}, "
-          f"indice in {config.BRIGHTON_KB_PERSIST_DIR}\n-> {args.output_dir}\n",
+          f"indice in {config.BRIGHTON_KB_PERSIST_DIR}\n"
+          f"finestra di contesto {config.LLM_NUM_CTX} token\n"
+          f"-> {args.output_dir}\n",
           flush=True)
 
     succeeded, failed, durations = [], [], []
