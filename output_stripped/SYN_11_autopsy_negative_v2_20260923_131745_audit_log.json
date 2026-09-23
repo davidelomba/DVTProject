@@ -1,0 +1,187 @@
+{
+  "A1": {
+    "query": "autopsy report, necropsy, post-mortem examination, autoptic findings",
+    "evidence": "Anamnesi patologica remota: Donna di 80 anni, deceduta in ospedale per arresto cardiaco improvviso. Nessun intervento chirurgico recente. Ipertensione arteriosa in trattamento da anni. Non allergie farmacologiche note. Anamnesi Prossima: Nei giorni precedenti il decesso non e' stato rilevato alcun sintomo di gonfiore, dolore, arrossamento o calore agli arti. Esame obiettivo all'ingresso: Non rilevati segni a carico degli arti durante l'assistenza. Esami di laboratorio: Nessun esame di imaging venoso ne' dosaggio del D-dimero eseguiti in vita. Riscontro autoptico: esame del sistema venoso profondo degli arti inferiori negativo, senza alcuna evidenza di trombosi venosa profonda. Causa del decesso: infarto miocardico acuto, non correlato a fenomeni tromboembolici venosi.",
+    "agent1_seconds": 7.4,
+    "brighton_context": "",
+    "agent2_seconds": 5.1,
+    "answer_conflict": null,
+    "reasoning": "The evidence explicitly states under \"Riscontro autoptico\" (Autopsy findings) that the examination of the deep venous system of the lower limbs was negative, with no evidence of deep vein thrombosis. This confirms that an autopsy was performed and it ruled out DVT. Therefore, option 2 is the correct description of the findings.\n\nFINAL_OPTION: Autopsy done but showed no evidence of DVT\nFINAL_ANSWER: 2",
+    "result": {
+      "answer": "Autopsy done but showed no evidence of DVT"
+    }
+  },
+  "A2": {
+    "query": "thrombectomy, surgical procedure related to DVT",
+    "evidence": "Anamnesi patologica remota: Donna di 80 anni, deceduta in ospedale per arresto cardiaco improvviso. Nessun intervento chirurgico recente. Ipertensione arteriosa in trattamento da anni. Non allergie farmacologiche note. Anamnesi Prossima: Nei giorni precedenti il decesso non e' stato rilevato alcun sintomo di gonfiore, dolore, arrossamento o calore agli arti. Esame obiettivo all'ingresso: Non rilevati segni a carico degli arti durante l'assistenza. Esami di laboratorio: Nessun esame di imaging venoso ne' dosaggio del D-dimero eseguiti in vita. Riscontro autoptico: esame del sistema venoso profondo degli arti inferiori negativo, senza alcuna evidenza di trombosi venosa profonda. Causa del decesso: infarto miocardico acuto, non correlato a fenomeni tromboembolici venosi.",
+    "agent1_seconds": 5.4,
+    "brighton_context": "",
+    "agent2_seconds": 5.7,
+    "answer_conflict": null,
+    "reasoning": "The evidence explicitly states \"Nessun intervento chirurgico recente\" (No recent surgical intervention) and confirms via autopsy that there was no deep vein thrombosis (\"senza alcuna evidenza di trombosi venosa profonda\"). Since no surgery was performed, options suggesting a procedure was done are incorrect. Option 3 correctly reflects that no surgical procedure was done.\n\nFINAL_OPTION: No surgical procedure done; or, done but either did not confirm presence of DVT or findings unknown; or unknown if done\nFINAL_ANSWER: 3",
+    "result": {
+      "answer": "No surgical procedure done; or, done but either did not confirm presence of DVT or findings unknown; or unknown if done"
+    }
+  },
+  "A3_1": {
+    "query": "ultrasound, CT, MRI, venography: imaging outcome for deep vein thrombosis",
+    "evidence": "Anamnesi patologica remota: Donna di 80 anni, deceduta in ospedale per arresto cardiaco improvviso. Nessun intervento chirurgico recente. Ipertensione arteriosa in trattamento da anni. Non allergie farmacologiche note. Anamnesi Prossima: Nei giorni precedenti il decesso non e' stato rilevato alcun sintomo di gonfiore, dolore, arrossamento o calore agli arti. Esame obiettivo all'ingresso: Non rilevati segni a carico degli arti durante l'assistenza. Esami di laboratorio: Nessun esame di imaging venoso ne' dosaggio del D-dimero eseguiti in vita. Riscontro autoptico: esame del sistema venoso profondo degli arti inferiori negativo, senza alcuna evidenza di trombosi venosa profonda. Causa del decesso: infarto miocardico acuto, non correlato a fenomeni tromboembolici venosi.",
+    "agent1_seconds": 5.8,
+    "brighton_context": "",
+    "agent2_seconds": 5.1,
+    "answer_conflict": null,
+    "reasoning": "The evidence explicitly states \"Nessun esame di imaging venoso... eseguiti in vita\" (No venous imaging exams... performed while alive). Although an autopsy was performed and found no DVT, the question specifically asks about imaging studies. Since no imaging studies were performed, option 3 is the correct choice.\n\nFINAL_OPTION: No imaging studies done, unknown if done, or done but results unknown\nFINAL_ANSWER: 3",
+    "result": {
+      "answer": "No imaging studies done, unknown if done, or done but results unknown"
+    }
+  },
+  "A3_2": {
+    "query": "type of imaging study performed: compression ultrasonography, doppler, venography",
+    "evidence": "Anamnesi patologica remota: Donna di 80 anni, deceduta in ospedale per arresto cardiaco improvviso. Nessun intervento chirurgico recente. Ipertensione arteriosa in trattamento da anni. Non allergie farmacologiche note. Anamnesi Prossima: Nei giorni precedenti il decesso non e' stato rilevato alcun sintomo di gonfiore, dolore, arrossamento o calore agli arti. Esame obiettivo all'ingresso: Non rilevati segni a carico degli arti durante l'assistenza. Esami di laboratorio: Nessun esame di imaging venoso ne' dosaggio del D-dimero eseguiti in vita. Riscontro autoptico: esame del sistema venoso profondo degli arti inferiori negativo, senza alcuna evidenza di trombosi venosa profonda. Causa del decesso: infarto miocardico acuto, non correlato a fenomeni tromboembolici venosi.",
+    "agent1_seconds": 5.8,
+    "brighton_context": "",
+    "agent2_seconds": 6.9,
+    "answer_conflict": null,
+    "reasoning": "The evidence explicitly states that no venous imaging or D-dimer testing was performed while the patient was alive (\"Nessun esame di imaging venoso ne' dosaggio del D-dimero eseguiti in vita\"). This rules out options 1, 2, 3, and 4, as these are diagnostic imaging methods performed during life. The diagnosis of absence of DVT was made via autopsy (\"Riscontro autoptico\"), which is not listed among the specific imaging modalities in options 1-4. Therefore, none of the numbered options apply to the method used or confirmed in this case.\n\nFINAL_OPTION: none\nFINAL_ANSWER: none",
+    "result": {
+      "studies": []
+    }
+  },
+  "B1_1": {
+    "query": "reported symptoms or signs of deep vein thrombosis",
+    "evidence": "Anamnesi patologica remota: Donna di 80 anni, deceduta in ospedale per arresto cardiaco improvviso. Nessun intervento chirurgico recente. Ipertensione arteriosa in trattamento da anni. Non allergie farmacologiche note. Anamnesi Prossima: Nei giorni precedenti il decesso non e' stato rilevato alcun sintomo di gonfiore, dolore, arrossamento o calore agli arti. Esame obiettivo all'ingresso: Non rilevati segni a carico degli arti durante l'assistenza. Esami di laboratorio: Nessun esame di imaging venoso ne' dosaggio del D-dimero eseguiti in vita. Riscontro autoptico: esame del sistema venoso profondo degli arti inferiori negativo, senza alcuna evidenza di trombosi venosa profonda. Causa del decesso: infarto miocardico acuto, non correlato a fenomeni tromboembolici venosi.",
+    "agent1_seconds": 6.6,
+    "brighton_context": "",
+    "agent2_seconds": 5.2,
+    "answer_conflict": null,
+    "reasoning": "The evidence explicitly states that no symptoms or signs of DVT (swelling, pain, redness, heat) were detected in the days prior to death or during objective examination. Furthermore, the autopsy findings for the deep venous system were negative, showing no evidence of thrombosis. Therefore, there is a clear report indicating the absence of any recognized DVT syndrome.\n\nFINAL_OPTION: There was no report of a recognized DVT syndrome\nFINAL_ANSWER: 2",
+    "result": {
+      "answer": "There was no report of a recognized DVT syndrome"
+    }
+  },
+  "B1_2": {
+    "query": "deep vein thrombosis lower extremity or upper extremity",
+    "evidence": "Anamnesi patologica remota: Donna di 80 anni, deceduta in ospedale per arresto cardiaco improvviso. Nessun intervento chirurgico recente. Ipertensione arteriosa in trattamento da anni. Non allergie farmacologiche note. Anamnesi Prossima: Nei giorni precedenti il decesso non e' stato rilevato alcun sintomo di gonfiore, dolore, arrossamento o calore agli arti. Esame obiettivo all'ingresso: Non rilevati segni a carico degli arti durante l'assistenza. Esami di laboratorio: Nessun esame di imaging venoso ne' dosaggio del D-dimero eseguiti in vita. Riscontro autoptico: esame del sistema venoso profondo degli arti inferiori negativo, senza alcuna evidenza di trombosi venosa profonda. Causa del decesso: infarto miocardico acuto, non correlato a fenomeni tromboembolici venosi.",
+    "agent1_seconds": 6.2,
+    "brighton_context": "",
+    "agent2_seconds": 5.7,
+    "answer_conflict": null,
+    "reasoning": "The evidence explicitly states that the autopsy examination of the deep venous system of the lower limbs was negative, with no evidence of deep vein thrombosis (DVT). Additionally, clinical signs such as swelling, pain, redness, or heat in the limbs were not detected prior to death. Since DVT was ruled out by autopsy and no symptoms suggestive of upper extremity DVT were mentioned or confirmed, neither option applies.\n\nFINAL_OPTION: none\nFINAL_ANSWER: none",
+    "result": {
+      "types": []
+    }
+  },
+  "B2": {
+    "query": "calf pain or tenderness, leg swelling or pitting oedema, redness, warmth or pain in any extremity, absent pulses in legs or arms",
+    "evidence": "Anamnesi patologica remota: Donna di 80 anni, deceduta in ospedale per arresto cardiaco improvviso. Nessun intervento chirurgico recente. Ipertensione arteriosa in trattamento da anni. Non allergie farmacologiche note. Anamnesi Prossima: Nei giorni precedenti il decesso non e' stato rilevato alcun sintomo di gonfiore, dolore, arrossamento o calore agli arti. Esame obiettivo all'ingresso: Non rilevati segni a carico degli arti durante l'assistenza. Esami di laboratorio: Nessun esame di imaging venoso ne' dosaggio del D-dimero eseguiti in vita. Riscontro autoptico: esame del sistema venoso profondo degli arti inferiori negativo, senza alcuna evidenza di trombosi venosa profonda. Causa del decesso: infarto miocardico acuto, non correlato a fenomeni tromboembolici venosi.",
+    "agent1_seconds": 7.2,
+    "brighton_context": "",
+    "agent2_seconds": 23.8,
+    "answer_conflict": null,
+    "reasoning": "The evidence explicitly states that in the days preceding death, no symptoms of swelling, pain, redness, or warmth were detected in the limbs (\"non e' stato rilevato alcun sintomo di gonfiore, dolore, arrossamento o calore agli arti\"). Furthermore, the physical examination upon admission found no signs affecting the limbs. The autopsy also confirmed negative findings for deep vein thrombosis. Therefore, symptoms such as calf pain/tenderness (Option 1), leg swelling (Option 2), and redness/warmth/pain (Option 4) are explicitly ruled out by the text. Option 3 (Absent pulses) is not mentioned in the evidence; however, since the prompt asks to determine the correct answer based on evidence and explicitly negates the presence of the other specific symptoms listed in options 1, 2, and 4, and states no signs were found on exam, we must look at Option 5. Option 5 states \"None of the above were present or it is unknown if any of 1-4 were present\". Since Options 1, 2, and 4 are explicitly stated as absent, they were not present. Option 3 is unknown/not mentioned. Thus, the statement that none of the specific positive findings (1-4) were present (or their status is unknown for those not mentioned) fits best. However, looking closely at the options: Options 1, 2, and 4 are explicitly negated. Option 3 is not mentioned. The question asks to select the option that applies. If I select Option 5, it covers the fact that 1, 2, and 4 were absent. Does it cover 3? \"Unknown if any of 1-4 were present\". Since 3 is unknown, and 1,2,4 are known absent, the condition \"None of the above were present\" is technically false for 3 (we don't know), but \"or it is unknown if any of 1-4 were present\" makes Option 5 the correct catch-all for the scenario where specific symptoms are either ruled out or not mentioned. Let's re-read carefully. The prompt asks to determine the correct answer. Usually, in these clinical validation tasks, if specific symptoms are ruled out, and others are not mentioned, \"None of the above were present\" is often the intended answer if the focus is on the *presence* of pathology. However, Option 5 includes \"or it is unknown\". Since pulses (Option 3) are not mentioned, their status is unknown. Therefore, Option 5 is the only one that accurately reflects the state of all options 1-4 (1,2,4 absent; 3 unknown).\n\nFINAL_OPTION: None of the above were present or it is unknown if any of 1-4 were present\nFINAL_ANSWER: 5",
+    "result": {
+      "symptoms": [
+        "None of the above were present or it is unknown if any of 1-4 were present"
+      ]
+    }
+  },
+  "C": {
+    "query": "D-dimer value, test date, laboratory upper limit of normal",
+    "evidence": "Anamnesi patologica remota: Donna di 80 anni, deceduta in ospedale per arresto cardiaco improvviso. Nessun intervento chirurgico recente. Ipertensione arteriosa in trattamento da anni. Non allergie farmacologiche note. Anamnesi Prossima: Nei giorni precedenti il decesso non e' stato rilevato alcun sintomo di gonfiore, dolore, arrossamento o calore agli arti. Esame obiettivo all'ingresso: Non rilevati segni a carico degli arti durante l'assistenza. Esami di laboratorio: Nessun esame di imaging venoso ne' dosaggio del D-dimero eseguiti in vita. Riscontro autoptico: esame del sistema venoso profondo degli arti inferiori negativo, senza alcuna evidenza di trombosi venosa profonda. Causa del decesso: infarto miocardico acuto, non correlato a fenomeni tromboembolici venosi.",
+    "agent1_seconds": 5.4,
+    "brighton_context": "",
+    "agent2_seconds": 5.5,
+    "answer_conflict": null,
+    "reasoning": "The evidence explicitly states under \"Esami di laboratorio\" (Laboratory tests) that \"Nessun esame di imaging venoso ne' dosaggio del D-dimero eseguiti in vita,\" which translates to \"No venous imaging or D-dimer dosage was performed while alive.\" Since the test was not performed, it falls under the category of not tested.\n\nFINAL_OPTION: D-dimer not tested, or tested but results unknown or not available\nFINAL_ANSWER: 3",
+    "result": {
+      "answer": "D-dimer not tested, or tested but results unknown or not available"
+    }
+  },
+  "F": {
+    "query": "diagnosis of deep vein thrombosis reported by specialist",
+    "evidence": "Anamnesi patologica remota: Donna di 80 anni, deceduta in ospedale per arresto cardiaco improvviso. Nessun intervento chirurgico recente. Ipertensione arteriosa in trattamento da anni. Non allergie farmacologiche note. Anamnesi Prossima: Nei giorni precedenti il decesso non e' stato rilevato alcun sintomo di gonfiore, dolore, arrossamento o calore agli arti. Esame obiettivo all'ingresso: Non rilevati segni a carico degli arti durante l'assistenza. Esami di laboratorio: Nessun esame di imaging venoso ne' dosaggio del D-dimero eseguiti in vita. Riscontro autoptico: esame del sistema venoso profondo degli arti inferiori negativo, senza alcuna evidenza di trombosi venosa profonda. Causa del decesso: infarto miocardico acuto, non correlato a fenomeni tromboembolici venosi.",
+    "agent1_seconds": 5.6,
+    "brighton_context": "",
+    "agent2_seconds": 4.7,
+    "answer_conflict": null,
+    "reasoning": "The evidence explicitly states that the autopsy examination of the deep venous system of the lower limbs was negative, with no evidence of deep vein thrombosis (DVT). Additionally, clinical signs were absent in life, and no imaging or D-dimer tests were performed. Therefore, DVT was ruled out by the definitive method mentioned (autopsy).\n\nFINAL_OPTION: No\nFINAL_ANSWER: 2",
+    "result": {
+      "answer": "No"
+    }
+  },
+  "X": {
+    "query": "possible alternative etiologies; clinical syndromes to be differentiated from thrombosis; conditions explaining calf pain, redness, warmth or ankle edema other than DVT",
+    "evidence": "Anamnesi patologica remota: Donna di 80 anni, deceduta in ospedale per arresto cardiaco improvviso. Nessun intervento chirurgico recente. Ipertensione arteriosa in trattamento da anni. Non allergie farmacologiche note. Anamnesi Prossima: Nei giorni precedenti il decesso non e' stato rilevato alcun sintomo di gonfiore, dolore, arrossamento o calore agli arti. Esame obiettivo all'ingresso: Non rilevati segni a carico degli arti durante l'assistenza. Esami di laboratorio: Nessun esame di imaging venoso ne' dosaggio del D-dimero eseguiti in vita. Riscontro autoptico: esame del sistema venoso profondo degli arti inferiori negativo, senza alcuna evidenza di trombosi venosa profonda. Causa del decesso: infarto miocardico acuto, non correlato a fenomeni tromboembolici venosi.",
+    "agent1_seconds": 8.4,
+    "brighton_context": "",
+    "agent2_seconds": 6.7,
+    "answer_conflict": null,
+    "reasoning": "The evidence explicitly states that the cause of death was an acute myocardial infarction (\"infarto miocardico acuto\"). This diagnosis explains the sudden cardiac arrest and subsequent death. Furthermore, the autopsy ruled out deep vein thrombosis (DVT) and stated the death was not related to venous thromboembolic phenomena. Therefore, a specific alternative diagnosis (acute myocardial infarction) was found that explained the acute illness leading to death, rather than leaving the cause unexplained or attributing it solely to VTE without another explanation.\n\nFINAL_OPTION: An alternative diagnosis was found that explained the acute illness\nFINAL_ANSWER: 1",
+    "result": {
+      "answer": "An alternative diagnosis was found that explained the acute illness"
+    }
+  },
+  "_run_config": {
+    "extractor_mode": "agentic_graph",
+    "section_gates_enabled": {
+      "keyword": false,
+      "details": false,
+      "absent_pulses": false
+    },
+    "brighton_context_enabled": false,
+    "section_descriptions_enabled": false,
+    "section_hints_enabled": false,
+    "section_hints_disabled": [],
+    "section_hints_fingerprint": {
+      "all": "dbe3b41b6a5c"
+    },
+    "section_queries_fingerprint": {
+      "A1": "68 f31cb52cc7a2",
+      "A2": "47 df6b72799cd6",
+      "A3_1": "73 dea0b36a509c",
+      "A3_2": "81 df834d2f4193",
+      "B1_1": "50 6cda81bb9be8",
+      "B1_2": "55 9136dd6530fb",
+      "B2": "128 618aaee6579e",
+      "C": "58 98411e20a257",
+      "F": "56 2a1cef15a0b0",
+      "X": "168 49d5d41f3a23",
+      "all": "bfd9536a31fe"
+    },
+    "guideline_anchors_enabled": false,
+    "guideline_anchors_fingerprint": {
+      "A1": "699 6fa2837f0bf8",
+      "A2": "699 6fa2837f0bf8",
+      "A3_1": "1616 0d73c0d46674",
+      "A3_2": "3566 841cc2dbfd90",
+      "B1_1": "4230 4af7e1ebd4a3",
+      "B1_2": "4230 4af7e1ebd4a3",
+      "B2": "4230 4af7e1ebd4a3",
+      "C": "977 fcf102e0a775",
+      "X": "2770 c66190553aeb",
+      "all": "4bc8810e170a"
+    },
+    "cross_section_rules_applied": true,
+    "models": {
+      "extractor": "qwen3.6:27b",
+      "evaluator": "qwen3.6:27b",
+      "embeddings": "intfloat/multilingual-e5-small"
+    },
+    "environment": {
+      "hostname": "mari",
+      "ollama_version": "ollama version is 0.32.1"
+    },
+    "generation": {
+      "temperature": 0.0,
+      "num_predict": 1024,
+      "num_gpu": 999,
+      "reasoning": false
+    },
+    "retrieval": {
+      "ehr_chunk_size": 800,
+      "ehr_chunk_overlap": 150,
+      "ehr_retriever_k": 5,
+      "brighton_retriever_k": 5
+    }
+  }
+}

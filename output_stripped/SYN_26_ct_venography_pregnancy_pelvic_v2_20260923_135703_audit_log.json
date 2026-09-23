@@ -1,0 +1,193 @@
+{
+  "A1": {
+    "query": "autopsy report, necropsy, post-mortem examination, autoptic findings",
+    "evidence": "alla palpazione del polpaccio. Esami di laboratorio: D-dimero 2.600 ng/mL, superiore al limite superiore di riferimento del laboratorio. Eseguita ecografia compressiva venosa dell'arto inferiore sinistro, risultata non dirimente per la sede pelvica del sospetto trombo e limitata dall'utero gravido. Eseguita successivamente RM venografia pelvica: trombosi della vena iliaca comune sinistra.\n\nAnamnesi patologica remota: Donna di 29 anni, in gravidanza alla 28esima settimana. Nessun intervento chirurgico recente. Non allergie farmacologiche note. Anamnesi farmacologica: acido folico e supplementazione marziale. Anamnesi Prossima: Da 4 giorni dolore al polpaccio e gonfiore dell'intero arto inferiore sinistro, esteso fino alla regione inguinale. Nega trauma, febbre, dolore toracico e dispnea. Esame obiettivo all'ingresso: Paziente vigile, orientata e collaborante, eupnoica a riposo. PA 114/70 mmHg, FC 86 bpm, FR 16 atti/min, SpO2 99% in aria ambiente, TC 36,6°C. Arto inferiore sinistro con gonfiore esteso all'intero arto e dolorabilita' alla palpazione del polpaccio. Esami di laboratorio: D-dimero 2.600 ng/mL, superiore al limite superiore di riferimento del laboratorio. Eseguita",
+    "agent1_seconds": 5.9,
+    "brighton_context": "",
+    "agent2_seconds": 6.1,
+    "answer_conflict": null,
+    "reasoning": "The provided evidence describes a living patient undergoing diagnostic workup for suspected deep vein thrombosis (DVT), including laboratory tests, ultrasound, and MR venography which confirmed the diagnosis. There is no mention of the patient's death or an autopsy being performed. Since the text does not state that an autopsy was done, and explicitly details clinical management of a living individual, the correct classification regarding autopsy is that it was not done or unknown.\n\nFINAL_OPTION: No autopsy done, unknown if done, or done but results unavailable\nFINAL_ANSWER: 3",
+    "result": {
+      "answer": "No autopsy done, unknown if done, or done but results unavailable"
+    }
+  },
+  "A2": {
+    "query": "thrombectomy, surgical procedure related to DVT",
+    "evidence": "alla palpazione del polpaccio. Esami di laboratorio: D-dimero 2.600 ng/mL, superiore al limite superiore di riferimento del laboratorio. Eseguita ecografia compressiva venosa dell'arto inferiore sinistro, risultata non dirimente per la sede pelvica del sospetto trombo e limitata dall'utero gravido. Eseguita successivamente RM venografia pelvica: trombosi della vena iliaca comune sinistra.\n\nAnamnesi patologica remota: Donna di 29 anni, in gravidanza alla 28esima settimana. Nessun intervento chirurgico recente. Non allergie farmacologiche note. Anamnesi farmacologica: acido folico e supplementazione marziale. Anamnesi Prossima: Da 4 giorni dolore al polpaccio e gonfiore dell'intero arto inferiore sinistro, esteso fino alla regione inguinale. Nega trauma, febbre, dolore toracico e dispnea. Esame obiettivo all'ingresso: Paziente vigile, orientata e collaborante, eupnoica a riposo. PA 114/70 mmHg, FC 86 bpm, FR 16 atti/min, SpO2 99% in aria ambiente, TC 36,6°C. Arto inferiore sinistro con gonfiore esteso all'intero arto e dolorabilita' alla palpazione del polpaccio. Esami di laboratorio: D-dimero 2.600 ng/mL, superiore al limite superiore di riferimento del laboratorio. Eseguita",
+    "agent1_seconds": 5.6,
+    "brighton_context": "",
+    "agent2_seconds": 57.3,
+    "answer_conflict": null,
+    "reasoning": "The evidence explicitly states \"Nessun intervento chirurgico recente\" (No recent surgical intervention) and describes a diagnostic workup involving laboratory tests, compressive ultrasound, and pelvic MR venography. The MR venography confirmed the thrombosis, but this is a non-invasive imaging modality, not a surgical procedure or thrombectomy. Since no surgical procedure was performed, and the confirmation was achieved through imaging rather than surgery, Option 1 is incorrect. Option 2 refers to \"Other procedure,\" which in the context of distinguishing from thrombectomy (a surgical/interventional treatment) and given the explicit negation of surgery, typically implies other invasive or surgical interventions if contrasted with Option 3's specific mention of \"surgical procedure.\" However, looking at the options provided: Option 1 is Thrombectomy. Option 3 is \"No surgical procedure done...\". The text explicitly negates recent surgery. Therefore, no surgical procedure was done. The confirmation came from MR venography (imaging). In clinical validation contexts distinguishing between therapeutic procedures and diagnostic imaging, if the question focuses on procedural intervention for DVT (like thrombectomy), and none was done, Option 3 is the correct classification for the absence of such procedures. Even if \"procedure\" in Option 2 could loosely include imaging, Option 3 explicitly covers the scenario where no surgical procedure was done, which aligns with the explicit text \"Nessun intervento chirurgico\". Furthermore, standard validation criteria often separate diagnostic imaging from \"procedures\" like thrombectomy or catheter-directed interventions. Given the explicit negation of surgery, Option 3 is the most accurate reflection of the procedural history regarding surgical intervention.\n\nFINAL_OPTION: No surgical procedure done; or, done but either did not confirm presence of DVT or findings unknown; or unknown if done\nFINAL_ANSWER: 3",
+    "result": {
+      "answer": "No surgical procedure done; or, done but either did not confirm presence of DVT or findings unknown; or unknown if done"
+    }
+  },
+  "A3_1": {
+    "query": "ultrasound, CT, MRI, venography: imaging outcome for deep vein thrombosis",
+    "evidence": "alla palpazione del polpaccio. Esami di laboratorio: D-dimero 2.600 ng/mL, superiore al limite superiore di riferimento del laboratorio. Eseguita ecografia compressiva venosa dell'arto inferiore sinistro, risultata non dirimente per la sede pelvica del sospetto trombo e limitata dall'utero gravido. Eseguita successivamente RM venografia pelvica: trombosi della vena iliaca comune sinistra.\n\nAnamnesi patologica remota: Donna di 29 anni, in gravidanza alla 28esima settimana. Nessun intervento chirurgico recente. Non allergie farmacologiche note. Anamnesi farmacologica: acido folico e supplementazione marziale. Anamnesi Prossima: Da 4 giorni dolore al polpaccio e gonfiore dell'intero arto inferiore sinistro, esteso fino alla regione inguinale. Nega trauma, febbre, dolore toracico e dispnea. Esame obiettivo all'ingresso: Paziente vigile, orientata e collaborante, eupnoica a riposo. PA 114/70 mmHg, FC 86 bpm, FR 16 atti/min, SpO2 99% in aria ambiente, TC 36,6°C. Arto inferiore sinistro con gonfiore esteso all'intero arto e dolorabilita' alla palpazione del polpaccio. Esami di laboratorio: D-dimero 2.600 ng/mL, superiore al limite superiore di riferimento del laboratorio. Eseguita",
+    "agent1_seconds": 8.2,
+    "brighton_context": "",
+    "agent2_seconds": 6.6,
+    "answer_conflict": null,
+    "reasoning": "The evidence explicitly states that a pelvic MR venography was performed (\"Eseguita successivamente RM venografia pelvica\") and it confirmed thrombosis of the left common iliac vein (\"trombosi della vena iliaca comune sinistra\"). Since the common iliac vein is part of the deep venous system, this constitutes a confirmed Deep Vein Thrombosis (DVT) via an imaging study. Although the initial ultrasound was non-diagnostic for the pelvic location, the subsequent MRI provided confirmation.\n\nFINAL_OPTION: ≥1 imaging study was done and confirmed DVT\nFINAL_ANSWER: 1",
+    "result": {
+      "answer": "≥1 imaging study was done and confirmed DVT"
+    }
+  },
+  "A3_2": {
+    "query": "type of imaging study performed: compression ultrasonography, doppler, venography",
+    "evidence": "alla palpazione del polpaccio. Esami di laboratorio: D-dimero 2.600 ng/mL, superiore al limite superiore di riferimento del laboratorio. Eseguita ecografia compressiva venosa dell'arto inferiore sinistro, risultata non dirimente per la sede pelvica del sospetto trombo e limitata dall'utero gravido. Eseguita successivamente RM venografia pelvica: trombosi della vena iliaca comune sinistra.\n\nAnamnesi patologica remota: Donna di 29 anni, in gravidanza alla 28esima settimana. Nessun intervento chirurgico recente. Non allergie farmacologiche note. Anamnesi farmacologica: acido folico e supplementazione marziale. Anamnesi Prossima: Da 4 giorni dolore al polpaccio e gonfiore dell'intero arto inferiore sinistro, esteso fino alla regione inguinale. Nega trauma, febbre, dolore toracico e dispnea. Esame obiettivo all'ingresso: Paziente vigile, orientata e collaborante, eupnoica a riposo. PA 114/70 mmHg, FC 86 bpm, FR 16 atti/min, SpO2 99% in aria ambiente, TC 36,6°C. Arto inferiore sinistro con gonfiore esteso all'intero arto e dolorabilita' alla palpazione del polpaccio. Esami di laboratorio: D-dimero 2.600 ng/mL, superiore al limite superiore di riferimento del laboratorio. Eseguita",
+    "agent1_seconds": 8.0,
+    "brighton_context": "",
+    "agent2_seconds": 6.1,
+    "answer_conflict": null,
+    "reasoning": "The evidence explicitly states that a compressive ultrasound (\"ecografia compressiva venosa\") was performed but was non-diagnostic for the pelvic location. Subsequently, an MR venography of the pelvis (\"RM venografia pelvica\") was performed, which confirmed the diagnosis of left common iliac vein thrombosis. Therefore, both compression ultrasonography and MR venography were used in the diagnostic workup described.\n\nFINAL_OPTION: Compression ultrasonography; CT or MR venography\nFINAL_ANSWER: 1; 2",
+    "result": {
+      "studies": [
+        "Compression ultrasonography",
+        "CT or MR venography"
+      ]
+    }
+  },
+  "B1_1": {
+    "query": "reported symptoms or signs of deep vein thrombosis",
+    "evidence": "alla palpazione del polpaccio. Esami di laboratorio: D-dimero 2.600 ng/mL, superiore al limite superiore di riferimento del laboratorio. Eseguita ecografia compressiva venosa dell'arto inferiore sinistro, risultata non dirimente per la sede pelvica del sospetto trombo e limitata dall'utero gravido. Eseguita successivamente RM venografia pelvica: trombosi della vena iliaca comune sinistra.\n\nAnamnesi patologica remota: Donna di 29 anni, in gravidanza alla 28esima settimana. Nessun intervento chirurgico recente. Non allergie farmacologiche note. Anamnesi farmacologica: acido folico e supplementazione marziale. Anamnesi Prossima: Da 4 giorni dolore al polpaccio e gonfiore dell'intero arto inferiore sinistro, esteso fino alla regione inguinale. Nega trauma, febbre, dolore toracico e dispnea. Esame obiettivo all'ingresso: Paziente vigile, orientata e collaborante, eupnoica a riposo. PA 114/70 mmHg, FC 86 bpm, FR 16 atti/min, SpO2 99% in aria ambiente, TC 36,6°C. Arto inferiore sinistro con gonfiore esteso all'intero arto e dolorabilita' alla palpazione del polpaccio. Esami di laboratorio: D-dimero 2.600 ng/mL, superiore al limite superiore di riferimento del laboratorio. Eseguita",
+    "agent1_seconds": 7.5,
+    "brighton_context": "",
+    "agent2_seconds": 7.0,
+    "answer_conflict": null,
+    "reasoning": "The evidence explicitly reports symptoms and signs consistent with Deep Vein Thrombosis (DVT). Specifically, the patient presented with \"dolore al polpaccio\" (calf pain) and \"gonfiore dell'intero arto inferiore sinistro\" (swelling of the entire left lower limb), which are recognized clinical signs of DVT. Additionally, the physical examination noted \"dolorabilita' alla palpazione del polpaccio\" (pain on palpation of the calf). Therefore, at least one symptom or sign of DVT was reported.\n\nFINAL_OPTION: ≥1 symptom or sign of DVT was reported\nFINAL_ANSWER: 1",
+    "result": {
+      "answer": "≥1 symptom or sign of DVT was reported"
+    }
+  },
+  "B1_2": {
+    "query": "deep vein thrombosis lower extremity or upper extremity",
+    "evidence": "alla palpazione del polpaccio. Esami di laboratorio: D-dimero 2.600 ng/mL, superiore al limite superiore di riferimento del laboratorio. Eseguita ecografia compressiva venosa dell'arto inferiore sinistro, risultata non dirimente per la sede pelvica del sospetto trombo e limitata dall'utero gravido. Eseguita successivamente RM venografia pelvica: trombosi della vena iliaca comune sinistra.\n\nAnamnesi patologica remota: Donna di 29 anni, in gravidanza alla 28esima settimana. Nessun intervento chirurgico recente. Non allergie farmacologiche note. Anamnesi farmacologica: acido folico e supplementazione marziale. Anamnesi Prossima: Da 4 giorni dolore al polpaccio e gonfiore dell'intero arto inferiore sinistro, esteso fino alla regione inguinale. Nega trauma, febbre, dolore toracico e dispnea. Esame obiettivo all'ingresso: Paziente vigile, orientata e collaborante, eupnoica a riposo. PA 114/70 mmHg, FC 86 bpm, FR 16 atti/min, SpO2 99% in aria ambiente, TC 36,6°C. Arto inferiore sinistro con gonfiore esteso all'intero arto e dolorabilita' alla palpazione del polpaccio. Esami di laboratorio: D-dimero 2.600 ng/mL, superiore al limite superiore di riferimento del laboratorio. Eseguita",
+    "agent1_seconds": 6.3,
+    "brighton_context": "",
+    "agent2_seconds": 6.2,
+    "answer_conflict": null,
+    "reasoning": "The evidence explicitly describes a patient with swelling and pain in the left lower extremity. Diagnostic imaging, specifically pelvic MR venography, confirmed \"trombosi della vena iliaca comune sinistra\" (thrombosis of the left common iliac vein). The common iliac vein is part of the deep venous system of the lower extremity/pelvis. Therefore, this constitutes a Lower extremity DVT. There is no mention of symptoms or findings related to the upper extremities.\n\nFINAL_OPTION: Lower extremity DVT\nFINAL_ANSWER: 1",
+    "result": {
+      "types": [
+        "Lower extremity DVT"
+      ]
+    }
+  },
+  "B2": {
+    "query": "calf pain or tenderness, leg swelling or pitting oedema, redness, warmth or pain in any extremity, absent pulses in legs or arms",
+    "evidence": "Anamnesi patologica remota: Donna di 29 anni, in gravidanza alla 28esima settimana. Nessun intervento chirurgico recente. Non allergie farmacologiche note. Anamnesi farmacologica: acido folico e supplementazione marziale. Anamnesi Prossima: Da 4 giorni dolore al polpaccio e gonfiore dell'intero arto inferiore sinistro, esteso fino alla regione inguinale. Nega trauma, febbre, dolore toracico e dispnea. Esame obiettivo all'ingresso: Paziente vigile, orientata e collaborante, eupnoica a riposo. PA 114/70 mmHg, FC 86 bpm, FR 16 atti/min, SpO2 99% in aria ambiente, TC 36,6°C. Arto inferiore sinistro con gonfiore esteso all'intero arto e dolorabilita' alla palpazione del polpaccio. Esami di laboratorio: D-dimero 2.600 ng/mL, superiore al limite superiore di riferimento del laboratorio. Eseguita\n\nalla palpazione del polpaccio. Esami di laboratorio: D-dimero 2.600 ng/mL, superiore al limite superiore di riferimento del laboratorio. Eseguita ecografia compressiva venosa dell'arto inferiore sinistro, risultata non dirimente per la sede pelvica del sospetto trombo e limitata dall'utero gravido. Eseguita successivamente RM venografia pelvica: trombosi della vena iliaca comune sinistra.",
+    "agent1_seconds": 7.8,
+    "brighton_context": "",
+    "agent2_seconds": 11.5,
+    "answer_conflict": null,
+    "reasoning": "The patient's history explicitly states \"dolore al polpaccio\" (calf pain) and the physical examination notes \"dolorabilita' alla palpazione del polpaccio\" (tenderness on palpation of the calf), which directly supports option 1. Additionally, the history mentions \"gonfiore dell'intero arto inferiore sinistro\" (swelling of the entire left lower limb) and the exam confirms \"gonfiore esteso all'intero arto\" (swelling extended to the entire limb), supporting option 2. The text explicitly negates trauma, fever, chest pain, and dyspnea, but does not mention absent pulses or specific signs of redness/warmth distinct from the swelling/pain already covered; however, options 1 and 2 are clearly present. Options 3 and 4 are not supported by explicit evidence in the text (pulses are not mentioned as absent, and while warmth/redness might be associated with DVT, they are not explicitly described here, whereas pain and swelling are). Therefore, only options 1 and 2 are confirmed.\n\nFINAL_OPTION: Calf pain or tenderness; Leg swelling or pitting oedema\nFINAL_ANSWER: 1; 2",
+    "result": {
+      "symptoms": [
+        "Calf pain or tenderness",
+        "Leg swelling or pitting oedema"
+      ]
+    }
+  },
+  "C": {
+    "query": "D-dimer value, test date, laboratory upper limit of normal",
+    "evidence": "alla palpazione del polpaccio. Esami di laboratorio: D-dimero 2.600 ng/mL, superiore al limite superiore di riferimento del laboratorio. Eseguita ecografia compressiva venosa dell'arto inferiore sinistro, risultata non dirimente per la sede pelvica del sospetto trombo e limitata dall'utero gravido. Eseguita successivamente RM venografia pelvica: trombosi della vena iliaca comune sinistra.\n\nAnamnesi patologica remota: Donna di 29 anni, in gravidanza alla 28esima settimana. Nessun intervento chirurgico recente. Non allergie farmacologiche note. Anamnesi farmacologica: acido folico e supplementazione marziale. Anamnesi Prossima: Da 4 giorni dolore al polpaccio e gonfiore dell'intero arto inferiore sinistro, esteso fino alla regione inguinale. Nega trauma, febbre, dolore toracico e dispnea. Esame obiettivo all'ingresso: Paziente vigile, orientata e collaborante, eupnoica a riposo. PA 114/70 mmHg, FC 86 bpm, FR 16 atti/min, SpO2 99% in aria ambiente, TC 36,6°C. Arto inferiore sinistro con gonfiore esteso all'intero arto e dolorabilita' alla palpazione del polpaccio. Esami di laboratorio: D-dimero 2.600 ng/mL, superiore al limite superiore di riferimento del laboratorio. Eseguita",
+    "agent1_seconds": 6.5,
+    "brighton_context": "",
+    "agent2_seconds": 5.4,
+    "answer_conflict": null,
+    "reasoning": "The evidence explicitly states \"D-dimero 2.600 ng/mL, superiore al limite superiore di riferimento del laboratorio,\" which translates to D-dimer being 2,600 ng/mL, above the laboratory's upper reference limit. This directly confirms that the test was performed and the result exceeded the normal range.\n\nFINAL_OPTION: D-dimer exceeded test lab's upper limit of normal.\nFINAL_ANSWER: 1",
+    "result": {
+      "answer": "D-dimer exceeded test lab's upper limit of normal."
+    }
+  },
+  "F": {
+    "query": "diagnosis of deep vein thrombosis reported by specialist",
+    "evidence": "alla palpazione del polpaccio. Esami di laboratorio: D-dimero 2.600 ng/mL, superiore al limite superiore di riferimento del laboratorio. Eseguita ecografia compressiva venosa dell'arto inferiore sinistro, risultata non dirimente per la sede pelvica del sospetto trombo e limitata dall'utero gravido. Eseguita successivamente RM venografia pelvica: trombosi della vena iliaca comune sinistra.\n\nAnamnesi patologica remota: Donna di 29 anni, in gravidanza alla 28esima settimana. Nessun intervento chirurgico recente. Non allergie farmacologiche note. Anamnesi farmacologica: acido folico e supplementazione marziale. Anamnesi Prossima: Da 4 giorni dolore al polpaccio e gonfiore dell'intero arto inferiore sinistro, esteso fino alla regione inguinale. Nega trauma, febbre, dolore toracico e dispnea. Esame obiettivo all'ingresso: Paziente vigile, orientata e collaborante, eupnoica a riposo. PA 114/70 mmHg, FC 86 bpm, FR 16 atti/min, SpO2 99% in aria ambiente, TC 36,6°C. Arto inferiore sinistro con gonfiore esteso all'intero arto e dolorabilita' alla palpazione del polpaccio. Esami di laboratorio: D-dimero 2.600 ng/mL, superiore al limite superiore di riferimento del laboratorio. Eseguita",
+    "agent1_seconds": 6.2,
+    "brighton_context": "",
+    "agent2_seconds": 5.2,
+    "answer_conflict": null,
+    "reasoning": "The evidence explicitly states that a pelvic MR venography was performed (\"Eseguita successivamente RM venografia pelvica\") and it confirmed thrombosis of the left common iliac vein (\"trombosi della vena iliaca comune sinistra\"). Since the question asks to determine the correct answer based on the evidence, and the evidence confirms the diagnosis via this specific method, the answer is affirmative.\n\nFINAL_OPTION: Yes\nFINAL_ANSWER: 1",
+    "result": {
+      "answer": "Yes"
+    }
+  },
+  "X": {
+    "query": "possible alternative etiologies; clinical syndromes to be differentiated from thrombosis; conditions explaining calf pain, redness, warmth or ankle edema other than DVT",
+    "evidence": "Anamnesi patologica remota: Donna di 29 anni, in gravidanza alla 28esima settimana. Nessun intervento chirurgico recente. Non allergie farmacologiche note. Anamnesi farmacologica: acido folico e supplementazione marziale. Anamnesi Prossima: Da 4 giorni dolore al polpaccio e gonfiore dell'intero arto inferiore sinistro, esteso fino alla regione inguinale. Nega trauma, febbre, dolore toracico e dispnea. Esame obiettivo all'ingresso: Paziente vigile, orientata e collaborante, eupnoica a riposo. PA 114/70 mmHg, FC 86 bpm, FR 16 atti/min, SpO2 99% in aria ambiente, TC 36,6°C. Arto inferiore sinistro con gonfiore esteso all'intero arto e dolorabilita' alla palpazione del polpaccio. Esami di laboratorio: D-dimero 2.600 ng/mL, superiore al limite superiore di riferimento del laboratorio. Eseguita\n\nalla palpazione del polpaccio. Esami di laboratorio: D-dimero 2.600 ng/mL, superiore al limite superiore di riferimento del laboratorio. Eseguita ecografia compressiva venosa dell'arto inferiore sinistro, risultata non dirimente per la sede pelvica del sospetto trombo e limitata dall'utero gravido. Eseguita successivamente RM venografia pelvica: trombosi della vena iliaca comune sinistra.",
+    "agent1_seconds": 6.1,
+    "brighton_context": "",
+    "agent2_seconds": 6.3,
+    "answer_conflict": null,
+    "reasoning": "The evidence describes a patient with symptoms and imaging findings consistent with deep vein thrombosis (DVT), specifically confirmed by pelvic MR venography showing thrombosis of the left common iliac vein. The text does not mention any other condition or diagnosis that was identified to explain the acute illness (leg pain and swelling). Since DVT is the primary diagnosis established and no competing or alternative explanation for the symptoms is provided in the text, it follows that no alternative diagnosis was found.\n\nFINAL_OPTION: No alternative diagnosis was found to explain the acute illness\nFINAL_ANSWER: 2",
+    "result": {
+      "answer": "No alternative diagnosis was found to explain the acute illness"
+    }
+  },
+  "_run_config": {
+    "extractor_mode": "agentic_graph",
+    "section_gates_enabled": {
+      "keyword": false,
+      "details": false,
+      "absent_pulses": false
+    },
+    "brighton_context_enabled": false,
+    "section_descriptions_enabled": false,
+    "section_hints_enabled": false,
+    "section_hints_disabled": [],
+    "section_hints_fingerprint": {
+      "all": "dbe3b41b6a5c"
+    },
+    "section_queries_fingerprint": {
+      "A1": "68 f31cb52cc7a2",
+      "A2": "47 df6b72799cd6",
+      "A3_1": "73 dea0b36a509c",
+      "A3_2": "81 df834d2f4193",
+      "B1_1": "50 6cda81bb9be8",
+      "B1_2": "55 9136dd6530fb",
+      "B2": "128 618aaee6579e",
+      "C": "58 98411e20a257",
+      "F": "56 2a1cef15a0b0",
+      "X": "168 49d5d41f3a23",
+      "all": "bfd9536a31fe"
+    },
+    "guideline_anchors_enabled": false,
+    "guideline_anchors_fingerprint": {
+      "A1": "699 6fa2837f0bf8",
+      "A2": "699 6fa2837f0bf8",
+      "A3_1": "1616 0d73c0d46674",
+      "A3_2": "3566 841cc2dbfd90",
+      "B1_1": "4230 4af7e1ebd4a3",
+      "B1_2": "4230 4af7e1ebd4a3",
+      "B2": "4230 4af7e1ebd4a3",
+      "C": "977 fcf102e0a775",
+      "X": "2770 c66190553aeb",
+      "all": "4bc8810e170a"
+    },
+    "cross_section_rules_applied": true,
+    "models": {
+      "extractor": "qwen3.6:27b",
+      "evaluator": "qwen3.6:27b",
+      "embeddings": "intfloat/multilingual-e5-small"
+    },
+    "environment": {
+      "hostname": "mari",
+      "ollama_version": "ollama version is 0.32.1"
+    },
+    "generation": {
+      "temperature": 0.0,
+      "num_predict": 1024,
+      "num_gpu": 999,
+      "reasoning": false
+    },
+    "retrieval": {
+      "ehr_chunk_size": 800,
+      "ehr_chunk_overlap": 150,
+      "ehr_retriever_k": 5,
+      "brighton_retriever_k": 5
+    }
+  }
+}

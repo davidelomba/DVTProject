@@ -1,0 +1,191 @@
+{
+  "A1": {
+    "query": "autopsy report, necropsy, post-mortem examination, autoptic findings",
+    "evidence": "Anamnesi patologica remota: Uomo di 24 anni, atleta. Non portatore di catetere venoso, anamnesi oncologica negativa. Nessun intervento chirurgico recente. Non allergie farmacologiche note. Anamnesi Prossima: Da 2 giorni gonfiore e dolore insorti improvvisamente al braccio destro dominante, dopo intensa attivita' di sollevamento pesi. Nega trauma diretto, febbre, dolore toracico e dispnea. Esame obiettivo all'ingresso: Paziente vigile, orientato e collaborante, eupnoico a riposo. PA 118/72 mmHg, FC 70 bpm, FR 14 atti/min, SpO2 99% in aria ambiente, TC 36,4°C. Braccio destro con cute arrossata e calda al tatto, dolorabilita' alla palpazione. Toni cardiaci validi e ritmici. Esami di laboratorio: D-dimero 2.200 ng/mL, superiore al limite superiore di riferimento del laboratorio. Eseguito\n\nToni cardiaci validi e ritmici. Esami di laboratorio: D-dimero 2.200 ng/mL, superiore al limite superiore di riferimento del laboratorio. Eseguito ecocolordoppler venoso dell'arto superiore destro: trombosi della vena succlavia destra da sforzo, quadro compatibile con sindrome di Paget-Schroetter.",
+    "agent1_seconds": 5.9,
+    "brighton_context": "",
+    "agent2_seconds": 6.4,
+    "answer_conflict": null,
+    "reasoning": "The evidence describes a living patient undergoing clinical evaluation, including physical examination and venous color Doppler ultrasound, which confirmed thrombosis of the right subclavian vein. There is no mention of the patient's death or an autopsy being performed. Since the question specifically asks about findings from an autopsy, and the text does not state that an autopsy was done (nor does it describe a deceased patient), the correct classification is that no autopsy was done or its status is unknown in this context.\n\nFINAL_OPTION: No autopsy done, unknown if done, or done but results unavailable\nFINAL_ANSWER: 3",
+    "result": {
+      "answer": "No autopsy done, unknown if done, or done but results unavailable"
+    }
+  },
+  "A2": {
+    "query": "thrombectomy, surgical procedure related to DVT",
+    "evidence": "Toni cardiaci validi e ritmici. Esami di laboratorio: D-dimero 2.200 ng/mL, superiore al limite superiore di riferimento del laboratorio. Eseguito ecocolordoppler venoso dell'arto superiore destro: trombosi della vena succlavia destra da sforzo, quadro compatibile con sindrome di Paget-Schroetter.\n\nAnamnesi patologica remota: Uomo di 24 anni, atleta. Non portatore di catetere venoso, anamnesi oncologica negativa. Nessun intervento chirurgico recente. Non allergie farmacologiche note. Anamnesi Prossima: Da 2 giorni gonfiore e dolore insorti improvvisamente al braccio destro dominante, dopo intensa attivita' di sollevamento pesi. Nega trauma diretto, febbre, dolore toracico e dispnea. Esame obiettivo all'ingresso: Paziente vigile, orientato e collaborante, eupnoico a riposo. PA 118/72 mmHg, FC 70 bpm, FR 14 atti/min, SpO2 99% in aria ambiente, TC 36,4°C. Braccio destro con cute arrossata e calda al tatto, dolorabilita' alla palpazione. Toni cardiaci validi e ritmici. Esami di laboratorio: D-dimero 2.200 ng/mL, superiore al limite superiore di riferimento del laboratorio. Eseguito",
+    "agent1_seconds": 5.6,
+    "brighton_context": "",
+    "agent2_seconds": 26.1,
+    "answer_conflict": null,
+    "reasoning": "The evidence explicitly states that a venous color Doppler ultrasound (\"ecocolordoppler\") was performed and confirmed thrombosis of the right subclavian vein. It also explicitly states \"Nessun intervento chirurgico recente\" (No recent surgical intervention) and describes the patient's current status without mentioning any therapeutic surgical procedures like thrombectomy. Since the confirmation of DVT was achieved via imaging (ultrasound), which is a diagnostic procedure but not a surgical one, and no surgery was performed to confirm or treat it, option 1 is incorrect. Option 2 suggests \"Other procedure done that confirmed presence of DVT\". While ultrasound confirmed it, in clinical validation contexts distinguishing between surgical/therapeutic interventions and diagnostic imaging, \"procedure\" often implies an invasive intervention if contrasted with \"No surgical procedure\". However, looking at the options: Option 1 is specific to Thrombectomy (surgical/endovascular). Option 3 says \"No surgical procedure done... or unknown if done\". The text explicitly rules out recent surgery. Did a non-surgical procedure confirm it? Yes, ultrasound. But usually, these options distinguish between *surgical/therapeutic* confirmation vs *diagnostic imaging*. Let's re-read carefully. Option 2 is \"Other procedure done that confirmed presence of DVT\". Ultrasound is a diagnostic test/procedure. However, typically in these Brighton criteria-style questions, if the question asks about surgical procedures or interventions, and only imaging was done, the answer regarding *surgical* confirmation is negative. But wait, Option 2 doesn't say \"Surgical procedure\". It says \"Other procedure\". Is ultrasound considered a \"procedure\" in this context? Usually, \"procedure\" in these multiple choice sets refers to invasive interventions (biopsy, surgery, thrombectomy). Diagnostic imaging is often categorized separately or the question implies therapeutic/surgical confirmation. Let's look at Option 3: \"No surgical procedure done; or, done but either did not confirm presence of DVT or findings unknown; or unknown if done\". The text says \"Nessun intervento chirurgico recente\" (No recent surgical intervention). It does not mention any *current* surgical procedure being performed during this admission. The confirmation was via ultrasound. Therefore, no surgical procedure was done to confirm it. Option 1 is false. Option 2 is ambiguous but likely refers to invasive procedures if contrasted with \"No surgical procedure\". However, if \"Other procedure\" includes diagnostic imaging, it might be true. But standard clinical validation for DVT usually separates Imaging (US, CT) from Procedures (Thrombectomy, Surgery). Given the explicit negation of surgery and the lack of any mention of an invasive procedure, Option 3 is the most accurate description of the *surgical/interventional* status. The prompt asks to determine the correct answer based on evidence. The evidence confirms DVT via US. It denies recent surgery. It does not describe a thrombectomy. Therefore, no surgical procedure was done.\n\nFINAL_OPTION: No surgical procedure done; or, done but either did not confirm presence of DVT or findings unknown; or unknown if done\nFINAL_ANSWER: 3",
+    "result": {
+      "answer": "No surgical procedure done; or, done but either did not confirm presence of DVT or findings unknown; or unknown if done"
+    }
+  },
+  "A3_1": {
+    "query": "ultrasound, CT, MRI, venography: imaging outcome for deep vein thrombosis",
+    "evidence": "Toni cardiaci validi e ritmici. Esami di laboratorio: D-dimero 2.200 ng/mL, superiore al limite superiore di riferimento del laboratorio. Eseguito ecocolordoppler venoso dell'arto superiore destro: trombosi della vena succlavia destra da sforzo, quadro compatibile con sindrome di Paget-Schroetter.\n\nAnamnesi patologica remota: Uomo di 24 anni, atleta. Non portatore di catetere venoso, anamnesi oncologica negativa. Nessun intervento chirurgico recente. Non allergie farmacologiche note. Anamnesi Prossima: Da 2 giorni gonfiore e dolore insorti improvvisamente al braccio destro dominante, dopo intensa attivita' di sollevamento pesi. Nega trauma diretto, febbre, dolore toracico e dispnea. Esame obiettivo all'ingresso: Paziente vigile, orientato e collaborante, eupnoico a riposo. PA 118/72 mmHg, FC 70 bpm, FR 14 atti/min, SpO2 99% in aria ambiente, TC 36,4°C. Braccio destro con cute arrossata e calda al tatto, dolorabilita' alla palpazione. Toni cardiaci validi e ritmici. Esami di laboratorio: D-dimero 2.200 ng/mL, superiore al limite superiore di riferimento del laboratorio. Eseguito",
+    "agent1_seconds": 7.0,
+    "brighton_context": "",
+    "agent2_seconds": 6.9,
+    "answer_conflict": null,
+    "reasoning": "The evidence explicitly states that an \"ecocolordoppler venoso dell'arto superiore destro\" (venous color Doppler ultrasound of the right upper limb) was performed. The results showed \"trombosi della vena succlavia destra\" (thrombosis of the right subclavian vein). According to clinical validation standards, Deep Vein Thrombosis (DVT) includes thrombosis in deep veins such as the subclavian vein. Therefore, an imaging study was performed and it confirmed the presence of DVT.\n\nFINAL_OPTION: ≥1 imaging study was done and confirmed DVT\nFINAL_ANSWER: 1",
+    "result": {
+      "answer": "≥1 imaging study was done and confirmed DVT"
+    }
+  },
+  "A3_2": {
+    "query": "type of imaging study performed: compression ultrasonography, doppler, venography",
+    "evidence": "Toni cardiaci validi e ritmici. Esami di laboratorio: D-dimero 2.200 ng/mL, superiore al limite superiore di riferimento del laboratorio. Eseguito ecocolordoppler venoso dell'arto superiore destro: trombosi della vena succlavia destra da sforzo, quadro compatibile con sindrome di Paget-Schroetter.\n\nAnamnesi patologica remota: Uomo di 24 anni, atleta. Non portatore di catetere venoso, anamnesi oncologica negativa. Nessun intervento chirurgico recente. Non allergie farmacologiche note. Anamnesi Prossima: Da 2 giorni gonfiore e dolore insorti improvvisamente al braccio destro dominante, dopo intensa attivita' di sollevamento pesi. Nega trauma diretto, febbre, dolore toracico e dispnea. Esame obiettivo all'ingresso: Paziente vigile, orientato e collaborante, eupnoico a riposo. PA 118/72 mmHg, FC 70 bpm, FR 14 atti/min, SpO2 99% in aria ambiente, TC 36,4°C. Braccio destro con cute arrossata e calda al tatto, dolorabilita' alla palpazione. Toni cardiaci validi e ritmici. Esami di laboratorio: D-dimero 2.200 ng/mL, superiore al limite superiore di riferimento del laboratorio. Eseguito",
+    "agent1_seconds": 6.2,
+    "brighton_context": "",
+    "agent2_seconds": 6.1,
+    "answer_conflict": null,
+    "reasoning": "The evidence explicitly states \"Eseguito ecocolordoppler venoso dell'arto superiore destro\" (Venous color Doppler ultrasound of the right upper limb was performed). This procedure corresponds to Doppler/Duplex Ultrasound. The text does not mention compression ultrasonography as a distinct or separate method, nor does it mention CT/MR venography, contrast venography, or other methods. Therefore, only option 4 is supported by the evidence.\n\nFINAL_OPTION: Doppler/Duplex Ultrasound\nFINAL_ANSWER: 4",
+    "result": {
+      "studies": [
+        "Doppler/Duplex Ultrasound"
+      ]
+    }
+  },
+  "B1_1": {
+    "query": "reported symptoms or signs of deep vein thrombosis",
+    "evidence": "Toni cardiaci validi e ritmici. Esami di laboratorio: D-dimero 2.200 ng/mL, superiore al limite superiore di riferimento del laboratorio. Eseguito ecocolordoppler venoso dell'arto superiore destro: trombosi della vena succlavia destra da sforzo, quadro compatibile con sindrome di Paget-Schroetter.\n\nAnamnesi patologica remota: Uomo di 24 anni, atleta. Non portatore di catetere venoso, anamnesi oncologica negativa. Nessun intervento chirurgico recente. Non allergie farmacologiche note. Anamnesi Prossima: Da 2 giorni gonfiore e dolore insorti improvvisamente al braccio destro dominante, dopo intensa attivita' di sollevamento pesi. Nega trauma diretto, febbre, dolore toracico e dispnea. Esame obiettivo all'ingresso: Paziente vigile, orientato e collaborante, eupnoico a riposo. PA 118/72 mmHg, FC 70 bpm, FR 14 atti/min, SpO2 99% in aria ambiente, TC 36,4°C. Braccio destro con cute arrossata e calda al tatto, dolorabilita' alla palpazione. Toni cardiaci validi e ritmici. Esami di laboratorio: D-dimero 2.200 ng/mL, superiore al limite superiore di riferimento del laboratorio. Eseguito",
+    "agent1_seconds": 10.4,
+    "brighton_context": "",
+    "agent2_seconds": 6.5,
+    "answer_conflict": null,
+    "reasoning": "The evidence explicitly describes symptoms and signs consistent with Deep Vein Thrombosis (DVT), specifically noting \"swelling and pain\" (gonfiore e dolore) in the right arm, along with physical exam findings of redness, warmth, and tenderness. Furthermore, the diagnosis is confirmed by venous color Doppler ultrasound showing thrombosis of the right subclavian vein. Therefore, it is incorrect to say there was no report or that it is unknown; symptoms and signs were clearly reported.\n\nFINAL_OPTION: ≥1 symptom or sign of DVT was reported\nFINAL_ANSWER: 1",
+    "result": {
+      "answer": "≥1 symptom or sign of DVT was reported"
+    }
+  },
+  "B1_2": {
+    "query": "deep vein thrombosis lower extremity or upper extremity",
+    "evidence": "Toni cardiaci validi e ritmici. Esami di laboratorio: D-dimero 2.200 ng/mL, superiore al limite superiore di riferimento del laboratorio. Eseguito ecocolordoppler venoso dell'arto superiore destro: trombosi della vena succlavia destra da sforzo, quadro compatibile con sindrome di Paget-Schroetter.\n\nAnamnesi patologica remota: Uomo di 24 anni, atleta. Non portatore di catetere venoso, anamnesi oncologica negativa. Nessun intervento chirurgico recente. Non allergie farmacologiche note. Anamnesi Prossima: Da 2 giorni gonfiore e dolore insorti improvvisamente al braccio destro dominante, dopo intensa attivita' di sollevamento pesi. Nega trauma diretto, febbre, dolore toracico e dispnea. Esame obiettivo all'ingresso: Paziente vigile, orientato e collaborante, eupnoico a riposo. PA 118/72 mmHg, FC 70 bpm, FR 14 atti/min, SpO2 99% in aria ambiente, TC 36,4°C. Braccio destro con cute arrossata e calda al tatto, dolorabilita' alla palpazione. Toni cardiaci validi e ritmici. Esami di laboratorio: D-dimero 2.200 ng/mL, superiore al limite superiore di riferimento del laboratorio. Eseguito",
+    "agent1_seconds": 6.9,
+    "brighton_context": "",
+    "agent2_seconds": 6.2,
+    "answer_conflict": null,
+    "reasoning": "The evidence explicitly states that an ultrasound (ecocolordoppler) of the right upper limb was performed, revealing thrombosis of the right subclavian vein (\"trombosi della vena succlavia destra\"). The subclavian vein is located in the upper extremity. Therefore, this confirms Upper extremity DVT. There is no mention of thrombosis in the lower extremities; in fact, the symptoms and findings are localized to the right arm.\n\nFINAL_OPTION: Upper extremity DVT\nFINAL_ANSWER: 2",
+    "result": {
+      "types": [
+        "Upper extremity DVT"
+      ]
+    }
+  },
+  "B2": {
+    "query": "calf pain or tenderness, leg swelling or pitting oedema, redness, warmth or pain in any extremity, absent pulses in legs or arms",
+    "evidence": "Anamnesi patologica remota: Uomo di 24 anni, atleta. Non portatore di catetere venoso, anamnesi oncologica negativa. Nessun intervento chirurgico recente. Non allergie farmacologiche note. Anamnesi Prossima: Da 2 giorni gonfiore e dolore insorti improvvisamente al braccio destro dominante, dopo intensa attivita' di sollevamento pesi. Nega trauma diretto, febbre, dolore toracico e dispnea. Esame obiettivo all'ingresso: Paziente vigile, orientato e collaborante, eupnoico a riposo. PA 118/72 mmHg, FC 70 bpm, FR 14 atti/min, SpO2 99% in aria ambiente, TC 36,4°C. Braccio destro con cute arrossata e calda al tatto, dolorabilita' alla palpazione. Toni cardiaci validi e ritmici. Esami di laboratorio: D-dimero 2.200 ng/mL, superiore al limite superiore di riferimento del laboratorio. Eseguito\n\nToni cardiaci validi e ritmici. Esami di laboratorio: D-dimero 2.200 ng/mL, superiore al limite superiore di riferimento del laboratorio. Eseguito ecocolordoppler venoso dell'arto superiore destro: trombosi della vena succlavia destra da sforzo, quadro compatibile con sindrome di Paget-Schroetter.",
+    "agent1_seconds": 7.6,
+    "brighton_context": "",
+    "agent2_seconds": 12.9,
+    "answer_conflict": null,
+    "reasoning": "The evidence describes a 24-year-old male presenting with sudden swelling and pain in the right arm after weightlifting. The physical examination explicitly notes that the right arm has \"cute arrossata e calda al tatto\" (skin red and warm to the touch) and \"dolorabilita' alla palpazione\" (pain on palpation). This directly supports option 4 (\"Redness, warmth, or pain in one or more extremities\").\n\nRegarding the other options:\n- Option 1 (Calf pain or tenderness) and Option 2 (Leg swelling or pitting oedema) are not supported because the symptoms are localized to the arm, and there is no mention of leg involvement. The absence of mention does not confirm their absence, but they are certainly not present based on the provided text.\n- Option 3 (Absent pulses in legs or arms) is not supported. The text mentions \"Toni cardiaci validi e ritmici\" (heart sounds valid and rhythmic) but does not explicitly state that peripheral pulses were checked or found to be absent. In fact, the diagnosis is venous thrombosis, which typically preserves arterial pulses. There is no evidence of absent pulses.\n\nTherefore, only option 4 is supported by the explicit findings in the text.\n\nFINAL_OPTION: Redness, warmth, or pain in one or more extremities\nFINAL_ANSWER: 4",
+    "result": {
+      "symptoms": [
+        "Redness, warmth, or pain in one or more extremities"
+      ]
+    }
+  },
+  "C": {
+    "query": "D-dimer value, test date, laboratory upper limit of normal",
+    "evidence": "Toni cardiaci validi e ritmici. Esami di laboratorio: D-dimero 2.200 ng/mL, superiore al limite superiore di riferimento del laboratorio. Eseguito ecocolordoppler venoso dell'arto superiore destro: trombosi della vena succlavia destra da sforzo, quadro compatibile con sindrome di Paget-Schroetter.\n\nAnamnesi patologica remota: Uomo di 24 anni, atleta. Non portatore di catetere venoso, anamnesi oncologica negativa. Nessun intervento chirurgico recente. Non allergie farmacologiche note. Anamnesi Prossima: Da 2 giorni gonfiore e dolore insorti improvvisamente al braccio destro dominante, dopo intensa attivita' di sollevamento pesi. Nega trauma diretto, febbre, dolore toracico e dispnea. Esame obiettivo all'ingresso: Paziente vigile, orientato e collaborante, eupnoico a riposo. PA 118/72 mmHg, FC 70 bpm, FR 14 atti/min, SpO2 99% in aria ambiente, TC 36,4°C. Braccio destro con cute arrossata e calda al tatto, dolorabilita' alla palpazione. Toni cardiaci validi e ritmici. Esami di laboratorio: D-dimero 2.200 ng/mL, superiore al limite superiore di riferimento del laboratorio. Eseguito",
+    "agent1_seconds": 6.5,
+    "brighton_context": "",
+    "agent2_seconds": 5.1,
+    "answer_conflict": null,
+    "reasoning": "The evidence explicitly states \"D-dimero 2.200 ng/mL, superiore al limite superiore di riferimento del laboratorio,\" which translates to D-dimer being 2,200 ng/mL, above the laboratory's upper reference limit. This directly confirms that the test was performed and the result exceeded the normal range.\n\nFINAL_OPTION: D-dimer exceeded test lab's upper limit of normal.\nFINAL_ANSWER: 1",
+    "result": {
+      "answer": "D-dimer exceeded test lab's upper limit of normal."
+    }
+  },
+  "F": {
+    "query": "diagnosis of deep vein thrombosis reported by specialist",
+    "evidence": "Toni cardiaci validi e ritmici. Esami di laboratorio: D-dimero 2.200 ng/mL, superiore al limite superiore di riferimento del laboratorio. Eseguito ecocolordoppler venoso dell'arto superiore destro: trombosi della vena succlavia destra da sforzo, quadro compatibile con sindrome di Paget-Schroetter.\n\nAnamnesi patologica remota: Uomo di 24 anni, atleta. Non portatore di catetere venoso, anamnesi oncologica negativa. Nessun intervento chirurgico recente. Non allergie farmacologiche note. Anamnesi Prossima: Da 2 giorni gonfiore e dolore insorti improvvisamente al braccio destro dominante, dopo intensa attivita' di sollevamento pesi. Nega trauma diretto, febbre, dolore toracico e dispnea. Esame obiettivo all'ingresso: Paziente vigile, orientato e collaborante, eupnoico a riposo. PA 118/72 mmHg, FC 70 bpm, FR 14 atti/min, SpO2 99% in aria ambiente, TC 36,4°C. Braccio destro con cute arrossata e calda al tatto, dolorabilita' alla palpazione. Toni cardiaci validi e ritmici. Esami di laboratorio: D-dimero 2.200 ng/mL, superiore al limite superiore di riferimento del laboratorio. Eseguito",
+    "agent1_seconds": 6.8,
+    "brighton_context": "",
+    "agent2_seconds": 6.5,
+    "answer_conflict": null,
+    "reasoning": "The evidence explicitly states that an \"ecocolordoppler venoso dell'arto superiore destro\" (venous color Doppler ultrasound of the right upper limb) was performed and confirmed a thrombosis of the right subclavian vein. The question asks to determine the correct answer based on this evidence, implying a query about whether DVT (or in this case, upper extremity deep vein thrombosis, which falls under VTE) was confirmed by the described method. Since the text confirms the diagnosis via this specific imaging modality, the answer is affirmative.\n\nFINAL_OPTION: Yes\nFINAL_ANSWER: 1",
+    "result": {
+      "answer": "Yes"
+    }
+  },
+  "X": {
+    "query": "possible alternative etiologies; clinical syndromes to be differentiated from thrombosis; conditions explaining calf pain, redness, warmth or ankle edema other than DVT",
+    "evidence": "Anamnesi patologica remota: Uomo di 24 anni, atleta. Non portatore di catetere venoso, anamnesi oncologica negativa. Nessun intervento chirurgico recente. Non allergie farmacologiche note. Anamnesi Prossima: Da 2 giorni gonfiore e dolore insorti improvvisamente al braccio destro dominante, dopo intensa attivita' di sollevamento pesi. Nega trauma diretto, febbre, dolore toracico e dispnea. Esame obiettivo all'ingresso: Paziente vigile, orientato e collaborante, eupnoico a riposo. PA 118/72 mmHg, FC 70 bpm, FR 14 atti/min, SpO2 99% in aria ambiente, TC 36,4°C. Braccio destro con cute arrossata e calda al tatto, dolorabilita' alla palpazione. Toni cardiaci validi e ritmici. Esami di laboratorio: D-dimero 2.200 ng/mL, superiore al limite superiore di riferimento del laboratorio. Eseguito\n\nToni cardiaci validi e ritmici. Esami di laboratorio: D-dimero 2.200 ng/mL, superiore al limite superiore di riferimento del laboratorio. Eseguito ecocolordoppler venoso dell'arto superiore destro: trombosi della vena succlavia destra da sforzo, quadro compatibile con sindrome di Paget-Schroetter.",
+    "agent1_seconds": 5.8,
+    "brighton_context": "",
+    "agent2_seconds": 7.4,
+    "answer_conflict": null,
+    "reasoning": "The evidence describes a patient presenting with acute right arm swelling and pain after weightlifting. The clinical workup, including a positive D-dimer and a venous color Doppler ultrasound, confirmed a diagnosis of right subclavian vein thrombosis (effort thrombosis/Paget-Schroetter syndrome). This specific diagnosis fully accounts for the patient's acute symptoms (arm swelling, pain, redness, warmth). There is no mention of any other competing or alternative diagnosis that was found to explain the illness; rather, a definitive cause was identified. Therefore, an alternative diagnosis was not found because the primary diagnosis explains the condition.\n\nFINAL_OPTION: No alternative diagnosis was found to explain the acute illness\nFINAL_ANSWER: 2",
+    "result": {
+      "answer": "No alternative diagnosis was found to explain the acute illness"
+    }
+  },
+  "_run_config": {
+    "extractor_mode": "agentic_graph",
+    "section_gates_enabled": {
+      "keyword": false,
+      "details": false,
+      "absent_pulses": false
+    },
+    "brighton_context_enabled": false,
+    "section_descriptions_enabled": false,
+    "section_hints_enabled": false,
+    "section_hints_disabled": [],
+    "section_hints_fingerprint": {
+      "all": "dbe3b41b6a5c"
+    },
+    "section_queries_fingerprint": {
+      "A1": "68 f31cb52cc7a2",
+      "A2": "47 df6b72799cd6",
+      "A3_1": "73 dea0b36a509c",
+      "A3_2": "81 df834d2f4193",
+      "B1_1": "50 6cda81bb9be8",
+      "B1_2": "55 9136dd6530fb",
+      "B2": "128 618aaee6579e",
+      "C": "58 98411e20a257",
+      "F": "56 2a1cef15a0b0",
+      "X": "168 49d5d41f3a23",
+      "all": "bfd9536a31fe"
+    },
+    "guideline_anchors_enabled": false,
+    "guideline_anchors_fingerprint": {
+      "A1": "699 6fa2837f0bf8",
+      "A2": "699 6fa2837f0bf8",
+      "A3_1": "1616 0d73c0d46674",
+      "A3_2": "3566 841cc2dbfd90",
+      "B1_1": "4230 4af7e1ebd4a3",
+      "B1_2": "4230 4af7e1ebd4a3",
+      "B2": "4230 4af7e1ebd4a3",
+      "C": "977 fcf102e0a775",
+      "X": "2770 c66190553aeb",
+      "all": "4bc8810e170a"
+    },
+    "cross_section_rules_applied": true,
+    "models": {
+      "extractor": "qwen3.6:27b",
+      "evaluator": "qwen3.6:27b",
+      "embeddings": "intfloat/multilingual-e5-small"
+    },
+    "environment": {
+      "hostname": "mari",
+      "ollama_version": "ollama version is 0.32.1"
+    },
+    "generation": {
+      "temperature": 0.0,
+      "num_predict": 1024,
+      "num_gpu": 999,
+      "reasoning": false
+    },
+    "retrieval": {
+      "ehr_chunk_size": 800,
+      "ehr_chunk_overlap": 150,
+      "ehr_retriever_k": 5,
+      "brighton_retriever_k": 5
+    }
+  }
+}

@@ -1,0 +1,78 @@
+{
+  "E": {
+    "query": "electrocardiogram ECG findings: rhythm, atrial or ventricular arrhythmia, tachycardia, atrial fibrillation, AV block, bundle branch block, conduction delay, ST segment or T wave abnormality, Q waves, low voltage, premature atrial or ventricular contractions, ambulatory monitoring, normal ECG, ECG not performed",
+    "evidence": "Anamnesi ProssimaAccesso in DEA in data 17/04 per dolore in fianco destro associato a febbre con brivido. Nei giorni precedenti ha assunto Bactrim 1 cp x 2 per cistite emorragica; riferita inoltre comparsa di eruzione cutanea dopo assunzione del farmaco.In DEA paziente vigile, orientata, piretica. (GCS 15, PA 100/60, FC 95/min, satO2 98% in aa) Presenza di lesioni pruriginose regione toracica anteriore e inguinale, alcune simil vescicole. Al cuore toni ritmici, pause apparentemente libere. Al torace MV presente, non rumori aggiunti. Addome piano, dolente e dolorabile ai quadranti di destra, blumberg negativo, peristalsi presente. Dolore e lieve rigidit¿¿ regione cervicale. Ventricolo sinistro di normali dimensioni; lievi irregolarità dello spessore parietale in sede apicale e\n\nFunzione sistolica globale ai limiti inferiori della norma (FE stimata intorno al 45%) con modeste alterazioni segmentarie della cinetica in sede antero-settale e apicale.\nIl quadro potrebbe essere compatibile con esiti di sofferenza miocardica di possibile natura ischemica, da confermare mediante correlazione clinica e laboratoristica.\nNon valvulopatie di rilievo significativo.\nPericardio indenne\n\nDolore e lieve rigidit¿¿ regione cervicale. Ventricolo sinistro di normali dimensioni; lievi irregolarità dello spessore parietale in sede apicale e antero-settale.",
+    "agent1_seconds": 51.4,
+    "brighton_context": "",
+    "agent2_seconds": 11.2,
+    "answer_conflict": null,
+    "reasoning": "The provided evidence describes an echocardiogram (imaging of the heart structure and function) performed in the Emergency Department. It details findings such as normal left ventricular size, mild wall thickness irregularities, reduced ejection fraction (~45%), and segmental kinetic alterations suggestive of possible ischemic myocardial injury. However, the text **does not mention** an electrocardiogram (ECG/EKG) being performed, nor does it provide any ECG results (such as ST changes, arrhythmias, or conduction delays). According to the instructions, if the evidence does not mention that specific method (ECG) at all, the correct answer is the \"not done / unknown\" option for that method. Therefore, options describing specific ECG findings (2-14) cannot be selected because there is no evidence they were observed or even recorded. Option 1 correctly reflects that the ECG status is unknown/not mentioned in this specific text snippet.\n\nFINAL_OPTION: ECG not done, or done but no results available or unknown if done\nFINAL_ANSWER: 1",
+    "result": {
+      "findings": [
+        "ECG not done, or done but no results available or unknown if done"
+      ]
+    }
+  },
+  "F": {
+    "query": "echocardiogram ECHO findings: ejection fraction, left or right ventricular function, segmental wall motion, global systolic or diastolic function, ventricular dilation, wall thickness, pericardial effusion or inflammation, normal echocardiogram, ECHO not performed",
+    "evidence": "Funzione sistolica globale ai limiti inferiori della norma (FE stimata intorno al 45%) con modeste alterazioni segmentarie della cinetica in sede antero-settale e apicale.\nIl quadro potrebbe essere compatibile con esiti di sofferenza miocardica di possibile natura ischemica, da confermare mediante correlazione clinica e laboratoristica.\nNon valvulopatie di rilievo significativo.\nPericardio indenne\n\nDolore e lieve rigidit¿¿ regione cervicale. Ventricolo sinistro di normali dimensioni; lievi irregolarità dello spessore parietale in sede apicale e antero-settale.\n\nAnamnesi ProssimaAccesso in DEA in data 17/04 per dolore in fianco destro associato a febbre con brivido. Nei giorni precedenti ha assunto Bactrim 1 cp x 2 per cistite emorragica; riferita inoltre comparsa di eruzione cutanea dopo assunzione del farmaco.In DEA paziente vigile, orientata, piretica. (GCS 15, PA 100/60, FC 95/min, satO2 98% in aa) Presenza di lesioni pruriginose regione toracica anteriore e inguinale, alcune simil vescicole. Al cuore toni ritmici, pause apparentemente libere. Al torace MV presente, non rumori aggiunti. Addome piano, dolente e dolorabile ai quadranti di destra, blumberg negativo, peristalsi presente. Dolore e lieve rigidit¿¿ regione cervicale. Ventricolo sinistro di normali dimensioni; lievi irregolarità dello spessore parietale in sede apicale e",
+    "agent1_seconds": 107.1,
+    "brighton_context": "",
+    "agent2_seconds": 145.8,
+    "answer_conflict": null,
+    "reasoning": "The evidence is an echocardiogram report. It explicitly states \"Funzione sistolica globale ai limiti inferiori della norma (FE stimata intorno al 45%)\" which indicates global systolic function depression/abnormality, supporting Option 4. It also notes \"modeste alterazioni segmentarie della cinetica in sede antero-settale e apicale,\" which corresponds to Segmental wall motion abnormalities, supporting Option 3. Furthermore, it mentions \"lievi irregolarità dello spessore parietale\" (slight irregularities of wall thickness), supporting Option 6. The report explicitly states the pericardium is uninvolved (\"Pericardio indenne\"), ruling out pericarditis/fluid options. It does not definitively confirm myocarditis, only suggesting it as a possibility to be confirmed, so Option 7 is incorrect. Ventricular dimensions are normal, ruling out dilation.\n\nFINAL_OPTION: Segmental wall motion abnormalities; Global systolic or diastolic function depression/abnormality - (*Decreased longitudinal and circumferential strain and strain rates on tissue Doppler); Wall thickness change\nFINAL_ANSWER: 3; 4; 6",
+    "result": {
+      "findings": [
+        "Segmental wall motion abnormalities",
+        "Global systolic or diastolic function depression/abnormality - (*Decreased longitudinal and circumferential strain and strain rates on tissue Doppler)",
+        "Wall thickness change"
+      ]
+    }
+  },
+  "_run_config": {
+    "extractor_mode": "agentic_graph",
+    "section_gates_enabled": {
+      "keyword": false,
+      "details": false,
+      "absent_pulses": false
+    },
+    "brighton_context_enabled": false,
+    "section_descriptions_enabled": false,
+    "section_hints_enabled": true,
+    "section_hints_disabled": [],
+    "section_hints_fingerprint": {
+      "all": "9503fb46b54e"
+    },
+    "section_queries_fingerprint": {
+      "E": "311 b830923d415b",
+      "F": "264 9cfac9903bb3",
+      "all": "8c4c0ec0ce71"
+    },
+    "guideline_anchors_enabled": false,
+    "guideline_anchors_fingerprint": {
+      "all": "e3b0c44298fc"
+    },
+    "cross_section_rules_applied": true,
+    "models": {
+      "extractor": "qwen3.6:27b",
+      "evaluator": "qwen3.6:27b",
+      "embeddings": "intfloat/multilingual-e5-small"
+    },
+    "environment": {
+      "hostname": "mari",
+      "ollama_version": "ollama version is 0.32.1"
+    },
+    "generation": {
+      "temperature": 0.0,
+      "num_predict": 1024,
+      "num_gpu": 999,
+      "reasoning": false
+    },
+    "retrieval": {
+      "ehr_chunk_size": 800,
+      "ehr_chunk_overlap": 150,
+      "ehr_retriever_k": 5,
+      "brighton_retriever_k": 5
+    }
+  }
+}

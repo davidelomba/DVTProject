@@ -1,0 +1,191 @@
+{
+  "A1": {
+    "query": "autopsy report, necropsy, post-mortem examination, autoptic findings",
+    "evidence": "obiettivo vascolare i polsi pedidio e tibiale posteriore sinistri non sono apprezzabili. Esami di laboratorio: D-dimero non eseguito. Accertamenti strumentali: ecocolordoppler venoso dell'arto inferiore sinistro con vene pervie e nessuna evidenza di trombosi venosa profonda. La misurazione della pressione intracompartimentale risulta elevata. Valutazione specialistica: diagnosi di sindrome compartimentale della loggia posteriore, avviata consulenza ortopedica urgente.\n\nAnamnesi patologica remota: Uomo di 29 anni, senza patologie di rilievo. Nessun intervento chirurgico recente. Non allergie farmacologiche note. Anamnesi farmacologica: nessuna terapia cronica in atto. Anamnesi prossima: giunge in pronto soccorso per dolore ingravescente alla gamba sinistra, insorto dopo un trauma contusivo riportato circa dodici ore prima. Nega febbre e dispnea. Esame obiettivo: paziente vigile, sofferente per il dolore. PA 138/84 mmHg, FC 92 bpm, FR 17 atti/min, SpO2 98% in aria ambiente, TC 36,8°C. Polpaccio sinistro tumefatto e teso alla palpazione, con dolore intenso evocato dalla mobilizzazione passiva del piede. All'esame obiettivo vascolare i polsi pedidio e tibiale posteriore sinistri non sono apprezzabili. Esami di laboratorio: D-dimero non eseguito. Accertamenti",
+    "agent1_seconds": 5.8,
+    "brighton_context": "",
+    "agent2_seconds": 5.6,
+    "answer_conflict": null,
+    "reasoning": "The provided evidence describes a living patient presenting to the emergency department with symptoms of compartment syndrome following trauma. The text details clinical examination findings, laboratory results (D-dimer not performed), and imaging results (venous color Doppler ultrasound showing no DVT). There is absolutely no mention of the patient's death or any post-mortem examination. Therefore, an autopsy was not performed.\n\nFINAL_OPTION: No autopsy done, unknown if done, or done but results unavailable\nFINAL_ANSWER: 3",
+    "result": {
+      "answer": "No autopsy done, unknown if done, or done but results unavailable"
+    }
+  },
+  "A2": {
+    "query": "thrombectomy, surgical procedure related to DVT",
+    "evidence": "obiettivo vascolare i polsi pedidio e tibiale posteriore sinistri non sono apprezzabili. Esami di laboratorio: D-dimero non eseguito. Accertamenti strumentali: ecocolordoppler venoso dell'arto inferiore sinistro con vene pervie e nessuna evidenza di trombosi venosa profonda. La misurazione della pressione intracompartimentale risulta elevata. Valutazione specialistica: diagnosi di sindrome compartimentale della loggia posteriore, avviata consulenza ortopedica urgente.\n\nAnamnesi patologica remota: Uomo di 29 anni, senza patologie di rilievo. Nessun intervento chirurgico recente. Non allergie farmacologiche note. Anamnesi farmacologica: nessuna terapia cronica in atto. Anamnesi prossima: giunge in pronto soccorso per dolore ingravescente alla gamba sinistra, insorto dopo un trauma contusivo riportato circa dodici ore prima. Nega febbre e dispnea. Esame obiettivo: paziente vigile, sofferente per il dolore. PA 138/84 mmHg, FC 92 bpm, FR 17 atti/min, SpO2 98% in aria ambiente, TC 36,8°C. Polpaccio sinistro tumefatto e teso alla palpazione, con dolore intenso evocato dalla mobilizzazione passiva del piede. All'esame obiettivo vascolare i polsi pedidio e tibiale posteriore sinistri non sono apprezzabili. Esami di laboratorio: D-dimero non eseguito. Accertamenti",
+    "agent1_seconds": 5.6,
+    "brighton_context": "",
+    "agent2_seconds": 7.2,
+    "answer_conflict": null,
+    "reasoning": "The evidence explicitly states that the venous color Doppler ultrasound showed patent veins with no evidence of deep vein thrombosis (DVT). Furthermore, the patient was diagnosed with compartment syndrome, and while an urgent orthopedic consultation was initiated, there is no mention of a surgical procedure such as thrombectomy being performed. Since DVT was ruled out by imaging and no surgery to treat DVT is described, the correct classification is that no surgical procedure for DVT was done or findings were negative/unknown regarding surgery.\n\nFINAL_OPTION: No surgical procedure done; or, done but either did not confirm presence of DVT or findings unknown; or unknown if done\nFINAL_ANSWER: 3",
+    "result": {
+      "answer": "No surgical procedure done; or, done but either did not confirm presence of DVT or findings unknown; or unknown if done"
+    }
+  },
+  "A3_1": {
+    "query": "ultrasound, CT, MRI, venography: imaging outcome for deep vein thrombosis",
+    "evidence": "obiettivo vascolare i polsi pedidio e tibiale posteriore sinistri non sono apprezzabili. Esami di laboratorio: D-dimero non eseguito. Accertamenti strumentali: ecocolordoppler venoso dell'arto inferiore sinistro con vene pervie e nessuna evidenza di trombosi venosa profonda. La misurazione della pressione intracompartimentale risulta elevata. Valutazione specialistica: diagnosi di sindrome compartimentale della loggia posteriore, avviata consulenza ortopedica urgente.\n\nAnamnesi patologica remota: Uomo di 29 anni, senza patologie di rilievo. Nessun intervento chirurgico recente. Non allergie farmacologiche note. Anamnesi farmacologica: nessuna terapia cronica in atto. Anamnesi prossima: giunge in pronto soccorso per dolore ingravescente alla gamba sinistra, insorto dopo un trauma contusivo riportato circa dodici ore prima. Nega febbre e dispnea. Esame obiettivo: paziente vigile, sofferente per il dolore. PA 138/84 mmHg, FC 92 bpm, FR 17 atti/min, SpO2 98% in aria ambiente, TC 36,8°C. Polpaccio sinistro tumefatto e teso alla palpazione, con dolore intenso evocato dalla mobilizzazione passiva del piede. All'esame obiettivo vascolare i polsi pedidio e tibiale posteriore sinistri non sono apprezzabili. Esami di laboratorio: D-dimero non eseguito. Accertamenti",
+    "agent1_seconds": 6.5,
+    "brighton_context": "",
+    "agent2_seconds": 5.7,
+    "answer_conflict": null,
+    "reasoning": "The evidence explicitly states that a venous color Doppler ultrasound (\"ecocolordoppler venoso\") was performed on the left lower limb. The results showed patent veins and \"no evidence of deep vein thrombosis\" (\"nessuna evidenza di trombosi venosa profonda\"). Therefore, an imaging study was done, but it did not confirm DVT; rather, it ruled it out.\n\nFINAL_OPTION: ≥1 imaging study was done but didn't confirm DVT\nFINAL_ANSWER: 2",
+    "result": {
+      "answer": "≥1 imaging study was done but didn't confirm DVT"
+    }
+  },
+  "A3_2": {
+    "query": "type of imaging study performed: compression ultrasonography, doppler, venography",
+    "evidence": "obiettivo vascolare i polsi pedidio e tibiale posteriore sinistri non sono apprezzabili. Esami di laboratorio: D-dimero non eseguito. Accertamenti strumentali: ecocolordoppler venoso dell'arto inferiore sinistro con vene pervie e nessuna evidenza di trombosi venosa profonda. La misurazione della pressione intracompartimentale risulta elevata. Valutazione specialistica: diagnosi di sindrome compartimentale della loggia posteriore, avviata consulenza ortopedica urgente.\n\nAnamnesi patologica remota: Uomo di 29 anni, senza patologie di rilievo. Nessun intervento chirurgico recente. Non allergie farmacologiche note. Anamnesi farmacologica: nessuna terapia cronica in atto. Anamnesi prossima: giunge in pronto soccorso per dolore ingravescente alla gamba sinistra, insorto dopo un trauma contusivo riportato circa dodici ore prima. Nega febbre e dispnea. Esame obiettivo: paziente vigile, sofferente per il dolore. PA 138/84 mmHg, FC 92 bpm, FR 17 atti/min, SpO2 98% in aria ambiente, TC 36,8°C. Polpaccio sinistro tumefatto e teso alla palpazione, con dolore intenso evocato dalla mobilizzazione passiva del piede. All'esame obiettivo vascolare i polsi pedidio e tibiale posteriore sinistri non sono apprezzabili. Esami di laboratorio: D-dimero non eseguito. Accertamenti",
+    "agent1_seconds": 6.8,
+    "brighton_context": "",
+    "agent2_seconds": 6.6,
+    "answer_conflict": null,
+    "reasoning": "The evidence explicitly states \"ecocolordoppler venoso dell'arto inferiore sinistro\" (venous color Doppler ultrasound of the left lower limb) was performed. This corresponds to Option 4 (Doppler/Duplex Ultrasound). The text confirms that this specific modality showed patent veins and no evidence of deep vein thrombosis. No other imaging modalities such as CT/MR venography or contrast venography are mentioned, nor is simple compression ultrasonography distinguished from the Doppler study described.\n\nFINAL_OPTION: Doppler/Duplex Ultrasound\nFINAL_ANSWER: 4",
+    "result": {
+      "studies": [
+        "Doppler/Duplex Ultrasound"
+      ]
+    }
+  },
+  "B1_1": {
+    "query": "reported symptoms or signs of deep vein thrombosis",
+    "evidence": "obiettivo vascolare i polsi pedidio e tibiale posteriore sinistri non sono apprezzabili. Esami di laboratorio: D-dimero non eseguito. Accertamenti strumentali: ecocolordoppler venoso dell'arto inferiore sinistro con vene pervie e nessuna evidenza di trombosi venosa profonda. La misurazione della pressione intracompartimentale risulta elevata. Valutazione specialistica: diagnosi di sindrome compartimentale della loggia posteriore, avviata consulenza ortopedica urgente.\n\nAnamnesi patologica remota: Uomo di 29 anni, senza patologie di rilievo. Nessun intervento chirurgico recente. Non allergie farmacologiche note. Anamnesi farmacologica: nessuna terapia cronica in atto. Anamnesi prossima: giunge in pronto soccorso per dolore ingravescente alla gamba sinistra, insorto dopo un trauma contusivo riportato circa dodici ore prima. Nega febbre e dispnea. Esame obiettivo: paziente vigile, sofferente per il dolore. PA 138/84 mmHg, FC 92 bpm, FR 17 atti/min, SpO2 98% in aria ambiente, TC 36,8°C. Polpaccio sinistro tumefatto e teso alla palpazione, con dolore intenso evocato dalla mobilizzazione passiva del piede. All'esame obiettivo vascolare i polsi pedidio e tibiale posteriore sinistri non sono apprezzabili. Esami di laboratorio: D-dimero non eseguito. Accertamenti",
+    "agent1_seconds": 7.4,
+    "brighton_context": "",
+    "agent2_seconds": 6.2,
+    "answer_conflict": null,
+    "reasoning": "The evidence explicitly states that the venous color Doppler ultrasound of the left lower limb showed patent veins and \"no evidence of deep vein thrombosis\" (nessuna evidenza di trombosi venosa profonda). Although the patient presented with symptoms such as swelling and pain, these were attributed to compartment syndrome, and the specific diagnostic test for DVT ruled it out. Therefore, there is no report of a recognized DVT syndrome; rather, DVT was explicitly excluded by imaging.\n\nFINAL_OPTION: There was no report of a recognized DVT syndrome\nFINAL_ANSWER: 2",
+    "result": {
+      "answer": "There was no report of a recognized DVT syndrome"
+    }
+  },
+  "B1_2": {
+    "query": "deep vein thrombosis lower extremity or upper extremity",
+    "evidence": "obiettivo vascolare i polsi pedidio e tibiale posteriore sinistri non sono apprezzabili. Esami di laboratorio: D-dimero non eseguito. Accertamenti strumentali: ecocolordoppler venoso dell'arto inferiore sinistro con vene pervie e nessuna evidenza di trombosi venosa profonda. La misurazione della pressione intracompartimentale risulta elevata. Valutazione specialistica: diagnosi di sindrome compartimentale della loggia posteriore, avviata consulenza ortopedica urgente.\n\nAnamnesi patologica remota: Uomo di 29 anni, senza patologie di rilievo. Nessun intervento chirurgico recente. Non allergie farmacologiche note. Anamnesi farmacologica: nessuna terapia cronica in atto. Anamnesi prossima: giunge in pronto soccorso per dolore ingravescente alla gamba sinistra, insorto dopo un trauma contusivo riportato circa dodici ore prima. Nega febbre e dispnea. Esame obiettivo: paziente vigile, sofferente per il dolore. PA 138/84 mmHg, FC 92 bpm, FR 17 atti/min, SpO2 98% in aria ambiente, TC 36,8°C. Polpaccio sinistro tumefatto e teso alla palpazione, con dolore intenso evocato dalla mobilizzazione passiva del piede. All'esame obiettivo vascolare i polsi pedidio e tibiale posteriore sinistri non sono apprezzabili. Esami di laboratorio: D-dimero non eseguito. Accertamenti",
+    "agent1_seconds": 6.4,
+    "brighton_context": "",
+    "agent2_seconds": 6.5,
+    "answer_conflict": null,
+    "reasoning": "The evidence explicitly states that the venous color Doppler ultrasound of the left lower extremity showed patent veins with \"nessuna evidenza di trombosi venosa profonda\" (no evidence of deep vein thrombosis). Therefore, DVT is ruled out for the lower extremity. There is no mention of any symptoms, findings, or imaging related to the upper extremities, so Upper extremity DVT cannot be assumed to be present. Since DVT was explicitly excluded in the only limb investigated and not mentioned elsewhere, neither option applies.\n\nFINAL_OPTION: none\nFINAL_ANSWER: none",
+    "result": {
+      "types": []
+    }
+  },
+  "B2": {
+    "query": "calf pain or tenderness, leg swelling or pitting oedema, redness, warmth or pain in any extremity, absent pulses in legs or arms",
+    "evidence": "Anamnesi patologica remota: Uomo di 29 anni, senza patologie di rilievo. Nessun intervento chirurgico recente. Non allergie farmacologiche note. Anamnesi farmacologica: nessuna terapia cronica in atto. Anamnesi prossima: giunge in pronto soccorso per dolore ingravescente alla gamba sinistra, insorto dopo un trauma contusivo riportato circa dodici ore prima. Nega febbre e dispnea. Esame obiettivo: paziente vigile, sofferente per il dolore. PA 138/84 mmHg, FC 92 bpm, FR 17 atti/min, SpO2 98% in aria ambiente, TC 36,8°C. Polpaccio sinistro tumefatto e teso alla palpazione, con dolore intenso evocato dalla mobilizzazione passiva del piede. All'esame obiettivo vascolare i polsi pedidio e tibiale posteriore sinistri non sono apprezzabili. Esami di laboratorio: D-dimero non eseguito. Accertamenti\n\nobiettivo vascolare i polsi pedidio e tibiale posteriore sinistri non sono apprezzabili. Esami di laboratorio: D-dimero non eseguito. Accertamenti strumentali: ecocolordoppler venoso dell'arto inferiore sinistro con vene pervie e nessuna evidenza di trombosi venosa profonda. La misurazione della pressione intracompartimentale risulta elevata. Valutazione specialistica: diagnosi di sindrome compartimentale della loggia posteriore, avviata consulenza ortopedica urgente.",
+    "agent1_seconds": 8.6,
+    "brighton_context": "",
+    "agent2_seconds": 8.7,
+    "answer_conflict": null,
+    "reasoning": "The patient presents with left leg pain and swelling (\"Polpaccio sinistro tumefatto e teso\"), which corresponds to options 1 (Calf pain or tenderness) and 2 (Leg swelling or pitting oedema). The text explicitly states that the posterior tibial and pedal pulses on the left side are not palpable (\"i polsi pedidio e tibiale posteriore sinistri non sono apprezzabili\"), which confirms option 3 (Absent pulses in legs or arms). There is no mention of redness or warmth, so option 4 is not supported. Since options 1, 2, and 3 are present, option 5 is incorrect.\n\nFINAL_OPTION: Calf pain or tenderness; Leg swelling or pitting oedema; Absent pulses in legs or arms\nFINAL_ANSWER: 1; 2; 3",
+    "result": {
+      "symptoms": [
+        "Calf pain or tenderness",
+        "Leg swelling or pitting oedema",
+        "Absent pulses in legs or arms"
+      ]
+    }
+  },
+  "C": {
+    "query": "D-dimer value, test date, laboratory upper limit of normal",
+    "evidence": "Anamnesi patologica remota: Uomo di 29 anni, senza patologie di rilievo. Nessun intervento chirurgico recente. Non allergie farmacologiche note. Anamnesi farmacologica: nessuna terapia cronica in atto. Anamnesi prossima: giunge in pronto soccorso per dolore ingravescente alla gamba sinistra, insorto dopo un trauma contusivo riportato circa dodici ore prima. Nega febbre e dispnea. Esame obiettivo: paziente vigile, sofferente per il dolore. PA 138/84 mmHg, FC 92 bpm, FR 17 atti/min, SpO2 98% in aria ambiente, TC 36,8°C. Polpaccio sinistro tumefatto e teso alla palpazione, con dolore intenso evocato dalla mobilizzazione passiva del piede. All'esame obiettivo vascolare i polsi pedidio e tibiale posteriore sinistri non sono apprezzabili. Esami di laboratorio: D-dimero non eseguito. Accertamenti\n\nobiettivo vascolare i polsi pedidio e tibiale posteriore sinistri non sono apprezzabili. Esami di laboratorio: D-dimero non eseguito. Accertamenti strumentali: ecocolordoppler venoso dell'arto inferiore sinistro con vene pervie e nessuna evidenza di trombosi venosa profonda. La misurazione della pressione intracompartimentale risulta elevata. Valutazione specialistica: diagnosi di sindrome compartimentale della loggia posteriore, avviata consulenza ortopedica urgente.",
+    "agent1_seconds": 5.8,
+    "brighton_context": "",
+    "agent2_seconds": 4.9,
+    "answer_conflict": null,
+    "reasoning": "The evidence explicitly states \"D-dimero non eseguito,\" which translates to \"D-dimer not performed.\" Therefore, the test was not conducted, and no results are available. This aligns with the option stating that the D-dimer was not tested or results were unavailable.\n\nFINAL_OPTION: D-dimer not tested, or tested but results unknown or not available\nFINAL_ANSWER: 3",
+    "result": {
+      "answer": "D-dimer not tested, or tested but results unknown or not available"
+    }
+  },
+  "F": {
+    "query": "diagnosis of deep vein thrombosis reported by specialist",
+    "evidence": "obiettivo vascolare i polsi pedidio e tibiale posteriore sinistri non sono apprezzabili. Esami di laboratorio: D-dimero non eseguito. Accertamenti strumentali: ecocolordoppler venoso dell'arto inferiore sinistro con vene pervie e nessuna evidenza di trombosi venosa profonda. La misurazione della pressione intracompartimentale risulta elevata. Valutazione specialistica: diagnosi di sindrome compartimentale della loggia posteriore, avviata consulenza ortopedica urgente.\n\nAnamnesi patologica remota: Uomo di 29 anni, senza patologie di rilievo. Nessun intervento chirurgico recente. Non allergie farmacologiche note. Anamnesi farmacologica: nessuna terapia cronica in atto. Anamnesi prossima: giunge in pronto soccorso per dolore ingravescente alla gamba sinistra, insorto dopo un trauma contusivo riportato circa dodici ore prima. Nega febbre e dispnea. Esame obiettivo: paziente vigile, sofferente per il dolore. PA 138/84 mmHg, FC 92 bpm, FR 17 atti/min, SpO2 98% in aria ambiente, TC 36,8°C. Polpaccio sinistro tumefatto e teso alla palpazione, con dolore intenso evocato dalla mobilizzazione passiva del piede. All'esame obiettivo vascolare i polsi pedidio e tibiale posteriore sinistri non sono apprezzabili. Esami di laboratorio: D-dimero non eseguito. Accertamenti",
+    "agent1_seconds": 6.3,
+    "brighton_context": "",
+    "agent2_seconds": 5.8,
+    "answer_conflict": null,
+    "reasoning": "The evidence explicitly states that the venous color Doppler ultrasound of the left lower limb showed patent veins and \"nessuna evidenza di trombosi venosa profonda\" (no evidence of deep vein thrombosis). Therefore, DVT was ruled out by this specific imaging modality. The question asks for a determination based on the evidence; since the evidence confirms the absence of DVT via ultrasound, the answer to whether DVT is present/confirmed is negative.\n\nFINAL_OPTION: No\nFINAL_ANSWER: 2",
+    "result": {
+      "answer": "No"
+    }
+  },
+  "X": {
+    "query": "possible alternative etiologies; clinical syndromes to be differentiated from thrombosis; conditions explaining calf pain, redness, warmth or ankle edema other than DVT",
+    "evidence": "Anamnesi patologica remota: Uomo di 29 anni, senza patologie di rilievo. Nessun intervento chirurgico recente. Non allergie farmacologiche note. Anamnesi farmacologica: nessuna terapia cronica in atto. Anamnesi prossima: giunge in pronto soccorso per dolore ingravescente alla gamba sinistra, insorto dopo un trauma contusivo riportato circa dodici ore prima. Nega febbre e dispnea. Esame obiettivo: paziente vigile, sofferente per il dolore. PA 138/84 mmHg, FC 92 bpm, FR 17 atti/min, SpO2 98% in aria ambiente, TC 36,8°C. Polpaccio sinistro tumefatto e teso alla palpazione, con dolore intenso evocato dalla mobilizzazione passiva del piede. All'esame obiettivo vascolare i polsi pedidio e tibiale posteriore sinistri non sono apprezzabili. Esami di laboratorio: D-dimero non eseguito. Accertamenti\n\nobiettivo vascolare i polsi pedidio e tibiale posteriore sinistri non sono apprezzabili. Esami di laboratorio: D-dimero non eseguito. Accertamenti strumentali: ecocolordoppler venoso dell'arto inferiore sinistro con vene pervie e nessuna evidenza di trombosi venosa profonda. La misurazione della pressione intracompartimentale risulta elevata. Valutazione specialistica: diagnosi di sindrome compartimentale della loggia posteriore, avviata consulenza ortopedica urgente.",
+    "agent1_seconds": 6.0,
+    "brighton_context": "",
+    "agent2_seconds": 7.0,
+    "answer_conflict": null,
+    "reasoning": "The evidence explicitly states that the patient was diagnosed with \"sindrome compartimentale della loggia posteriore\" (posterior compartment syndrome) following a traumatic contusion. The ultrasound ruled out deep vein thrombosis (DVT), and the clinical picture (elevated intracompartmental pressure, tense calf, pain on passive movement) supported the diagnosis of compartment syndrome. Since a specific condition (compartment syndrome) was identified to explain the acute symptoms (leg pain and swelling), an alternative diagnosis to the initial suspicion of DVT or other causes was indeed found.\n\nFINAL_OPTION: An alternative diagnosis was found that explained the acute illness\nFINAL_ANSWER: 1",
+    "result": {
+      "answer": "An alternative diagnosis was found that explained the acute illness"
+    }
+  },
+  "_run_config": {
+    "extractor_mode": "agentic_graph",
+    "section_gates_enabled": {
+      "keyword": false,
+      "details": false,
+      "absent_pulses": false
+    },
+    "brighton_context_enabled": false,
+    "section_descriptions_enabled": false,
+    "section_hints_enabled": false,
+    "section_hints_disabled": [],
+    "section_hints_fingerprint": {
+      "all": "dbe3b41b6a5c"
+    },
+    "section_queries_fingerprint": {
+      "A1": "68 f31cb52cc7a2",
+      "A2": "47 df6b72799cd6",
+      "A3_1": "73 dea0b36a509c",
+      "A3_2": "81 df834d2f4193",
+      "B1_1": "50 6cda81bb9be8",
+      "B1_2": "55 9136dd6530fb",
+      "B2": "128 618aaee6579e",
+      "C": "58 98411e20a257",
+      "F": "56 2a1cef15a0b0",
+      "X": "168 49d5d41f3a23",
+      "all": "bfd9536a31fe"
+    },
+    "guideline_anchors_enabled": false,
+    "guideline_anchors_fingerprint": {
+      "A1": "699 6fa2837f0bf8",
+      "A2": "699 6fa2837f0bf8",
+      "A3_1": "1616 0d73c0d46674",
+      "A3_2": "3566 841cc2dbfd90",
+      "B1_1": "4230 4af7e1ebd4a3",
+      "B1_2": "4230 4af7e1ebd4a3",
+      "B2": "4230 4af7e1ebd4a3",
+      "C": "977 fcf102e0a775",
+      "X": "2770 c66190553aeb",
+      "all": "4bc8810e170a"
+    },
+    "cross_section_rules_applied": true,
+    "models": {
+      "extractor": "qwen3.6:27b",
+      "evaluator": "qwen3.6:27b",
+      "embeddings": "intfloat/multilingual-e5-small"
+    },
+    "environment": {
+      "hostname": "mari",
+      "ollama_version": "ollama version is 0.32.1"
+    },
+    "generation": {
+      "temperature": 0.0,
+      "num_predict": 1024,
+      "num_gpu": 999,
+      "reasoning": false
+    },
+    "retrieval": {
+      "ehr_chunk_size": 800,
+      "ehr_chunk_overlap": 150,
+      "ehr_retriever_k": 5,
+      "brighton_retriever_k": 5
+    }
+  }
+}

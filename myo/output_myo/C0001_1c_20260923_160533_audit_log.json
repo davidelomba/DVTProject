@@ -1,0 +1,78 @@
+{
+  "E": {
+    "query": "electrocardiogram ECG findings: rhythm, atrial or ventricular arrhythmia, tachycardia, atrial fibrillation, AV block, bundle branch block, conduction delay, ST segment or T wave abnormality, Q waves, low voltage, premature atrial or ventricular contractions, ambulatory monitoring, normal ECG, ECG not performed",
+    "evidence": "Anamnesi Prossima: In data 21/07 comparsa di rash cutaneo dopo assunzione di amoxicillina. All¿¿¿ingresso in reparto si presentava emodinamicamente stabile senza supporti farmacologici ed eupnoico in ossigenoterapia 3 L/min. Esami ematici: troponina 50 pg/mL. TC torace negativa per linfoadenopatie mediastiniche. Avevamo programmato RMN cardiaca con mdc che il paziente ha rifiutato. All'ECG riscontro di FA ad elevata FVM, cardiovertita con metoprololo ev. Ecocardiogramma: normali dimensioni e spessori del VS (ventricolo sinistro) (SIV (setto interventricolare) e PP (parete posteriore) 10 mm); sezioni destre nei limiti, TAPSE (Escursione sistolica dell'anello tricuspide) 26 mm; normale radice aortica e aorta ascendente; normale atrio sinistro; non versamento pericardico; iperriflettenza\n\ndell'anello tricuspide) 26 mm; normale radice aortica e aorta ascendente; normale atrio sinistro; non versamento pericardico; iperriflettenza pericardica posteriore, ipocinesia del setto posteriore medio basale e della parete inferiore medio basale con FE ai limiti inferiori. Alla dimissione valori degli esami ematici nei limiti, in particolare si osserva normalizzazione dei valori degli indici di miocardionecrosi (TnT hs 5,58 pg/ml, CK-MB 0,84 ng/ml) e degli indici di flogosi (pct e PCR negativi).",
+    "agent1_seconds": 87.9,
+    "brighton_context": "",
+    "agent2_seconds": 60.2,
+    "answer_conflict": null,
+    "reasoning": "The evidence explicitly states \"All'ECG riscontro di FA ad elevata FVM\" (On ECG, finding of Atrial Fibrillation with high ventricular rate). Atrial fibrillation (FA) is a type of atrial arrhythmia. Therefore, the ECG was performed and showed an arrhythmia. This corresponds to Option 2 (\"Paroxysmal or sustained atrial or ventricular arrhythmias... e.g ... atrial fibrillation\"). The text does not mention ST/T wave changes, conduction blocks, or other specific abnormalities listed in the other options, nor does it state the ECG was normal (Option 13 is incorrect because an abnormality was found). It does not confirm myocarditis via ECG specifically without details (Option 8) but rather identifies a specific arrhythmia.\n\nFINAL_OPTION: Paroxysmal or sustained atrial or ventricular arrhythmias (premature atrial or ventricular beats, and/or supraventricular or ventricular tachycardia, interventricular conduction delay, abnormal Q waves, low voltages): :e.g (Sinus tachycardia, SVT, atrial fibrillation, PVCs, VT, VF)\nFINAL_ANSWER: 2",
+    "result": {
+      "findings": [
+        "Paroxysmal or sustained atrial or ventricular arrhythmias (premature atrial or ventricular beats, and/or supraventricular or ventricular tachycardia, interventricular conduction delay, abnormal Q waves, low voltages): :e.g (Sinus tachycardia, SVT, atrial fibrillation, PVCs, VT, VF)"
+      ]
+    }
+  },
+  "F": {
+    "query": "echocardiogram ECHO findings: ejection fraction, left or right ventricular function, segmental wall motion, global systolic or diastolic function, ventricular dilation, wall thickness, pericardial effusion or inflammation, normal echocardiogram, ECHO not performed",
+    "evidence": "Anamnesi Prossima: In data 21/07 comparsa di rash cutaneo dopo assunzione di amoxicillina. All¿¿¿ingresso in reparto si presentava emodinamicamente stabile senza supporti farmacologici ed eupnoico in ossigenoterapia 3 L/min. Esami ematici: troponina 50 pg/mL. TC torace negativa per linfoadenopatie mediastiniche. Avevamo programmato RMN cardiaca con mdc che il paziente ha rifiutato. All'ECG riscontro di FA ad elevata FVM, cardiovertita con metoprololo ev. Ecocardiogramma: normali dimensioni e spessori del VS (ventricolo sinistro) (SIV (setto interventricolare) e PP (parete posteriore) 10 mm); sezioni destre nei limiti, TAPSE (Escursione sistolica dell'anello tricuspide) 26 mm; normale radice aortica e aorta ascendente; normale atrio sinistro; non versamento pericardico; iperriflettenza\n\ndell'anello tricuspide) 26 mm; normale radice aortica e aorta ascendente; normale atrio sinistro; non versamento pericardico; iperriflettenza pericardica posteriore, ipocinesia del setto posteriore medio basale e della parete inferiore medio basale con FE ai limiti inferiori. Alla dimissione valori degli esami ematici nei limiti, in particolare si osserva normalizzazione dei valori degli indici di miocardionecrosi (TnT hs 5,58 pg/ml, CK-MB 0,84 ng/ml) e degli indici di flogosi (pct e PCR negativi).",
+    "agent1_seconds": 130.3,
+    "brighton_context": "",
+    "agent2_seconds": 155.6,
+    "answer_conflict": null,
+    "reasoning": "The evidence explicitly states that an echocardiogram (\"Ecocardiogramma\") was performed. The report details specific findings: \"ipocinesia del setto posteriore medio basale e della parete inferiore medio basale\" (hypokinesia of the mid-basal posterior septum and mid-basal inferior wall). Hypokinesia is a reduction in wall motion, which constitutes a **segmental wall motion abnormality** (Option 3). Additionally, the report notes \"FE ai limiti inferiori\" (ejection fraction at the lower limits), indicating a decrease in systolic function, which falls under **new focal or diffuse left or right ventricular function abnormalities** (Option 2). The text also mentions \"iperriflettenza pericardica posteriore\" (posterior pericardial hyperechogenicity), which is evidence of pericardial inflammation/thickening, supporting **evidence of abnormal fluid collection or pericardial inflammation** (Option 8), despite the absence of effusion (\"non versamento pericardico\"). Options regarding dilation, wall thickness changes, or global depression are not supported as the primary descriptors; dimensions and thicknesses were normal, and the dysfunction is described as segmental with borderline EF rather than overt global depression.\n\nFINAL_OPTION: New focal or diffuse left or right ventricular function abnormalities (e.g. decreased ejection fraction); Segmental wall motion abnormalities; Evidence of abnormal fluid collection or pericardial inflammation\nFINAL_ANSWER: 2; 3; 8",
+    "result": {
+      "findings": [
+        "New focal or diffuse left or right ventricular function abnormalities (e.g. decreased ejection fraction)",
+        "Segmental wall motion abnormalities",
+        "Evidence of abnormal fluid collection or pericardial inflammation"
+      ]
+    }
+  },
+  "_run_config": {
+    "extractor_mode": "agentic_graph",
+    "section_gates_enabled": {
+      "keyword": false,
+      "details": false,
+      "absent_pulses": false
+    },
+    "brighton_context_enabled": false,
+    "section_descriptions_enabled": false,
+    "section_hints_enabled": true,
+    "section_hints_disabled": [],
+    "section_hints_fingerprint": {
+      "all": "9503fb46b54e"
+    },
+    "section_queries_fingerprint": {
+      "E": "311 b830923d415b",
+      "F": "264 9cfac9903bb3",
+      "all": "8c4c0ec0ce71"
+    },
+    "guideline_anchors_enabled": false,
+    "guideline_anchors_fingerprint": {
+      "all": "e3b0c44298fc"
+    },
+    "cross_section_rules_applied": true,
+    "models": {
+      "extractor": "qwen3.6:27b",
+      "evaluator": "qwen3.6:27b",
+      "embeddings": "intfloat/multilingual-e5-small"
+    },
+    "environment": {
+      "hostname": "mari",
+      "ollama_version": "ollama version is 0.32.1"
+    },
+    "generation": {
+      "temperature": 0.0,
+      "num_predict": 1024,
+      "num_gpu": 999,
+      "reasoning": false
+    },
+    "retrieval": {
+      "ehr_chunk_size": 800,
+      "ehr_chunk_overlap": 150,
+      "ehr_retriever_k": 5,
+      "brighton_retriever_k": 5
+    }
+  }
+}

@@ -1,0 +1,187 @@
+{
+  "A1": {
+    "query": "autopsy report, necropsy, post-mortem examination, autoptic findings",
+    "evidence": "di laboratorio: D-dimero 320 ng/mL, entro il range di normalita' del laboratorio. Data la bassa probabilita' clinica pre-test e il D-dimero negativo, non e' stato eseguito alcun esame di imaging venoso; la trombosi venosa profonda e' stata esclusa su base clinica.\n\nAnamnesi patologica remota: Donna di 29 anni, senza fattori di rischio di rilievo, con bassa probabilita' clinica pre-test. Nessun intervento chirurgico recente. Non allergie farmacologiche note. Anamnesi Prossima: Da 1 giorno lieve fastidio al polpaccio sinistro, senza edema ne' arrossamento. Nega trauma, febbre, dolore toracico, dispnea ed emottisi. Esame obiettivo all'ingresso: Paziente vigile, orientata e collaborante, eupnoica a riposo. PA 112/70 mmHg, FC 68 bpm, FR 14 atti/min, SpO2 99% in aria ambiente, TC 36,4°C. Lieve dolorabilita' alla palpazione del polpaccio sinistro; non rilevato edema ne' alterazione del colorito cutaneo. Esami di laboratorio: D-dimero 320 ng/mL, entro il range di normalita' del laboratorio. Data la bassa probabilita' clinica pre-test e il D-dimero negativo,",
+    "agent1_seconds": 6.0,
+    "brighton_context": "",
+    "agent2_seconds": 6.8,
+    "answer_conflict": null,
+    "reasoning": "The provided evidence describes a living patient undergoing clinical evaluation for suspected deep vein thrombosis (DVT). The text details laboratory results (D-dimer), clinical probability assessment, and physical examination findings. It explicitly states that no venous imaging was performed because DVT was excluded based on clinical grounds and negative lab results. There is absolutely no mention of the patient's death or an autopsy being performed. Since an autopsy is a post-mortem procedure and the patient is described as alive and undergoing outpatient/clinical assessment, no autopsy was done.\n\nFINAL_OPTION: No autopsy done, unknown if done, or done but results unavailable\nFINAL_ANSWER: 3",
+    "result": {
+      "answer": "No autopsy done, unknown if done, or done but results unavailable"
+    }
+  },
+  "A2": {
+    "query": "thrombectomy, surgical procedure related to DVT",
+    "evidence": "di laboratorio: D-dimero 320 ng/mL, entro il range di normalita' del laboratorio. Data la bassa probabilita' clinica pre-test e il D-dimero negativo, non e' stato eseguito alcun esame di imaging venoso; la trombosi venosa profonda e' stata esclusa su base clinica.\n\nAnamnesi patologica remota: Donna di 29 anni, senza fattori di rischio di rilievo, con bassa probabilita' clinica pre-test. Nessun intervento chirurgico recente. Non allergie farmacologiche note. Anamnesi Prossima: Da 1 giorno lieve fastidio al polpaccio sinistro, senza edema ne' arrossamento. Nega trauma, febbre, dolore toracico, dispnea ed emottisi. Esame obiettivo all'ingresso: Paziente vigile, orientata e collaborante, eupnoica a riposo. PA 112/70 mmHg, FC 68 bpm, FR 14 atti/min, SpO2 99% in aria ambiente, TC 36,4°C. Lieve dolorabilita' alla palpazione del polpaccio sinistro; non rilevato edema ne' alterazione del colorito cutaneo. Esami di laboratorio: D-dimero 320 ng/mL, entro il range di normalita' del laboratorio. Data la bassa probabilita' clinica pre-test e il D-dimero negativo,",
+    "agent1_seconds": 5.6,
+    "brighton_context": "",
+    "agent2_seconds": 7.4,
+    "answer_conflict": null,
+    "reasoning": "The evidence explicitly states that no venous imaging was performed (\"non e' stato eseguito alcun esame di imaging venoso\") and that deep vein thrombosis (DVT) was excluded based on clinical assessment and negative D-dimer results. Furthermore, the patient's history notes \"Nessun intervento chirurgico recente\" (no recent surgical intervention). Since no procedure was performed to confirm DVT, and DVT was actually ruled out, option 3 is the correct choice as it covers scenarios where no surgical procedure was done or findings were unknown/negative.\n\nFINAL_OPTION: No surgical procedure done; or, done but either did not confirm presence of DVT or findings unknown; or unknown if done\nFINAL_ANSWER: 3",
+    "result": {
+      "answer": "No surgical procedure done; or, done but either did not confirm presence of DVT or findings unknown; or unknown if done"
+    }
+  },
+  "A3_1": {
+    "query": "ultrasound, CT, MRI, venography: imaging outcome for deep vein thrombosis",
+    "evidence": "di laboratorio: D-dimero 320 ng/mL, entro il range di normalita' del laboratorio. Data la bassa probabilita' clinica pre-test e il D-dimero negativo, non e' stato eseguito alcun esame di imaging venoso; la trombosi venosa profonda e' stata esclusa su base clinica.\n\nAnamnesi patologica remota: Donna di 29 anni, senza fattori di rischio di rilievo, con bassa probabilita' clinica pre-test. Nessun intervento chirurgico recente. Non allergie farmacologiche note. Anamnesi Prossima: Da 1 giorno lieve fastidio al polpaccio sinistro, senza edema ne' arrossamento. Nega trauma, febbre, dolore toracico, dispnea ed emottisi. Esame obiettivo all'ingresso: Paziente vigile, orientata e collaborante, eupnoica a riposo. PA 112/70 mmHg, FC 68 bpm, FR 14 atti/min, SpO2 99% in aria ambiente, TC 36,4°C. Lieve dolorabilita' alla palpazione del polpaccio sinistro; non rilevato edema ne' alterazione del colorito cutaneo. Esami di laboratorio: D-dimero 320 ng/mL, entro il range di normalita' del laboratorio. Data la bassa probabilita' clinica pre-test e il D-dimero negativo,",
+    "agent1_seconds": 7.3,
+    "brighton_context": "",
+    "agent2_seconds": 6.0,
+    "answer_conflict": null,
+    "reasoning": "The evidence explicitly states \"non e' stato eseguito alcun esame di imaging venoso\" (no venous imaging examination was performed) because the clinical pre-test probability was low and the D-dimer was negative. Therefore, no imaging studies were conducted to confirm or rule out DVT; the exclusion was based on clinical assessment and laboratory results alone. This aligns with the option stating that no imaging studies were done.\n\nFINAL_OPTION: No imaging studies done, unknown if done, or done but results unknown\nFINAL_ANSWER: 3",
+    "result": {
+      "answer": "No imaging studies done, unknown if done, or done but results unknown"
+    }
+  },
+  "A3_2": {
+    "query": "type of imaging study performed: compression ultrasonography, doppler, venography",
+    "evidence": "di laboratorio: D-dimero 320 ng/mL, entro il range di normalita' del laboratorio. Data la bassa probabilita' clinica pre-test e il D-dimero negativo, non e' stato eseguito alcun esame di imaging venoso; la trombosi venosa profonda e' stata esclusa su base clinica.\n\nAnamnesi patologica remota: Donna di 29 anni, senza fattori di rischio di rilievo, con bassa probabilita' clinica pre-test. Nessun intervento chirurgico recente. Non allergie farmacologiche note. Anamnesi Prossima: Da 1 giorno lieve fastidio al polpaccio sinistro, senza edema ne' arrossamento. Nega trauma, febbre, dolore toracico, dispnea ed emottisi. Esame obiettivo all'ingresso: Paziente vigile, orientata e collaborante, eupnoica a riposo. PA 112/70 mmHg, FC 68 bpm, FR 14 atti/min, SpO2 99% in aria ambiente, TC 36,4°C. Lieve dolorabilita' alla palpazione del polpaccio sinistro; non rilevato edema ne' alterazione del colorito cutaneo. Esami di laboratorio: D-dimero 320 ng/mL, entro il range di normalita' del laboratorio. Data la bassa probabilita' clinica pre-test e il D-dimero negativo,",
+    "agent1_seconds": 7.1,
+    "brighton_context": "",
+    "agent2_seconds": 8.3,
+    "answer_conflict": null,
+    "reasoning": "The evidence explicitly states that \"non e' stato eseguito alcun esame di imaging venoso\" (no venous imaging examination was performed) because the clinical pre-test probability was low and the D-dimer was negative. Consequently, Deep Vein Thrombosis (DVT) was excluded on a clinical basis without any imaging confirmation. Since no imaging modality (such as ultrasound, CT, MR, or contrast venography) was performed, none of the specific diagnostic methods listed in options 1 through 4 were used. Option 5 (\"Other\") is also not applicable as there is no mention of any other diagnostic procedure being performed; the exclusion was purely clinical/laboratory based. Therefore, none of the numbered options describing a performed diagnostic test apply.\n\nFINAL_OPTION: none\nFINAL_ANSWER: none",
+    "result": {
+      "studies": []
+    }
+  },
+  "B1_1": {
+    "query": "reported symptoms or signs of deep vein thrombosis",
+    "evidence": "di laboratorio: D-dimero 320 ng/mL, entro il range di normalita' del laboratorio. Data la bassa probabilita' clinica pre-test e il D-dimero negativo, non e' stato eseguito alcun esame di imaging venoso; la trombosi venosa profonda e' stata esclusa su base clinica.\n\nAnamnesi patologica remota: Donna di 29 anni, senza fattori di rischio di rilievo, con bassa probabilita' clinica pre-test. Nessun intervento chirurgico recente. Non allergie farmacologiche note. Anamnesi Prossima: Da 1 giorno lieve fastidio al polpaccio sinistro, senza edema ne' arrossamento. Nega trauma, febbre, dolore toracico, dispnea ed emottisi. Esame obiettivo all'ingresso: Paziente vigile, orientata e collaborante, eupnoica a riposo. PA 112/70 mmHg, FC 68 bpm, FR 14 atti/min, SpO2 99% in aria ambiente, TC 36,4°C. Lieve dolorabilita' alla palpazione del polpaccio sinistro; non rilevato edema ne' alterazione del colorito cutaneo. Esami di laboratorio: D-dimero 320 ng/mL, entro il range di normalita' del laboratorio. Data la bassa probabilita' clinica pre-test e il D-dimero negativo,",
+    "agent1_seconds": 7.3,
+    "brighton_context": "",
+    "agent2_seconds": 6.2,
+    "answer_conflict": null,
+    "reasoning": "The evidence explicitly states that the patient reported \"lieve fastidio al polpaccio sinistro\" (mild discomfort in the left calf) and the physical examination revealed \"Lieve dolorabilita' alla palpazione del polpaccio sinistro\" (mild tenderness on palpation of the left calf). These constitute symptoms and signs associated with a potential DVT syndrome, even though DVT was ultimately excluded clinically. Therefore, at least one symptom or sign was reported.\n\nFINAL_OPTION: ≥1 symptom or sign of DVT was reported\nFINAL_ANSWER: 1",
+    "result": {
+      "answer": "≥1 symptom or sign of DVT was reported"
+    }
+  },
+  "B1_2": {
+    "query": "deep vein thrombosis lower extremity or upper extremity",
+    "evidence": "di laboratorio: D-dimero 320 ng/mL, entro il range di normalita' del laboratorio. Data la bassa probabilita' clinica pre-test e il D-dimero negativo, non e' stato eseguito alcun esame di imaging venoso; la trombosi venosa profonda e' stata esclusa su base clinica.\n\nAnamnesi patologica remota: Donna di 29 anni, senza fattori di rischio di rilievo, con bassa probabilita' clinica pre-test. Nessun intervento chirurgico recente. Non allergie farmacologiche note. Anamnesi Prossima: Da 1 giorno lieve fastidio al polpaccio sinistro, senza edema ne' arrossamento. Nega trauma, febbre, dolore toracico, dispnea ed emottisi. Esame obiettivo all'ingresso: Paziente vigile, orientata e collaborante, eupnoica a riposo. PA 112/70 mmHg, FC 68 bpm, FR 14 atti/min, SpO2 99% in aria ambiente, TC 36,4°C. Lieve dolorabilita' alla palpazione del polpaccio sinistro; non rilevato edema ne' alterazione del colorito cutaneo. Esami di laboratorio: D-dimero 320 ng/mL, entro il range di normalita' del laboratorio. Data la bassa probabilita' clinica pre-test e il D-dimero negativo,",
+    "agent1_seconds": 7.2,
+    "brighton_context": "",
+    "agent2_seconds": 5.2,
+    "answer_conflict": null,
+    "reasoning": "The evidence explicitly states that deep vein thrombosis (DVT) was excluded (\"la trombosi venosa profonda e' stata esclusa\") based on low clinical probability and a negative D-dimer test. No imaging was performed, and the diagnosis of DVT was ruled out. Therefore, neither lower extremity DVT nor upper extremity DVT is present.\n\nFINAL_OPTION: none\nFINAL_ANSWER: none",
+    "result": {
+      "types": []
+    }
+  },
+  "B2": {
+    "query": "calf pain or tenderness, leg swelling or pitting oedema, redness, warmth or pain in any extremity, absent pulses in legs or arms",
+    "evidence": "Anamnesi patologica remota: Donna di 29 anni, senza fattori di rischio di rilievo, con bassa probabilita' clinica pre-test. Nessun intervento chirurgico recente. Non allergie farmacologiche note. Anamnesi Prossima: Da 1 giorno lieve fastidio al polpaccio sinistro, senza edema ne' arrossamento. Nega trauma, febbre, dolore toracico, dispnea ed emottisi. Esame obiettivo all'ingresso: Paziente vigile, orientata e collaborante, eupnoica a riposo. PA 112/70 mmHg, FC 68 bpm, FR 14 atti/min, SpO2 99% in aria ambiente, TC 36,4°C. Lieve dolorabilita' alla palpazione del polpaccio sinistro; non rilevato edema ne' alterazione del colorito cutaneo. Esami di laboratorio: D-dimero 320 ng/mL, entro il range di normalita' del laboratorio. Data la bassa probabilita' clinica pre-test e il D-dimero negativo,\n\ndi laboratorio: D-dimero 320 ng/mL, entro il range di normalita' del laboratorio. Data la bassa probabilita' clinica pre-test e il D-dimero negativo, non e' stato eseguito alcun esame di imaging venoso; la trombosi venosa profonda e' stata esclusa su base clinica.",
+    "agent1_seconds": 7.9,
+    "brighton_context": "",
+    "agent2_seconds": 56.4,
+    "answer_conflict": null,
+    "reasoning": "The evidence explicitly states \"lieve fastidio al polpaccio sinistro\" (mild discomfort in the left calf) and \"Lieve dolorabilita' alla palpazione del polpaccio sinistro\" (mild tenderness on palpation of the left calf). This directly confirms the presence of calf pain or tenderness, supporting Option 1.\n\nRegarding Option 2 (Leg swelling or pitting oedema), the text explicitly states \"senza edema\" (without edema) and \"non rilevato edema\" (no edema detected), so this finding is absent.\n\nRegarding Option 3 (Absent pulses in legs or arms), there is no mention of pulse examination or findings in the evidence, so it is unknown/not mentioned as present.\n\nRegarding Option 4 (Redness, warmth, or pain in one or more extremities), the text explicitly states \"senza... arrossamento\" (without redness). While pain is present, Option 1 is the specific and precise description of the finding (\"Calf pain or tenderness\"). In clinical validation contexts like the Brighton criteria, specific localized findings are distinguished from broader inflammatory signs. Since redness is explicitly negated and warmth is not mentioned, and Option 1 captures the specific positive finding (calf tenderness/pain) without the negated components of Option 4, Option 1 is the correct selection. Option 4 is typically used to describe cellulitis-like presentations or broader inflammatory signs which are largely ruled out here by the absence of redness and swelling. Therefore, only Option 1 is definitively supported as a present finding.\n\nFINAL_OPTION: Calf pain or tenderness\nFINAL_ANSWER: 1",
+    "result": {
+      "symptoms": [
+        "Calf pain or tenderness"
+      ]
+    }
+  },
+  "C": {
+    "query": "D-dimer value, test date, laboratory upper limit of normal",
+    "evidence": "di laboratorio: D-dimero 320 ng/mL, entro il range di normalita' del laboratorio. Data la bassa probabilita' clinica pre-test e il D-dimero negativo, non e' stato eseguito alcun esame di imaging venoso; la trombosi venosa profonda e' stata esclusa su base clinica.\n\nAnamnesi patologica remota: Donna di 29 anni, senza fattori di rischio di rilievo, con bassa probabilita' clinica pre-test. Nessun intervento chirurgico recente. Non allergie farmacologiche note. Anamnesi Prossima: Da 1 giorno lieve fastidio al polpaccio sinistro, senza edema ne' arrossamento. Nega trauma, febbre, dolore toracico, dispnea ed emottisi. Esame obiettivo all'ingresso: Paziente vigile, orientata e collaborante, eupnoica a riposo. PA 112/70 mmHg, FC 68 bpm, FR 14 atti/min, SpO2 99% in aria ambiente, TC 36,4°C. Lieve dolorabilita' alla palpazione del polpaccio sinistro; non rilevato edema ne' alterazione del colorito cutaneo. Esami di laboratorio: D-dimero 320 ng/mL, entro il range di normalita' del laboratorio. Data la bassa probabilita' clinica pre-test e il D-dimero negativo,",
+    "agent1_seconds": 6.5,
+    "brighton_context": "",
+    "agent2_seconds": 5.7,
+    "answer_conflict": null,
+    "reasoning": "The evidence explicitly states \"D-dimero 320 ng/mL, entro il range di normalita' del laboratorio,\" which translates to the D-dimer level being within the laboratory's normal range. It further confirms this by stating \"il D-dimero negativo\" (negative D-dimer). Therefore, the test was performed and the result was within normal limits.\n\nFINAL_OPTION: D-dimer tested and was within test lab's range of normal\nFINAL_ANSWER: 2",
+    "result": {
+      "answer": "D-dimer tested and was within test lab's range of normal"
+    }
+  },
+  "F": {
+    "query": "diagnosis of deep vein thrombosis reported by specialist",
+    "evidence": "di laboratorio: D-dimero 320 ng/mL, entro il range di normalita' del laboratorio. Data la bassa probabilita' clinica pre-test e il D-dimero negativo, non e' stato eseguito alcun esame di imaging venoso; la trombosi venosa profonda e' stata esclusa su base clinica.\n\nAnamnesi patologica remota: Donna di 29 anni, senza fattori di rischio di rilievo, con bassa probabilita' clinica pre-test. Nessun intervento chirurgico recente. Non allergie farmacologiche note. Anamnesi Prossima: Da 1 giorno lieve fastidio al polpaccio sinistro, senza edema ne' arrossamento. Nega trauma, febbre, dolore toracico, dispnea ed emottisi. Esame obiettivo all'ingresso: Paziente vigile, orientata e collaborante, eupnoica a riposo. PA 112/70 mmHg, FC 68 bpm, FR 14 atti/min, SpO2 99% in aria ambiente, TC 36,4°C. Lieve dolorabilita' alla palpazione del polpaccio sinistro; non rilevato edema ne' alterazione del colorito cutaneo. Esami di laboratorio: D-dimero 320 ng/mL, entro il range di normalita' del laboratorio. Data la bassa probabilita' clinica pre-test e il D-dimero negativo,",
+    "agent1_seconds": 5.6,
+    "brighton_context": "",
+    "agent2_seconds": 5.5,
+    "answer_conflict": null,
+    "reasoning": "The evidence explicitly states that due to low clinical probability and a negative D-dimer, no venous imaging was performed (\"non e' stato eseguito alcun esame di imaging venoso\") and deep vein thrombosis (DVT) was excluded on a clinical basis (\"la trombosi venosa profonda e' stata esclusa su base clinica\"). Therefore, DVT was not confirmed; it was ruled out.\n\nFINAL_OPTION: No\nFINAL_ANSWER: 2",
+    "result": {
+      "answer": "No"
+    }
+  },
+  "X": {
+    "query": "possible alternative etiologies; clinical syndromes to be differentiated from thrombosis; conditions explaining calf pain, redness, warmth or ankle edema other than DVT",
+    "evidence": "Anamnesi patologica remota: Donna di 29 anni, senza fattori di rischio di rilievo, con bassa probabilita' clinica pre-test. Nessun intervento chirurgico recente. Non allergie farmacologiche note. Anamnesi Prossima: Da 1 giorno lieve fastidio al polpaccio sinistro, senza edema ne' arrossamento. Nega trauma, febbre, dolore toracico, dispnea ed emottisi. Esame obiettivo all'ingresso: Paziente vigile, orientata e collaborante, eupnoica a riposo. PA 112/70 mmHg, FC 68 bpm, FR 14 atti/min, SpO2 99% in aria ambiente, TC 36,4°C. Lieve dolorabilita' alla palpazione del polpaccio sinistro; non rilevato edema ne' alterazione del colorito cutaneo. Esami di laboratorio: D-dimero 320 ng/mL, entro il range di normalita' del laboratorio. Data la bassa probabilita' clinica pre-test e il D-dimero negativo,\n\ndi laboratorio: D-dimero 320 ng/mL, entro il range di normalita' del laboratorio. Data la bassa probabilita' clinica pre-test e il D-dimero negativo, non e' stato eseguito alcun esame di imaging venoso; la trombosi venosa profonda e' stata esclusa su base clinica.",
+    "agent1_seconds": 5.8,
+    "brighton_context": "",
+    "agent2_seconds": 6.0,
+    "answer_conflict": null,
+    "reasoning": "The evidence states that the patient presented with mild calf discomfort but had a low pre-test probability and a negative D-dimer. Consequently, venous imaging was not performed, and deep vein thrombosis (DVT) was excluded on a clinical basis. The text does not mention any other specific diagnosis being identified to explain the symptoms; it simply rules out DVT. Therefore, no alternative diagnosis is explicitly stated as having been found.\n\nFINAL_OPTION: No alternative diagnosis was found to explain the acute illness\nFINAL_ANSWER: 2",
+    "result": {
+      "answer": "No alternative diagnosis was found to explain the acute illness"
+    }
+  },
+  "_run_config": {
+    "extractor_mode": "agentic_graph",
+    "section_gates_enabled": {
+      "keyword": false,
+      "details": false,
+      "absent_pulses": false
+    },
+    "brighton_context_enabled": false,
+    "section_descriptions_enabled": false,
+    "section_hints_enabled": false,
+    "section_hints_disabled": [],
+    "section_hints_fingerprint": {
+      "all": "dbe3b41b6a5c"
+    },
+    "section_queries_fingerprint": {
+      "A1": "68 f31cb52cc7a2",
+      "A2": "47 df6b72799cd6",
+      "A3_1": "73 dea0b36a509c",
+      "A3_2": "81 df834d2f4193",
+      "B1_1": "50 6cda81bb9be8",
+      "B1_2": "55 9136dd6530fb",
+      "B2": "128 618aaee6579e",
+      "C": "58 98411e20a257",
+      "F": "56 2a1cef15a0b0",
+      "X": "168 49d5d41f3a23",
+      "all": "bfd9536a31fe"
+    },
+    "guideline_anchors_enabled": false,
+    "guideline_anchors_fingerprint": {
+      "A1": "699 6fa2837f0bf8",
+      "A2": "699 6fa2837f0bf8",
+      "A3_1": "1616 0d73c0d46674",
+      "A3_2": "3566 841cc2dbfd90",
+      "B1_1": "4230 4af7e1ebd4a3",
+      "B1_2": "4230 4af7e1ebd4a3",
+      "B2": "4230 4af7e1ebd4a3",
+      "C": "977 fcf102e0a775",
+      "X": "2770 c66190553aeb",
+      "all": "4bc8810e170a"
+    },
+    "cross_section_rules_applied": true,
+    "models": {
+      "extractor": "qwen3.6:27b",
+      "evaluator": "qwen3.6:27b",
+      "embeddings": "intfloat/multilingual-e5-small"
+    },
+    "environment": {
+      "hostname": "mari",
+      "ollama_version": "ollama version is 0.32.1"
+    },
+    "generation": {
+      "temperature": 0.0,
+      "num_predict": 1024,
+      "num_gpu": 999,
+      "reasoning": false
+    },
+    "retrieval": {
+      "ehr_chunk_size": 800,
+      "ehr_chunk_overlap": 150,
+      "ehr_retriever_k": 5,
+      "brighton_retriever_k": 5
+    }
+  }
+}

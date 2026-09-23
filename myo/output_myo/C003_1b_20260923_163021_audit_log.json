@@ -1,0 +1,78 @@
+{
+  "E": {
+    "query": "electrocardiogram ECG findings: rhythm, atrial or ventricular arrhythmia, tachycardia, atrial fibrillation, AV block, bundle branch block, conduction delay, ST segment or T wave abnormality, Q waves, low voltage, premature atrial or ventricular contractions, ambulatory monitoring, normal ECG, ECG not performed",
+    "evidence": "output with diffuse hypokinesis and pericardial effusion. CXR \nfindings were not suggestive of pulmonary congestion. SARS-CoV-2 testing was negative.\n Subsequent coronary angiography disclosed 20–30% LAD narrowing without flow-limiting stenosis.\n Serologic testing indicated recent Coxsackievirus B infection. Cardiac MRI demonstrated \nsubepicardial enhancement in the inferolateral segments, consistent with inflammatory \ncardiomyopathy. after initiation of β-blocker and ACE inhibition, ventricular performance \nimproved to normal levels and the patient was discharged asymptomatic.\n\nA 19-year-old previously healthy male was admitted following several days of persistent emesis\n and epigastric discomfort. On presentation, he was hypotensive (80/47 mmHg) and tachycardic \n(124/min) with oxygen saturation 93% . CK-MB at admission was 13.7 U/L; and troponin was \n2.15 ng/ml. EKG showed sinus tachycardia without ischemic changes. \nchest CT demonstrated bilateral parenchymal opacities compatible with pulmonary \nedema. due to Due to hemodynamic instability, he was managed in the ICU with vasopressor\nand inotropic support. Echocardiography revealed severely reduced left ventricular systolic \noutput with diffuse hypokinesis and pericardial effusion. CXR \nfindings were not suggestive of pulmonary congestion. SARS-CoV-2 testing was negative.",
+    "agent1_seconds": 16.2,
+    "brighton_context": "",
+    "agent2_seconds": 18.2,
+    "answer_conflict": null,
+    "reasoning": "The evidence explicitly states: \"EKG showed sinus tachycardia without ischemic changes.\" This confirms that an ECG was performed and results are available, ruling out Option 1. The finding of \"sinus tachycardia\" is a specific arrhythmia/rhythm disturbance listed under Option 2 (\"Paroxysmal or sustained atrial or ventricular arrhythmias... e.g (Sinus tachycardia...)\"). The text explicitly states there were \"without ischemic changes,\" which rules out ST/T wave abnormalities (Options 5, 9, 10, 11) and other specific ischemic patterns. It does not mention AV blocks or bundle branch blocks (Option 3), nor does it mention ambulatory monitoring (Option 4). While sinus tachycardia is an abnormality, Option 2 specifically lists it as an example of the category \"Paroxysmal or sustained atrial or ventricular arrhythmias,\" making it the most precise fit. Option 12 (\"Nonspecific abnormalities\") is less specific than Option 2 which explicitly names sinus tachycardia. Option 13 is incorrect because an abnormality (sinus tachycardia) was seen. Options 8 and 14 refer to confirmed diagnoses without details, but we have specific details (sinus tachycardia), so the specific option is preferred over the generic \"confirmed... without details\" options if a specific finding matches. However, looking closely at Option 2, it includes \"Sinus tachycardia\" in its example list. Therefore, Option 2 applies.\n\nFINAL_OPTION: Paroxysmal or sustained atrial or ventricular arrhythmias (premature atrial or ventricular beats, and/or supraventricular or ventricular tachycardia, interventricular conduction delay, abnormal Q waves, low voltages): :e.g (Sinus tachycardia, SVT, atrial fibrillation, PVCs, VT, VF)\nFINAL_ANSWER: 2",
+    "result": {
+      "findings": [
+        "Paroxysmal or sustained atrial or ventricular arrhythmias (premature atrial or ventricular beats, and/or supraventricular or ventricular tachycardia, interventricular conduction delay, abnormal Q waves, low voltages): :e.g (Sinus tachycardia, SVT, atrial fibrillation, PVCs, VT, VF)"
+      ]
+    }
+  },
+  "F": {
+    "query": "echocardiogram ECHO findings: ejection fraction, left or right ventricular function, segmental wall motion, global systolic or diastolic function, ventricular dilation, wall thickness, pericardial effusion or inflammation, normal echocardiogram, ECHO not performed",
+    "evidence": "A 19-year-old previously healthy male was admitted following several days of persistent emesis\n and epigastric discomfort. On presentation, he was hypotensive (80/47 mmHg) and tachycardic \n(124/min) with oxygen saturation 93% . CK-MB at admission was 13.7 U/L; and troponin was \n2.15 ng/ml. EKG showed sinus tachycardia without ischemic changes. \nchest CT demonstrated bilateral parenchymal opacities compatible with pulmonary \nedema. due to Due to hemodynamic instability, he was managed in the ICU with vasopressor\nand inotropic support. Echocardiography revealed severely reduced left ventricular systolic \noutput with diffuse hypokinesis and pericardial effusion. CXR \nfindings were not suggestive of pulmonary congestion. SARS-CoV-2 testing was negative.\n\noutput with diffuse hypokinesis and pericardial effusion. CXR \nfindings were not suggestive of pulmonary congestion. SARS-CoV-2 testing was negative.\n Subsequent coronary angiography disclosed 20–30% LAD narrowing without flow-limiting stenosis.\n Serologic testing indicated recent Coxsackievirus B infection. Cardiac MRI demonstrated \nsubepicardial enhancement in the inferolateral segments, consistent with inflammatory \ncardiomyopathy. after initiation of β-blocker and ACE inhibition, ventricular performance \nimproved to normal levels and the patient was discharged asymptomatic.",
+    "agent1_seconds": 7.0,
+    "brighton_context": "",
+    "agent2_seconds": 15.6,
+    "answer_conflict": null,
+    "reasoning": "The evidence explicitly states that \"Echocardiography revealed severely reduced left ventricular systolic output with diffuse hypokinesis and pericardial effusion.\" This confirms the echocardiogram was performed, ruling out Option 1. The finding of \"severely reduced left ventricular systolic output\" corresponds to new focal or diffuse left ventricular function abnormalities (Option 2). The term \"diffuse hypokinesis\" indicates a global reduction in wall motion rather than isolated segmental defects, which aligns with global systolic function depression/abnormality (Option 4) and argues against Option 3 (segmental). Additionally, the presence of \"pericardial effusion\" is direct evidence of abnormal fluid collection (Option 8). There is no mention of ventricular dilation (Option 5), wall thickness changes (Option 6), or a lack of abnormalities (Option 9). While myocarditis was confirmed by MRI and serology, the ECHO findings themselves describe functional and structural changes consistent with the disease process, but Option 7 is vague compared to the specific findings listed in Options 2, 4, and 8. Option 10 refers to pericarditis confirmation without details, but we have specific details (effusion), making Option 8 more precise.\n\nFINAL_OPTION: New focal or diffuse left or right ventricular function abnormalities (e.g. decreased ejection fraction); Global systolic or diastolic function depression/abnormality - (*Decreased longitudinal and circumferential strain and strain rates on tissue Doppler); Evidence of abnormal fluid collection or pericardial inflammation\nFINAL_ANSWER: 2; 4; 8",
+    "result": {
+      "findings": [
+        "New focal or diffuse left or right ventricular function abnormalities (e.g. decreased ejection fraction)",
+        "Global systolic or diastolic function depression/abnormality - (*Decreased longitudinal and circumferential strain and strain rates on tissue Doppler)",
+        "Evidence of abnormal fluid collection or pericardial inflammation"
+      ]
+    }
+  },
+  "_run_config": {
+    "extractor_mode": "agentic_graph",
+    "section_gates_enabled": {
+      "keyword": false,
+      "details": false,
+      "absent_pulses": false
+    },
+    "brighton_context_enabled": false,
+    "section_descriptions_enabled": false,
+    "section_hints_enabled": true,
+    "section_hints_disabled": [],
+    "section_hints_fingerprint": {
+      "all": "9503fb46b54e"
+    },
+    "section_queries_fingerprint": {
+      "E": "311 b830923d415b",
+      "F": "264 9cfac9903bb3",
+      "all": "8c4c0ec0ce71"
+    },
+    "guideline_anchors_enabled": false,
+    "guideline_anchors_fingerprint": {
+      "all": "e3b0c44298fc"
+    },
+    "cross_section_rules_applied": true,
+    "models": {
+      "extractor": "qwen3.6:27b",
+      "evaluator": "qwen3.6:27b",
+      "embeddings": "intfloat/multilingual-e5-small"
+    },
+    "environment": {
+      "hostname": "mari",
+      "ollama_version": "ollama version is 0.32.1"
+    },
+    "generation": {
+      "temperature": 0.0,
+      "num_predict": 1024,
+      "num_gpu": 999,
+      "reasoning": false
+    },
+    "retrieval": {
+      "ehr_chunk_size": 800,
+      "ehr_chunk_overlap": 150,
+      "ehr_retriever_k": 5,
+      "brighton_retriever_k": 5
+    }
+  }
+}

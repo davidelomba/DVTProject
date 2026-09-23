@@ -1,0 +1,191 @@
+{
+  "A1": {
+    "query": "autopsy report, necropsy, post-mortem examination, autoptic findings",
+    "evidence": "TC 36,8°C. Braccio destro con arrossamento e aumento della temperatura cutanea in sede di catetere, dolorabilita' alla palpazione. Non rilevato edema dell'arto. Esami di laboratorio: D-dimero 1.800 ng/mL, superiore al limite superiore di riferimento del laboratorio. Eseguita CT venografia dell'arto superiore destro: trombosi della vena succlavia destra, associata al catetere venoso centrale.\n\nAnamnesi patologica remota: Donna di 62 anni, portatrice di catetere venoso centrale posizionato per chemioterapia. Nessun intervento chirurgico recente diverso dal posizionamento del catetere. Non allergie note. Anamnesi farmacologica: terapia antiemetica al bisogno, omeprazolo 20 mg. Anamnesi Prossima: Da 4 giorni dolore e arrossamento al braccio destro, in corrispondenza della sede del catetere, con sensazione di calore locale. Non riferito edema dell'arto. Nega febbre, dispnea e dolore toracico. Esame obiettivo all'ingresso: Paziente vigile, orientata, eupnoica a riposo. PA 122/78 mmHg, FC 80 bpm, FR 16 atti/min, SpO2 98% in aria ambiente, TC 36,8°C. Braccio destro con arrossamento e aumento della temperatura cutanea in sede di catetere, dolorabilita' alla palpazione. Non rilevato",
+    "agent1_seconds": 5.9,
+    "brighton_context": "",
+    "agent2_seconds": 6.1,
+    "answer_conflict": null,
+    "reasoning": "The provided evidence describes a living patient undergoing clinical evaluation, laboratory testing, and CT venography which confirmed a thrombosis in the right subclavian vein. There is no mention of the patient's death or any post-mortem examination. Since an autopsy is a procedure performed after death, and the text describes a diagnostic workup for a living individual with no indication of mortality or necropsy, it can be concluded that no autopsy was performed.\n\nFINAL_OPTION: No autopsy done, unknown if done, or done but results unavailable\nFINAL_ANSWER: 3",
+    "result": {
+      "answer": "No autopsy done, unknown if done, or done but results unavailable"
+    }
+  },
+  "A2": {
+    "query": "thrombectomy, surgical procedure related to DVT",
+    "evidence": "TC 36,8°C. Braccio destro con arrossamento e aumento della temperatura cutanea in sede di catetere, dolorabilita' alla palpazione. Non rilevato edema dell'arto. Esami di laboratorio: D-dimero 1.800 ng/mL, superiore al limite superiore di riferimento del laboratorio. Eseguita CT venografia dell'arto superiore destro: trombosi della vena succlavia destra, associata al catetere venoso centrale.\n\nAnamnesi patologica remota: Donna di 62 anni, portatrice di catetere venoso centrale posizionato per chemioterapia. Nessun intervento chirurgico recente diverso dal posizionamento del catetere. Non allergie note. Anamnesi farmacologica: terapia antiemetica al bisogno, omeprazolo 20 mg. Anamnesi Prossima: Da 4 giorni dolore e arrossamento al braccio destro, in corrispondenza della sede del catetere, con sensazione di calore locale. Non riferito edema dell'arto. Nega febbre, dispnea e dolore toracico. Esame obiettivo all'ingresso: Paziente vigile, orientata, eupnoica a riposo. PA 122/78 mmHg, FC 80 bpm, FR 16 atti/min, SpO2 98% in aria ambiente, TC 36,8°C. Braccio destro con arrossamento e aumento della temperatura cutanea in sede di catetere, dolorabilita' alla palpazione. Non rilevato",
+    "agent1_seconds": 5.5,
+    "brighton_context": "",
+    "agent2_seconds": 8.0,
+    "answer_conflict": null,
+    "reasoning": "The evidence explicitly states that a CT venography was performed (\"Eseguita CT venografia\") which confirmed thrombosis of the right subclavian vein. CT venography is an imaging modality, not a surgical procedure or a thrombectomy. The text also notes \"Nessun intervento chirurgico recente diverso dal posizionamento del catetere\" (No recent surgical intervention other than catheter placement), and there is no mention of any therapeutic surgical procedure like thrombectomy being performed to treat the DVT. Therefore, no surgical procedure was done to confirm or treat the DVT; it was confirmed by imaging.\n\nFINAL_OPTION: No surgical procedure done; or, done but either did not confirm presence of DVT or findings unknown; or unknown if done\nFINAL_ANSWER: 3",
+    "result": {
+      "answer": "No surgical procedure done; or, done but either did not confirm presence of DVT or findings unknown; or unknown if done"
+    }
+  },
+  "A3_1": {
+    "query": "ultrasound, CT, MRI, venography: imaging outcome for deep vein thrombosis",
+    "evidence": "TC 36,8°C. Braccio destro con arrossamento e aumento della temperatura cutanea in sede di catetere, dolorabilita' alla palpazione. Non rilevato edema dell'arto. Esami di laboratorio: D-dimero 1.800 ng/mL, superiore al limite superiore di riferimento del laboratorio. Eseguita CT venografia dell'arto superiore destro: trombosi della vena succlavia destra, associata al catetere venoso centrale.\n\nAnamnesi patologica remota: Donna di 62 anni, portatrice di catetere venoso centrale posizionato per chemioterapia. Nessun intervento chirurgico recente diverso dal posizionamento del catetere. Non allergie note. Anamnesi farmacologica: terapia antiemetica al bisogno, omeprazolo 20 mg. Anamnesi Prossima: Da 4 giorni dolore e arrossamento al braccio destro, in corrispondenza della sede del catetere, con sensazione di calore locale. Non riferito edema dell'arto. Nega febbre, dispnea e dolore toracico. Esame obiettivo all'ingresso: Paziente vigile, orientata, eupnoica a riposo. PA 122/78 mmHg, FC 80 bpm, FR 16 atti/min, SpO2 98% in aria ambiente, TC 36,8°C. Braccio destro con arrossamento e aumento della temperatura cutanea in sede di catetere, dolorabilita' alla palpazione. Non rilevato",
+    "agent1_seconds": 6.9,
+    "brighton_context": "",
+    "agent2_seconds": 7.1,
+    "answer_conflict": null,
+    "reasoning": "The evidence explicitly states that a CT venography of the right upper limb was performed (\"Eseguita CT venografia dell'arto superiore destro\"). The results of this imaging study confirmed thrombosis of the right subclavian vein associated with the central venous catheter (\"trombosi della vena succlavia destra, associata al catetere venoso centrale\"). Since a thrombus in a deep vein (subclavian) constitutes Deep Vein Thrombosis (DVT), and it was confirmed by an imaging study, option 1 is the correct choice.\n\nFINAL_OPTION: ≥1 imaging study was done and confirmed DVT\nFINAL_ANSWER: 1",
+    "result": {
+      "answer": "≥1 imaging study was done and confirmed DVT"
+    }
+  },
+  "A3_2": {
+    "query": "type of imaging study performed: compression ultrasonography, doppler, venography",
+    "evidence": "TC 36,8°C. Braccio destro con arrossamento e aumento della temperatura cutanea in sede di catetere, dolorabilita' alla palpazione. Non rilevato edema dell'arto. Esami di laboratorio: D-dimero 1.800 ng/mL, superiore al limite superiore di riferimento del laboratorio. Eseguita CT venografia dell'arto superiore destro: trombosi della vena succlavia destra, associata al catetere venoso centrale.\n\nAnamnesi patologica remota: Donna di 62 anni, portatrice di catetere venoso centrale posizionato per chemioterapia. Nessun intervento chirurgico recente diverso dal posizionamento del catetere. Non allergie note. Anamnesi farmacologica: terapia antiemetica al bisogno, omeprazolo 20 mg. Anamnesi Prossima: Da 4 giorni dolore e arrossamento al braccio destro, in corrispondenza della sede del catetere, con sensazione di calore locale. Non riferito edema dell'arto. Nega febbre, dispnea e dolore toracico. Esame obiettivo all'ingresso: Paziente vigile, orientata, eupnoica a riposo. PA 122/78 mmHg, FC 80 bpm, FR 16 atti/min, SpO2 98% in aria ambiente, TC 36,8°C. Braccio destro con arrossamento e aumento della temperatura cutanea in sede di catetere, dolorabilita' alla palpazione. Non rilevato",
+    "agent1_seconds": 6.5,
+    "brighton_context": "",
+    "agent2_seconds": 6.4,
+    "answer_conflict": null,
+    "reasoning": "The evidence explicitly states \"Eseguita CT venografia dell'arto superiore destro\" (CT venography of the right upper limb was performed), which confirmed the diagnosis of thrombosis. This corresponds directly to option 2 (\"CT or MR venography\"). The text does not mention the use of compression ultrasonography, Doppler/Duplex ultrasound, or contrast venography (distinct from CT venography in this context). Therefore, only option 2 is supported by the evidence.\n\nFINAL_OPTION: CT or MR venography\nFINAL_ANSWER: 2",
+    "result": {
+      "studies": [
+        "CT or MR venography"
+      ]
+    }
+  },
+  "B1_1": {
+    "query": "reported symptoms or signs of deep vein thrombosis",
+    "evidence": "TC 36,8°C. Braccio destro con arrossamento e aumento della temperatura cutanea in sede di catetere, dolorabilita' alla palpazione. Non rilevato edema dell'arto. Esami di laboratorio: D-dimero 1.800 ng/mL, superiore al limite superiore di riferimento del laboratorio. Eseguita CT venografia dell'arto superiore destro: trombosi della vena succlavia destra, associata al catetere venoso centrale.\n\nAnamnesi patologica remota: Donna di 62 anni, portatrice di catetere venoso centrale posizionato per chemioterapia. Nessun intervento chirurgico recente diverso dal posizionamento del catetere. Non allergie note. Anamnesi farmacologica: terapia antiemetica al bisogno, omeprazolo 20 mg. Anamnesi Prossima: Da 4 giorni dolore e arrossamento al braccio destro, in corrispondenza della sede del catetere, con sensazione di calore locale. Non riferito edema dell'arto. Nega febbre, dispnea e dolore toracico. Esame obiettivo all'ingresso: Paziente vigile, orientata, eupnoica a riposo. PA 122/78 mmHg, FC 80 bpm, FR 16 atti/min, SpO2 98% in aria ambiente, TC 36,8°C. Braccio destro con arrossamento e aumento della temperatura cutanea in sede di catetere, dolorabilita' alla palpazione. Non rilevato",
+    "agent1_seconds": 7.5,
+    "brighton_context": "",
+    "agent2_seconds": 8.9,
+    "answer_conflict": null,
+    "reasoning": "The evidence explicitly describes symptoms and signs consistent with Deep Vein Thrombosis (DVT), specifically in the context of a catheter-related thrombosis. The patient presents with right arm pain (\"dolorabilita' alla palpazione\"), redness (\"arrossamento\"), and increased skin temperature (\"aumento della temperatura cutanea\") at the site of the central venous catheter. Although edema was explicitly noted as absent (\"Non rilevato edema dell'arto\"), the presence of pain, erythema, and warmth constitutes recognized clinical signs/symptoms of DVT (or superficial thrombophlebitis extending to deep veins, confirmed by imaging). The CT venography further confirmed a thrombosis of the right subclavian vein. Therefore, at least one symptom or sign of DVT was reported.\n\nFINAL_OPTION: ≥1 symptom or sign of DVT was reported\nFINAL_ANSWER: 1",
+    "result": {
+      "answer": "≥1 symptom or sign of DVT was reported"
+    }
+  },
+  "B1_2": {
+    "query": "deep vein thrombosis lower extremity or upper extremity",
+    "evidence": "TC 36,8°C. Braccio destro con arrossamento e aumento della temperatura cutanea in sede di catetere, dolorabilita' alla palpazione. Non rilevato edema dell'arto. Esami di laboratorio: D-dimero 1.800 ng/mL, superiore al limite superiore di riferimento del laboratorio. Eseguita CT venografia dell'arto superiore destro: trombosi della vena succlavia destra, associata al catetere venoso centrale.\n\nAnamnesi patologica remota: Donna di 62 anni, portatrice di catetere venoso centrale posizionato per chemioterapia. Nessun intervento chirurgico recente diverso dal posizionamento del catetere. Non allergie note. Anamnesi farmacologica: terapia antiemetica al bisogno, omeprazolo 20 mg. Anamnesi Prossima: Da 4 giorni dolore e arrossamento al braccio destro, in corrispondenza della sede del catetere, con sensazione di calore locale. Non riferito edema dell'arto. Nega febbre, dispnea e dolore toracico. Esame obiettivo all'ingresso: Paziente vigile, orientata, eupnoica a riposo. PA 122/78 mmHg, FC 80 bpm, FR 16 atti/min, SpO2 98% in aria ambiente, TC 36,8°C. Braccio destro con arrossamento e aumento della temperatura cutanea in sede di catetere, dolorabilita' alla palpazione. Non rilevato",
+    "agent1_seconds": 6.5,
+    "brighton_context": "",
+    "agent2_seconds": 7.8,
+    "answer_conflict": null,
+    "reasoning": "The evidence explicitly states that a CT venography of the right upper limb was performed, which revealed \"trombosi della vena succlavia destra\" (thrombosis of the right subclavian vein). The subclavian vein is located in the upper extremity. Therefore, this confirms an Upper extremity DVT. There is no mention of thrombosis in the lower extremities; in fact, the text notes \"Non rilevato edema dell'arto\" (no limb edema detected) and focuses entirely on symptoms in the right arm associated with a central venous catheter. Thus, Lower extremity DVT is not supported by the evidence.\n\nFINAL_OPTION: Upper extremity DVT\nFINAL_ANSWER: 2",
+    "result": {
+      "types": [
+        "Upper extremity DVT"
+      ]
+    }
+  },
+  "B2": {
+    "query": "calf pain or tenderness, leg swelling or pitting oedema, redness, warmth or pain in any extremity, absent pulses in legs or arms",
+    "evidence": "Anamnesi patologica remota: Donna di 62 anni, portatrice di catetere venoso centrale posizionato per chemioterapia. Nessun intervento chirurgico recente diverso dal posizionamento del catetere. Non allergie note. Anamnesi farmacologica: terapia antiemetica al bisogno, omeprazolo 20 mg. Anamnesi Prossima: Da 4 giorni dolore e arrossamento al braccio destro, in corrispondenza della sede del catetere, con sensazione di calore locale. Non riferito edema dell'arto. Nega febbre, dispnea e dolore toracico. Esame obiettivo all'ingresso: Paziente vigile, orientata, eupnoica a riposo. PA 122/78 mmHg, FC 80 bpm, FR 16 atti/min, SpO2 98% in aria ambiente, TC 36,8°C. Braccio destro con arrossamento e aumento della temperatura cutanea in sede di catetere, dolorabilita' alla palpazione. Non rilevato\n\nTC 36,8°C. Braccio destro con arrossamento e aumento della temperatura cutanea in sede di catetere, dolorabilita' alla palpazione. Non rilevato edema dell'arto. Esami di laboratorio: D-dimero 1.800 ng/mL, superiore al limite superiore di riferimento del laboratorio. Eseguita CT venografia dell'arto superiore destro: trombosi della vena succlavia destra, associata al catetere venoso centrale.",
+    "agent1_seconds": 8.2,
+    "brighton_context": "",
+    "agent2_seconds": 9.4,
+    "answer_conflict": null,
+    "reasoning": "The patient presents with pain (\"dolore\"), redness (\"arrossamento\"), and warmth (\"aumento della temperatura cutanea\") in the right arm, which corresponds to the site of the central venous catheter. These findings explicitly support option 4 (\"Redness, warmth, or pain in one or more extremities\"). The evidence explicitly states that there was no edema of the limb (\"Non riferito edema dell'arto\", \"Non rilevato edema dell'arto\"), ruling out leg swelling (option 2). There is no mention of calf pain/tenderness (option 1) or absent pulses (option 3), and since the prompt requires not assuming absence if not mentioned but also not including options without explicit supporting evidence discussed, only option 4 is supported by the positive findings described.\n\nFINAL_OPTION: Redness, warmth, or pain in one or more extremities\nFINAL_ANSWER: 4",
+    "result": {
+      "symptoms": [
+        "Redness, warmth, or pain in one or more extremities"
+      ]
+    }
+  },
+  "C": {
+    "query": "D-dimer value, test date, laboratory upper limit of normal",
+    "evidence": "TC 36,8°C. Braccio destro con arrossamento e aumento della temperatura cutanea in sede di catetere, dolorabilita' alla palpazione. Non rilevato edema dell'arto. Esami di laboratorio: D-dimero 1.800 ng/mL, superiore al limite superiore di riferimento del laboratorio. Eseguita CT venografia dell'arto superiore destro: trombosi della vena succlavia destra, associata al catetere venoso centrale.\n\nAnamnesi patologica remota: Donna di 62 anni, portatrice di catetere venoso centrale posizionato per chemioterapia. Nessun intervento chirurgico recente diverso dal posizionamento del catetere. Non allergie note. Anamnesi farmacologica: terapia antiemetica al bisogno, omeprazolo 20 mg. Anamnesi Prossima: Da 4 giorni dolore e arrossamento al braccio destro, in corrispondenza della sede del catetere, con sensazione di calore locale. Non riferito edema dell'arto. Nega febbre, dispnea e dolore toracico. Esame obiettivo all'ingresso: Paziente vigile, orientata, eupnoica a riposo. PA 122/78 mmHg, FC 80 bpm, FR 16 atti/min, SpO2 98% in aria ambiente, TC 36,8°C. Braccio destro con arrossamento e aumento della temperatura cutanea in sede di catetere, dolorabilita' alla palpazione. Non rilevato",
+    "agent1_seconds": 6.3,
+    "brighton_context": "",
+    "agent2_seconds": 5.3,
+    "answer_conflict": null,
+    "reasoning": "The evidence explicitly states \"D-dimero 1.800 ng/mL, superiore al limite superiore di riferimento del laboratorio,\" which translates to D-dimer being 1,800 ng/mL, above the laboratory's upper reference limit. This confirms that the test was performed and the result exceeded the normal range.\n\nFINAL_OPTION: D-dimer exceeded test lab's upper limit of normal.\nFINAL_ANSWER: 1",
+    "result": {
+      "answer": "D-dimer exceeded test lab's upper limit of normal."
+    }
+  },
+  "F": {
+    "query": "diagnosis of deep vein thrombosis reported by specialist",
+    "evidence": "TC 36,8°C. Braccio destro con arrossamento e aumento della temperatura cutanea in sede di catetere, dolorabilita' alla palpazione. Non rilevato edema dell'arto. Esami di laboratorio: D-dimero 1.800 ng/mL, superiore al limite superiore di riferimento del laboratorio. Eseguita CT venografia dell'arto superiore destro: trombosi della vena succlavia destra, associata al catetere venoso centrale.\n\nAnamnesi patologica remota: Donna di 62 anni, portatrice di catetere venoso centrale posizionato per chemioterapia. Nessun intervento chirurgico recente diverso dal posizionamento del catetere. Non allergie note. Anamnesi farmacologica: terapia antiemetica al bisogno, omeprazolo 20 mg. Anamnesi Prossima: Da 4 giorni dolore e arrossamento al braccio destro, in corrispondenza della sede del catetere, con sensazione di calore locale. Non riferito edema dell'arto. Nega febbre, dispnea e dolore toracico. Esame obiettivo all'ingresso: Paziente vigile, orientata, eupnoica a riposo. PA 122/78 mmHg, FC 80 bpm, FR 16 atti/min, SpO2 98% in aria ambiente, TC 36,8°C. Braccio destro con arrossamento e aumento della temperatura cutanea in sede di catetere, dolorabilita' alla palpazione. Non rilevato",
+    "agent1_seconds": 6.7,
+    "brighton_context": "",
+    "agent2_seconds": 5.5,
+    "answer_conflict": null,
+    "reasoning": "The evidence explicitly states that a CT venography was performed (\"Eseguita CT venografia dell'arto superiore destro\") and confirmed thrombosis of the right subclavian vein (\"trombosi della vena succlavia destra\"). According to clinical definitions, deep vein thrombosis (DVT) includes thrombosis in deep veins such as the subclavian vein. Therefore, the condition is confirmed.\n\nFINAL_OPTION: Yes\nFINAL_ANSWER: 1",
+    "result": {
+      "answer": "Yes"
+    }
+  },
+  "X": {
+    "query": "possible alternative etiologies; clinical syndromes to be differentiated from thrombosis; conditions explaining calf pain, redness, warmth or ankle edema other than DVT",
+    "evidence": "TC 36,8°C. Braccio destro con arrossamento e aumento della temperatura cutanea in sede di catetere, dolorabilita' alla palpazione. Non rilevato edema dell'arto. Esami di laboratorio: D-dimero 1.800 ng/mL, superiore al limite superiore di riferimento del laboratorio. Eseguita CT venografia dell'arto superiore destro: trombosi della vena succlavia destra, associata al catetere venoso centrale.\n\nAnamnesi patologica remota: Donna di 62 anni, portatrice di catetere venoso centrale posizionato per chemioterapia. Nessun intervento chirurgico recente diverso dal posizionamento del catetere. Non allergie note. Anamnesi farmacologica: terapia antiemetica al bisogno, omeprazolo 20 mg. Anamnesi Prossima: Da 4 giorni dolore e arrossamento al braccio destro, in corrispondenza della sede del catetere, con sensazione di calore locale. Non riferito edema dell'arto. Nega febbre, dispnea e dolore toracico. Esame obiettivo all'ingresso: Paziente vigile, orientata, eupnoica a riposo. PA 122/78 mmHg, FC 80 bpm, FR 16 atti/min, SpO2 98% in aria ambiente, TC 36,8°C. Braccio destro con arrossamento e aumento della temperatura cutanea in sede di catetere, dolorabilita' alla palpazione. Non rilevato",
+    "agent1_seconds": 5.8,
+    "brighton_context": "",
+    "agent2_seconds": 6.9,
+    "answer_conflict": null,
+    "reasoning": "The evidence describes a patient with signs of inflammation at a central venous catheter site and elevated D-dimer levels. A CT venography was performed and explicitly confirmed \"trombosi della vena succlavia destra\" (right subclavian vein thrombosis) associated with the catheter. This finding constitutes a definitive diagnosis for the patient's acute symptoms (pain, redness, warmth). Since a specific pathological cause (catheter-associated thrombosis) was identified and confirmed by imaging, an alternative diagnosis explaining the acute illness was found.\n\nFINAL_OPTION: An alternative diagnosis was found that explained the acute illness\nFINAL_ANSWER: 1",
+    "result": {
+      "answer": "An alternative diagnosis was found that explained the acute illness"
+    }
+  },
+  "_run_config": {
+    "extractor_mode": "agentic_graph",
+    "section_gates_enabled": {
+      "keyword": false,
+      "details": false,
+      "absent_pulses": false
+    },
+    "brighton_context_enabled": false,
+    "section_descriptions_enabled": false,
+    "section_hints_enabled": false,
+    "section_hints_disabled": [],
+    "section_hints_fingerprint": {
+      "all": "dbe3b41b6a5c"
+    },
+    "section_queries_fingerprint": {
+      "A1": "68 f31cb52cc7a2",
+      "A2": "47 df6b72799cd6",
+      "A3_1": "73 dea0b36a509c",
+      "A3_2": "81 df834d2f4193",
+      "B1_1": "50 6cda81bb9be8",
+      "B1_2": "55 9136dd6530fb",
+      "B2": "128 618aaee6579e",
+      "C": "58 98411e20a257",
+      "F": "56 2a1cef15a0b0",
+      "X": "168 49d5d41f3a23",
+      "all": "bfd9536a31fe"
+    },
+    "guideline_anchors_enabled": false,
+    "guideline_anchors_fingerprint": {
+      "A1": "699 6fa2837f0bf8",
+      "A2": "699 6fa2837f0bf8",
+      "A3_1": "1616 0d73c0d46674",
+      "A3_2": "3566 841cc2dbfd90",
+      "B1_1": "4230 4af7e1ebd4a3",
+      "B1_2": "4230 4af7e1ebd4a3",
+      "B2": "4230 4af7e1ebd4a3",
+      "C": "977 fcf102e0a775",
+      "X": "2770 c66190553aeb",
+      "all": "4bc8810e170a"
+    },
+    "cross_section_rules_applied": true,
+    "models": {
+      "extractor": "qwen3.6:27b",
+      "evaluator": "qwen3.6:27b",
+      "embeddings": "intfloat/multilingual-e5-small"
+    },
+    "environment": {
+      "hostname": "mari",
+      "ollama_version": "ollama version is 0.32.1"
+    },
+    "generation": {
+      "temperature": 0.0,
+      "num_predict": 1024,
+      "num_gpu": 999,
+      "reasoning": false
+    },
+    "retrieval": {
+      "ehr_chunk_size": 800,
+      "ehr_chunk_overlap": 150,
+      "ehr_retriever_k": 5,
+      "brighton_retriever_k": 5
+    }
+  }
+}

@@ -1,0 +1,76 @@
+{
+  "E": {
+    "query": "electrocardiogram ECG findings: rhythm, atrial or ventricular arrhythmia, tachycardia, atrial fibrillation, AV block, bundle branch block, conduction delay, ST segment or T wave abnormality, Q waves, low voltage, premature atrial or ventricular contractions, ambulatory monitoring, normal ECG, ECG not performed",
+    "evidence": "A 19-year-old previously healthy male was admitted following several days of persistent emesis\n and epigastric discomfort. On presentation, he was hypotensive (80/47 mmHg) and tachycardic \n(124/min) with oxygen saturation 93% .CK-MB at admission was 13.7 U/L; and troponin was \n2.15 ng/ml.  EKG showed sinus tachycardia \nNon-contrast abdominal CT was unremarkable. chest CT demonstrated patchy interstitial opacities. \nTTE revealed severe biventricular systolic depression with diffuse wall motion impairment .\n CXR, however, did not show cardiomegaly or pulmonary congestion. \nSARS-CoV-2 PCR was negative.The patient was transferred to the ICU for management of \nheart failure and commenced on norepinephrine and low-dose dobutamine .\n\nheart failure and commenced on norepinephrine and low-dose dobutamine . \n Invasive coronary evaluation later demonstrated non-occlusive luminal irregularity.\nVirological serology demonstrated Coxsackie B serotypes Igm and IgG, compatible with recent infection. \nCMR exhibited patchy subepicardial enhancement in the inferolateral wall with corresponding T1/T2 \nprolongation and increased ECV.  Guideline-directed therapy with β-blockade and ACE inhibition was\n initiated once hemodynamics stabilized. Repeat echo before discharge showed normalization of \ncardiac indices and resolution of global hypokinesis. The patient was discharged asymptomatic with plan for ambulatory follow-up.",
+    "agent1_seconds": 6.0,
+    "brighton_context": "",
+    "agent2_seconds": 15.7,
+    "answer_conflict": null,
+    "reasoning": "The evidence explicitly states: \"EKG showed sinus tachycardia\". Sinus tachycardia is an arrhythmia characterized by a rapid heart rate originating from the sinus node. Looking at the options, Option 2 lists \"Paroxysmal or sustained atrial or ventricular arrhythmias... :e.g (Sinus tachycardia...)\". Since sinus tachycardia is explicitly listed as an example within Option 2 and was found on the EKG, this option applies.\n\nOther options are incorrect based on the evidence:\n- Options 3, 4, 5, 6, 7, 9, 10, 11 describe specific conduction delays, ST/T wave changes, or ectopy that were not mentioned in the EKG findings (only sinus tachycardia was reported).\n- Option 13 (\"No abnormalities seen on ECG\") is incorrect because sinus tachycardia is an abnormality.\n- Options 8 and 14 refer to confirmed myocarditis/pericarditis without details, but we have specific details (sinus tachycardia), so the more specific option (2) is preferred over the vague \"without details\" options. Furthermore, Option 2 specifically captures the finding present.\n\nFINAL_OPTION: Paroxysmal or sustained atrial or ventricular arrhythmias (premature atrial or ventricular beats, and/or supraventricular or ventricular tachycardia, interventricular conduction delay, abnormal Q waves, low voltages): :e.g (Sinus tachycardia, SVT, atrial fibrillation, PVCs, VT, VF)\nFINAL_ANSWER: 2",
+    "result": {
+      "findings": [
+        "Paroxysmal or sustained atrial or ventricular arrhythmias (premature atrial or ventricular beats, and/or supraventricular or ventricular tachycardia, interventricular conduction delay, abnormal Q waves, low voltages): :e.g (Sinus tachycardia, SVT, atrial fibrillation, PVCs, VT, VF)"
+      ]
+    }
+  },
+  "F": {
+    "query": "echocardiogram ECHO findings: ejection fraction, left or right ventricular function, segmental wall motion, global systolic or diastolic function, ventricular dilation, wall thickness, pericardial effusion or inflammation, normal echocardiogram, ECHO not performed",
+    "evidence": "heart failure and commenced on norepinephrine and low-dose dobutamine . \n Invasive coronary evaluation later demonstrated non-occlusive luminal irregularity.\nVirological serology demonstrated Coxsackie B serotypes Igm and IgG, compatible with recent infection. \nCMR exhibited patchy subepicardial enhancement in the inferolateral wall with corresponding T1/T2 \nprolongation and increased ECV.  Guideline-directed therapy with β-blockade and ACE inhibition was\n initiated once hemodynamics stabilized. Repeat echo before discharge showed normalization of \ncardiac indices and resolution of global hypokinesis. The patient was discharged asymptomatic with plan for ambulatory follow-up.\n\nA 19-year-old previously healthy male was admitted following several days of persistent emesis\n and epigastric discomfort. On presentation, he was hypotensive (80/47 mmHg) and tachycardic \n(124/min) with oxygen saturation 93% .CK-MB at admission was 13.7 U/L; and troponin was \n2.15 ng/ml.  EKG showed sinus tachycardia \nNon-contrast abdominal CT was unremarkable. chest CT demonstrated patchy interstitial opacities. \nTTE revealed severe biventricular systolic depression with diffuse wall motion impairment .\n CXR, however, did not show cardiomegaly or pulmonary congestion. \nSARS-CoV-2 PCR was negative.The patient was transferred to the ICU for management of \nheart failure and commenced on norepinephrine and low-dose dobutamine .",
+    "agent1_seconds": 112.7,
+    "brighton_context": "",
+    "agent2_seconds": 54.9,
+    "answer_conflict": null,
+    "reasoning": "The evidence explicitly states that a Transthoracic Echocardiogram (TTE) was performed (\"TTE revealed...\"). The findings described are \"severe biventricular systolic depression with diffuse wall motion impairment.\" This description corresponds to global systolic function abnormalities affecting both ventricles. Specifically, \"diffuse wall motion impairment\" and \"biventricular systolic depression\" align with Option 4: \"Global systolic or diastolic function depression/abnormality\". While Option 2 mentions new focal or diffuse abnormalities, Option 4 is more specific to the \"global\" nature of the depression described (\"diffuse\", \"biventricular\"). The repeat echo showed normalization, but the initial diagnostic finding was global dysfunction. There is no mention of ventricular dilation (Option 5), wall thickness changes (Option 6), or pericardial inflammation/fluid (Option 8) on the echo. Option 7 and 10 are vague \"confirmed without details\" options, but we have specific details, so they are not the best fit compared to the descriptive options. The question asks for the correct answer based on evidence; the most accurate description of the TTE findings provided is global systolic depression.\n\nFINAL_OPTION: Global systolic or diastolic function depression/abnormality - (*Decreased longitudinal and circumferential strain and strain rates on tissue Doppler)\nFINAL_ANSWER: 4",
+    "result": {
+      "findings": [
+        "Global systolic or diastolic function depression/abnormality - (*Decreased longitudinal and circumferential strain and strain rates on tissue Doppler)"
+      ]
+    }
+  },
+  "_run_config": {
+    "extractor_mode": "agentic_graph",
+    "section_gates_enabled": {
+      "keyword": false,
+      "details": false,
+      "absent_pulses": false
+    },
+    "brighton_context_enabled": false,
+    "section_descriptions_enabled": false,
+    "section_hints_enabled": true,
+    "section_hints_disabled": [],
+    "section_hints_fingerprint": {
+      "all": "9503fb46b54e"
+    },
+    "section_queries_fingerprint": {
+      "E": "311 b830923d415b",
+      "F": "264 9cfac9903bb3",
+      "all": "8c4c0ec0ce71"
+    },
+    "guideline_anchors_enabled": false,
+    "guideline_anchors_fingerprint": {
+      "all": "e3b0c44298fc"
+    },
+    "cross_section_rules_applied": true,
+    "models": {
+      "extractor": "qwen3.6:27b",
+      "evaluator": "qwen3.6:27b",
+      "embeddings": "intfloat/multilingual-e5-small"
+    },
+    "environment": {
+      "hostname": "mari",
+      "ollama_version": "ollama version is 0.32.1"
+    },
+    "generation": {
+      "temperature": 0.0,
+      "num_predict": 1024,
+      "num_gpu": 999,
+      "reasoning": false
+    },
+    "retrieval": {
+      "ehr_chunk_size": 800,
+      "ehr_chunk_overlap": 150,
+      "ehr_retriever_k": 5,
+      "brighton_retriever_k": 5
+    }
+  }
+}

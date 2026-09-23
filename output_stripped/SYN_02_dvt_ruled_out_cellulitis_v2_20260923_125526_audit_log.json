@@ -1,0 +1,189 @@
+{
+  "A1": {
+    "query": "autopsy report, necropsy, post-mortem examination, autoptic findings",
+    "evidence": "Esami di laboratorio: leucocitosi e PCR elevata. D-dimero non eseguito. Eseguita ecografia compressiva venosa dell'arto inferiore sinistro: vene comprimibili, nessuna evidenza di trombosi venosa profonda. Valutazione specialistica: diagnosi di cellulite dell'arto inferiore sinistro, confermata dal quadro di leucocitosi e PCR elevata, senza coinvolgimento del sistema venoso profondo.\n\nAnamnesi patologica remota: Uomo di 45 anni. Nessun intervento chirurgico recente. Non allergie farmacologiche note. Anamnesi farmacologica: nessuna terapia cronica in atto. Anamnesi Prossima: Da 2 giorni comparsa di arrossamento, calore e dolore alla gamba sinistra, associati a rialzo termico. Nega trauma recente, dispnea, dolore toracico e sincope. Esame obiettivo all'ingresso: Paziente vigile, orientato e collaborante. PA 128/80 mmHg, FC 88 bpm, FR 16 atti/min, SpO2 98% in aria ambiente, TC 38,3°C. Gamba sinistra con arrossamento cutaneo diffuso, aumento della temperatura locale e dolorabilita' alla palpazione. Addome trattabile, non dolente. Esami di laboratorio: leucocitosi e PCR elevata. D-dimero non eseguito. Eseguita ecografia compressiva venosa dell'arto inferiore sinistro: vene",
+    "agent1_seconds": 5.7,
+    "brighton_context": "",
+    "agent2_seconds": 6.6,
+    "answer_conflict": null,
+    "reasoning": "The provided evidence describes a living patient undergoing clinical evaluation for suspected cellulitis and ruling out deep vein thrombosis (DVT) via venous compression ultrasound. There is no mention of the patient's death, nor is there any reference to an autopsy being performed. Since the text does not state that an autopsy was conducted, and explicitly details other diagnostic methods instead, the correct classification regarding autopsy is that it was not done or its status is unknown in this context.\n\nFINAL_OPTION: No autopsy done, unknown if done, or done but results unavailable\nFINAL_ANSWER: 3",
+    "result": {
+      "answer": "No autopsy done, unknown if done, or done but results unavailable"
+    }
+  },
+  "A2": {
+    "query": "thrombectomy, surgical procedure related to DVT",
+    "evidence": "Esami di laboratorio: leucocitosi e PCR elevata. D-dimero non eseguito. Eseguita ecografia compressiva venosa dell'arto inferiore sinistro: vene comprimibili, nessuna evidenza di trombosi venosa profonda. Valutazione specialistica: diagnosi di cellulite dell'arto inferiore sinistro, confermata dal quadro di leucocitosi e PCR elevata, senza coinvolgimento del sistema venoso profondo.\n\nAnamnesi patologica remota: Uomo di 45 anni. Nessun intervento chirurgico recente. Non allergie farmacologiche note. Anamnesi farmacologica: nessuna terapia cronica in atto. Anamnesi Prossima: Da 2 giorni comparsa di arrossamento, calore e dolore alla gamba sinistra, associati a rialzo termico. Nega trauma recente, dispnea, dolore toracico e sincope. Esame obiettivo all'ingresso: Paziente vigile, orientato e collaborante. PA 128/80 mmHg, FC 88 bpm, FR 16 atti/min, SpO2 98% in aria ambiente, TC 38,3°C. Gamba sinistra con arrossamento cutaneo diffuso, aumento della temperatura locale e dolorabilita' alla palpazione. Addome trattabile, non dolente. Esami di laboratorio: leucocitosi e PCR elevata. D-dimero non eseguito. Eseguita ecografia compressiva venosa dell'arto inferiore sinistro: vene",
+    "agent1_seconds": 5.7,
+    "brighton_context": "",
+    "agent2_seconds": 7.0,
+    "answer_conflict": null,
+    "reasoning": "The evidence explicitly states that a compressive venous ultrasound was performed on the left lower limb and showed \"no evidence of deep vein thrombosis\" (nessuna evidenza di trombosi venosa profonda). Furthermore, it notes that no recent surgical interventions were performed (\"Nessun intervento chirurgico recente\"). Since DVT was ruled out by imaging and no surgery was performed to treat or confirm DVT, the correct classification is that no surgical procedure was done or findings did not confirm DVT.\n\nFINAL_OPTION: No surgical procedure done; or, done but either did not confirm presence of DVT or findings unknown; or unknown if done\nFINAL_ANSWER: 3",
+    "result": {
+      "answer": "No surgical procedure done; or, done but either did not confirm presence of DVT or findings unknown; or unknown if done"
+    }
+  },
+  "A3_1": {
+    "query": "ultrasound, CT, MRI, venography: imaging outcome for deep vein thrombosis",
+    "evidence": "Esami di laboratorio: leucocitosi e PCR elevata. D-dimero non eseguito. Eseguita ecografia compressiva venosa dell'arto inferiore sinistro: vene comprimibili, nessuna evidenza di trombosi venosa profonda. Valutazione specialistica: diagnosi di cellulite dell'arto inferiore sinistro, confermata dal quadro di leucocitosi e PCR elevata, senza coinvolgimento del sistema venoso profondo.\n\nAnamnesi patologica remota: Uomo di 45 anni. Nessun intervento chirurgico recente. Non allergie farmacologiche note. Anamnesi farmacologica: nessuna terapia cronica in atto. Anamnesi Prossima: Da 2 giorni comparsa di arrossamento, calore e dolore alla gamba sinistra, associati a rialzo termico. Nega trauma recente, dispnea, dolore toracico e sincope. Esame obiettivo all'ingresso: Paziente vigile, orientato e collaborante. PA 128/80 mmHg, FC 88 bpm, FR 16 atti/min, SpO2 98% in aria ambiente, TC 38,3°C. Gamba sinistra con arrossamento cutaneo diffuso, aumento della temperatura locale e dolorabilita' alla palpazione. Addome trattabile, non dolente. Esami di laboratorio: leucocitosi e PCR elevata. D-dimero non eseguito. Eseguita ecografia compressiva venosa dell'arto inferiore sinistro: vene",
+    "agent1_seconds": 6.7,
+    "brighton_context": "",
+    "agent2_seconds": 5.8,
+    "answer_conflict": null,
+    "reasoning": "The evidence explicitly states that a compressive venous ultrasound of the left lower limb was performed (\"Eseguita ecografia compressiva venosa dell'arto inferiore sinistro\"). The results showed compressible veins with no evidence of deep vein thrombosis (\"vene comprimibili, nessuna evidenza di trombosi venosa profonda\"). Therefore, an imaging study was done, but it did not confirm DVT.\n\nFINAL_OPTION: ≥1 imaging study was done but didn't confirm DVT\nFINAL_ANSWER: 2",
+    "result": {
+      "answer": "≥1 imaging study was done but didn't confirm DVT"
+    }
+  },
+  "A3_2": {
+    "query": "type of imaging study performed: compression ultrasonography, doppler, venography",
+    "evidence": "Esami di laboratorio: leucocitosi e PCR elevata. D-dimero non eseguito. Eseguita ecografia compressiva venosa dell'arto inferiore sinistro: vene comprimibili, nessuna evidenza di trombosi venosa profonda. Valutazione specialistica: diagnosi di cellulite dell'arto inferiore sinistro, confermata dal quadro di leucocitosi e PCR elevata, senza coinvolgimento del sistema venoso profondo.\n\nAnamnesi patologica remota: Uomo di 45 anni. Nessun intervento chirurgico recente. Non allergie farmacologiche note. Anamnesi farmacologica: nessuna terapia cronica in atto. Anamnesi Prossima: Da 2 giorni comparsa di arrossamento, calore e dolore alla gamba sinistra, associati a rialzo termico. Nega trauma recente, dispnea, dolore toracico e sincope. Esame obiettivo all'ingresso: Paziente vigile, orientato e collaborante. PA 128/80 mmHg, FC 88 bpm, FR 16 atti/min, SpO2 98% in aria ambiente, TC 38,3°C. Gamba sinistra con arrossamento cutaneo diffuso, aumento della temperatura locale e dolorabilita' alla palpazione. Addome trattabile, non dolente. Esami di laboratorio: leucocitosi e PCR elevata. D-dimero non eseguito. Eseguita ecografia compressiva venosa dell'arto inferiore sinistro: vene",
+    "agent1_seconds": 6.6,
+    "brighton_context": "",
+    "agent2_seconds": 7.4,
+    "answer_conflict": null,
+    "reasoning": "The evidence explicitly states that a \"compression venous ultrasound\" (ecografia compressiva venosa) was performed on the left lower limb. The text describes the findings of this specific procedure (\"veins compressible, no evidence of deep vein thrombosis\"). This directly corresponds to Option 1. While Doppler/Duplex is often part of a comprehensive venous ultrasound exam, the text specifically names \"compression ultrasonography\" and does not explicitly mention Doppler or Duplex modes, nor does it mention CT/MR venography or contrast venography. Therefore, only the method explicitly named in the evidence should be selected.\n\nFINAL_OPTION: Compression ultrasonography\nFINAL_ANSWER: 1",
+    "result": {
+      "studies": [
+        "Compression ultrasonography"
+      ]
+    }
+  },
+  "B1_1": {
+    "query": "reported symptoms or signs of deep vein thrombosis",
+    "evidence": "Esami di laboratorio: leucocitosi e PCR elevata. D-dimero non eseguito. Eseguita ecografia compressiva venosa dell'arto inferiore sinistro: vene comprimibili, nessuna evidenza di trombosi venosa profonda. Valutazione specialistica: diagnosi di cellulite dell'arto inferiore sinistro, confermata dal quadro di leucocitosi e PCR elevata, senza coinvolgimento del sistema venoso profondo.\n\nAnamnesi patologica remota: Uomo di 45 anni. Nessun intervento chirurgico recente. Non allergie farmacologiche note. Anamnesi farmacologica: nessuna terapia cronica in atto. Anamnesi Prossima: Da 2 giorni comparsa di arrossamento, calore e dolore alla gamba sinistra, associati a rialzo termico. Nega trauma recente, dispnea, dolore toracico e sincope. Esame obiettivo all'ingresso: Paziente vigile, orientato e collaborante. PA 128/80 mmHg, FC 88 bpm, FR 16 atti/min, SpO2 98% in aria ambiente, TC 38,3°C. Gamba sinistra con arrossamento cutaneo diffuso, aumento della temperatura locale e dolorabilita' alla palpazione. Addome trattabile, non dolente. Esami di laboratorio: leucocitosi e PCR elevata. D-dimero non eseguito. Eseguita ecografia compressiva venosa dell'arto inferiore sinistro: vene",
+    "agent1_seconds": 7.8,
+    "brighton_context": "",
+    "agent2_seconds": 5.9,
+    "answer_conflict": null,
+    "reasoning": "The evidence explicitly states that a compressive venous ultrasound was performed on the left lower limb and showed \"no evidence of deep vein thrombosis\" (nessuna evidenza di trombosi venosa profonda). Furthermore, the specialist evaluation confirmed a diagnosis of cellulitis with \"no involvement of the deep venous system.\" Since DVT was actively ruled out by imaging and clinical assessment, there is no report of a recognized DVT syndrome.\n\nFINAL_OPTION: There was no report of a recognized DVT syndrome\nFINAL_ANSWER: 2",
+    "result": {
+      "answer": "There was no report of a recognized DVT syndrome"
+    }
+  },
+  "B1_2": {
+    "query": "deep vein thrombosis lower extremity or upper extremity",
+    "evidence": "Esami di laboratorio: leucocitosi e PCR elevata. D-dimero non eseguito. Eseguita ecografia compressiva venosa dell'arto inferiore sinistro: vene comprimibili, nessuna evidenza di trombosi venosa profonda. Valutazione specialistica: diagnosi di cellulite dell'arto inferiore sinistro, confermata dal quadro di leucocitosi e PCR elevata, senza coinvolgimento del sistema venoso profondo.\n\nAnamnesi patologica remota: Uomo di 45 anni. Nessun intervento chirurgico recente. Non allergie farmacologiche note. Anamnesi farmacologica: nessuna terapia cronica in atto. Anamnesi Prossima: Da 2 giorni comparsa di arrossamento, calore e dolore alla gamba sinistra, associati a rialzo termico. Nega trauma recente, dispnea, dolore toracico e sincope. Esame obiettivo all'ingresso: Paziente vigile, orientato e collaborante. PA 128/80 mmHg, FC 88 bpm, FR 16 atti/min, SpO2 98% in aria ambiente, TC 38,3°C. Gamba sinistra con arrossamento cutaneo diffuso, aumento della temperatura locale e dolorabilita' alla palpazione. Addome trattabile, non dolente. Esami di laboratorio: leucocitosi e PCR elevata. D-dimero non eseguito. Eseguita ecografia compressiva venosa dell'arto inferiore sinistro: vene",
+    "agent1_seconds": 7.8,
+    "brighton_context": "",
+    "agent2_seconds": 7.1,
+    "answer_conflict": null,
+    "reasoning": "The evidence explicitly states that a compressive venous ultrasound of the left lower extremity was performed, showing \"compressible veins\" and \"no evidence of deep vein thrombosis\" (nessuna evidenza di trombosi venosa profonda). The specialist evaluation confirmed cellulitis without involvement of the deep venous system. Therefore, DVT is ruled out for the lower extremity. There is no mention of symptoms or findings related to the upper extremities, so Upper extremity DVT cannot be assumed present. Since both options describe conditions that are either explicitly ruled out or not supported by evidence, neither option applies.\n\nFINAL_OPTION: none\nFINAL_ANSWER: none",
+    "result": {
+      "types": []
+    }
+  },
+  "B2": {
+    "query": "calf pain or tenderness, leg swelling or pitting oedema, redness, warmth or pain in any extremity, absent pulses in legs or arms",
+    "evidence": "Anamnesi patologica remota: Uomo di 45 anni. Nessun intervento chirurgico recente. Non allergie farmacologiche note. Anamnesi farmacologica: nessuna terapia cronica in atto. Anamnesi Prossima: Da 2 giorni comparsa di arrossamento, calore e dolore alla gamba sinistra, associati a rialzo termico. Nega trauma recente, dispnea, dolore toracico e sincope. Esame obiettivo all'ingresso: Paziente vigile, orientato e collaborante. PA 128/80 mmHg, FC 88 bpm, FR 16 atti/min, SpO2 98% in aria ambiente, TC 38,3°C. Gamba sinistra con arrossamento cutaneo diffuso, aumento della temperatura locale e dolorabilita' alla palpazione. Addome trattabile, non dolente. Esami di laboratorio: leucocitosi e PCR elevata. D-dimero non eseguito. Eseguita ecografia compressiva venosa dell'arto inferiore sinistro: vene\n\nEsami di laboratorio: leucocitosi e PCR elevata. D-dimero non eseguito. Eseguita ecografia compressiva venosa dell'arto inferiore sinistro: vene comprimibili, nessuna evidenza di trombosi venosa profonda. Valutazione specialistica: diagnosi di cellulite dell'arto inferiore sinistro, confermata dal quadro di leucocitosi e PCR elevata, senza coinvolgimento del sistema venoso profondo.",
+    "agent1_seconds": 7.5,
+    "brighton_context": "",
+    "agent2_seconds": 10.4,
+    "answer_conflict": null,
+    "reasoning": "The evidence explicitly states that the patient presented with \"arrossamento, calore e dolore alla gamba sinistra\" (redness, warmth, and pain in the left leg). This directly corresponds to option 4 (\"Redness, warmth, or pain in one or more extremities\"). While the patient had pain, the specific combination of redness, warmth, and pain is best captured by option 4. Option 1 mentions calf pain or tenderness; while the patient had pain in the leg, the text specifies \"dolorabilita' alla palpazione\" (tenderness on palpation) and diffuse redness/warmth, making option 4 the more comprehensive and accurate description of the primary presenting symptoms described. Options 2 and 3 are not mentioned as present (swelling is not explicitly noted, pulses are not discussed). Therefore, only option 4 is supported by the text.\n\nFINAL_OPTION: Redness, warmth, or pain in one or more extremities\nFINAL_ANSWER: 4",
+    "result": {
+      "symptoms": [
+        "Redness, warmth, or pain in one or more extremities"
+      ]
+    }
+  },
+  "C": {
+    "query": "D-dimer value, test date, laboratory upper limit of normal",
+    "evidence": "Esami di laboratorio: leucocitosi e PCR elevata. D-dimero non eseguito. Eseguita ecografia compressiva venosa dell'arto inferiore sinistro: vene comprimibili, nessuna evidenza di trombosi venosa profonda. Valutazione specialistica: diagnosi di cellulite dell'arto inferiore sinistro, confermata dal quadro di leucocitosi e PCR elevata, senza coinvolgimento del sistema venoso profondo.\n\nAnamnesi patologica remota: Uomo di 45 anni. Nessun intervento chirurgico recente. Non allergie farmacologiche note. Anamnesi farmacologica: nessuna terapia cronica in atto. Anamnesi Prossima: Da 2 giorni comparsa di arrossamento, calore e dolore alla gamba sinistra, associati a rialzo termico. Nega trauma recente, dispnea, dolore toracico e sincope. Esame obiettivo all'ingresso: Paziente vigile, orientato e collaborante. PA 128/80 mmHg, FC 88 bpm, FR 16 atti/min, SpO2 98% in aria ambiente, TC 38,3°C. Gamba sinistra con arrossamento cutaneo diffuso, aumento della temperatura locale e dolorabilita' alla palpazione. Addome trattabile, non dolente. Esami di laboratorio: leucocitosi e PCR elevata. D-dimero non eseguito. Eseguita ecografia compressiva venosa dell'arto inferiore sinistro: vene",
+    "agent1_seconds": 5.6,
+    "brighton_context": "",
+    "agent2_seconds": 5.3,
+    "answer_conflict": null,
+    "reasoning": "The evidence explicitly states \"D-dimero non eseguito,\" which translates to \"D-dimer not performed.\" This directly indicates that the test was not conducted. Therefore, options suggesting the test was performed and yielded a result (either elevated or normal) are incorrect. The correct classification is that the test was not tested.\n\nFINAL_OPTION: D-dimer not tested, or tested but results unknown or not available\nFINAL_ANSWER: 3",
+    "result": {
+      "answer": "D-dimer not tested, or tested but results unknown or not available"
+    }
+  },
+  "F": {
+    "query": "diagnosis of deep vein thrombosis reported by specialist",
+    "evidence": "Esami di laboratorio: leucocitosi e PCR elevata. D-dimero non eseguito. Eseguita ecografia compressiva venosa dell'arto inferiore sinistro: vene comprimibili, nessuna evidenza di trombosi venosa profonda. Valutazione specialistica: diagnosi di cellulite dell'arto inferiore sinistro, confermata dal quadro di leucocitosi e PCR elevata, senza coinvolgimento del sistema venoso profondo.\n\nAnamnesi patologica remota: Uomo di 45 anni. Nessun intervento chirurgico recente. Non allergie farmacologiche note. Anamnesi farmacologica: nessuna terapia cronica in atto. Anamnesi Prossima: Da 2 giorni comparsa di arrossamento, calore e dolore alla gamba sinistra, associati a rialzo termico. Nega trauma recente, dispnea, dolore toracico e sincope. Esame obiettivo all'ingresso: Paziente vigile, orientato e collaborante. PA 128/80 mmHg, FC 88 bpm, FR 16 atti/min, SpO2 98% in aria ambiente, TC 38,3°C. Gamba sinistra con arrossamento cutaneo diffuso, aumento della temperatura locale e dolorabilita' alla palpazione. Addome trattabile, non dolente. Esami di laboratorio: leucocitosi e PCR elevata. D-dimero non eseguito. Eseguita ecografia compressiva venosa dell'arto inferiore sinistro: vene",
+    "agent1_seconds": 6.8,
+    "brighton_context": "",
+    "agent2_seconds": 5.3,
+    "answer_conflict": null,
+    "reasoning": "The evidence explicitly states that a compressive venous ultrasound of the left lower limb was performed and showed \"no evidence of deep vein thrombosis\" (\"nessuna evidenza di trombosi venosa profonda\"). Additionally, the specialist evaluation confirmed cellulitis without involvement of the deep venous system. Therefore, Deep Vein Thrombosis (DVT) is ruled out based on the provided clinical findings.\n\nFINAL_OPTION: No\nFINAL_ANSWER: 2",
+    "result": {
+      "answer": "No"
+    }
+  },
+  "X": {
+    "query": "possible alternative etiologies; clinical syndromes to be differentiated from thrombosis; conditions explaining calf pain, redness, warmth or ankle edema other than DVT",
+    "evidence": "Anamnesi patologica remota: Uomo di 45 anni. Nessun intervento chirurgico recente. Non allergie farmacologiche note. Anamnesi farmacologica: nessuna terapia cronica in atto. Anamnesi Prossima: Da 2 giorni comparsa di arrossamento, calore e dolore alla gamba sinistra, associati a rialzo termico. Nega trauma recente, dispnea, dolore toracico e sincope. Esame obiettivo all'ingresso: Paziente vigile, orientato e collaborante. PA 128/80 mmHg, FC 88 bpm, FR 16 atti/min, SpO2 98% in aria ambiente, TC 38,3°C. Gamba sinistra con arrossamento cutaneo diffuso, aumento della temperatura locale e dolorabilita' alla palpazione. Addome trattabile, non dolente. Esami di laboratorio: leucocitosi e PCR elevata. D-dimero non eseguito. Eseguita ecografia compressiva venosa dell'arto inferiore sinistro: vene\n\nEsami di laboratorio: leucocitosi e PCR elevata. D-dimero non eseguito. Eseguita ecografia compressiva venosa dell'arto inferiore sinistro: vene comprimibili, nessuna evidenza di trombosi venosa profonda. Valutazione specialistica: diagnosi di cellulite dell'arto inferiore sinistro, confermata dal quadro di leucocitosi e PCR elevata, senza coinvolgimento del sistema venoso profondo.",
+    "agent1_seconds": 7.0,
+    "brighton_context": "",
+    "agent2_seconds": 6.3,
+    "answer_conflict": null,
+    "reasoning": "The evidence explicitly states that a specialist evaluation led to a diagnosis of cellulitis of the left lower limb (\"diagnosi di cellulite dell'arto inferiore sinistro\"). This diagnosis was supported by leukocytosis and elevated CRP, while deep vein thrombosis (DVT) was ruled out by compressive ultrasound showing compressible veins. Since cellulitis is an alternative explanation for the patient's symptoms (redness, heat, pain, fever) distinct from DVT, an alternative diagnosis was found.\n\nFINAL_OPTION: An alternative diagnosis was found that explained the acute illness\nFINAL_ANSWER: 1",
+    "result": {
+      "answer": "An alternative diagnosis was found that explained the acute illness"
+    }
+  },
+  "_run_config": {
+    "extractor_mode": "agentic_graph",
+    "section_gates_enabled": {
+      "keyword": false,
+      "details": false,
+      "absent_pulses": false
+    },
+    "brighton_context_enabled": false,
+    "section_descriptions_enabled": false,
+    "section_hints_enabled": false,
+    "section_hints_disabled": [],
+    "section_hints_fingerprint": {
+      "all": "dbe3b41b6a5c"
+    },
+    "section_queries_fingerprint": {
+      "A1": "68 f31cb52cc7a2",
+      "A2": "47 df6b72799cd6",
+      "A3_1": "73 dea0b36a509c",
+      "A3_2": "81 df834d2f4193",
+      "B1_1": "50 6cda81bb9be8",
+      "B1_2": "55 9136dd6530fb",
+      "B2": "128 618aaee6579e",
+      "C": "58 98411e20a257",
+      "F": "56 2a1cef15a0b0",
+      "X": "168 49d5d41f3a23",
+      "all": "bfd9536a31fe"
+    },
+    "guideline_anchors_enabled": false,
+    "guideline_anchors_fingerprint": {
+      "A1": "699 6fa2837f0bf8",
+      "A2": "699 6fa2837f0bf8",
+      "A3_1": "1616 0d73c0d46674",
+      "A3_2": "3566 841cc2dbfd90",
+      "B1_1": "4230 4af7e1ebd4a3",
+      "B1_2": "4230 4af7e1ebd4a3",
+      "B2": "4230 4af7e1ebd4a3",
+      "C": "977 fcf102e0a775",
+      "X": "2770 c66190553aeb",
+      "all": "4bc8810e170a"
+    },
+    "cross_section_rules_applied": true,
+    "models": {
+      "extractor": "qwen3.6:27b",
+      "evaluator": "qwen3.6:27b",
+      "embeddings": "intfloat/multilingual-e5-small"
+    },
+    "environment": {
+      "hostname": "mari",
+      "ollama_version": "ollama version is 0.32.1"
+    },
+    "generation": {
+      "temperature": 0.0,
+      "num_predict": 1024,
+      "num_gpu": 999,
+      "reasoning": false
+    },
+    "retrieval": {
+      "ehr_chunk_size": 800,
+      "ehr_chunk_overlap": 150,
+      "ehr_retriever_k": 5,
+      "brighton_retriever_k": 5
+    }
+  }
+}

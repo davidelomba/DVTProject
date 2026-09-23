@@ -1,0 +1,189 @@
+{
+  "A1": {
+    "query": "autopsy report, necropsy, post-mortem examination, autoptic findings",
+    "evidence": "340 ng/mL, entro il range di normalita' del laboratorio. Accertamenti strumentali: ecocolordoppler venoso dell'arto inferiore destro con assenza di trombosi venosa profonda. La TC addome-pelvi documenta una voluminosa massa pelvica che determina compressione esterna della vena iliaca esterna destra. Valutazione specialistica: edema dell'arto inferiore destro da compressione venosa estrinseca sostenuta dalla massa pelvica.\n\nAnamnesi patologica remota: Donna di 58 anni. Nessun intervento chirurgico recente. Non allergie farmacologiche note. Anamnesi farmacologica: integrazione marziale orale. Anamnesi prossima: da circa dieci giorni comparsa di edema dell'arto inferiore destro, in assenza di dolore e di arrossamento. Nega trauma, febbre e dolore toracico. Esame obiettivo: paziente vigile, orientata e collaborante. PA 126/74 mmHg, FC 70 bpm, FR 14 atti/min, SpO2 99% in aria ambiente, TC 36,5°C. Arto inferiore destro con edema improntabile, cute normocromica, non dolorabilita' alla palpazione del polpaccio. Polsi periferici presenti. Esami di laboratorio: D-dimero 340 ng/mL, entro il range di normalita' del laboratorio. Accertamenti strumentali: ecocolordoppler venoso dell'arto inferiore destro con assenza di",
+    "agent1_seconds": 5.8,
+    "brighton_context": "",
+    "agent2_seconds": 6.4,
+    "answer_conflict": null,
+    "reasoning": "The provided evidence details clinical findings, laboratory results (D-dimer), and imaging studies (color Doppler ultrasound and CT scan) for a living patient. There is no mention of the patient's death or any post-mortem examination. Therefore, an autopsy was not performed. According to the instructions, if the specific method (autopsy) is not mentioned or explicitly negated by the context of a living patient evaluation, the correct classification is that it was not done or unknown.\n\nFINAL_OPTION: No autopsy done, unknown if done, or done but results unavailable\nFINAL_ANSWER: 3",
+    "result": {
+      "answer": "No autopsy done, unknown if done, or done but results unavailable"
+    }
+  },
+  "A2": {
+    "query": "thrombectomy, surgical procedure related to DVT",
+    "evidence": "340 ng/mL, entro il range di normalita' del laboratorio. Accertamenti strumentali: ecocolordoppler venoso dell'arto inferiore destro con assenza di trombosi venosa profonda. La TC addome-pelvi documenta una voluminosa massa pelvica che determina compressione esterna della vena iliaca esterna destra. Valutazione specialistica: edema dell'arto inferiore destro da compressione venosa estrinseca sostenuta dalla massa pelvica.\n\nAnamnesi patologica remota: Donna di 58 anni. Nessun intervento chirurgico recente. Non allergie farmacologiche note. Anamnesi farmacologica: integrazione marziale orale. Anamnesi prossima: da circa dieci giorni comparsa di edema dell'arto inferiore destro, in assenza di dolore e di arrossamento. Nega trauma, febbre e dolore toracico. Esame obiettivo: paziente vigile, orientata e collaborante. PA 126/74 mmHg, FC 70 bpm, FR 14 atti/min, SpO2 99% in aria ambiente, TC 36,5°C. Arto inferiore destro con edema improntabile, cute normocromica, non dolorabilita' alla palpazione del polpaccio. Polsi periferici presenti. Esami di laboratorio: D-dimero 340 ng/mL, entro il range di normalita' del laboratorio. Accertamenti strumentali: ecocolordoppler venoso dell'arto inferiore destro con assenza di",
+    "agent1_seconds": 5.5,
+    "brighton_context": "",
+    "agent2_seconds": 7.8,
+    "answer_conflict": null,
+    "reasoning": "The evidence explicitly states that the venous color Doppler ultrasound of the right lower limb showed an \"absence of deep vein thrombosis\" (assenza di trombosi venosa profonda). Furthermore, the patient's history notes \"no recent surgical interventions\" (Nessun intervento chirurgico recente), and the clinical evaluation attributes the edema to external compression by a pelvic mass rather than a thrombotic event. Since no surgery was performed and DVT was ruled out, option 3 is the correct choice as it covers scenarios where no surgical procedure was done or findings did not confirm DVT.\n\nFINAL_OPTION: No surgical procedure done; or, done but either did not confirm presence of DVT or findings unknown; or unknown if done\nFINAL_ANSWER: 3",
+    "result": {
+      "answer": "No surgical procedure done; or, done but either did not confirm presence of DVT or findings unknown; or unknown if done"
+    }
+  },
+  "A3_1": {
+    "query": "ultrasound, CT, MRI, venography: imaging outcome for deep vein thrombosis",
+    "evidence": "340 ng/mL, entro il range di normalita' del laboratorio. Accertamenti strumentali: ecocolordoppler venoso dell'arto inferiore destro con assenza di trombosi venosa profonda. La TC addome-pelvi documenta una voluminosa massa pelvica che determina compressione esterna della vena iliaca esterna destra. Valutazione specialistica: edema dell'arto inferiore destro da compressione venosa estrinseca sostenuta dalla massa pelvica.\n\nAnamnesi patologica remota: Donna di 58 anni. Nessun intervento chirurgico recente. Non allergie farmacologiche note. Anamnesi farmacologica: integrazione marziale orale. Anamnesi prossima: da circa dieci giorni comparsa di edema dell'arto inferiore destro, in assenza di dolore e di arrossamento. Nega trauma, febbre e dolore toracico. Esame obiettivo: paziente vigile, orientata e collaborante. PA 126/74 mmHg, FC 70 bpm, FR 14 atti/min, SpO2 99% in aria ambiente, TC 36,5°C. Arto inferiore destro con edema improntabile, cute normocromica, non dolorabilita' alla palpazione del polpaccio. Polsi periferici presenti. Esami di laboratorio: D-dimero 340 ng/mL, entro il range di normalita' del laboratorio. Accertamenti strumentali: ecocolordoppler venoso dell'arto inferiore destro con assenza di",
+    "agent1_seconds": 7.6,
+    "brighton_context": "",
+    "agent2_seconds": 5.8,
+    "answer_conflict": null,
+    "reasoning": "The evidence explicitly states that a venous color Doppler ultrasound (\"ecocolordoppler venoso\") was performed on the right lower limb. The result of this imaging study is described as \"assenza di trombosi venosa profonda\" (absence of deep vein thrombosis). Therefore, an imaging study was done, but it did not confirm DVT; rather, it ruled it out.\n\nFINAL_OPTION: ≥1 imaging study was done but didn't confirm DVT\nFINAL_ANSWER: 2",
+    "result": {
+      "answer": "≥1 imaging study was done but didn't confirm DVT"
+    }
+  },
+  "A3_2": {
+    "query": "type of imaging study performed: compression ultrasonography, doppler, venography",
+    "evidence": "340 ng/mL, entro il range di normalita' del laboratorio. Accertamenti strumentali: ecocolordoppler venoso dell'arto inferiore destro con assenza di trombosi venosa profonda. La TC addome-pelvi documenta una voluminosa massa pelvica che determina compressione esterna della vena iliaca esterna destra. Valutazione specialistica: edema dell'arto inferiore destro da compressione venosa estrinseca sostenuta dalla massa pelvica.\n\nAnamnesi patologica remota: Donna di 58 anni. Nessun intervento chirurgico recente. Non allergie farmacologiche note. Anamnesi farmacologica: integrazione marziale orale. Anamnesi prossima: da circa dieci giorni comparsa di edema dell'arto inferiore destro, in assenza di dolore e di arrossamento. Nega trauma, febbre e dolore toracico. Esame obiettivo: paziente vigile, orientata e collaborante. PA 126/74 mmHg, FC 70 bpm, FR 14 atti/min, SpO2 99% in aria ambiente, TC 36,5°C. Arto inferiore destro con edema improntabile, cute normocromica, non dolorabilita' alla palpazione del polpaccio. Polsi periferici presenti. Esami di laboratorio: D-dimero 340 ng/mL, entro il range di normalita' del laboratorio. Accertamenti strumentali: ecocolordoppler venoso dell'arto inferiore destro con assenza di",
+    "agent1_seconds": 6.6,
+    "brighton_context": "",
+    "agent2_seconds": 8.9,
+    "answer_conflict": null,
+    "reasoning": "The evidence explicitly states \"ecocolordoppler venoso dell'arto inferiore destro\" (venous color Doppler ultrasound of the right lower limb). This corresponds to Doppler/Duplex Ultrasound. The text confirms this method was performed and ruled out deep vein thrombosis (\"assenza di trombosi venosa profonda\"). While compression ultrasonography is often part of a duplex exam, the specific terminology used in the evidence aligns directly with option 4. No other imaging modalities like CT/MR venography or contrast venography are mentioned as being performed for the diagnosis of DVT (CT was used to identify the pelvic mass causing compression, but not specifically described as venography for DVT confirmation in the context of the options provided, and the primary diagnostic tool for ruling out DVT was the ultrasound).\n\nFINAL_OPTION: Doppler/Duplex Ultrasound\nFINAL_ANSWER: 4",
+    "result": {
+      "studies": [
+        "Doppler/Duplex Ultrasound"
+      ]
+    }
+  },
+  "B1_1": {
+    "query": "reported symptoms or signs of deep vein thrombosis",
+    "evidence": "340 ng/mL, entro il range di normalita' del laboratorio. Accertamenti strumentali: ecocolordoppler venoso dell'arto inferiore destro con assenza di trombosi venosa profonda. La TC addome-pelvi documenta una voluminosa massa pelvica che determina compressione esterna della vena iliaca esterna destra. Valutazione specialistica: edema dell'arto inferiore destro da compressione venosa estrinseca sostenuta dalla massa pelvica.\n\nAnamnesi patologica remota: Donna di 58 anni. Nessun intervento chirurgico recente. Non allergie farmacologiche note. Anamnesi farmacologica: integrazione marziale orale. Anamnesi prossima: da circa dieci giorni comparsa di edema dell'arto inferiore destro, in assenza di dolore e di arrossamento. Nega trauma, febbre e dolore toracico. Esame obiettivo: paziente vigile, orientata e collaborante. PA 126/74 mmHg, FC 70 bpm, FR 14 atti/min, SpO2 99% in aria ambiente, TC 36,5°C. Arto inferiore destro con edema improntabile, cute normocromica, non dolorabilita' alla palpazione del polpaccio. Polsi periferici presenti. Esami di laboratorio: D-dimero 340 ng/mL, entro il range di normalita' del laboratorio. Accertamenti strumentali: ecocolordoppler venoso dell'arto inferiore destro con assenza di",
+    "agent1_seconds": 7.4,
+    "brighton_context": "",
+    "agent2_seconds": 6.4,
+    "answer_conflict": null,
+    "reasoning": "The evidence explicitly states that the venous color Doppler ultrasound showed an \"absence of deep vein thrombosis\" (assenza di trombosi venosa profonda). Furthermore, the specialist evaluation attributes the right lower limb edema to external compression by a pelvic mass rather than a thrombotic event. The patient also denied pain and redness, and D-dimer levels were within normal range. Therefore, there is no report of a recognized DVT syndrome; in fact, it was ruled out.\n\nFINAL_OPTION: There was no report of a recognized DVT syndrome\nFINAL_ANSWER: 2",
+    "result": {
+      "answer": "There was no report of a recognized DVT syndrome"
+    }
+  },
+  "B1_2": {
+    "query": "deep vein thrombosis lower extremity or upper extremity",
+    "evidence": "340 ng/mL, entro il range di normalita' del laboratorio. Accertamenti strumentali: ecocolordoppler venoso dell'arto inferiore destro con assenza di trombosi venosa profonda. La TC addome-pelvi documenta una voluminosa massa pelvica che determina compressione esterna della vena iliaca esterna destra. Valutazione specialistica: edema dell'arto inferiore destro da compressione venosa estrinseca sostenuta dalla massa pelvica.\n\nAnamnesi patologica remota: Donna di 58 anni. Nessun intervento chirurgico recente. Non allergie farmacologiche note. Anamnesi farmacologica: integrazione marziale orale. Anamnesi prossima: da circa dieci giorni comparsa di edema dell'arto inferiore destro, in assenza di dolore e di arrossamento. Nega trauma, febbre e dolore toracico. Esame obiettivo: paziente vigile, orientata e collaborante. PA 126/74 mmHg, FC 70 bpm, FR 14 atti/min, SpO2 99% in aria ambiente, TC 36,5°C. Arto inferiore destro con edema improntabile, cute normocromica, non dolorabilita' alla palpazione del polpaccio. Polsi periferici presenti. Esami di laboratorio: D-dimero 340 ng/mL, entro il range di normalita' del laboratorio. Accertamenti strumentali: ecocolordoppler venoso dell'arto inferiore destro con assenza di",
+    "agent1_seconds": 6.1,
+    "brighton_context": "",
+    "agent2_seconds": 6.0,
+    "answer_conflict": null,
+    "reasoning": "The evidence explicitly states that the venous color Doppler ultrasound of the right lower limb showed an \"assenza di trombosi venosa profonda\" (absence of deep vein thrombosis). The clinical evaluation attributes the edema to external compression by a pelvic mass rather than a thrombotic event. Therefore, Lower extremity DVT is ruled out. There is no mention of upper extremity symptoms or findings, so Upper extremity DVT is not supported by the evidence.\n\nFINAL_OPTION: none\nFINAL_ANSWER: none",
+    "result": {
+      "types": []
+    }
+  },
+  "B2": {
+    "query": "calf pain or tenderness, leg swelling or pitting oedema, redness, warmth or pain in any extremity, absent pulses in legs or arms",
+    "evidence": "Anamnesi patologica remota: Donna di 58 anni. Nessun intervento chirurgico recente. Non allergie farmacologiche note. Anamnesi farmacologica: integrazione marziale orale. Anamnesi prossima: da circa dieci giorni comparsa di edema dell'arto inferiore destro, in assenza di dolore e di arrossamento. Nega trauma, febbre e dolore toracico. Esame obiettivo: paziente vigile, orientata e collaborante. PA 126/74 mmHg, FC 70 bpm, FR 14 atti/min, SpO2 99% in aria ambiente, TC 36,5°C. Arto inferiore destro con edema improntabile, cute normocromica, non dolorabilita' alla palpazione del polpaccio. Polsi periferici presenti. Esami di laboratorio: D-dimero 340 ng/mL, entro il range di normalita' del laboratorio. Accertamenti strumentali: ecocolordoppler venoso dell'arto inferiore destro con assenza di\n\n340 ng/mL, entro il range di normalita' del laboratorio. Accertamenti strumentali: ecocolordoppler venoso dell'arto inferiore destro con assenza di trombosi venosa profonda. La TC addome-pelvi documenta una voluminosa massa pelvica che determina compressione esterna della vena iliaca esterna destra. Valutazione specialistica: edema dell'arto inferiore destro da compressione venosa estrinseca sostenuta dalla massa pelvica.",
+    "agent1_seconds": 8.2,
+    "brighton_context": "",
+    "agent2_seconds": 10.2,
+    "answer_conflict": null,
+    "reasoning": "The evidence explicitly states that the patient has \"edema dell'arto inferiore destro\" (right lower limb edema) which is described as \"improntabile\" (pitting). This directly supports option 2 (\"Leg swelling or pitting oedema\"). Regarding option 1, the text explicitly notes \"in assenza di dolore\" (absence of pain) and \"non dolorabilita' alla palpazione del polpaccio\" (no tenderness on calf palpation), ruling out calf pain or tenderness. Regarding option 3, the physical exam states \"Polsi periferici presenti\" (peripheral pulses present), ruling out absent pulses. Regarding option 4, the text notes \"in assenza di... arrossamento\" (absence of redness) and \"cute normocromica\" (normal skin color), and explicitly denies pain, ruling out redness, warmth, or pain. Therefore, only option 2 is supported by the evidence.\n\nFINAL_OPTION: Leg swelling or pitting oedema\nFINAL_ANSWER: 2",
+    "result": {
+      "symptoms": [
+        "Leg swelling or pitting oedema"
+      ]
+    }
+  },
+  "C": {
+    "query": "D-dimer value, test date, laboratory upper limit of normal",
+    "evidence": "340 ng/mL, entro il range di normalita' del laboratorio. Accertamenti strumentali: ecocolordoppler venoso dell'arto inferiore destro con assenza di trombosi venosa profonda. La TC addome-pelvi documenta una voluminosa massa pelvica che determina compressione esterna della vena iliaca esterna destra. Valutazione specialistica: edema dell'arto inferiore destro da compressione venosa estrinseca sostenuta dalla massa pelvica.\n\nAnamnesi patologica remota: Donna di 58 anni. Nessun intervento chirurgico recente. Non allergie farmacologiche note. Anamnesi farmacologica: integrazione marziale orale. Anamnesi prossima: da circa dieci giorni comparsa di edema dell'arto inferiore destro, in assenza di dolore e di arrossamento. Nega trauma, febbre e dolore toracico. Esame obiettivo: paziente vigile, orientata e collaborante. PA 126/74 mmHg, FC 70 bpm, FR 14 atti/min, SpO2 99% in aria ambiente, TC 36,5°C. Arto inferiore destro con edema improntabile, cute normocromica, non dolorabilita' alla palpazione del polpaccio. Polsi periferici presenti. Esami di laboratorio: D-dimero 340 ng/mL, entro il range di normalita' del laboratorio. Accertamenti strumentali: ecocolordoppler venoso dell'arto inferiore destro con assenza di",
+    "agent1_seconds": 6.3,
+    "brighton_context": "",
+    "agent2_seconds": 5.6,
+    "answer_conflict": null,
+    "reasoning": "The evidence explicitly states \"D-dimero 340 ng/mL, entro il range di normalita' del laboratorio,\" which translates to \"D-dimer 340 ng/mL, within the laboratory's normal range.\" This confirms that the test was performed and the result was considered normal by the testing facility. Therefore, option 2 is the correct description of the findings.\n\nFINAL_OPTION: D-dimer tested and was within test lab's range of normal\nFINAL_ANSWER: 2",
+    "result": {
+      "answer": "D-dimer tested and was within test lab's range of normal"
+    }
+  },
+  "F": {
+    "query": "diagnosis of deep vein thrombosis reported by specialist",
+    "evidence": "340 ng/mL, entro il range di normalita' del laboratorio. Accertamenti strumentali: ecocolordoppler venoso dell'arto inferiore destro con assenza di trombosi venosa profonda. La TC addome-pelvi documenta una voluminosa massa pelvica che determina compressione esterna della vena iliaca esterna destra. Valutazione specialistica: edema dell'arto inferiore destro da compressione venosa estrinseca sostenuta dalla massa pelvica.\n\nAnamnesi patologica remota: Donna di 58 anni. Nessun intervento chirurgico recente. Non allergie farmacologiche note. Anamnesi farmacologica: integrazione marziale orale. Anamnesi prossima: da circa dieci giorni comparsa di edema dell'arto inferiore destro, in assenza di dolore e di arrossamento. Nega trauma, febbre e dolore toracico. Esame obiettivo: paziente vigile, orientata e collaborante. PA 126/74 mmHg, FC 70 bpm, FR 14 atti/min, SpO2 99% in aria ambiente, TC 36,5°C. Arto inferiore destro con edema improntabile, cute normocromica, non dolorabilita' alla palpazione del polpaccio. Polsi periferici presenti. Esami di laboratorio: D-dimero 340 ng/mL, entro il range di normalita' del laboratorio. Accertamenti strumentali: ecocolordoppler venoso dell'arto inferiore destro con assenza di",
+    "agent1_seconds": 6.5,
+    "brighton_context": "",
+    "agent2_seconds": 5.7,
+    "answer_conflict": null,
+    "reasoning": "The evidence explicitly states that the venous color Doppler ultrasound of the right lower limb showed an \"assenza di trombosi venosa profonda\" (absence of deep vein thrombosis). Therefore, DVT was ruled out by this specific imaging modality. The question asks to determine the correct answer based on the evidence; since the diagnostic test explicitly negated the presence of DVT, the answer to whether DVT is present/confirmed is No.\n\nFINAL_OPTION: No\nFINAL_ANSWER: 2",
+    "result": {
+      "answer": "No"
+    }
+  },
+  "X": {
+    "query": "possible alternative etiologies; clinical syndromes to be differentiated from thrombosis; conditions explaining calf pain, redness, warmth or ankle edema other than DVT",
+    "evidence": "Anamnesi patologica remota: Donna di 58 anni. Nessun intervento chirurgico recente. Non allergie farmacologiche note. Anamnesi farmacologica: integrazione marziale orale. Anamnesi prossima: da circa dieci giorni comparsa di edema dell'arto inferiore destro, in assenza di dolore e di arrossamento. Nega trauma, febbre e dolore toracico. Esame obiettivo: paziente vigile, orientata e collaborante. PA 126/74 mmHg, FC 70 bpm, FR 14 atti/min, SpO2 99% in aria ambiente, TC 36,5°C. Arto inferiore destro con edema improntabile, cute normocromica, non dolorabilita' alla palpazione del polpaccio. Polsi periferici presenti. Esami di laboratorio: D-dimero 340 ng/mL, entro il range di normalita' del laboratorio. Accertamenti strumentali: ecocolordoppler venoso dell'arto inferiore destro con assenza di\n\n340 ng/mL, entro il range di normalita' del laboratorio. Accertamenti strumentali: ecocolordoppler venoso dell'arto inferiore destro con assenza di trombosi venosa profonda. La TC addome-pelvi documenta una voluminosa massa pelvica che determina compressione esterna della vena iliaca esterna destra. Valutazione specialistica: edema dell'arto inferiore destro da compressione venosa estrinseca sostenuta dalla massa pelvica.",
+    "agent1_seconds": 7.9,
+    "brighton_context": "",
+    "agent2_seconds": 6.5,
+    "answer_conflict": null,
+    "reasoning": "The evidence explicitly states that the venous color Doppler ultrasound showed an absence of deep vein thrombosis (DVT). Instead, a CT scan of the abdomen and pelvis identified a large pelvic mass causing external compression of the right external iliac vein. The specialist evaluation concluded that the leg edema was due to this extrinsic venous compression by the pelvic mass. Therefore, an alternative diagnosis (pelvic mass causing compression) was found to explain the patient's symptoms, ruling out DVT as the cause.\n\nFINAL_OPTION: An alternative diagnosis was found that explained the acute illness\nFINAL_ANSWER: 1",
+    "result": {
+      "answer": "An alternative diagnosis was found that explained the acute illness"
+    }
+  },
+  "_run_config": {
+    "extractor_mode": "agentic_graph",
+    "section_gates_enabled": {
+      "keyword": false,
+      "details": false,
+      "absent_pulses": false
+    },
+    "brighton_context_enabled": false,
+    "section_descriptions_enabled": false,
+    "section_hints_enabled": false,
+    "section_hints_disabled": [],
+    "section_hints_fingerprint": {
+      "all": "dbe3b41b6a5c"
+    },
+    "section_queries_fingerprint": {
+      "A1": "68 f31cb52cc7a2",
+      "A2": "47 df6b72799cd6",
+      "A3_1": "73 dea0b36a509c",
+      "A3_2": "81 df834d2f4193",
+      "B1_1": "50 6cda81bb9be8",
+      "B1_2": "55 9136dd6530fb",
+      "B2": "128 618aaee6579e",
+      "C": "58 98411e20a257",
+      "F": "56 2a1cef15a0b0",
+      "X": "168 49d5d41f3a23",
+      "all": "bfd9536a31fe"
+    },
+    "guideline_anchors_enabled": false,
+    "guideline_anchors_fingerprint": {
+      "A1": "699 6fa2837f0bf8",
+      "A2": "699 6fa2837f0bf8",
+      "A3_1": "1616 0d73c0d46674",
+      "A3_2": "3566 841cc2dbfd90",
+      "B1_1": "4230 4af7e1ebd4a3",
+      "B1_2": "4230 4af7e1ebd4a3",
+      "B2": "4230 4af7e1ebd4a3",
+      "C": "977 fcf102e0a775",
+      "X": "2770 c66190553aeb",
+      "all": "4bc8810e170a"
+    },
+    "cross_section_rules_applied": true,
+    "models": {
+      "extractor": "qwen3.6:27b",
+      "evaluator": "qwen3.6:27b",
+      "embeddings": "intfloat/multilingual-e5-small"
+    },
+    "environment": {
+      "hostname": "mari",
+      "ollama_version": "ollama version is 0.32.1"
+    },
+    "generation": {
+      "temperature": 0.0,
+      "num_predict": 1024,
+      "num_gpu": 999,
+      "reasoning": false
+    },
+    "retrieval": {
+      "ehr_chunk_size": 800,
+      "ehr_chunk_overlap": 150,
+      "ehr_retriever_k": 5,
+      "brighton_retriever_k": 5
+    }
+  }
+}

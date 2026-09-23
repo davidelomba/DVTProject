@@ -1,0 +1,77 @@
+{
+  "E": {
+    "query": "electrocardiogram ECG findings: rhythm, atrial or ventricular arrhythmia, tachycardia, atrial fibrillation, AV block, bundle branch block, conduction delay, ST segment or T wave abnormality, Q waves, low voltage, premature atrial or ventricular contractions, ambulatory monitoring, normal ECG, ECG not performed",
+    "evidence": "A 31-year-old woman with no relevant medical history came to the hospital \nin May 2021 because of several days of chest discomfort, back pain,\n and shortness of breath that appeared after ordinary physical effort. \nShe mentioned having received a COVID-19 vaccination with the Pfizer\n vaccine a little over two weeks before the symptoms started and recalled\n mild flu-like feelings the next day. At presentation, she was hemodynamically\n stable but her pulse was slightly elevated. blood tests showed elevated cardiac enzyme activity.The ECG demonestrated\n ST segment elevation of inferolateral segment. Two-dimensional transthoracic strain \nanalysis disclosed borderline systolic impairment and hypokinetic foci in the inferolateral\n\nanalysis disclosed borderline systolic impairment and hypokinetic foci in the inferolateral \nregion. CMR showed T1 and T2 prolongation, findings interpreted as compatible with \nactive inflammatory cardiomyopathy. PCR screening for viral pathogens was negative \nand coronary angiography revealed no CAD. Given the mildly depressed \nventricular function, she was started on beta-blocker and angiotensin-receptor antagonist \ntherapy.  At discharge, she reported only positional chest discomfort without ischemic features. \nFollow-up echocardiography showed normal global systolic performance and normalization of segmental kinetics.\n Revaccination with mRNA vaccine was not advised",
+    "agent1_seconds": 7.1,
+    "brighton_context": "",
+    "agent2_seconds": 7.6,
+    "answer_conflict": null,
+    "reasoning": "The evidence explicitly states that \"The ECG demonestrated ST segment elevation of inferolateral segment.\" This finding corresponds directly to Option 5, which lists \"ST, segment or T, wave abnormalities (elevation or inversion)\". The text does not mention arrhythmias, conduction delays, PR depression, or other specific abnormalities listed in the other options. It also does not state that the ECG was normal or that no abnormalities were seen. Therefore, only Option 5 is supported by the evidence.\n\nFINAL_OPTION: ST, segment or T, wave abnormalities (elevation or inversion)\nFINAL_ANSWER: 5",
+    "result": {
+      "findings": [
+        "ST, segment or T, wave abnormalities (elevation or inversion)"
+      ]
+    }
+  },
+  "F": {
+    "query": "echocardiogram ECHO findings: ejection fraction, left or right ventricular function, segmental wall motion, global systolic or diastolic function, ventricular dilation, wall thickness, pericardial effusion or inflammation, normal echocardiogram, ECHO not performed",
+    "evidence": "analysis disclosed borderline systolic impairment and hypokinetic foci in the inferolateral \nregion. CMR showed T1 and T2 prolongation, findings interpreted as compatible with \nactive inflammatory cardiomyopathy. PCR screening for viral pathogens was negative \nand coronary angiography revealed no CAD. Given the mildly depressed \nventricular function, she was started on beta-blocker and angiotensin-receptor antagonist \ntherapy.  At discharge, she reported only positional chest discomfort without ischemic features. \nFollow-up echocardiography showed normal global systolic performance and normalization of segmental kinetics.\n Revaccination with mRNA vaccine was not advised\n\nA 31-year-old woman with no relevant medical history came to the hospital \nin May 2021 because of several days of chest discomfort, back pain,\n and shortness of breath that appeared after ordinary physical effort. \nShe mentioned having received a COVID-19 vaccination with the Pfizer\n vaccine a little over two weeks before the symptoms started and recalled\n mild flu-like feelings the next day. At presentation, she was hemodynamically\n stable but her pulse was slightly elevated. blood tests showed elevated cardiac enzyme activity.The ECG demonestrated\n ST segment elevation of inferolateral segment. Two-dimensional transthoracic strain \nanalysis disclosed borderline systolic impairment and hypokinetic foci in the inferolateral",
+    "agent1_seconds": 8.6,
+    "brighton_context": "",
+    "agent2_seconds": 198.6,
+    "answer_conflict": null,
+    "reasoning": "The evidence explicitly states that \"Two-dimensional transthoracic strain analysis disclosed borderline systolic impairment and hypokinetic foci in the inferolateral region.\" Transthoracic strain analysis is a specific mode of echocardiography (ECHO), confirming the procedure was performed. The finding of \"hypokinetic foci\" directly corresponds to **Segmental wall motion abnormalities** (Option 3). Additionally, \"borderline systolic impairment\" indicates an abnormality in ventricular function, which fits the description of **New focal or diffuse left or right ventricular function abnormalities** (Option 2). While Option 4 mentions global systolic depression and strain, Option 2 is a broader and more direct categorization of the functional impairment described (\"systolic impairment\" and \"hypokinetic foci\") without requiring the specific strain rate details mentioned in the parenthetical of Option 4. The follow-up ECHO showed normalization, but the initial diagnostic evidence for myocarditis characterization includes these abnormalities. Options regarding dilation, wall thickness, fluid, or pericarditis are not supported by the text. Option 7 is less precise than the specific findings in 2 and 3.\n\nFINAL_OPTION: New focal or diffuse left or right ventricular function abnormalities (e.g. decreased ejection fraction); Segmental wall motion abnormalities\nFINAL_ANSWER: 2; 3",
+    "result": {
+      "findings": [
+        "New focal or diffuse left or right ventricular function abnormalities (e.g. decreased ejection fraction)",
+        "Segmental wall motion abnormalities"
+      ]
+    }
+  },
+  "_run_config": {
+    "extractor_mode": "agentic_graph",
+    "section_gates_enabled": {
+      "keyword": false,
+      "details": false,
+      "absent_pulses": false
+    },
+    "brighton_context_enabled": false,
+    "section_descriptions_enabled": false,
+    "section_hints_enabled": true,
+    "section_hints_disabled": [],
+    "section_hints_fingerprint": {
+      "all": "9503fb46b54e"
+    },
+    "section_queries_fingerprint": {
+      "E": "311 b830923d415b",
+      "F": "264 9cfac9903bb3",
+      "all": "8c4c0ec0ce71"
+    },
+    "guideline_anchors_enabled": false,
+    "guideline_anchors_fingerprint": {
+      "all": "e3b0c44298fc"
+    },
+    "cross_section_rules_applied": true,
+    "models": {
+      "extractor": "qwen3.6:27b",
+      "evaluator": "qwen3.6:27b",
+      "embeddings": "intfloat/multilingual-e5-small"
+    },
+    "environment": {
+      "hostname": "mari",
+      "ollama_version": "ollama version is 0.32.1"
+    },
+    "generation": {
+      "temperature": 0.0,
+      "num_predict": 1024,
+      "num_gpu": 999,
+      "reasoning": false
+    },
+    "retrieval": {
+      "ehr_chunk_size": 800,
+      "ehr_chunk_overlap": 150,
+      "ehr_retriever_k": 5,
+      "brighton_retriever_k": 5
+    }
+  }
+}

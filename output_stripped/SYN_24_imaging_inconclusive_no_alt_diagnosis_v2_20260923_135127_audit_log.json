@@ -1,0 +1,189 @@
+{
+  "A1": {
+    "query": "autopsy report, necropsy, post-mortem examination, autoptic findings",
+    "evidence": "superiore al limite superiore di riferimento del laboratorio. Eseguita ecografia compressiva venosa dell'arto inferiore sinistro: vene comprimibili, nessuna evidenza di trombosi. La paziente e' stata dimessa con diagnosi incerta, senza che sia stata identificata alcuna diagnosi alternativa; consigliato controllo clinico a distanza di pochi giorni.\n\nAnamnesi patologica remota: Donna di 37 anni. Nessun intervento chirurgico recente. Non allergie farmacologiche note. Anamnesi farmacologica: nessuna terapia cronica in atto. Anamnesi Prossima: Da 2 giorni dolore al polpaccio sinistro, senza edema ne' arrossamento evidenti. Nega trauma, febbre, dolore toracico e dispnea. Esame obiettivo all'ingresso: Paziente vigile, orientata e collaborante, eupnoica a riposo. PA 118/74 mmHg, FC 72 bpm, FR 15 atti/min, SpO2 99% in aria ambiente, TC 36,5°C. Dolorabilita' alla palpazione del polpaccio sinistro; non rilevato edema ne' alterazione del colorito cutaneo. Esami di laboratorio: D-dimero 890 ng/mL, superiore al limite superiore di riferimento del laboratorio. Eseguita ecografia compressiva venosa dell'arto inferiore sinistro: vene comprimibili,",
+    "agent1_seconds": 5.8,
+    "brighton_context": "",
+    "agent2_seconds": 5.1,
+    "answer_conflict": null,
+    "reasoning": "The evidence describes a living patient who was discharged from the hospital with an uncertain diagnosis after undergoing a venous compression ultrasound. There is no mention of the patient dying or undergoing an autopsy. Since the procedure (autopsy) was not performed, the correct classification is that no autopsy was done.\n\nFINAL_OPTION: No autopsy done, unknown if done, or done but results unavailable\nFINAL_ANSWER: 3",
+    "result": {
+      "answer": "No autopsy done, unknown if done, or done but results unavailable"
+    }
+  },
+  "A2": {
+    "query": "thrombectomy, surgical procedure related to DVT",
+    "evidence": "superiore al limite superiore di riferimento del laboratorio. Eseguita ecografia compressiva venosa dell'arto inferiore sinistro: vene comprimibili, nessuna evidenza di trombosi. La paziente e' stata dimessa con diagnosi incerta, senza che sia stata identificata alcuna diagnosi alternativa; consigliato controllo clinico a distanza di pochi giorni.\n\nAnamnesi patologica remota: Donna di 37 anni. Nessun intervento chirurgico recente. Non allergie farmacologiche note. Anamnesi farmacologica: nessuna terapia cronica in atto. Anamnesi Prossima: Da 2 giorni dolore al polpaccio sinistro, senza edema ne' arrossamento evidenti. Nega trauma, febbre, dolore toracico e dispnea. Esame obiettivo all'ingresso: Paziente vigile, orientata e collaborante, eupnoica a riposo. PA 118/74 mmHg, FC 72 bpm, FR 15 atti/min, SpO2 99% in aria ambiente, TC 36,5°C. Dolorabilita' alla palpazione del polpaccio sinistro; non rilevato edema ne' alterazione del colorito cutaneo. Esami di laboratorio: D-dimero 890 ng/mL, superiore al limite superiore di riferimento del laboratorio. Eseguita ecografia compressiva venosa dell'arto inferiore sinistro: vene comprimibili,",
+    "agent1_seconds": 5.5,
+    "brighton_context": "",
+    "agent2_seconds": 7.8,
+    "answer_conflict": null,
+    "reasoning": "The evidence explicitly states that a compressive venous ultrasound was performed on the left lower limb and showed \"compressible veins, no evidence of thrombosis\" (\"vene comprimibili, nessuna evidenza di trombosi\"). This rules out the presence of DVT via this imaging modality. Furthermore, the text mentions \"No recent surgical intervention\" (\"Nessun intervento chirurgico recente\") and does not describe any other procedures performed to confirm DVT. Since no procedure confirmed the presence of DVT (in fact, the main diagnostic test ruled it out) and no surgical procedure was done, option 3 is the correct choice.\n\nFINAL_OPTION: No surgical procedure done; or, done but either did not confirm presence of DVT or findings unknown; or unknown if done\nFINAL_ANSWER: 3",
+    "result": {
+      "answer": "No surgical procedure done; or, done but either did not confirm presence of DVT or findings unknown; or unknown if done"
+    }
+  },
+  "A3_1": {
+    "query": "ultrasound, CT, MRI, venography: imaging outcome for deep vein thrombosis",
+    "evidence": "superiore al limite superiore di riferimento del laboratorio. Eseguita ecografia compressiva venosa dell'arto inferiore sinistro: vene comprimibili, nessuna evidenza di trombosi. La paziente e' stata dimessa con diagnosi incerta, senza che sia stata identificata alcuna diagnosi alternativa; consigliato controllo clinico a distanza di pochi giorni.\n\nAnamnesi patologica remota: Donna di 37 anni. Nessun intervento chirurgico recente. Non allergie farmacologiche note. Anamnesi farmacologica: nessuna terapia cronica in atto. Anamnesi Prossima: Da 2 giorni dolore al polpaccio sinistro, senza edema ne' arrossamento evidenti. Nega trauma, febbre, dolore toracico e dispnea. Esame obiettivo all'ingresso: Paziente vigile, orientata e collaborante, eupnoica a riposo. PA 118/74 mmHg, FC 72 bpm, FR 15 atti/min, SpO2 99% in aria ambiente, TC 36,5°C. Dolorabilita' alla palpazione del polpaccio sinistro; non rilevato edema ne' alterazione del colorito cutaneo. Esami di laboratorio: D-dimero 890 ng/mL, superiore al limite superiore di riferimento del laboratorio. Eseguita ecografia compressiva venosa dell'arto inferiore sinistro: vene comprimibili,",
+    "agent1_seconds": 6.4,
+    "brighton_context": "",
+    "agent2_seconds": 6.9,
+    "answer_conflict": null,
+    "reasoning": "The evidence explicitly states that a compressive venous ultrasound (\"ecografia compressiva venosa\") was performed on the left lower limb. The results showed \"vene comprimibili\" (compressible veins) and \"nessuna evidenza di trombosi\" (no evidence of thrombosis). This indicates that an imaging study was conducted, but it did not confirm Deep Vein Thrombosis (DVT); rather, it ruled it out in the examined limb. Therefore, the correct classification is that an imaging study was done but didn't confirm DVT.\n\nFINAL_OPTION: ≥1 imaging study was done but didn't confirm DVT\nFINAL_ANSWER: 2",
+    "result": {
+      "answer": "≥1 imaging study was done but didn't confirm DVT"
+    }
+  },
+  "A3_2": {
+    "query": "type of imaging study performed: compression ultrasonography, doppler, venography",
+    "evidence": "superiore al limite superiore di riferimento del laboratorio. Eseguita ecografia compressiva venosa dell'arto inferiore sinistro: vene comprimibili, nessuna evidenza di trombosi. La paziente e' stata dimessa con diagnosi incerta, senza che sia stata identificata alcuna diagnosi alternativa; consigliato controllo clinico a distanza di pochi giorni.\n\nAnamnesi patologica remota: Donna di 37 anni. Nessun intervento chirurgico recente. Non allergie farmacologiche note. Anamnesi farmacologica: nessuna terapia cronica in atto. Anamnesi Prossima: Da 2 giorni dolore al polpaccio sinistro, senza edema ne' arrossamento evidenti. Nega trauma, febbre, dolore toracico e dispnea. Esame obiettivo all'ingresso: Paziente vigile, orientata e collaborante, eupnoica a riposo. PA 118/74 mmHg, FC 72 bpm, FR 15 atti/min, SpO2 99% in aria ambiente, TC 36,5°C. Dolorabilita' alla palpazione del polpaccio sinistro; non rilevato edema ne' alterazione del colorito cutaneo. Esami di laboratorio: D-dimero 890 ng/mL, superiore al limite superiore di riferimento del laboratorio. Eseguita ecografia compressiva venosa dell'arto inferiore sinistro: vene comprimibili,",
+    "agent1_seconds": 6.4,
+    "brighton_context": "",
+    "agent2_seconds": 6.4,
+    "answer_conflict": null,
+    "reasoning": "The evidence explicitly states that a \"compression venous ultrasound\" (ecografia compressiva venosa) was performed on the left lower limb. The results showed compressible veins with no evidence of thrombosis. This specific modality corresponds directly to Option 1. While Doppler/Duplex is often used in conjunction, the text specifically names the compression technique, and does not mention CT/MR venography or contrast venography. Therefore, only Compression ultrasonography is confirmed as performed.\n\nFINAL_OPTION: Compression ultrasonography\nFINAL_ANSWER: 1",
+    "result": {
+      "studies": [
+        "Compression ultrasonography"
+      ]
+    }
+  },
+  "B1_1": {
+    "query": "reported symptoms or signs of deep vein thrombosis",
+    "evidence": "superiore al limite superiore di riferimento del laboratorio. Eseguita ecografia compressiva venosa dell'arto inferiore sinistro: vene comprimibili, nessuna evidenza di trombosi. La paziente e' stata dimessa con diagnosi incerta, senza che sia stata identificata alcuna diagnosi alternativa; consigliato controllo clinico a distanza di pochi giorni.\n\nAnamnesi patologica remota: Donna di 37 anni. Nessun intervento chirurgico recente. Non allergie farmacologiche note. Anamnesi farmacologica: nessuna terapia cronica in atto. Anamnesi Prossima: Da 2 giorni dolore al polpaccio sinistro, senza edema ne' arrossamento evidenti. Nega trauma, febbre, dolore toracico e dispnea. Esame obiettivo all'ingresso: Paziente vigile, orientata e collaborante, eupnoica a riposo. PA 118/74 mmHg, FC 72 bpm, FR 15 atti/min, SpO2 99% in aria ambiente, TC 36,5°C. Dolorabilita' alla palpazione del polpaccio sinistro; non rilevato edema ne' alterazione del colorito cutaneo. Esami di laboratorio: D-dimero 890 ng/mL, superiore al limite superiore di riferimento del laboratorio. Eseguita ecografia compressiva venosa dell'arto inferiore sinistro: vene comprimibili,",
+    "agent1_seconds": 7.8,
+    "brighton_context": "",
+    "agent2_seconds": 7.8,
+    "answer_conflict": null,
+    "reasoning": "The evidence explicitly reports \"dolore al polpaccio sinistro\" (pain in the left calf) and \"Dolorabilita' alla palpazione del polpaccio sinistro\" (tenderness on palpation of the left calf). According to clinical validation standards, pain and tenderness in the lower extremity are recognized symptoms/signs suggestive of Deep Vein Thrombosis (DVT), even if the subsequent imaging ruled out the diagnosis. Therefore, at least one symptom or sign of DVT was reported. The fact that the ultrasound was negative does not negate the presence of the reported symptoms; it only negates the confirmed diagnosis of thrombosis.\n\nFINAL_OPTION: ≥1 symptom or sign of DVT was reported\nFINAL_ANSWER: 1",
+    "result": {
+      "answer": "≥1 symptom or sign of DVT was reported"
+    }
+  },
+  "B1_2": {
+    "query": "deep vein thrombosis lower extremity or upper extremity",
+    "evidence": "superiore al limite superiore di riferimento del laboratorio. Eseguita ecografia compressiva venosa dell'arto inferiore sinistro: vene comprimibili, nessuna evidenza di trombosi. La paziente e' stata dimessa con diagnosi incerta, senza che sia stata identificata alcuna diagnosi alternativa; consigliato controllo clinico a distanza di pochi giorni.\n\nAnamnesi patologica remota: Donna di 37 anni. Nessun intervento chirurgico recente. Non allergie farmacologiche note. Anamnesi farmacologica: nessuna terapia cronica in atto. Anamnesi Prossima: Da 2 giorni dolore al polpaccio sinistro, senza edema ne' arrossamento evidenti. Nega trauma, febbre, dolore toracico e dispnea. Esame obiettivo all'ingresso: Paziente vigile, orientata e collaborante, eupnoica a riposo. PA 118/74 mmHg, FC 72 bpm, FR 15 atti/min, SpO2 99% in aria ambiente, TC 36,5°C. Dolorabilita' alla palpazione del polpaccio sinistro; non rilevato edema ne' alterazione del colorito cutaneo. Esami di laboratorio: D-dimero 890 ng/mL, superiore al limite superiore di riferimento del laboratorio. Eseguita ecografia compressiva venosa dell'arto inferiore sinistro: vene comprimibili,",
+    "agent1_seconds": 6.4,
+    "brighton_context": "",
+    "agent2_seconds": 7.3,
+    "answer_conflict": null,
+    "reasoning": "The evidence explicitly states that a compressive venous ultrasound of the left lower extremity was performed (\"Eseguita ecografia compressiva venosa dell'arto inferiore sinistro\") and showed \"vene comprimibili, nessuna evidenza di trombosi\" (compressible veins, no evidence of thrombosis). This finding rules out Deep Vein Thrombosis (DVT) in the lower extremity. There is no mention of any imaging or findings related to the upper extremities. Therefore, neither Lower extremity DVT nor Upper extremity DVT is supported by the evidence; in fact, Lower extremity DVT is explicitly ruled out.\n\nFINAL_OPTION: none\nFINAL_ANSWER: none",
+    "result": {
+      "types": []
+    }
+  },
+  "B2": {
+    "query": "calf pain or tenderness, leg swelling or pitting oedema, redness, warmth or pain in any extremity, absent pulses in legs or arms",
+    "evidence": "Anamnesi patologica remota: Donna di 37 anni. Nessun intervento chirurgico recente. Non allergie farmacologiche note. Anamnesi farmacologica: nessuna terapia cronica in atto. Anamnesi Prossima: Da 2 giorni dolore al polpaccio sinistro, senza edema ne' arrossamento evidenti. Nega trauma, febbre, dolore toracico e dispnea. Esame obiettivo all'ingresso: Paziente vigile, orientata e collaborante, eupnoica a riposo. PA 118/74 mmHg, FC 72 bpm, FR 15 atti/min, SpO2 99% in aria ambiente, TC 36,5°C. Dolorabilita' alla palpazione del polpaccio sinistro; non rilevato edema ne' alterazione del colorito cutaneo. Esami di laboratorio: D-dimero 890 ng/mL, superiore al limite superiore di riferimento del laboratorio. Eseguita ecografia compressiva venosa dell'arto inferiore sinistro: vene comprimibili,\n\nsuperiore al limite superiore di riferimento del laboratorio. Eseguita ecografia compressiva venosa dell'arto inferiore sinistro: vene comprimibili, nessuna evidenza di trombosi. La paziente e' stata dimessa con diagnosi incerta, senza che sia stata identificata alcuna diagnosi alternativa; consigliato controllo clinico a distanza di pochi giorni.",
+    "agent1_seconds": 7.3,
+    "brighton_context": "",
+    "agent2_seconds": 8.0,
+    "answer_conflict": null,
+    "reasoning": "The patient's history explicitly states \"dolore al polpaccio sinistro\" (pain in the left calf) and the physical examination notes \"Dolorabilita' alla palpazione del polpaccio sinistro\" (tenderness on palpation of the left calf). This directly supports Option 1. The text explicitly negates swelling (\"senza edema\", \"non rilevato edema\") and redness (\"ne' arrossamento evidenti\", \"non rilevato... alterazione del colorito cutaneo\"), ruling out Options 2 and 4. There is no mention of absent pulses, so Option 3 is not supported by evidence. Therefore, only Option 1 is present.\n\nFINAL_OPTION: Calf pain or tenderness\nFINAL_ANSWER: 1",
+    "result": {
+      "symptoms": [
+        "Calf pain or tenderness"
+      ]
+    }
+  },
+  "C": {
+    "query": "D-dimer value, test date, laboratory upper limit of normal",
+    "evidence": "superiore al limite superiore di riferimento del laboratorio. Eseguita ecografia compressiva venosa dell'arto inferiore sinistro: vene comprimibili, nessuna evidenza di trombosi. La paziente e' stata dimessa con diagnosi incerta, senza che sia stata identificata alcuna diagnosi alternativa; consigliato controllo clinico a distanza di pochi giorni.\n\nAnamnesi patologica remota: Donna di 37 anni. Nessun intervento chirurgico recente. Non allergie farmacologiche note. Anamnesi farmacologica: nessuna terapia cronica in atto. Anamnesi Prossima: Da 2 giorni dolore al polpaccio sinistro, senza edema ne' arrossamento evidenti. Nega trauma, febbre, dolore toracico e dispnea. Esame obiettivo all'ingresso: Paziente vigile, orientata e collaborante, eupnoica a riposo. PA 118/74 mmHg, FC 72 bpm, FR 15 atti/min, SpO2 99% in aria ambiente, TC 36,5°C. Dolorabilita' alla palpazione del polpaccio sinistro; non rilevato edema ne' alterazione del colorito cutaneo. Esami di laboratorio: D-dimero 890 ng/mL, superiore al limite superiore di riferimento del laboratorio. Eseguita ecografia compressiva venosa dell'arto inferiore sinistro: vene comprimibili,",
+    "agent1_seconds": 6.1,
+    "brighton_context": "",
+    "agent2_seconds": 4.9,
+    "answer_conflict": null,
+    "reasoning": "The evidence explicitly states \"D-dimero 890 ng/mL, superiore al limite superiore di riferimento del laboratorio,\" which translates to D-dimer being above the laboratory's upper reference limit. This directly confirms that the test was performed and the result exceeded the normal range.\n\nFINAL_OPTION: D-dimer exceeded test lab's upper limit of normal.\nFINAL_ANSWER: 1",
+    "result": {
+      "answer": "D-dimer exceeded test lab's upper limit of normal."
+    }
+  },
+  "F": {
+    "query": "diagnosis of deep vein thrombosis reported by specialist",
+    "evidence": "superiore al limite superiore di riferimento del laboratorio. Eseguita ecografia compressiva venosa dell'arto inferiore sinistro: vene comprimibili, nessuna evidenza di trombosi. La paziente e' stata dimessa con diagnosi incerta, senza che sia stata identificata alcuna diagnosi alternativa; consigliato controllo clinico a distanza di pochi giorni.\n\nAnamnesi patologica remota: Donna di 37 anni. Nessun intervento chirurgico recente. Non allergie farmacologiche note. Anamnesi farmacologica: nessuna terapia cronica in atto. Anamnesi Prossima: Da 2 giorni dolore al polpaccio sinistro, senza edema ne' arrossamento evidenti. Nega trauma, febbre, dolore toracico e dispnea. Esame obiettivo all'ingresso: Paziente vigile, orientata e collaborante, eupnoica a riposo. PA 118/74 mmHg, FC 72 bpm, FR 15 atti/min, SpO2 99% in aria ambiente, TC 36,5°C. Dolorabilita' alla palpazione del polpaccio sinistro; non rilevato edema ne' alterazione del colorito cutaneo. Esami di laboratorio: D-dimero 890 ng/mL, superiore al limite superiore di riferimento del laboratorio. Eseguita ecografia compressiva venosa dell'arto inferiore sinistro: vene comprimibili,",
+    "agent1_seconds": 5.7,
+    "brighton_context": "",
+    "agent2_seconds": 7.2,
+    "answer_conflict": null,
+    "reasoning": "The evidence explicitly states that a compressive venous ultrasound of the left lower limb was performed (\"Eseguita ecografia compressiva venosa dell'arto inferiore sinistro\"). The results showed compressible veins with no evidence of thrombosis (\"vene comprimibili, nessuna evidenza di trombosi\"). Therefore, DVT was ruled out by this specific method. Since the question asks to determine the correct answer based on the evidence regarding the presence/confirmation of DVT (implied by the options Yes/No in the context of a clinical validator task usually asking \"Was DVT confirmed?\"), and the ultrasound explicitly negated the diagnosis, the answer is No.\n\nFINAL_OPTION: No\nFINAL_ANSWER: 2",
+    "result": {
+      "answer": "No"
+    }
+  },
+  "X": {
+    "query": "possible alternative etiologies; clinical syndromes to be differentiated from thrombosis; conditions explaining calf pain, redness, warmth or ankle edema other than DVT",
+    "evidence": "Anamnesi patologica remota: Donna di 37 anni. Nessun intervento chirurgico recente. Non allergie farmacologiche note. Anamnesi farmacologica: nessuna terapia cronica in atto. Anamnesi Prossima: Da 2 giorni dolore al polpaccio sinistro, senza edema ne' arrossamento evidenti. Nega trauma, febbre, dolore toracico e dispnea. Esame obiettivo all'ingresso: Paziente vigile, orientata e collaborante, eupnoica a riposo. PA 118/74 mmHg, FC 72 bpm, FR 15 atti/min, SpO2 99% in aria ambiente, TC 36,5°C. Dolorabilita' alla palpazione del polpaccio sinistro; non rilevato edema ne' alterazione del colorito cutaneo. Esami di laboratorio: D-dimero 890 ng/mL, superiore al limite superiore di riferimento del laboratorio. Eseguita ecografia compressiva venosa dell'arto inferiore sinistro: vene comprimibili,\n\nsuperiore al limite superiore di riferimento del laboratorio. Eseguita ecografia compressiva venosa dell'arto inferiore sinistro: vene comprimibili, nessuna evidenza di trombosi. La paziente e' stata dimessa con diagnosi incerta, senza che sia stata identificata alcuna diagnosi alternativa; consigliato controllo clinico a distanza di pochi giorni.",
+    "agent1_seconds": 6.7,
+    "brighton_context": "",
+    "agent2_seconds": 4.6,
+    "answer_conflict": null,
+    "reasoning": "The evidence explicitly states that the patient was discharged with an uncertain diagnosis and \"senza che sia stata identificata alcuna diagnosi alternativa\" (without any alternative diagnosis being identified). This directly supports the statement that no alternative diagnosis was found to explain the acute illness.\n\nFINAL_OPTION: No alternative diagnosis was found to explain the acute illness\nFINAL_ANSWER: 2",
+    "result": {
+      "answer": "No alternative diagnosis was found to explain the acute illness"
+    }
+  },
+  "_run_config": {
+    "extractor_mode": "agentic_graph",
+    "section_gates_enabled": {
+      "keyword": false,
+      "details": false,
+      "absent_pulses": false
+    },
+    "brighton_context_enabled": false,
+    "section_descriptions_enabled": false,
+    "section_hints_enabled": false,
+    "section_hints_disabled": [],
+    "section_hints_fingerprint": {
+      "all": "dbe3b41b6a5c"
+    },
+    "section_queries_fingerprint": {
+      "A1": "68 f31cb52cc7a2",
+      "A2": "47 df6b72799cd6",
+      "A3_1": "73 dea0b36a509c",
+      "A3_2": "81 df834d2f4193",
+      "B1_1": "50 6cda81bb9be8",
+      "B1_2": "55 9136dd6530fb",
+      "B2": "128 618aaee6579e",
+      "C": "58 98411e20a257",
+      "F": "56 2a1cef15a0b0",
+      "X": "168 49d5d41f3a23",
+      "all": "bfd9536a31fe"
+    },
+    "guideline_anchors_enabled": false,
+    "guideline_anchors_fingerprint": {
+      "A1": "699 6fa2837f0bf8",
+      "A2": "699 6fa2837f0bf8",
+      "A3_1": "1616 0d73c0d46674",
+      "A3_2": "3566 841cc2dbfd90",
+      "B1_1": "4230 4af7e1ebd4a3",
+      "B1_2": "4230 4af7e1ebd4a3",
+      "B2": "4230 4af7e1ebd4a3",
+      "C": "977 fcf102e0a775",
+      "X": "2770 c66190553aeb",
+      "all": "4bc8810e170a"
+    },
+    "cross_section_rules_applied": true,
+    "models": {
+      "extractor": "qwen3.6:27b",
+      "evaluator": "qwen3.6:27b",
+      "embeddings": "intfloat/multilingual-e5-small"
+    },
+    "environment": {
+      "hostname": "mari",
+      "ollama_version": "ollama version is 0.32.1"
+    },
+    "generation": {
+      "temperature": 0.0,
+      "num_predict": 1024,
+      "num_gpu": 999,
+      "reasoning": false
+    },
+    "retrieval": {
+      "ehr_chunk_size": 800,
+      "ehr_chunk_overlap": 150,
+      "ehr_retriever_k": 5,
+      "brighton_retriever_k": 5
+    }
+  }
+}
