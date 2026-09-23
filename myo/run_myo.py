@@ -10,13 +10,16 @@ and a myocarditis run measures the architecture without them.
 models_myo is installed as `models` before pipeline is imported, because
 pipeline and criteria_rules bind SECTION_MODELS at import time.
 
-The guideline context is off, so the Brighton paper is never consulted; the path
-below still has to name a readable PDF because run_pipeline builds the index
-either way.
+The guideline context is off unless --guideline asks for it, so the two arms
+differ in one setting. The paper is indexed either way, because run_pipeline
+builds the store before knowing whether anything will query it, and the store
+lives under myo/ rather than in the shared directory: build_brighton_kb reloads
+an existing index without looking at the text it was given, so one directory for
+two papers would hand this arm the DVT guideline without saying so.
 
 Usage:
-    python myo/run_myo.py
     python myo/run_myo.py --output-dir ./myo/output_myo
+    python myo/run_myo.py --guideline --output-dir ./myo/output_myo_guideline
     python myo/run_myo.py --only C0001
 """
 
@@ -55,12 +58,20 @@ SECTION_QUERIES = {
 }
 
 
-def apply_domain():
-    """Points the shared modules at the myocarditis sections and prompts."""
+def apply_domain(guideline: bool = False):
+    """Points the shared modules at the myocarditis sections and prompts.
+
+    Args:
+        guideline: whether Agent 2 receives the context retrieved from the
+            myocarditis paper.
+    """
 
     config.SECTION_ORDER = ["E", "F"]
     config.EXTRACTOR_MODE = "agentic_graph"
-    config.BRIGHTON_CONTEXT_ENABLED = False
+    config.BRIGHTON_CONTEXT_ENABLED = guideline
+    # Its own store: build_brighton_kb reloads an index already on disk without
+    # reading the text it was handed, so the two papers need two directories.
+    config.BRIGHTON_KB_PERSIST_DIR = str(MYO_DIR / "vectorstores" / "chroma_brighton_myo")
     config.GUIDELINE_ANCHORS_ENABLED = False
     config.GUIDELINE_ANCHORS = {}
     config.SECTION_DESCRIPTIONS_ENABLED = False
@@ -113,13 +124,17 @@ def main():
     parser.add_argument("--output-dir", type=Path, default=MYO_DIR / "output_myo")
     parser.add_argument("--only", nargs="+", metavar="ID")
     parser.add_argument(
-        "--brighton-pdf", type=Path,
-        default=PROJECT_ROOT / "data" / "reference" / "1-s2.0-S0264410X22010854-main.pdf",
-        help="indexed but never queried while the guideline context is off",
+        "--guideline", action="store_true",
+        help="send Agent 2 the context retrieved from the paper; off by default",
+    )
+    parser.add_argument(
+        "--brighton-pdf", type=Path, default=MYO_DIR / "main.pdf",
+        help="the myocarditis case definition; indexed even when the context "
+             "is off, and into myo/vectorstores rather than the shared store",
     )
     args = parser.parse_args()
 
-    pipeline = apply_domain()
+    pipeline = apply_domain(guideline=args.guideline)
     from aggregation import form_to_json_summary
 
     record_paths = sorted(args.records_dir.glob("*.txt"))
@@ -132,9 +147,12 @@ def main():
 
     args.output_dir.mkdir(parents=True, exist_ok=True)
     print(f"{len(record_paths)} record, sezioni {config.SECTION_ORDER}, "
-          f"modalita {config.EXTRACTOR_MODE}, valutatore "
-          f"{config.EVALUATOR_LLM_MODEL_NAME}, contesto linea guida "
-          f"{config.BRIGHTON_CONTEXT_ENABLED} -> {args.output_dir}\n", flush=True)
+          f"modalita {config.EXTRACTOR_MODE}, agente "
+          f"{config.AGENTIC_LLM_MODEL_NAME}, valutatore "
+          f"{config.EVALUATOR_LLM_MODEL_NAME}\ncontesto linea guida "
+          f"{config.BRIGHTON_CONTEXT_ENABLED} da {args.brighton_pdf.name}, "
+          f"indice in {config.BRIGHTON_KB_PERSIST_DIR}\n-> {args.output_dir}\n",
+          flush=True)
 
     succeeded, failed, durations = [], [], []
     for index, record_path in enumerate(record_paths, start=1):
