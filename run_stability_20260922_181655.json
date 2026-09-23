@@ -1,0 +1,173 @@
+{
+  "records_compared": 40,
+  "sections": {
+    "A1": {
+      "compared": 40,
+      "changed": 0,
+      "correct_a": 40,
+      "correct_b": 40,
+      "stability": 1.0
+    },
+    "A2": {
+      "compared": 40,
+      "changed": 4,
+      "correct_a": 38,
+      "correct_b": 38,
+      "stability": 0.9
+    },
+    "A3_1": {
+      "compared": 40,
+      "changed": 1,
+      "correct_a": 38,
+      "correct_b": 39,
+      "stability": 0.975
+    },
+    "A3_2": {
+      "compared": 40,
+      "changed": 1,
+      "correct_a": 36,
+      "correct_b": 37,
+      "stability": 0.975
+    },
+    "B1_1": {
+      "compared": 40,
+      "changed": 1,
+      "correct_a": 39,
+      "correct_b": 40,
+      "stability": 0.975
+    },
+    "B1_2": {
+      "compared": 40,
+      "changed": 0,
+      "correct_a": 39,
+      "correct_b": 39,
+      "stability": 1.0
+    },
+    "B2": {
+      "compared": 40,
+      "changed": 1,
+      "correct_a": 38,
+      "correct_b": 37,
+      "stability": 0.975
+    },
+    "C": {
+      "compared": 40,
+      "changed": 0,
+      "correct_a": 40,
+      "correct_b": 40,
+      "stability": 1.0
+    },
+    "F": {
+      "compared": 40,
+      "changed": 0,
+      "correct_a": 40,
+      "correct_b": 40,
+      "stability": 1.0
+    },
+    "X": {
+      "compared": 40,
+      "changed": 1,
+      "correct_a": 37,
+      "correct_b": 36,
+      "stability": 0.975
+    }
+  },
+  "differences": [
+    {
+      "record_id": "SYN_05_absent_flow_not_pulses_trap_v2",
+      "section": "A2",
+      "run_a": [
+        "Other procedure done that confirmed presence of DVT"
+      ],
+      "run_b": [
+        "No surgical procedure done; or, done but either did not confirm presence of DVT or findings unknown; or unknown if done"
+      ]
+    },
+    {
+      "record_id": "SYN_10_unclear_sparse_record_v2",
+      "section": "B1_1",
+      "run_a": [
+        "≥1 symptom or sign of DVT was reported"
+      ],
+      "run_b": [
+        "It is unknown if there was a report of a DVT syndrome"
+      ]
+    },
+    {
+      "record_id": "SYN_12_other_procedure_positive_v2",
+      "section": "A2",
+      "run_a": [
+        "Other procedure done that confirmed presence of DVT"
+      ],
+      "run_b": [
+        "Thrombectomy related to DVT performed"
+      ]
+    },
+    {
+      "record_id": "SYN_23_other_procedure_ivc_filter_v2",
+      "section": "A2",
+      "run_a": [
+        "Other procedure done that confirmed presence of DVT"
+      ],
+      "run_b": null
+    },
+    {
+      "record_id": "SYN_23_other_procedure_ivc_filter_v2",
+      "section": "B2",
+      "run_a": [
+        "Calf pain or tenderness",
+        "Leg swelling or pitting oedema"
+      ],
+      "run_b": [
+        "Calf pain or tenderness",
+        "Leg swelling or pitting oedema",
+        "Redness, warmth, or pain in one or more extremities"
+      ]
+    },
+    {
+      "record_id": "SYN_27_contrast_venography_absent_pulses_v2",
+      "section": "A2",
+      "run_a": [
+        "Other procedure done that confirmed presence of DVT"
+      ],
+      "run_b": [
+        "No surgical procedure done; or, done but either did not confirm presence of DVT or findings unknown; or unknown if done"
+      ]
+    },
+    {
+      "record_id": "SYN_28_other_modality_plethysmography_v2",
+      "section": "A3_1",
+      "run_a": [
+        "No imaging studies done, unknown if done, or done but results unknown"
+      ],
+      "run_b": [
+        "≥1 imaging study was done and confirmed DVT"
+      ]
+    },
+    {
+      "record_id": "SYN_28_other_modality_plethysmography_v2",
+      "section": "A3_2",
+      "run_a": [],
+      "run_b": [
+        "Other"
+      ]
+    },
+    {
+      "record_id": "SYN_36_calf_muscle_tear_v2",
+      "section": "X",
+      "run_a": [
+        "An alternative diagnosis was found that explained the acute illness"
+      ],
+      "run_b": [
+        "No alternative diagnosis was found to explain the acute illness"
+      ]
+    }
+  ],
+  "overall": {
+    "compared": 400,
+    "changed": 9,
+    "correct_a": 385,
+    "correct_b": 386,
+    "stability": 0.9775
+  }
+}
