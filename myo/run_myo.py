@@ -150,17 +150,17 @@ def main():
         record_paths = [p for p in record_paths
                         if any(fragment in p.stem for fragment in args.only)]
     if not record_paths:
-        print(f"Nessun record in {args.records_dir}.", flush=True)
+        print(f"No record found in {args.records_dir}.", flush=True)
         return
 
     args.output_dir.mkdir(parents=True, exist_ok=True)
-    print(f"{len(record_paths)} record, sezioni {config.SECTION_ORDER}, "
-          f"modalita {config.EXTRACTOR_MODE}, agente "
-          f"{config.AGENTIC_LLM_MODEL_NAME}, valutatore "
-          f"{config.EVALUATOR_LLM_MODEL_NAME}\ncontesto linea guida "
-          f"{config.BRIGHTON_CONTEXT_ENABLED} da {args.brighton_pdf.name}, "
-          f"indice in {config.BRIGHTON_KB_PERSIST_DIR}\n"
-          f"finestra di contesto {config.LLM_NUM_CTX} token\n"
+    print(f"{len(record_paths)} records, sections {config.SECTION_ORDER}, "
+          f"mode {config.EXTRACTOR_MODE}, agent "
+          f"{config.AGENTIC_LLM_MODEL_NAME}, evaluator "
+          f"{config.EVALUATOR_LLM_MODEL_NAME}\nguideline context "
+          f"{config.BRIGHTON_CONTEXT_ENABLED} from {args.brighton_pdf.name}, "
+          f"index in {config.BRIGHTON_KB_PERSIST_DIR}\n"
+          f"context window {config.LLM_NUM_CTX} tokens\n"
           f"-> {args.output_dir}\n",
           flush=True)
 
@@ -184,17 +184,17 @@ def main():
             elapsed = time.time() - started
             durations.append(elapsed)
             succeeded.append(record_id)
-            print(f"    fatto in {elapsed:.0f}s", flush=True)
+            print(f"    done in {elapsed:.0f}s", flush=True)
         except Exception:
             failed.append(record_id)
             traceback.print_exc()
 
-    print(f"\n{len(succeeded)} riusciti, {len(failed)} falliti", flush=True)
+    print(f"\n{len(succeeded)} succeeded, {len(failed)} failed", flush=True)
     if durations:
         durations.sort()
-        print(f"mediana per record {durations[len(durations) // 2]:.0f}s", flush=True)
+        print(f"median per record: {durations[len(durations) // 2]:.0f}s", flush=True)
     if failed:
-        print("falliti: " + ", ".join(failed), flush=True)
+        print("failed: " + ", ".join(failed), flush=True)
 
 
 if __name__ == "__main__":

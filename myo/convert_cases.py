@@ -137,10 +137,10 @@ def main():
                   encoding="utf-8") as handle:
             json.dump(answers, handle, indent=2, ensure_ascii=False)
         written += 1
-        print(f"{record_id:12s} {len(text):5d} caratteri   "
+        print(f"{record_id:12s} {len(text):5d} characters   "
               f"E {len(answers['e']['findings'])}   F {len(answers['f']['findings'])}")
 
-    print(f"\n{written} record scritti in {args.output_dir}")
+    print(f"\n{written} records written to {args.output_dir}")
 
 
 if __name__ == "__main__":

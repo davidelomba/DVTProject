@@ -48,7 +48,7 @@ if __name__ == "__main__":
     strip()
     import run_synthetic_records
 
-    print(f"hint {config.SECTION_HINTS_ENABLED}, contesto "
-          f"{config.BRIGHTON_CONTEXT_ENABLED}, gate {config.SECTION_GATES_ENABLED}, "
-          f"regole cross-section {len(config.CROSS_SECTION_RULES)}\n", flush=True)
+    print(f"hints {config.SECTION_HINTS_ENABLED}, guideline context "
+          f"{config.BRIGHTON_CONTEXT_ENABLED}, gates {config.SECTION_GATES_ENABLED}, "
+          f"cross-section rules {len(config.CROSS_SECTION_RULES)}\n", flush=True)
     run_synthetic_records.main()
