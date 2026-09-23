@@ -193,8 +193,15 @@ lack the field.
 `_run_config.guideline_anchors_fingerprint` digests the guideline passage each
 section resolved to, and `guideline_anchors_enabled` says whether Agent 2 read
 it. The labels are digested through their resolved text, since what a heading
-resolves to depends on how the PDF extracted. The current set digests to
-`63c410d9cd34`. Runs before 2026-09-22 lack both fields.
+resolves to depends on how the PDF extracted. On mari the set digests to
+`4bc8810e170a`. Runs before 2026-09-22 lack both fields.
+
+**The anchors resolve to different text on different machines**, which is what
+the fingerprint was added for. Nine of the ten are identical between mari and a
+Windows working copy; X is 2770 characters on one and 2769 on the other, a
+single character in section 5.2.7 plus Table 2. The likely cause is a different
+`pypdf` extracting one character differently, so the digest of an anchored run
+belongs to the machine that produced it.
 
 ## What the measurements say
 
@@ -210,10 +217,18 @@ calls a CT venography A2's "other procedure"; SYN_10 counts an uncharacterised
 leg discomfort as a B1.1 symptom, citing the guideline's own list of
 non-specific signs. SYN_10 is not settled inside the project. **SYN_03 is:** a
 CT venography is an imaging study, not a procedure recovering a thrombus, and
-the ground truth is right. The wider scope of A2 is settled by section 4.1 of
-the paper, which names a *surgical or a catheterization procedure* together, so
-an endovascular intervention counts and the section heading's word Surgical is
-narrower than the criterion it stands for.
+the ground truth is right.
+
+**What section 4.1 settles about A2 is narrower than it looked.** It names a
+*surgical or a catheterization procedure* together, so the method being
+endovascular is no reason to exclude it. It does not settle SYN_12 and SYN_23,
+because it defines pathologic diagnosis by the **recovery** of a thrombus, and
+a catheter thrombolysis dissolves one. Handed 4.1 as its context, the model
+reads it that way and answers that no such procedure was done. The ground
+truth's coding of those two records rests instead on the option's own words,
+*other procedure done that confirmed presence of DVT*, which the intraprocedural
+venography satisfies. The two are different criteria and the questionnaire does
+not say which governs, which is what the clinician question below is asking.
 
 - **A hint's contribution changes sign with the model.** Evaluator and hints
   crossed on the 40-record corpus, four runs, same extractor, same gates, same
@@ -305,7 +320,44 @@ narrower than the criterion it stands for.
   empty, and two sections that failed outright with `FINAL_ANSWER: 5` for a
   two-option field, the model having reasoned correctly that DVT was ruled out
   and having nowhere to put it.
-- **Nineteen configurations measured on the same base**, each varying one
+- **The guideline anchors cost 7 sections, and reproduce the section-headings
+  arm almost exactly.** `GUIDELINE_ANCHORS_ENABLED` True, everything else at the
+  reference and the hint and query fingerprints proving it, takes 398 to
+  **391/400**, micro 99.5% to 97.75%, macro kappa 0.982 to 0.935. The
+  falsification held where it was set: C and X do not move, since their anchor
+  carries the text they already received. Everything else failed in the
+  informative direction. **A1 and B1.1 do not improve**, so section 4.1 reaching
+  A1 and A2 was not what those sections lacked; A2 gains SYN_03 and loses SYN_12
+  and SYN_23, A3_2 loses 3, and A3_1, B1_2 and B2 lose one each.
+
+  Seven of the nine sections that change answer are **the same sections that
+  changed under `SECTION_DESCRIPTIONS_ENABLED`**: SYN_03's A2 gained, SYN_12 and
+  SYN_23 lost on A2 and on A3_2, SYN_07 lost `Calf pain or tenderness` on B2 and
+  SYN_40 filled B1_2. Two interventions with opposite content — the form's
+  heading, which is narrower than the paper, and the paper's own passage, which
+  is wider — move the same records the same way. What they share is that both
+  state authoritatively what a section is about, and where that statement
+  differs from the option text the model follows the statement.
+
+  **The A2 reasoning says why, and it revises what section 4.1 settles.** Given
+  4.1, the model quotes it correctly and then excludes SYN_12: a catheter
+  thrombolysis dissolves the thrombus rather than recovering it, and the
+  confirmation came from an intraprocedural venography, which is imaging. That
+  reading is defensible on 4.1, which defines *pathologic* diagnosis by thrombus
+  recovery. The option, however, asks whether an **other procedure confirmed
+  presence of DVT**, which the venography did. So 4.1 and A2's second option are
+  not the same criterion, and anchoring A2 to 4.1 hands the model a stricter
+  test than its own question. A3_1 on SYN_28 is the same failure: given the list
+  of accepted modalities, the model rejects an impedance plethysmography and
+  answers that no imaging was done, though A3.1 asks nothing about modality; the
+  cross-section rule then clears A3_2, two wrong sections from one error.
+  `GUIDELINE_ANCHORS_ENABLED` stays False.
+- **At 200/40/3 the anchors are noise.** Against a control run in the same
+  regime, produced for the purpose because the earlier 200/40/3 arms predate
+  B2's query rewrite, they move 385 to 386 of 400: five sections corrected, four
+  broken, and A2 on SYN_23 fails outright with no parseable answer after three
+  attempts. A2 is where the model is least stable under any intervention.
+- **Twenty-two configurations measured on the same base**, each varying one
   component. `docs/RISULTATI_SPERIMENTALI.md` section 8 has the full per-section
   table.
 
@@ -316,6 +368,9 @@ narrower than the criterion it stands for.
   agentic without the context      395/400    98.75%     0.970
   raw_record                       392/400    98.0%      0.966
   agentic with section headings    392/400    98.0%      0.940
+  agentic with guideline anchors   391/400    97.75%     0.935
+  agentic 200/40/3, anchors        386/399    96.7%      0.917
+  agentic 200/40/3, control        385/400    96.25%     0.911
   agentic 200/40/3, 27B agent      383/400    95.8%      0.905
   agentic 200/40/3, new queries    383/400    95.8%      0.902
   agentic, chunks 200/40, k 3      382/400    95.5%      0.895
@@ -562,8 +617,8 @@ narrower than the criterion it stands for.
 
 ## Open items
 
-- **The guideline retrieval selects hard and is keyed on the wrong string, and
-  the anchors that replace it are unmeasured.** The paper is 48,467 characters
+- **The guideline retrieval selects hard and is keyed on the wrong string. The
+  anchors that replace it are measured and cost 7 sections.** The paper is 48,467 characters
   in 76 chunks and `BRIGHTON_RETRIEVER_K` is 5, so each section reads 6.6% of
   it, chosen by that section's `SECTION_QUERIES` entry — a string written to
   find findings in a clinical record. The two retrieval paths are therefore in
@@ -573,14 +628,15 @@ narrower than the criterion it stands for.
   Agent 2 on **0 records out of 40**, while A2's context opens on the paper's
   preamble. X, C and A3_2 do receive their passage on all 40.
   `config.GUIDELINE_ANCHORS` names the passage per section instead of searching
-  for it; `GUIDELINE_ANCHORS_ENABLED` is False and no run has been scored with
-  it on. B1.1, B1.2 and B2 anchor to Table 3, the case definition the
-  questionnaire follows, and A3_2 to Table 1, the techniques by location. An
-  anchored section also announces the block as the passage defining its
-  criterion rather than as synonyms, so the arm changes content and heading
-  together; with the switch off the prompt is unchanged. C and X are where the
-  effect should be nil, since their anchor carries the text they already
-  received. Text resolves with hyphenated line breaks
+  for it, and `GUIDELINE_ANCHORS_ENABLED` stays False: the arm scores 391
+  against 398. **What the measurement leaves open is not whether the anchors
+  help but what to anchor to.** Every loss comes from the same place, a passage
+  that states a criterion the section's options do not ask about, so an anchor
+  is only as good as the match between the paper's definition and the
+  questionnaire's wording — and on A2, A3_1 and B2 that match is exactly what
+  the clinician questions are about. Anchoring to Table 3, the case definition
+  the questionnaire follows, is the variant not yet tried on A2 and A3_1.
+  Text resolves with hyphenated line breaks
   (`Dop-\npler`) in both paths, which de-hyphenating would change for both at
   once and is therefore its own experiment.
 - **The Level of Certainty is left to REDCap, and measuring it here is out of
@@ -618,12 +674,17 @@ narrower than the criterion it stands for.
   the September expansion and now scores kappa 0.918.
 - **Questions for the clinicians.** The first three each decide how a record is
   coded; the rest are conventions.
-  - Section 4.1 of the paper puts a *surgical or a catheterization procedure*
-    on the same footing, so an endovascular intervention falls under A2 and the
-    ground truth is right on SYN_12 and SYN_23. What is left to confirm is
-    narrower: does the section heading's word Surgical deliberately restrict
-    what the paper allows, or is it shorthand? The heading is what led the model
-    to exclude both records.
+  - **A2's second option and section 4.1 are two different criteria, and
+    SYN_12 and SYN_23 turn on which one governs.** Section 4.1 defines a
+    pathologic diagnosis as the recovery of a thrombus by a surgical or a
+    catheterization procedure; the option asks whether an *other procedure done
+    confirmed presence of DVT*. A catheter thrombolysis recovers nothing, so 4.1
+    excludes it, while the intraprocedural venography does confirm the thrombus,
+    so the option's words include it. The ground truth follows the option. The
+    model follows whichever of the two it is shown: given the section heading it
+    excludes both records, and given 4.1 it excludes them for a different
+    reason. Which criterion the questionnaire intends is the question, and the
+    heading's word Surgical is a third reading again.
   - Does a vague, uncharacterised symptom, "a generic discomfort in the leg"
     with no site or intensity, count as B1.1's "at least one symptom or sign
     was reported", or does the section stay unknown? SYN_10 turns on this: the

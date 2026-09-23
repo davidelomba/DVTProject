@@ -29,3 +29,5 @@ vectorstores/
 # result can be traced back to the run that produced it.
 
 docs/
+
+export_prompts.py
