@@ -1,0 +1,77 @@
+{
+  "E": {
+    "query": "electrocardiogram ECG findings: rhythm, atrial or ventricular arrhythmia, tachycardia, atrial fibrillation, AV block, bundle branch block, conduction delay, ST segment or T wave abnormality, Q waves, low voltage, premature atrial or ventricular contractions, ambulatory monitoring, normal ECG, ECG not performed",
+    "evidence": "FVM, cardiovertita con metoprololo ev. Ecocardiogramma: normali dimensioni e spessori del VS (ventricolo sinistro) (SIV (setto interventricolare) e PP (parete posteriore) 10 mm); sezioni destre nei limiti, TAPSE (Escursione sistolica dell'anello tricuspide) 26 mm; normale radice aortica e aorta ascendente; normale atrio sinistro; non versamento pericardico; iperriflettenza pericardica posteriore, ipocinesia del setto posteriore medio basale e della parete inferiore medio basale con FE ai limiti inferiori. Alla dimissione valori degli esami ematici nei limiti, in particolare si osserva normalizzazione dei valori degli indici di miocardionecrosi (TnT hs 5,58 pg/ml, CK-MB 0,84 ng/ml) e degli indici di flogosi (pct e PCR negativi).\n\nAnamnesi Prossima: In data 21/07, il paziente ha riferito la comparsa di manifestazioni cutanee compatibili con rash, insorte in un contesto temporale successivo all’assunzione di amoxicillina. Non è stato possibile escludere, in quella fase, un potenziale coinvolgimento sistemico. All¿¿¿ingresso in reparto si presentava emodinamicamente stabile senza supporti farmacologici ed eupnoico in ossigenoterapia 3 L/min. Esami ematici: troponina 50 pg/mL. TC torace negativa per linfoadenopatie mediastiniche. Alla RM cardiaca si osservava edema miocardico nelle sequenze T2-pesate, con distribuzione tipicamente a chiazze. All'ECG riscontro di FA ad elevata FVM, cardiovertita con metoprololo ev. Ecocardiogramma: normali dimensioni e spessori del VS (ventricolo sinistro) (SIV (setto interventricolare)",
+    "agent1_seconds": 8.0,
+    "brighton_context": "",
+    "agent2_seconds": 11.3,
+    "answer_conflict": null,
+    "reasoning": "The evidence explicitly states \"All'ECG riscontro di FA ad elevata FVM\" (On ECG, finding of Atrial Fibrillation with high ventricular rate). Atrial fibrillation (FA) is a type of atrial arrhythmia. Option 2 lists \"Paroxysmal or sustained atrial or ventricular arrhythmias... e.g ... atrial fibrillation\". Therefore, the ECG findings correspond to Option 2. The text does not mention ST/T wave changes, conduction blocks, or other specific abnormalities listed in the other options, nor does it state the ECG was normal (Option 13) or not done (Option 1).\n\nFINAL_OPTION: Paroxysmal or sustained atrial or ventricular arrhythmias (premature atrial or ventricular beats, and/or supraventricular or ventricular tachycardia, interventricular conduction delay, abnormal Q waves, low voltages): :e.g (Sinus tachycardia, SVT, atrial fibrillation, PVCs, VT, VF)\nFINAL_ANSWER: 2",
+    "result": {
+      "findings": [
+        "Paroxysmal or sustained atrial or ventricular arrhythmias (premature atrial or ventricular beats, and/or supraventricular or ventricular tachycardia, interventricular conduction delay, abnormal Q waves, low voltages): :e.g (Sinus tachycardia, SVT, atrial fibrillation, PVCs, VT, VF)"
+      ]
+    }
+  },
+  "F": {
+    "query": "echocardiogram ECHO findings: ejection fraction, left or right ventricular function, segmental wall motion, global systolic or diastolic function, ventricular dilation, wall thickness, pericardial effusion or inflammation, normal echocardiogram, ECHO not performed",
+    "evidence": "FVM, cardiovertita con metoprololo ev. Ecocardiogramma: normali dimensioni e spessori del VS (ventricolo sinistro) (SIV (setto interventricolare) e PP (parete posteriore) 10 mm); sezioni destre nei limiti, TAPSE (Escursione sistolica dell'anello tricuspide) 26 mm; normale radice aortica e aorta ascendente; normale atrio sinistro; non versamento pericardico; iperriflettenza pericardica posteriore, ipocinesia del setto posteriore medio basale e della parete inferiore medio basale con FE ai limiti inferiori. Alla dimissione valori degli esami ematici nei limiti, in particolare si osserva normalizzazione dei valori degli indici di miocardionecrosi (TnT hs 5,58 pg/ml, CK-MB 0,84 ng/ml) e degli indici di flogosi (pct e PCR negativi).\n\nAnamnesi Prossima: In data 21/07, il paziente ha riferito la comparsa di manifestazioni cutanee compatibili con rash, insorte in un contesto temporale successivo all’assunzione di amoxicillina. Non è stato possibile escludere, in quella fase, un potenziale coinvolgimento sistemico. All¿¿¿ingresso in reparto si presentava emodinamicamente stabile senza supporti farmacologici ed eupnoico in ossigenoterapia 3 L/min. Esami ematici: troponina 50 pg/mL. TC torace negativa per linfoadenopatie mediastiniche. Alla RM cardiaca si osservava edema miocardico nelle sequenze T2-pesate, con distribuzione tipicamente a chiazze. All'ECG riscontro di FA ad elevata FVM, cardiovertita con metoprololo ev. Ecocardiogramma: normali dimensioni e spessori del VS (ventricolo sinistro) (SIV (setto interventricolare)",
+    "agent1_seconds": 11.9,
+    "brighton_context": "",
+    "agent2_seconds": 62.6,
+    "answer_conflict": null,
+    "reasoning": "The evidence explicitly states \"ipocinesia del setto posteriore medio basale e della parete inferiore medio basale\" (hypokinesia of the mid-basal posterior septum and mid-basal inferior wall). Hypokinesia refers to reduced movement of a specific segment of the heart muscle, which directly corresponds to \"Segmental wall motion abnormalities\" (Option 3).\n\nRegarding other options:\n- Option 2 (New focal or diffuse left or right ventricular function abnormalities) is less specific than Option 3. While hypokinesia is a functional abnormality, Option 3 precisely describes the nature of the finding (segmental wall motion). In clinical validation hierarchies, the specific morphological/motion descriptor is preferred if available and accurate.\n- Option 4 (Global systolic or diastolic function depression) is not supported because the text states \"FE ai limiti inferiori\" (Ejection Fraction at lower limits), which implies it is borderline but not necessarily depressed/abnormal in a definitive pathological sense, and certainly not global depression as the primary descriptor compared to the segmental issues.\n- Option 5 (Ventricular dilation) is ruled out by \"normali dimensioni\".\n- Option 6 (Wall thickness change) is ruled out by \"normali... spessori\".\n- Option 8 (Evidence of abnormal fluid collection or pericardial inflammation) mentions \"iperriflettenza pericardica posteriore\" (posterior pericardial hyperechogenicity). While this can be a sign of inflammation, the text explicitly negates fluid (\"non versamento pericardico\"). Hyperechogenicity alone is often considered non-specific or incidental in these validation contexts unless accompanied by effusion or explicit diagnosis of pericarditis. The primary confirmed abnormality related to the myocardium is the wall motion issue.\n- Option 9 (No abnormalities) is incorrect due to the presence of hypokinesia.\n- Options 1, 7, and 10 are incorrect because the echo was done, showed specific abnormalities (not just \"conforming without details\"), and did not confirm pericarditis definitively.\n\nTherefore, only Option 3 is explicitly and robustly supported by the text describing segmental hypokinesia.\n\nFINAL_OPTION: Segmental wall motion abnormalities\nFINAL_ANSWER: 3",
+    "result": {
+      "findings": [
+        "Segmental wall motion abnormalities"
+      ]
+    }
+  },
+  "_run_config": {
+    "extractor_mode": "agentic_graph",
+    "section_gates_enabled": {
+      "keyword": false,
+      "details": false,
+      "absent_pulses": false
+    },
+    "brighton_context_enabled": false,
+    "section_descriptions_enabled": false,
+    "section_hints_enabled": true,
+    "section_hints_disabled": [],
+    "section_hints_fingerprint": {
+      "all": "9503fb46b54e"
+    },
+    "section_queries_fingerprint": {
+      "E": "311 b830923d415b",
+      "F": "264 9cfac9903bb3",
+      "all": "8c4c0ec0ce71"
+    },
+    "guideline_anchors_enabled": false,
+    "guideline_anchors_fingerprint": {
+      "all": "e3b0c44298fc"
+    },
+    "cross_section_rules_applied": true,
+    "models": {
+      "extractor": "qwen3.6:27b",
+      "evaluator": "qwen3.6:27b",
+      "embeddings": "intfloat/multilingual-e5-small"
+    },
+    "environment": {
+      "hostname": "mari",
+      "ollama_version": "ollama version is 0.32.1"
+    },
+    "generation": {
+      "temperature": 0.0,
+      "num_predict": 1024,
+      "num_gpu": 999,
+      "num_ctx": 8192,
+      "reasoning": false
+    },
+    "retrieval": {
+      "ehr_chunk_size": 800,
+      "ehr_chunk_overlap": 150,
+      "ehr_retriever_k": 5,
+      "brighton_retriever_k": 5
+    }
+  }
+}

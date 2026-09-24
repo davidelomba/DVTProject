@@ -1,0 +1,78 @@
+{
+  "E": {
+    "query": "electrocardiogram ECG findings: rhythm, atrial or ventricular arrhythmia, tachycardia, atrial fibrillation, AV block, bundle branch block, conduction delay, ST segment or T wave abnormality, Q waves, low voltage, premature atrial or ventricular contractions, ambulatory monitoring, normal ECG, ECG not performed",
+    "evidence": "predominance. Echocardiography indicated a borderline reduction in left ventricular systolic performance (EF ≈ 50%) \nand regional wall motion disturbance involving the inferolateral wall.\n Longitudinal strain analysis showed global impairment (–11%). \nCardiac MRI revealed abnormal tissue parameters (T1 ≈ 1180 ms, T2 ≈ 80 ms, ECV ≈ 35%)\n and a subepicardial enhancement pattern in the basal inferolateral myocardium on LGE imaging\n, compatible with inflammatory injury. PCR screening for viral pathogens was negative,\n and coronary angiography excluded obstructive disease. Given the mildly depressed \nventricular function, she was started on beta-blocker and angiotensin-receptor antagonist \ntherapy. At discharge, she reported only positional chest discomfort without ischemic features.\n\ntherapy. At discharge, she reported only positional chest discomfort without ischemic features.\n Follow-up echocardiography demonstrated normalized LV function and resolution of regional \nabnormalities. Revaccination with mRNA vaccine was not advised.\n\nA 31-year-old woman without any prior health conditions or cardiovascular\n risk factors was admitted in May 2021, about two weeks after her first mRNA\n COVID-19 vaccination, with episodes of chills, sharp retrosternal and dorsal\n pain, and shortness of breath during moderate exertion. The next day she\n experienced mild flu-like malaise, which resolved spontaneously. \nOn examination, her blood pressure was within normal limits, and her\n heart rate was slightly elevated; no peripheral edema or Muffled heart\nsounds was detected.  Laboratory investigations revealed raised cardiac\n biomarkers.  The ECG demonstrated ST-segment changes with lateral\n predominance. Echocardiography indicated a borderline reduction in left ventricular systolic performance (EF ≈ 50%)",
+    "agent1_seconds": 7.3,
+    "brighton_context": "",
+    "agent2_seconds": 11.2,
+    "answer_conflict": null,
+    "reasoning": "The evidence explicitly states: \"The ECG demonstrated ST-segment changes with lateral predominance.\" This confirms that an electrocardiogram (ECG) was performed and showed abnormalities. Specifically, the mention of \"ST-segment changes\" aligns directly with Option 5 (\"ST, segment or T, wave abnormalities (elevation or inversion)\"). The text does not provide specific details about arrhythmias (Options 2, 4, 7), conduction delays (Option 3), Q waves/voltage issues (Option 6), or specific patterns like diffuse concave ST elevation (Option 9) or PR depression (Option 11). It also does not state that the ECG was normal (Option 13) or that it confirmed pericarditis specifically without details (Option 14), nor does it use the vague phrasing of Option 8. Therefore, only Option 5 is supported by the explicit text regarding ST-segment changes.\n\nFINAL_OPTION: ST, segment or T, wave abnormalities (elevation or inversion)\nFINAL_ANSWER: 5",
+    "result": {
+      "findings": [
+        "ST, segment or T, wave abnormalities (elevation or inversion)"
+      ]
+    }
+  },
+  "F": {
+    "query": "echocardiogram ECHO findings: ejection fraction, left or right ventricular function, segmental wall motion, global systolic or diastolic function, ventricular dilation, wall thickness, pericardial effusion or inflammation, normal echocardiogram, ECHO not performed",
+    "evidence": "predominance. Echocardiography indicated a borderline reduction in left ventricular systolic performance (EF ≈ 50%) \nand regional wall motion disturbance involving the inferolateral wall.\n Longitudinal strain analysis showed global impairment (–11%). \nCardiac MRI revealed abnormal tissue parameters (T1 ≈ 1180 ms, T2 ≈ 80 ms, ECV ≈ 35%)\n and a subepicardial enhancement pattern in the basal inferolateral myocardium on LGE imaging\n, compatible with inflammatory injury. PCR screening for viral pathogens was negative,\n and coronary angiography excluded obstructive disease. Given the mildly depressed \nventricular function, she was started on beta-blocker and angiotensin-receptor antagonist \ntherapy. At discharge, she reported only positional chest discomfort without ischemic features.\n\ntherapy. At discharge, she reported only positional chest discomfort without ischemic features.\n Follow-up echocardiography demonstrated normalized LV function and resolution of regional \nabnormalities. Revaccination with mRNA vaccine was not advised.\n\nA 31-year-old woman without any prior health conditions or cardiovascular\n risk factors was admitted in May 2021, about two weeks after her first mRNA\n COVID-19 vaccination, with episodes of chills, sharp retrosternal and dorsal\n pain, and shortness of breath during moderate exertion. The next day she\n experienced mild flu-like malaise, which resolved spontaneously. \nOn examination, her blood pressure was within normal limits, and her\n heart rate was slightly elevated; no peripheral edema or Muffled heart\nsounds was detected.  Laboratory investigations revealed raised cardiac\n biomarkers.  The ECG demonstrated ST-segment changes with lateral\n predominance. Echocardiography indicated a borderline reduction in left ventricular systolic performance (EF ≈ 50%)",
+    "agent1_seconds": 9.6,
+    "brighton_context": "",
+    "agent2_seconds": 13.3,
+    "answer_conflict": null,
+    "reasoning": "The evidence explicitly states that \"Echocardiography indicated a borderline reduction in left ventricular systolic performance (EF ≈ 50%)\". A reduction in ejection fraction constitutes a new focal or diffuse left ventricular function abnormality, supporting Option 2. The text also mentions \"regional wall motion disturbance involving the inferolateral wall,\" which directly supports Option 3 (Segmental wall motion abnormalities). While longitudinal strain analysis showed global impairment, this is often considered part of the functional assessment; however, the most direct and explicit findings described are the reduced EF and regional wall motion issues. The text does not mention ventricular dilation, wall thickness changes, or pericardial fluid/inflammation on the echo (it notes no muffled heart sounds on exam, but doesn't describe pericardial effusion on echo). It does not state \"no abnormalities\" (Option 9) because abnormalities were found. Option 7 is a generic confirmation option, but since specific details (Options 2 and 3) are available and supported by the text, they are the more precise answers required by clinical validation standards which prefer specific findings over generic confirmations when details are present.\n\nFINAL_OPTION: New focal or diffuse left or right ventricular function abnormalities (e.g. decreased ejection fraction); Segmental wall motion abnormalities\nFINAL_ANSWER: 2; 3",
+    "result": {
+      "findings": [
+        "New focal or diffuse left or right ventricular function abnormalities (e.g. decreased ejection fraction)",
+        "Segmental wall motion abnormalities"
+      ]
+    }
+  },
+  "_run_config": {
+    "extractor_mode": "agentic_graph",
+    "section_gates_enabled": {
+      "keyword": false,
+      "details": false,
+      "absent_pulses": false
+    },
+    "brighton_context_enabled": false,
+    "section_descriptions_enabled": false,
+    "section_hints_enabled": true,
+    "section_hints_disabled": [],
+    "section_hints_fingerprint": {
+      "all": "9503fb46b54e"
+    },
+    "section_queries_fingerprint": {
+      "E": "311 b830923d415b",
+      "F": "264 9cfac9903bb3",
+      "all": "8c4c0ec0ce71"
+    },
+    "guideline_anchors_enabled": false,
+    "guideline_anchors_fingerprint": {
+      "all": "e3b0c44298fc"
+    },
+    "cross_section_rules_applied": true,
+    "models": {
+      "extractor": "qwen3.6:27b",
+      "evaluator": "qwen3.6:27b",
+      "embeddings": "intfloat/multilingual-e5-small"
+    },
+    "environment": {
+      "hostname": "mari",
+      "ollama_version": "ollama version is 0.32.1"
+    },
+    "generation": {
+      "temperature": 0.0,
+      "num_predict": 1024,
+      "num_gpu": 999,
+      "num_ctx": 8192,
+      "reasoning": false
+    },
+    "retrieval": {
+      "ehr_chunk_size": 800,
+      "ehr_chunk_overlap": 150,
+      "ehr_retriever_k": 5,
+      "brighton_retriever_k": 5
+    }
+  }
+}

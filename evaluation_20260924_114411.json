@@ -1,0 +1,96 @@
+{
+  "records_compared": 17,
+  "records_missing_prediction": [],
+  "sections": {
+    "E": {
+      "compared": 17,
+      "missing": 0,
+      "exact_matches": 17,
+      "options": [
+        "ECG not done, or done but no results available or unknown if done",
+        "Paroxysmal or sustained atrial or ventricular arrhythmias (premature atrial or ventricular beats, and/or supraventricular or ventricular tachycardia, interventricular conduction delay, abnormal Q waves, low voltages): :e.g (Sinus tachycardia, SVT, atrial fibrillation, PVCs, VT, VF)",
+        "AV nodal conduction delays or intraventricular conduction defects (AV block (grade I, III), new bundle branch block)",
+        "Continuous ambulatory ECG monitoring that detects frequent atrial or ventricular ectopy",
+        "ST, segment or T, wave abnormalities (elevation or inversion)",
+        "Newly reduced r, wave height, low voltage, or abnormal q waves",
+        "Premature atrial and premature ventricular contractions (PACs, PVCs)",
+        "*confirmed ECG abnormality conforming myocarditis without details",
+        "Diffuse concave, upward ST, segment elevation",
+        "ST, segment depression in aVR (ECG electrode lead placed on R arm)",
+        "*PR, depression throughout the leads without reciprocal ST, segment changes",
+        "*Nonspecific abnormalities other than those listed above.",
+        "No abnormalities seen on ECG",
+        "*confirmed ECG abnormality conforming Pericarditis without details"
+      ],
+      "accuracy": 1.0,
+      "majority_baseline": 0.5294117647058824,
+      "accuracy_ci95": [
+        0.8156763396284354,
+        1.0
+      ],
+      "tp": 17,
+      "tn": 221,
+      "fp": 0,
+      "fn": 0,
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0,
+      "cohens_kappa": 1.0
+    },
+    "F": {
+      "compared": 16,
+      "missing": 1,
+      "exact_matches": 3,
+      "options": [
+        "ECHO not done, or done but no results or unknown if done",
+        "New focal or diffuse left or right ventricular function abnormalities (e.g. decreased ejection fraction)",
+        "Segmental wall motion abnormalities",
+        "Global systolic or diastolic function depression/abnormality - (*Decreased longitudinal and circumferential strain and strain rates on tissue Doppler)",
+        "Ventricular dilation",
+        "Wall thickness change",
+        "confirmed Echocardiogram conforming myocarditis without details",
+        "Evidence of abnormal fluid collection or pericardial inflammation",
+        "No abnormalities seen on ECHO",
+        "*confirmed Echocardiogram conforming pericarditis without details"
+      ],
+      "accuracy": 0.1875,
+      "majority_baseline": 0.3125,
+      "accuracy_ci95": [
+        0.06591478773586765,
+        0.4300935986845823
+      ],
+      "tp": 15,
+      "tn": 119,
+      "fp": 16,
+      "fn": 10,
+      "precision": 0.4838709677419355,
+      "recall": 0.6,
+      "f1": 0.5357142857142857,
+      "cohens_kappa": 0.1440329218106996
+    }
+  },
+  "overall": {
+    "compared": 33,
+    "exact_matches": 20,
+    "tp": 32,
+    "tn": 340,
+    "fp": 16,
+    "fn": 10,
+    "accuracy": 0.6060606060606061,
+    "accuracy_ci95": [
+      0.4368314280651038,
+      0.7531711776849179
+    ],
+    "precision": 0.6666666666666666,
+    "recall": 0.7619047619047619,
+    "f1": 0.7111111111111111,
+    "macro_precision": 0.7419354838709677,
+    "macro_recall": 0.8,
+    "macro_f1": 0.7678571428571428,
+    "macro_accuracy": 0.59375,
+    "macro_kappa": 0.5720164609053497,
+    "macro_majority_baseline": 0.4209558823529412
+  },
+  "ground_truth_dir": "/home/lombardi/DVTProject/myo/data/records",
+  "predictions_dir": "myo/output_myo_8k"
+}

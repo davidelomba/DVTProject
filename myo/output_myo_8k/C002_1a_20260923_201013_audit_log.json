@@ -1,0 +1,79 @@
+{
+  "E": {
+    "query": "electrocardiogram ECG findings: rhythm, atrial or ventricular arrhythmia, tachycardia, atrial fibrillation, AV block, bundle branch block, conduction delay, ST segment or T wave abnormality, Q waves, low voltage, premature atrial or ventricular contractions, ambulatory monitoring, normal ECG, ECG not performed",
+    "evidence": "no Pericardial friction rub or distant heart sound is detected.. The initial laboratory tests showed increased levels \nof hsTnT and NT-proBNP. \nECG showed ST-segment elevation in the inferolateral leads.Transthoracic speckle-tracking\n echocardiography showed a mildly reduced left ventricular ejection fraction (51%) and \nwall motion abnormalities in the inferolateral region. The global left ventricular\n longitudinal strain was reduced to −11.0% (normal <-18.0%). CMR imaging showed increased \nvalues in parametric mapping, with a global native T1 of 1,183 ms (normal 955 ± 23 ms), T2 of 81 ms\n (normal <60 ms), and an extracellular volume of 35% (normal 25.3 ± 3.5%). \nA subepicardial scar in the basal inferolateral region was seen in LGE sequences.\n\nA subepicardial scar in the basal inferolateral region was seen in LGE sequences. \nPCR analysis did not detect cardiotropic viruses. Angiography performed and the result rulled out the coronary artery disease . Because of the limited ejection fraction,\n medical therapy with beta blocker and AT1 antagonist was initiated. at discharge the examination \nrevealed that the patient had developed movement-dependent thoracic pain but presented with no\n angina, dyspnea, palpitations, dizziness, or syncope. Transthoracic echocardiography showed \nnormal left ventricular function, with no preexisting regional wall motion abnormalities.\nThe longitudinal strain improved significantly. Repeat mRNA-based vaccination is not recommended.\n\nA 31-year-old woman with no preexisting diseases or cardiovascular risk factors presented\n in May 2021 with a shivering attack, intensifying stabbing chest and back pain, and dyspnea\n after moderate physical activity (NYHA II). Seventeen days previously, she had been vaccinated\n for the first time against COVID-19 with Comirnaty. The following day,  \nshe registered flu-like symptoms, which quickly resolved. In the period between her vaccination \nand presentation, she engaged in physical activity that involved riding a bicycle for 15 km.\nThe initial physical examination showed normal blood pressure and mild tachycardia, and \nno Pericardial friction rub or distant heart sound is detected.. The initial laboratory tests showed increased levels \nof hsTnT and NT-proBNP.",
+    "agent1_seconds": 7.8,
+    "brighton_context": "",
+    "agent2_seconds": 10.2,
+    "answer_conflict": null,
+    "reasoning": "The evidence explicitly states: \"ECG showed ST-segment elevation in the inferolateral leads.\" This confirms that an ECG was performed and identified specific abnormalities. Specifically, the finding of ST-segment elevation corresponds directly to Option 5 (\"ST, segment or T, wave abnormalities (elevation or inversion)\"). The text does not provide details about diffuse concave elevation (Option 9), PR depression (Option 11), or arrhythmias (Options 2, 4, 7), nor does it state the ECG was normal (Option 13) or that no results were available (Option 1). While myocarditis is confirmed by other means (CMR, biomarkers), the question asks specifically about the ECG findings. The only specific ECG finding reported is ST-segment elevation.\n\nFINAL_OPTION: ST, segment or T, wave abnormalities (elevation or inversion)\nFINAL_ANSWER: 5",
+    "result": {
+      "findings": [
+        "ST, segment or T, wave abnormalities (elevation or inversion)"
+      ]
+    }
+  },
+  "F": {
+    "query": "echocardiogram ECHO findings: ejection fraction, left or right ventricular function, segmental wall motion, global systolic or diastolic function, ventricular dilation, wall thickness, pericardial effusion or inflammation, normal echocardiogram, ECHO not performed",
+    "evidence": "no Pericardial friction rub or distant heart sound is detected.. The initial laboratory tests showed increased levels \nof hsTnT and NT-proBNP. \nECG showed ST-segment elevation in the inferolateral leads.Transthoracic speckle-tracking\n echocardiography showed a mildly reduced left ventricular ejection fraction (51%) and \nwall motion abnormalities in the inferolateral region. The global left ventricular\n longitudinal strain was reduced to −11.0% (normal <-18.0%). CMR imaging showed increased \nvalues in parametric mapping, with a global native T1 of 1,183 ms (normal 955 ± 23 ms), T2 of 81 ms\n (normal <60 ms), and an extracellular volume of 35% (normal 25.3 ± 3.5%). \nA subepicardial scar in the basal inferolateral region was seen in LGE sequences.\n\nA subepicardial scar in the basal inferolateral region was seen in LGE sequences. \nPCR analysis did not detect cardiotropic viruses. Angiography performed and the result rulled out the coronary artery disease . Because of the limited ejection fraction,\n medical therapy with beta blocker and AT1 antagonist was initiated. at discharge the examination \nrevealed that the patient had developed movement-dependent thoracic pain but presented with no\n angina, dyspnea, palpitations, dizziness, or syncope. Transthoracic echocardiography showed \nnormal left ventricular function, with no preexisting regional wall motion abnormalities.\nThe longitudinal strain improved significantly. Repeat mRNA-based vaccination is not recommended.\n\nA 31-year-old woman with no preexisting diseases or cardiovascular risk factors presented\n in May 2021 with a shivering attack, intensifying stabbing chest and back pain, and dyspnea\n after moderate physical activity (NYHA II). Seventeen days previously, she had been vaccinated\n for the first time against COVID-19 with Comirnaty. The following day,  \nshe registered flu-like symptoms, which quickly resolved. In the period between her vaccination \nand presentation, she engaged in physical activity that involved riding a bicycle for 15 km.\nThe initial physical examination showed normal blood pressure and mild tachycardia, and \nno Pericardial friction rub or distant heart sound is detected.. The initial laboratory tests showed increased levels \nof hsTnT and NT-proBNP.",
+    "agent1_seconds": 10.7,
+    "brighton_context": "",
+    "agent2_seconds": 56.5,
+    "answer_conflict": null,
+    "reasoning": "The evidence explicitly states that \"Transthoracic speckle-tracking echocardiography showed a mildly reduced left ventricular ejection fraction (51%) and wall motion abnormalities in the inferolateral region.\" This confirms that an echocardiogram was performed, ruling out Option 1. The finding of \"wall motion abnormalities\" directly supports Option 3 (\"Segmental wall motion abnormalities\"). The report also notes that \"The global left ventricular longitudinal strain was reduced to −11.0%,\" which corresponds to the specific description in Option 4 (\"Global systolic or diastolic function depression/abnormality - (*Decreased longitudinal and circumferential strain and strain rates on tissue Doppler)\"). Additionally, the \"mildly reduced left ventricular ejection fraction (51%)\" fits the example of \"decreased ejection fraction\" provided in Option 2 (\"New focal or diffuse left or right ventricular function abnormalities\"). Therefore, Options 2, 3, and 4 are all supported by the initial ECHO findings. No pericardial effusion or inflammation is mentioned on the ECHO, so Options 8 and 10 are not supported. Option 9 is incorrect because abnormalities were seen.\n\nFINAL_OPTION: New focal or diffuse left or right ventricular function abnormalities (e.g. decreased ejection fraction); Segmental wall motion abnormalities; Global systolic or diastolic function depression/abnormality - (*Decreased longitudinal and circumferential strain and strain rates on tissue Doppler)\nFINAL_ANSWER: 2; 3; 4",
+    "result": {
+      "findings": [
+        "New focal or diffuse left or right ventricular function abnormalities (e.g. decreased ejection fraction)",
+        "Segmental wall motion abnormalities",
+        "Global systolic or diastolic function depression/abnormality - (*Decreased longitudinal and circumferential strain and strain rates on tissue Doppler)"
+      ]
+    }
+  },
+  "_run_config": {
+    "extractor_mode": "agentic_graph",
+    "section_gates_enabled": {
+      "keyword": false,
+      "details": false,
+      "absent_pulses": false
+    },
+    "brighton_context_enabled": false,
+    "section_descriptions_enabled": false,
+    "section_hints_enabled": true,
+    "section_hints_disabled": [],
+    "section_hints_fingerprint": {
+      "all": "9503fb46b54e"
+    },
+    "section_queries_fingerprint": {
+      "E": "311 b830923d415b",
+      "F": "264 9cfac9903bb3",
+      "all": "8c4c0ec0ce71"
+    },
+    "guideline_anchors_enabled": false,
+    "guideline_anchors_fingerprint": {
+      "all": "e3b0c44298fc"
+    },
+    "cross_section_rules_applied": true,
+    "models": {
+      "extractor": "qwen3.6:27b",
+      "evaluator": "qwen3.6:27b",
+      "embeddings": "intfloat/multilingual-e5-small"
+    },
+    "environment": {
+      "hostname": "mari",
+      "ollama_version": "ollama version is 0.32.1"
+    },
+    "generation": {
+      "temperature": 0.0,
+      "num_predict": 1024,
+      "num_gpu": 999,
+      "num_ctx": 8192,
+      "reasoning": false
+    },
+    "retrieval": {
+      "ehr_chunk_size": 800,
+      "ehr_chunk_overlap": 150,
+      "ehr_retriever_k": 5,
+      "brighton_retriever_k": 5
+    }
+  }
+}

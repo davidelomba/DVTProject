@@ -1,0 +1,79 @@
+{
+  "E": {
+    "query": "electrocardiogram ECG findings: rhythm, atrial or ventricular arrhythmia, tachycardia, atrial fibrillation, AV block, bundle branch block, conduction delay, ST segment or T wave abnormality, Q waves, low voltage, premature atrial or ventricular contractions, ambulatory monitoring, normal ECG, ECG not performed",
+    "evidence": "Anamnesi ProssimaAccesso in DEA in data 17/04 per dolore in fianco destro associato a febbre con brivido. Nei giorni precedenti ha assunto Bactrim 1 cp x 2 per cistite emorragica; riferita inoltre comparsa di eruzione cutanea dopo assunzione del farmaco.In DEA paziente vigile, orientata, piretica. (GCS 15, PA 100/60, FC 95/min, satO2 98% in aa) Presenza di lesioni pruriginose regione toracica anteriore e inguinale, alcune simil vescicole. Al cuore toni ritmici, pause apparentemente libere. Al torace MV presente, non rumori aggiunti. Addome piano, dolente e dolorabile ai quadranti di destra, blumberg negativo, peristalsi presente. Dolore e lieve rigidit¿¿ regione cervicale.  All’ecocardiogramma:\n\nVentricolo sinistro di normali dimensioni; spessori parietali assottigliati in sede apicale e antero-settale.\nFunzione sistolica globale lievemente ridotta (FE 40–45%) con alterazioni della cinetica segmentaria caratterizzate da ipocinesia dei segmenti antero-settali e apicali, Quadro compatibile con infarto del miocardio",
+    "agent1_seconds": 6.9,
+    "brighton_context": "",
+    "agent2_seconds": 10.0,
+    "answer_conflict": null,
+    "reasoning": "The provided evidence details a patient's clinical presentation, physical examination findings, and the results of an echocardiogram (\"All’ecocardiogramma\"). The text explicitly describes the echocardiogram findings (left ventricular dimensions, wall thickness, systolic function, and segmental kinetics compatible with myocardial infarction). However, there is no mention of an electrocardiogram (ECG) being performed, nor are any ECG results provided. According to the instructions, if the evidence does not mention that a specific method (in this case, ECG) was used, the correct answer is the \"not done / unknown\" option for that method. Therefore, options describing specific ECG abnormalities or confirmations based on ECG cannot be selected because there is no evidence an ECG was done.\n\nFINAL_OPTION: ECG not done, or done but no results available or unknown if done\nFINAL_ANSWER: 1",
+    "result": {
+      "findings": [
+        "ECG not done, or done but no results available or unknown if done"
+      ]
+    }
+  },
+  "F": {
+    "query": "echocardiogram ECHO findings: ejection fraction, left or right ventricular function, segmental wall motion, global systolic or diastolic function, ventricular dilation, wall thickness, pericardial effusion or inflammation, normal echocardiogram, ECHO not performed",
+    "evidence": "Ventricolo sinistro di normali dimensioni; spessori parietali assottigliati in sede apicale e antero-settale.\nFunzione sistolica globale lievemente ridotta (FE 40–45%) con alterazioni della cinetica segmentaria caratterizzate da ipocinesia dei segmenti antero-settali e apicali, Quadro compatibile con infarto del miocardio\n\nAnamnesi ProssimaAccesso in DEA in data 17/04 per dolore in fianco destro associato a febbre con brivido. Nei giorni precedenti ha assunto Bactrim 1 cp x 2 per cistite emorragica; riferita inoltre comparsa di eruzione cutanea dopo assunzione del farmaco.In DEA paziente vigile, orientata, piretica. (GCS 15, PA 100/60, FC 95/min, satO2 98% in aa) Presenza di lesioni pruriginose regione toracica anteriore e inguinale, alcune simil vescicole. Al cuore toni ritmici, pause apparentemente libere. Al torace MV presente, non rumori aggiunti. Addome piano, dolente e dolorabile ai quadranti di destra, blumberg negativo, peristalsi presente. Dolore e lieve rigidit¿¿ regione cervicale.  All’ecocardiogramma:",
+    "agent1_seconds": 9.9,
+    "brighton_context": "",
+    "agent2_seconds": 14.9,
+    "answer_conflict": null,
+    "reasoning": "The evidence explicitly states \"All’ecocardiogramma\" (At the echocardiogram), confirming that an ECHO was performed, which rules out Option 1. The findings describe \"spessori parietali assottigliati\" (thinned wall thicknesses), which corresponds to **Option 6** (Wall thickness change). It also notes \"Funzione sistolica globale lievemente ridotta (FE 40–45%)\" (Global systolic function slightly reduced), which fits **Option 4** (Global systolic or diastolic function depression/abnormality). Additionally, it mentions \"alterazioni della cinetica segmentaria caratterizzate da ipocinesia dei segmenti antero-settali e apicali\" (segmental kinetic alterations characterized by hypokinesia of anteroseptal and apical segments), which corresponds to **Option 3** (Segmental wall motion abnormalities). The text states the picture is compatible with myocardial infarction, not explicitly confirming myocarditis or pericarditis via ECHO alone without further context, so Options 7 and 10 are not supported. There is no mention of ventricular dilation (Option 5) or fluid collection/pericardial inflammation (Option 8). Since abnormalities are present, Option 9 is incorrect.\n\nFINAL_OPTION: Segmental wall motion abnormalities; Global systolic or diastolic function depression/abnormality - (*Decreased longitudinal and circumferential strain and strain rates on tissue Doppler); Wall thickness change\nFINAL_ANSWER: 3; 4; 6",
+    "result": {
+      "findings": [
+        "Segmental wall motion abnormalities",
+        "Global systolic or diastolic function depression/abnormality - (*Decreased longitudinal and circumferential strain and strain rates on tissue Doppler)",
+        "Wall thickness change"
+      ]
+    }
+  },
+  "_run_config": {
+    "extractor_mode": "agentic_graph",
+    "section_gates_enabled": {
+      "keyword": false,
+      "details": false,
+      "absent_pulses": false
+    },
+    "brighton_context_enabled": false,
+    "section_descriptions_enabled": false,
+    "section_hints_enabled": true,
+    "section_hints_disabled": [],
+    "section_hints_fingerprint": {
+      "all": "9503fb46b54e"
+    },
+    "section_queries_fingerprint": {
+      "E": "311 b830923d415b",
+      "F": "264 9cfac9903bb3",
+      "all": "8c4c0ec0ce71"
+    },
+    "guideline_anchors_enabled": false,
+    "guideline_anchors_fingerprint": {
+      "all": "e3b0c44298fc"
+    },
+    "cross_section_rules_applied": true,
+    "models": {
+      "extractor": "qwen3.6:27b",
+      "evaluator": "qwen3.6:27b",
+      "embeddings": "intfloat/multilingual-e5-small"
+    },
+    "environment": {
+      "hostname": "mari",
+      "ollama_version": "ollama version is 0.32.1"
+    },
+    "generation": {
+      "temperature": 0.0,
+      "num_predict": 1024,
+      "num_gpu": 999,
+      "num_ctx": 8192,
+      "reasoning": false
+    },
+    "retrieval": {
+      "ehr_chunk_size": 800,
+      "ehr_chunk_overlap": 150,
+      "ehr_retriever_k": 5,
+      "brighton_retriever_k": 5
+    }
+  }
+}

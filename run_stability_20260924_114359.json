@@ -1,0 +1,105 @@
+{
+  "records_compared": 17,
+  "sections": {
+    "A1": {
+      "compared": 0,
+      "changed": 0,
+      "correct_a": 0,
+      "correct_b": 0,
+      "stability": null
+    },
+    "A2": {
+      "compared": 0,
+      "changed": 0,
+      "correct_a": 0,
+      "correct_b": 0,
+      "stability": null
+    },
+    "A3_1": {
+      "compared": 0,
+      "changed": 0,
+      "correct_a": 0,
+      "correct_b": 0,
+      "stability": null
+    },
+    "A3_2": {
+      "compared": 0,
+      "changed": 0,
+      "correct_a": 0,
+      "correct_b": 0,
+      "stability": null
+    },
+    "B1_1": {
+      "compared": 0,
+      "changed": 0,
+      "correct_a": 0,
+      "correct_b": 0,
+      "stability": null
+    },
+    "B1_2": {
+      "compared": 0,
+      "changed": 0,
+      "correct_a": 0,
+      "correct_b": 0,
+      "stability": null
+    },
+    "B2": {
+      "compared": 0,
+      "changed": 0,
+      "correct_a": 0,
+      "correct_b": 0,
+      "stability": null
+    },
+    "C": {
+      "compared": 0,
+      "changed": 0,
+      "correct_a": 0,
+      "correct_b": 0,
+      "stability": null
+    },
+    "F": {
+      "compared": 17,
+      "changed": 2,
+      "correct_a": 0,
+      "correct_b": 0,
+      "stability": 0.8823529411764706
+    },
+    "X": {
+      "compared": 0,
+      "changed": 0,
+      "correct_a": 0,
+      "correct_b": 0,
+      "stability": null
+    }
+  },
+  "differences": [
+    {
+      "record_id": "C0001_1c",
+      "section": "F",
+      "run_a": [
+        "Evidence of abnormal fluid collection or pericardial inflammation",
+        "New focal or diffuse left or right ventricular function abnormalities (e.g. decreased ejection fraction)",
+        "Segmental wall motion abnormalities"
+      ],
+      "run_b": [
+        "Segmental wall motion abnormalities"
+      ]
+    },
+    {
+      "record_id": "C002_1c",
+      "section": "F",
+      "run_a": [
+        "New focal or diffuse left or right ventricular function abnormalities (e.g. decreased ejection fraction)",
+        "Segmental wall motion abnormalities"
+      ],
+      "run_b": null
+    }
+  ],
+  "overall": {
+    "compared": 17,
+    "changed": 2,
+    "correct_a": 0,
+    "correct_b": 0,
+    "stability": 0.8823529411764706
+  }
+}

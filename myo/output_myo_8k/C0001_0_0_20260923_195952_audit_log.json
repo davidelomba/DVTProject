@@ -1,0 +1,79 @@
+{
+  "E": {
+    "query": "electrocardiogram ECG findings: rhythm, atrial or ventricular arrhythmia, tachycardia, atrial fibrillation, AV block, bundle branch block, conduction delay, ST segment or T wave abnormality, Q waves, low voltage, premature atrial or ventricular contractions, ambulatory monitoring, normal ECG, ECG not performed",
+    "evidence": "10 mm); sezioni destre nei limiti, TAPSE (Escursione sistolica dell'anello tricuspide) 26 mm; normale radice aortica e aorta ascendente; normale atrio sinistro; non versamento pericardico; iperriflettenza pericardica posteriore, ipocinesia del setto posteriore medio basale e della parete inferiore medio basale con FE ai limiti inferiori. Alla dimissione valori degli esami ematici nei limiti, in particolare si osserva normalizzazione dei valori degli indici di miocardionecrosi (TnT hs 5,58 pg/ml, CK-MB 0,84 ng/ml) e degli indici di flogosi (pct e PCR negativi).\n\nAnamnesi Prossima: In data 21/07 comparsa di oppressione toracica irradiata ad entrambi gli arti superiori a riposo, associata a sensazione di cardiopalmo. All¿¿¿ingresso in reparto si presentava emodinamicamente stabile senza supporti farmacologici ed eupnoico in ossigenoterapia 3 L/min. Esami ematici: troponina 50 pg/mL. TC torace negativa per linfoadenopatie mediastiniche. Avevamo programmato RMN cardiaca con mdc che il paziente ha rifiutato. All'ECG riscontro di FA ad elevata FVM, cardiovertita con metoprololo ev. Ecocardiogramma: normali dimensioni e spessori del VS (ventricolo sinistro) (SIV (setto interventricolare) e PP (parete posteriore) 10 mm); sezioni destre nei limiti, TAPSE (Escursione sistolica dell'anello tricuspide) 26 mm; normale radice aortica e aorta ascendente; normale",
+    "agent1_seconds": 14.3,
+    "brighton_context": "",
+    "agent2_seconds": 11.8,
+    "answer_conflict": null,
+    "reasoning": "The evidence explicitly states: \"All'ECG riscontro di FA ad elevata FVM, cardiovertita con metoprololo ev.\" This translates to \"On ECG, finding of Atrial Fibrillation (FA) with high ventricular rate, cardioverted with IV metoprolol.\" Atrial fibrillation is a type of atrial arrhythmia. Option 2 lists \"Paroxysmal or sustained atrial or ventricular arrhythmias... e.g ... atrial fibrillation\". Therefore, the ECG finding corresponds to Option 2. The text does not mention ST/T wave changes, conduction blocks, or other specific abnormalities listed in the other options, nor does it state the ECG was normal (Option 13) or not done (Option 1).\n\nFINAL_OPTION: Paroxysmal or sustained atrial or ventricular arrhythmias (premature atrial or ventricular beats, and/or supraventricular or ventricular tachycardia, interventricular conduction delay, abnormal Q waves, low voltages): :e.g (Sinus tachycardia, SVT, atrial fibrillation, PVCs, VT, VF)\nFINAL_ANSWER: 2",
+    "result": {
+      "findings": [
+        "Paroxysmal or sustained atrial or ventricular arrhythmias (premature atrial or ventricular beats, and/or supraventricular or ventricular tachycardia, interventricular conduction delay, abnormal Q waves, low voltages): :e.g (Sinus tachycardia, SVT, atrial fibrillation, PVCs, VT, VF)"
+      ]
+    }
+  },
+  "F": {
+    "query": "echocardiogram ECHO findings: ejection fraction, left or right ventricular function, segmental wall motion, global systolic or diastolic function, ventricular dilation, wall thickness, pericardial effusion or inflammation, normal echocardiogram, ECHO not performed",
+    "evidence": "10 mm); sezioni destre nei limiti, TAPSE (Escursione sistolica dell'anello tricuspide) 26 mm; normale radice aortica e aorta ascendente; normale atrio sinistro; non versamento pericardico; iperriflettenza pericardica posteriore, ipocinesia del setto posteriore medio basale e della parete inferiore medio basale con FE ai limiti inferiori. Alla dimissione valori degli esami ematici nei limiti, in particolare si osserva normalizzazione dei valori degli indici di miocardionecrosi (TnT hs 5,58 pg/ml, CK-MB 0,84 ng/ml) e degli indici di flogosi (pct e PCR negativi).\n\nAnamnesi Prossima: In data 21/07 comparsa di oppressione toracica irradiata ad entrambi gli arti superiori a riposo, associata a sensazione di cardiopalmo. All¿¿¿ingresso in reparto si presentava emodinamicamente stabile senza supporti farmacologici ed eupnoico in ossigenoterapia 3 L/min. Esami ematici: troponina 50 pg/mL. TC torace negativa per linfoadenopatie mediastiniche. Avevamo programmato RMN cardiaca con mdc che il paziente ha rifiutato. All'ECG riscontro di FA ad elevata FVM, cardiovertita con metoprololo ev. Ecocardiogramma: normali dimensioni e spessori del VS (ventricolo sinistro) (SIV (setto interventricolare) e PP (parete posteriore) 10 mm); sezioni destre nei limiti, TAPSE (Escursione sistolica dell'anello tricuspide) 26 mm; normale radice aortica e aorta ascendente; normale",
+    "agent1_seconds": 11.5,
+    "brighton_context": "",
+    "agent2_seconds": 53.5,
+    "answer_conflict": null,
+    "reasoning": "The evidence explicitly states that an echocardiogram (\"Ecocardiogramma\") was performed, ruling out Option 1. The report describes \"ipocinesia del setto posteriore medio basale e della parete inferiore medio basale\" (hypokinesia of the mid-basal posterior septum and mid-basal inferior wall). Hypokinesia is a specific type of segmental wall motion abnormality, which directly supports Option 3. The report also notes \"FE ai limiti inferiori\" (ejection fraction at the lower limits), indicating a functional abnormality of the left ventricle, supporting Option 2. Additionally, the finding of \"iperriflettenza pericardica posteriore\" (posterior pericardial hyperechogenicity) is evidence of pericardial inflammation, which falls under Option 8 (\"Evidence of abnormal fluid collection or pericardial inflammation\"), despite the explicit absence of effusion (\"non versamento pericardico\"). Options regarding dilation, wall thickness changes, or no abnormalities are contradicted by the text. Options claiming confirmation \"without details\" are incorrect because specific details are provided.\n\nFINAL_OPTION: New focal or diffuse left or right ventricular function abnormalities (e.g. decreased ejection fraction); Segmental wall motion abnormalities; Evidence of abnormal fluid collection or pericardial inflammation\nFINAL_ANSWER: 2; 3; 8",
+    "result": {
+      "findings": [
+        "New focal or diffuse left or right ventricular function abnormalities (e.g. decreased ejection fraction)",
+        "Segmental wall motion abnormalities",
+        "Evidence of abnormal fluid collection or pericardial inflammation"
+      ]
+    }
+  },
+  "_run_config": {
+    "extractor_mode": "agentic_graph",
+    "section_gates_enabled": {
+      "keyword": false,
+      "details": false,
+      "absent_pulses": false
+    },
+    "brighton_context_enabled": false,
+    "section_descriptions_enabled": false,
+    "section_hints_enabled": true,
+    "section_hints_disabled": [],
+    "section_hints_fingerprint": {
+      "all": "9503fb46b54e"
+    },
+    "section_queries_fingerprint": {
+      "E": "311 b830923d415b",
+      "F": "264 9cfac9903bb3",
+      "all": "8c4c0ec0ce71"
+    },
+    "guideline_anchors_enabled": false,
+    "guideline_anchors_fingerprint": {
+      "all": "e3b0c44298fc"
+    },
+    "cross_section_rules_applied": true,
+    "models": {
+      "extractor": "qwen3.6:27b",
+      "evaluator": "qwen3.6:27b",
+      "embeddings": "intfloat/multilingual-e5-small"
+    },
+    "environment": {
+      "hostname": "mari",
+      "ollama_version": "ollama version is 0.32.1"
+    },
+    "generation": {
+      "temperature": 0.0,
+      "num_predict": 1024,
+      "num_gpu": 999,
+      "num_ctx": 8192,
+      "reasoning": false
+    },
+    "retrieval": {
+      "ehr_chunk_size": 800,
+      "ehr_chunk_overlap": 150,
+      "ehr_retriever_k": 5,
+      "brighton_retriever_k": 5
+    }
+  }
+}

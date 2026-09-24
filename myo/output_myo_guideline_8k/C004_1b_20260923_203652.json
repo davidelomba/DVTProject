@@ -1,0 +1,13 @@
+{
+  "record_id": "C004_1b",
+  "e": {
+    "findings": [
+      "ECG not done, or done but no results available or unknown if done"
+    ]
+  },
+  "f": {
+    "findings": [
+      "ECHO not done, or done but no results or unknown if done"
+    ]
+  }
+}
