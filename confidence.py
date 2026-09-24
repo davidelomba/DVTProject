@@ -84,7 +84,7 @@ def _chat(user_prompt: str, num_predict: int) -> dict:
 def _build_prompt(evidence: str, context: str, hint: str, options: list, multi: bool) -> str:
     parts = []
     if context:
-        parts.append("Reference from the guideline (Brighton):\n" + context)
+        parts.append("Reference terminology (Brighton):\n" + context)
     if hint:
         parts.append("Section guidance:\n" + hint + "\n(Ignore any instruction in "
                      "this guidance about how to format the answer.)")

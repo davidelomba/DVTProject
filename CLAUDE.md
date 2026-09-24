@@ -32,6 +32,13 @@ When something is unverified, say so.
   section options and their order. Other modules introspect it rather than
   repeating the options.
 - Deterministic post-processing lives in `criteria_rules.py`.
+- Agent 3 (`confidence.py`) scores each final answer after the cross-section
+  rules, when `config.CONFIDENCE_ENABLED` is set. One short request per section
+  to the evaluator model, without reasoning and without Agent 2's answer, sent
+  straight to Ollama's local `/api/chat` for the logprobs; the confidence is
+  the probability the model puts on the form's answer. It never changes an
+  answer. The value goes to the audit log and to the result file under
+  `_confidence`. F is in `CONFIDENCE_SKIP`.
 - `docs/DOCUMENTAZIONE_CODICE.md` describes the code module by module,
   `docs/RISULTATI_SPERIMENTALI.md` holds every measurement with the
   configuration that produced it, and `docs/SCALETTA_TESI.md` the thesis
@@ -89,6 +96,8 @@ python generate_synthetic_records.py --check      # fidelity audit, no LLM call
 python export_redcap_csv.py                       # results -> REDCap import CSV
 ```
 
+`evaluate_predictions` and `compare_runs` save their JSON reports in `reports/`.
+
 Measured from the audit-log timestamps on mari (2 x RTX 2080 Ti), median per
 record: the reference costs 174 seconds, so a full run over the 40 records is
 1h56. What sets the cost is how many model tags a run loads. `raw_record` loads
@@ -127,6 +136,7 @@ SECTION_DESCRIPTIONS_ENABLED = False
 SECTION_HINTS_ENABLED    = True
 SECTION_HINTS_DISABLED   = {"B2"}
 SECTION_GATES_ENABLED    = {"keyword": False, "details": False, "absent_pulses": True}
+CONFIDENCE_ENABLED       = False
 ```
 
 The keyword and details gates are off. `absent_pulses` is on and has never fired
@@ -650,6 +660,20 @@ not say which governs, which is what the clinician question below is asking.
   `config.py` at 4096, the value already in force, and recorded under
   `_run_config.generation`. At 8192 one section per arm fails outright, always
   on F, with no parseable answer after three attempts; at 4096 none does.
+- **Agent 3's confidence is reliable only when it is very high.** Measured by
+  two probe scripts on stored answers, not yet by the pipeline itself. The
+  logprob of the `FINAL_ANSWER` number after reasoning is saturated, above
+  0.99998 on three replayed sections including SYN_10, which is wrong; hence
+  the separate unreasoned request. On the stripped arm (46 errors) the AUROC is
+  0.824 against 0.509 for `agent2_seconds`, but comparing only answers of the
+  same section it is 0.516: the signal mostly tells hard sections from easy
+  ones. Above 0.99 sit 242 of 400 reference sections with no error and 216 of
+  399 stripped ones with 2; below it, 44 of the 46 errors, but a low value is
+  not a probability, since under 0.5 Agent 2 is still right 78% of the time. F
+  fails both ways, inverted without hints and false alarms with them, because
+  the unreasoned request misreads the inversion and the diagnosis condition.
+  SYN_03 A2 is fifth lowest of 400, yet SYN_13 A2, the same error type, scores
+  0.993 on the stripped arm. 1.95 seconds a section.
 - Read the metrics in this order: majority baseline and gain, then kappa, then
   accuracy with its interval. Accuracy alone ranked F above A3_2 under the 8B
   model, where F gained nothing over a constant answer and A3_2 gained 13
@@ -815,6 +839,13 @@ not say which governs, which is what the clinician question below is asking.
   indexed into two stores. A `guideline_source` field holding the PDF name and a
   digest of the extracted text would make the context traceable the way the
   hints and the queries already are.
+- **Agent 3 has not run inside the pipeline.** The probes sent the same prompt
+  as `confidence.py` but scored the answer before the cross-section rules. On
+  the stripped arm the rules and the context are off, so its figures hold for
+  `confidence.py` as they are. The reference needs a confirming run in its own
+  directory with `CONFIDENCE_ENABLED = True`; `compare_runs` against it must
+  show zero changed answers. The 0.99 threshold still needs an arm with hints
+  on and more errors, such as 200/40/3.
 - Test whether the TRANSCRIPTION RULE in `AGENTIC_EXTRACTOR_SYSTEM_PROMPT` does
   anything: it governs a string the code discards.
 - **The extractor prompt never says a negation is evidence**, while the

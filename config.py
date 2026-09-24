@@ -41,7 +41,7 @@ LLM_REQUEST_TIMEOUT = 180  # seconds; allows time for reasoning on slower hardwa
 # probability goes to the answer the form holds. The value, from 0 to 1, is
 # stored in the section's audit log entry under "confidence". When False, the
 # pipeline sends no extra request.
-CONFIDENCE_ENABLED = False
+CONFIDENCE_ENABLED = True
 # Sections left without a confidence value. F's answer rests on an inverted
 # question and on whether a diagnosis was reported, and Agent 3 judges both
 # without reasoning. Removing "F" scores it through its DETAILS_PRESENT line

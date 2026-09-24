@@ -763,7 +763,13 @@ risposte finali; poi aggiunge lo snapshot di configurazione e costruisce
 **`aggregation.form_to_json_summary(form)`** serializza il form con
 `exclude_none=True`: le sezioni lasciate `None` da una valutazione fallita
 vengono omesse invece che scritte come `null`, così una risposta mancante è
-assente e non somiglia a una risposta di "nessuno".
+assente e non somiglia a una risposta di "nessuno". Riceve anche l'audit log: se
+l'Agent 3 ha girato, copia la confidenza di ogni sezione sotto la chiave
+`CONFIDENCE_KEY = "_confidence"`, con `null` per le sezioni non valutate. Così il
+valore resta nel file dei risultati anche quando l'audit log non viene salvato.
+Il trattino basso la tiene separata dalle chiavi delle sezioni, le sole che
+`evaluate_predictions`, `compare_runs` ed `export_redcap_csv` leggono. Con
+l'Agent 3 spento il riepilogo è identico a prima.
 
 **`main.py`** esegue la pipeline su un singolo referto, con i percorsi ancorati
 alla posizione del file e non alla directory di lancio. Scrive due file che
