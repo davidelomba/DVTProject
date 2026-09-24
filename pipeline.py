@@ -4,8 +4,9 @@ For each section of the form:
   1. Agent 1 extracts the relevant evidence from the clinical record (full text by default)
   2. Agent 2 reasons over the evidence and fills in the checkbox
 Independent per-section results are then merged, cross-section dependency
-rules are applied and the final DVT_CriteriaForm is returned together with
-a full audit log.
+rules are applied and, when config.CONFIDENCE_ENABLED is set, Agent 3 scores
+the confidence of each final answer. The final DVT_CriteriaForm is returned
+together with a full audit log.
 """
 
 import hashlib
@@ -30,6 +31,7 @@ from rag_setup import (
 from agents import build_llm, evaluate_section, extract_evidence, extract_evidence_full_text
 from criteria_rules import apply_section_gates, apply_cross_section_rules
 from agentic_graph import build_agentic_llm, run_agentic_graph_pipeline
+from confidence import score_record
 
 
 # Retrieval/extraction query for each section: tells Agent 1 what to look
@@ -198,6 +200,10 @@ def _run_config_snapshot(guideline_anchors: dict = None) -> dict:
         # Always applied, never switchable: recorded so a reader does not have
         # to know that to interpret the run.
         "cross_section_rules_applied": True,
+        "confidence": {
+            "enabled": config.CONFIDENCE_ENABLED,
+            "skipped_sections": sorted(config.CONFIDENCE_SKIP),
+        },
         "models": {
             "extractor": extractor_model,
             "evaluator": config.EVALUATOR_LLM_MODEL_NAME,
@@ -371,6 +377,10 @@ def run_pipeline(record_id: str, patient_ehr_path: str, brighton_pdf_path: str):
     # once here regardless of which EXTRACTOR_MODE produced form_data;
     # shared with agentic_graph.py via criteria_rules.py.
     form_data = apply_cross_section_rules(form_data, audit_log)
+
+    # Agent 3, on the final answers, so after the rules above.
+    if config.CONFIDENCE_ENABLED:
+        score_record(form_data, audit_log)
 
     # Added last, so it cannot be mistaken for a section by the loops above.
     audit_log[RUN_CONFIG_KEY] = _run_config_snapshot(guideline_anchors)
