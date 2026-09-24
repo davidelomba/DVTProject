@@ -51,7 +51,7 @@ Usage:
     python evaluate_predictions.py [predictions_dir] [--ground-truth DIR]
     defaults: ./output and ./data/synthetic_records
 
-Writes evaluation_<timestamp>.json next to the printed report.
+Writes reports/evaluation_<timestamp>.json next to the printed report.
 """
 
 import argparse
@@ -74,6 +74,8 @@ from models import SECTION_MODELS
 
 DEFAULT_GROUND_TRUTH_DIR = Path(__file__).parent / "data" / "synthetic_records"
 DEFAULT_PREDICTIONS_DIR = Path(__file__).parent / "output"
+# Where the saved reports go, shared with compare_runs.py.
+REPORTS_DIR = Path(__file__).parent / "reports"
 
 
 def _field_info(section_name: str):
@@ -465,7 +467,8 @@ def main():
     print_report(report, show_matrices=not args.no_matrices)
 
     timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-    out_path = Path(__file__).parent / f"evaluation_{timestamp}.json"
+    REPORTS_DIR.mkdir(exist_ok=True)
+    out_path = REPORTS_DIR / f"evaluation_{timestamp}.json"
     out_path.write_text(json.dumps(report, indent=2, ensure_ascii=False), encoding="utf-8")
     print(f"\nSaved to: {out_path}")
 

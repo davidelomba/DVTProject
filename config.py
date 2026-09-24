@@ -35,17 +35,17 @@ LLM_REASONING = False
 LLM_NUM_CTX = 4096
 LLM_REQUEST_TIMEOUT = 180  # seconds; allows time for reasoning on slower hardware
 
-# Agent 3 (confidence.py). After the cross-section rules, one short request per
-# section asks the evaluator model for the answer again, without reasoning and
-# without Agent 2's answer, and reads from the token probabilities how much of
-# the probability goes to the answer the form holds. The value, from 0 to 1, is
-# stored in the section's audit log entry under "confidence". Off, the pipeline
-# makes no extra request.
+# Agent 3 (confidence.py). After the cross-section rules, Agent 3 asks the
+# evaluator model for each section's answer again, without reasoning and
+# without Agent 2's answer, and reads from the token probabilities how much
+# probability goes to the answer the form holds. The value, from 0 to 1, is
+# stored in the section's audit log entry under "confidence". When False, the
+# pipeline sends no extra request.
 CONFIDENCE_ENABLED = False
 # Sections left without a confidence value. F's answer rests on an inverted
-# question and on whether a diagnosis was reported, both of which the request
-# answers without reasoning. Removing "F" scores it through its DETAILS_PRESENT
-# line (confidence.score_details).
+# question and on whether a diagnosis was reported, and Agent 3 judges both
+# without reasoning. Removing "F" scores it through its DETAILS_PRESENT line
+# (confidence.score_details).
 CONFIDENCE_SKIP = {"F"}
 
 # Multilingual embedding model. Used in every mode: the Brighton store is

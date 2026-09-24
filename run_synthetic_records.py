@@ -62,7 +62,7 @@ def run_one(record_id: str, record_path: Path, output_dir: Path) -> Path:
     """
 
     form, audit_log = run_pipeline(record_id, str(record_path), BRIGHTON_PDF_PATH)
-    summary = form_to_json_summary(form)
+    summary = form_to_json_summary(form, audit_log)
 
     # Same shared-timestamp-per-run convention as main.py, so a JSON and its
     # audit log always pair up and re-running never overwrites a prior run.

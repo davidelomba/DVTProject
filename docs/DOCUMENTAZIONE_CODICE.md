@@ -18,6 +18,7 @@ dice **cosa fa** il codice, quello dice **cosa è stato misurato**.
 | `agents.py` | i due agenti e il parsing delle risposte |
 | `criteria_rules.py` | post-processing deterministico |
 | `agentic_graph.py` | macchina a stati LangGraph della modalità agentica |
+| `confidence.py` | Agent 3, la confidenza di ogni risposta finale |
 | `pipeline.py` | orchestrazione di un referto |
 | `aggregation.py` | serializzazione del form |
 | `main.py` | entry point su un singolo referto |
@@ -26,13 +27,16 @@ dice **cosa fa** il codice, quello dice **cosa è stato misurato**.
 | `evaluate_predictions.py` | valutazione contro la ground truth |
 | `compare_runs.py` | confronto tra due run, misura del rumore |
 | `export_redcap_csv.py` | conversione dei risultati in CSV per REDCap |
+| `export_prompts.py` | esportazione di prompt, query e hint in file per la tesi (non versionato) |
+| `myo/` | il braccio di trasferimento sul questionario della miocardite |
 
 ---
 
 ## 1. `config.py`
 
 Modulo di sole costanti, letto da tutti gli altri. È il pannello di controllo
-della pipeline: ogni esperimento fatto finora è stato una modifica a questo file.
+della pipeline: un esperimento sul corpus TVP è una modifica a questo file, mentre
+gli script di `myo/` ne cambiano i valori in memoria.
 
 ### Modelli e generazione
 
@@ -41,10 +45,12 @@ Tre ruoli, tre costanti separate, così ognuno si cambia indipendentemente:
 - `LLM_MODEL_NAME = "llama3:8b-instruct-q4_0"` — Agent 1 nelle modalità
   `full_text` e `rag`.
 - `EVALUATOR_LLM_MODEL_NAME = "qwen3.6:27b"` — Agent 2, in ogni modalità.
-- `AGENTIC_LLM_MODEL_NAME = "llama3.1:8b-instruct-q4_0"` — il solo passo di
-  ricerca in modalità `agentic_graph`. Serve un modello separato perché Llama 3
-  base non supporta il tool calling nativo di Ollama, che risponde
-  `model does not support tools` se gli si lega un tool; Llama 3.1 sì.
+- `AGENTIC_LLM_MODEL_NAME = "qwen3.6:27b"` — il solo passo di ricerca in
+  modalità `agentic_graph`. È una costante separata perché questo ruolo lega un
+  tool e richiede un modello che supporti il tool calling di Ollama: Llama 3 base
+  non lo supporta, e Ollama risponde `model does not support tools`. Oggi ha lo
+  stesso valore del valutatore, quindi Agent 1 e Agent 2 usano un solo modello
+  caricato.
 
 Parametri di generazione:
 
@@ -60,7 +66,21 @@ Parametri di generazione:
   restituendo un `content` vuoto. `None` non invia nulla a Ollama e lascia il
   default del modello, che è la scelta corretta per un modello privo di quella
   modalità.
+- `LLM_NUM_CTX = 4096` — la finestra di contesto che Ollama alloca per ogni
+  richiesta, in token. È fissata qui perché il default di Ollama non compare in
+  nessun audit log; 4096 è il valore che `ollama ps` riporta per qwen3.6:27b su
+  mari, quindi quello già in vigore.
 - `LLM_REQUEST_TIMEOUT = 180` secondi.
+
+Due costanti governano l'Agent 3 (sezione 7):
+
+- `CONFIDENCE_ENABLED = False` — acceso, dopo le regole cross-section ogni
+  sezione riceve un valore di confidenza fra 0 e 1 nel proprio audit log. Spento,
+  la pipeline non fa alcuna richiesta in più.
+- `CONFIDENCE_SKIP = {"F"}` — sezioni lasciate senza valore. La risposta di F
+  dipende da una domanda invertita e dalla presenza di una diagnosi riportata, e
+  l'Agent 3 giudica entrambe senza ragionare. Togliendo `"F"` la sezione viene
+  valutata attraverso la sua riga `DETAILS_PRESENT`.
 
 ### Embedding e modalità di estrazione
 
@@ -76,15 +96,25 @@ una traduzione distorca negazioni o terminologia in modo non verificabile.
 - `"rag"` — retrieval a `k` fisso sul referto chunkato.
 - `"agentic_graph"` — Agent 1 decide autonomamente quante volte e con quali
   sotto-query interrogare il tool di ricerca, orchestrato come macchina a stati
-  esplicita. È la modalità di riferimento; le altre due sono le baseline.
-  `AGENTIC_MAX_ITERATIONS = 5` limita le chiamate al tool per sezione.
+  esplicita. È la modalità di riferimento. `AGENTIC_MAX_ITERATIONS = 5` limita le
+  chiamate al tool per sezione. Come evidenza restituisce i chunk grezzi del
+  tool, non il turno finale dell'agente.
+- `"raw_record"` — nessun Agent 1: Agent 2 legge il referto intero e non viene
+  caricato alcun modello estrattore.
+
+`BRIGHTON_CONTEXT_ENABLED = True` decide se Agent 2 riceve il contesto della
+linea guida; a `False` risponde dalla sola evidenza e dalle opzioni.
+`SECTION_DESCRIPTIONS_ENABLED = False` decide se sopra le opzioni numerate compare
+l'intestazione della sezione presa dalla `description` del campo in `models.py`,
+cioè il titolo che la sezione ha nel questionario cartaceo.
 
 ### Chunking
 
 `EHR_CHUNK_SIZE = 800`, `EHR_CHUNK_OVERLAP = 150`, `EHR_RETRIEVER_K = 5` per il
 referto; `BRIGHTON_CHUNK_SIZE`, `BRIGHTON_CHUNK_OVERLAP`, `BRIGHTON_RETRIEVER_K`
-con gli stessi valori per il paper. `EHR_KB_PERSIST_DIR` e
-`BRIGHTON_KB_PERSIST_DIR` sono le cartelle di Chroma.
+con gli stessi valori per il paper. Le dimensioni sono in caratteri.
+`EHR_KB_PERSIST_DIR` e `BRIGHTON_KB_PERSIST_DIR` sono le cartelle di Chroma,
+sotto `PROJECT_ROOT`, la cartella che contiene `config.py`.
 
 ### `GUIDELINE_ANCHORS` e il suo interruttore
 
@@ -128,11 +158,14 @@ Tre interruttori per il post-processing deterministico, così un'ablazione non
 richiede modifiche al codice:
 
 ```python
-{"keyword": True, "details": False, "absent_pulses": True}
+{"keyword": False, "details": False, "absent_pulses": True}
 ```
 
-`details` è spento: la sua mappatura tratta l'assenza di dettagli come una
-conclusione nuda, il che è falso quando nessuna diagnosi è stata riportata.
+`keyword` è spento: su X tratta la Tabella 2 come un elenco chiuso, mentre il
+paper la presenta come esempi, e legge una parola chiave assente da
+un'estrazione lossy come una condizione assente dal referto. `details` è spento:
+la sua mappatura tratta l'assenza di dettagli come una conclusione nuda, il che è
+falso quando nessuna diagnosi è stata riportata.
 
 Le regole cross-section sono deliberatamente **fuori** da questi interruttori e
 si applicano sempre: codificano la struttura del modulo, non una debolezza del
@@ -143,7 +176,8 @@ modello.
 Tre voci, `A1`, `A2` e `X`. Ognuna ha una lista di `keywords` e un
 `default_option_text`, cioè la risposta negativa della sezione. Se Agent 2 dà una
 risposta che le parole chiave sono autorizzate a controllare e nessuna di quelle
-parole compare nell'evidenza, la risposta viene riportata al default.
+parole compare nell'evidenza, la risposta viene riportata al default. Le voci
+restano nel file, ma il gate che le legge è spento in `SECTION_GATES_ENABLED`.
 
 Il campo opzionale `gated_options` nomina le risposte su cui le parole chiave
 hanno voce. `A2` lo usa per elencare la sola opzione "thrombectomy": senza,
@@ -184,11 +218,11 @@ Contenuto attuale, in sintesi:
 |---|---|
 | A1 | contano solo i reperti post-mortem; l'imaging su vivente non è un'autopsia |
 | A2 | attenzione estrema alle negazioni prima di termini chirurgici |
-| A3_1 | come leggere l'esito dell'imaging |
+| A3_1 | un risultato negativo è comunque un risultato; «result not reported» vuol dire referto mancante; un'autopsia non è un esame di imaging |
 | A3_2 | un esame che non è nessuna delle quattro modalità nominate è "Other" |
 | B1_1 | la differenza tra seconda e terza opzione riguarda ciò che sai del paziente, non del documento: l'assenza di un referto non è un referto di assenza |
 | B2 | *disattivato* |
-| C | usa l'intervallo del laboratorio se il referto lo indica, altrimenti 500 ng/mL |
+| C | usa il limite del laboratorio se il referto lo indica, altrimenti 500 ng/mL; vale solo per un risultato chiamato D-dimero, e basta un'affermazione qualitativa |
 | F | la sezione richiede una diagnosi effettivamente riportata; chiede inoltre la riga `DETAILS_PRESENT: yes/no` |
 | X | i sintomi non sono diagnosi, e un fattore di rischio non è una spiegazione alternativa |
 
@@ -215,9 +249,12 @@ Definisce gli schemi Pydantic che vincolano l'output di Agent 2, ed è la fonte
 unica delle opzioni e del loro ordine: gli altri moduli lo introspezionano invece
 di ripetere le stringhe.
 
-`A1_Autopsy`, `A2_SurgicalProcedure`, `A3_1_ImagingOutcome`, `C_DDimer`,
-`F_ReportedBySpecialist`, `X_AlternativeDiagnosis` seguono lo stesso schema: un
-unico campo `answer: Literal[...]`. `Literal` fa rifiutare a Pydantic qualunque
+`A1_Autopsy`, `A2_SurgicalProcedure`, `A3_1_ImagingOutcome`,
+`B1_1_SymptomsReported`, `C_DDimer`, `F_ReportedBySpecialist` e
+`X_AlternativeDiagnosis` seguono lo stesso schema: un unico campo
+`answer: Literal[...]`. Ogni campo porta anche una `description`, il titolo della
+sezione nel questionario, che Agent 2 riceve solo con
+`config.SECTION_DESCRIPTIONS_ENABLED` acceso. `Literal` fa rifiutare a Pydantic qualunque
 valore che non sia esattamente una delle stringhe elencate, ed è questo vincolo a
 rendere sicuro il mapping numero → testo di `agents._match_option`.
 
@@ -313,6 +350,12 @@ etichette il paper non contiene resta fuori dalla mappa.
 
 **`load_ehr_text(...)`** legge il referto da un `.txt` in UTF-8.
 
+Tre espressioni regolari del modulo reggono queste funzioni:
+`_REFERENCES_HEADING` trova l'intestazione della bibliografia per
+`load_brighton_pdf_text`, `_BIBLIOGRAPHY_LINE` riconosce le righe bibliografiche
+superstiti per `clean_brighton_context`, `_NUMBERED_HEADING` riconosce le
+intestazioni numerate per `_paper_outline`.
+
 ---
 
 ## 4. `agents.py`
@@ -323,7 +366,7 @@ I due agenti e tutto il parsing delle risposte.
 
 **`build_llm(model_name=None, temperature=None, num_predict=None)`** è la
 factory unica per ogni modello non tool-calling del progetto. Legge i default da
-`config.py` e passa `num_gpu`; il parametro `reasoning` viene inviato **solo**
+`config.py` e passa `num_gpu`, `num_ctx` e il timeout; il parametro `reasoning` viene inviato **solo**
 quando `config.LLM_REASONING` non è `None`, così un modello privo di modalità di
 ragionamento non lo riceve affatto.
 
@@ -375,8 +418,9 @@ vieta di inferire che quel metodo sia stato eseguito solo perché la DVT è stat
 confermata da un metodo diverso.
 
 **`_get_field_info(section_model)`** introspeziona lo schema e restituisce
-`(field_name, options, is_multi_select)`. È ciò che rende `evaluate_section`
-generica per tutte e dieci le sezioni senza un ramo per ciascuna.
+`(field_name, options, is_multi_select, description)`, dove `description` è il
+titolo della sezione. È ciò che rende `evaluate_section` generica per tutte e
+dieci le sezioni senza un ramo per ciascuna; la usa anche `confidence.py`.
 
 **`_build_reasoning_prompt(...)`** compone il prompt. Le opzioni sono numerate e
 il modello risponde **due volte**: il testo dell'opzione su `FINAL_OPTION` e il
@@ -384,7 +428,8 @@ suo numero su `FINAL_ANSWER`. Due risposte invece di una rendono visibile un
 disaccordo, dato che il modello a volte nomina un'opzione e scrive il numero di
 un'altra. Il prompt chiede inoltre esplicitamente che ogni opzione elencata sia
 tracciabile a una frase del ragionamento, e non inclusa per default o per
-margine di sicurezza.
+margine di sicurezza. Con `config.SECTION_DESCRIPTIONS_ENABLED` acceso, il titolo
+della sezione viene inserito sopra le opzioni.
 
 Il blocco della linea guida è annunciato da un'intestazione che dipende da cosa
 contiene: i chunk recuperati sono vocabolario da consultare e restano
@@ -398,6 +443,13 @@ A3.2 e B1.2, il prompt aggiunge come dire che nulla si applica: `FINAL_OPTION:
 none` e `FINAL_ANSWER: none`. Senza questa istruzione, non avendo modo di
 esprimere una risposta vuota, il modello selezionava tutte le opzioni. La cosa è
 esplicitata solo dove serve, così B2 continua a usare la propria opzione 5.
+
+**`_has_none_option(options)`** dice se una sezione ha un'opzione esplicita
+«none of the above», riconosciuta dal prefisso `_NONE_OPTION_PREFIX`: è ciò che
+decide se il prompt aggiunge l'istruzione `none`. **`_is_no_selection(raw_value)`**
+riconosce una riga di risposta che significa «nessuna opzione»: le parole
+accettate sono in `_NO_SELECTION_ANSWERS` (`none`, `nothing`, `nessuna`, `n/a` e
+simili).
 
 **`_extract_final_answer_line`** e **`_extract_labeled_line`** leggono le due
 righe. Entrambe prendono l'**ultima** occorrenza, non la prima, perché il modello
@@ -506,7 +558,8 @@ Forma del grafo:
 select_next -> {search_record, finalize} -> answer_criterion -> select_next
 ```
 
-**`build_agentic_llm()`** costruisce il modello tool-calling. È separata da
+**`build_agentic_llm()`** costruisce il modello tool-calling, con gli stessi
+parametri di generazione di `agents.build_llm`, `num_ctx` compreso. È separata da
 `agents.build_llm` perché questo è l'unico ruolo che lega un tool e quindi
 l'unico che ha bisogno di un modello che supporti l'API di tool calling di
 Ollama.
@@ -526,8 +579,13 @@ condizionale: `finalize` se `done`, altrimenti `search_record`.
 nodi diretti, perché un nodo LangGraph riceve solo lo stato mentre questi due
 passi hanno bisogno anche del modello, del tool e delle query. Il nodo di
 ricerca cronometra anche i fallimenti, così una sezione lenta perché ha
-continuato a ritentare resta visibile nel log. Il nodo di risposta applica gli
-stessi gate per-sezione di ogni altra modalità.
+continuato a ritentare resta visibile nel log. Il nodo di risposta recupera il
+contesto della linea guida, ancore comprese se accese, e applica gli stessi gate
+per-sezione di ogni altra modalità.
+
+**`build_graph(...)`** collega i quattro nodi e compila la macchina a stati. Il
+modello di ricerca e quello di risposta sono due parametri distinti, perché
+solo il primo deve legare un tool.
 
 **`_finalize(state)`** è un passthrough deliberato: le regole cross-section
 vengono applicate una sola volta da `pipeline.run_pipeline` dopo che il grafo ha
@@ -541,9 +599,103 @@ cross-section.
 
 ---
 
-## 7. `pipeline.py`
+## 7. `confidence.py`
 
-Orchestra un referto e dispatcha sulle tre modalità.
+L'Agent 3. Per ogni sezione calcola un numero fra 0 e 1, la **confidenza** della
+risposta finale del modulo, e lo scrive nell'audit log della sezione. Gira dopo
+le regole cross-section, quindi valuta la risposta che finisce nel CSV, ed è
+acceso da `config.CONFIDENCE_ENABLED`. Non cambia mai una risposta.
+
+**Come si ottiene il numero.** Il modello di Agent 2 riceve di nuovo l'evidenza, il
+contesto della linea guida e l'hint della sezione, con le opzioni numerate, ma
+**non** la risposta di Agent 2, e deve rispondere subito, senza ragionare. Con
+`logprobs` attivo Ollama restituisce, per ogni token generato, la sua probabilità
+e quella delle `TOP_LOGPROBS = 10` alternative più probabili nella stessa
+posizione. La confidenza è la probabilità che il modello assegna alla risposta
+del modulo. La richiesta esclude il ragionamento perché, dopo un ragionamento, il
+numero finale è determinato dal testo che lo precede, e la sua probabilità dice
+quanto il modello è coerente con quel testo più che quanto l'evidenza sostiene la
+risposta.
+
+**Costanti.** `OLLAMA_URL` è l'indirizzo del server, letto dalla variabile
+d'ambiente `OLLAMA_HOST` come fa Ollama stesso, con `http://localhost:11434` come
+default. `SYSTEM_PROMPT` è il messaggio di sistema della richiesta: chiede di
+rispondere dalla sola evidenza e senza spiegare.
+
+**`_chat(user_prompt, num_predict)`** invia una richiesta a `/api/chat` di
+Ollama, non attraverso `ChatOllama`, perché servono i campi `logprobs` della
+risposta. Modello (`EVALUATOR_LLM_MODEL_NAME`), temperatura, `num_gpu`, `num_ctx`
+e ragionamento sono quelli di Agent 2; cambia solo il tetto di token. Usare lo
+stesso modello evita di caricarne un secondo sulla GPU.
+
+**`_build_prompt(evidence, context, hint, options, multi)`** compone il messaggio:
+contesto della linea guida, hint con l'avvertenza di ignorarne le istruzioni di
+formato, evidenza, opzioni numerate, e l'istruzione finale. Per una sezione a
+scelta singola chiede il solo numero; per una a scelta multipla una riga
+`N: YES` o `N: NO` per ogni opzione.
+
+**`_mass(token, accept)`** somma la probabilità delle alternative di una posizione
+che soddisfano un criterio, così «2» e « 2», che sono token diversi, contano
+insieme. **`_number_distribution(token, n)`** usa `_mass` per ottenere la
+probabilità di ciascun numero di opzione valido, normalizzata sui soli numeri
+validi.
+
+**`score_single(logprobs, n, chosen)`**: sezioni a scelta singola. Legge il primo
+token che è un numero di opzione valido e restituisce la quota di probabilità
+che cade sull'opzione scelta. Se il modello ha scritto altro prima del numero, il
+metodo diventa `single_after_text`, perché la probabilità è condizionata da quel
+testo.
+
+**`score_multi(logprobs, n, chosen)`**: sezioni a scelta multipla (A3_2, B1_2,
+B2). Per ogni opzione legge p(YES) sul token che segue `N:`, normalizzato su
+YES e NO. La confidenza è la probabilità dell'**insieme esatto** scelto: il
+prodotto di p(YES) per le opzioni selezionate e di p(NO) per le altre. È coerente
+con la valutazione a insieme esatto, ma tratta le opzioni come indipendenti, e
+un prodotto di più fattori è sistematicamente più basso del valore di una sezione
+a scelta singola.
+
+**`score_details(logprobs, options, chosen)`**: F, quando il suo hint fa scrivere
+prima la riga `DETAILS_PRESENT`. La risposta di F non si ricava dal solo yes/no
+di quella riga: dettagli presenti implicano No, ma dettagli assenti implicano Yes
+solo se una diagnosi è riportata, altrimenti No. La funzione legge p(yes) e p(no)
+sul token dopo `DETAILS_PRESENT:` e la distribuzione q del numero che segue, che
+tiene conto della diagnosi, ma solo per il ramo effettivamente scritto:
+
+| il modello scrive | risultato | metodo |
+|---|---|---|
+| `no` | P(Yes) = p(no)·q(Yes\|no); P(No) = p(yes) + p(no)·q(No\|no) | `details_exact`: il ramo `yes` è fissato dall'hint |
+| `yes` | P(risposta) ≥ p(yes)·q(risposta\|yes) | `details_lower_bound`: il ramo `no` non è stato generato |
+
+**`score_section(section_key, answer, evidence, context)`** esegue una sezione:
+costruisce il prompt con `config.section_hint`, chiama `_chat` con un tetto di 32
+token per le sezioni a scelta singola (la riga `DETAILS_PRESENT` di F ne occupa
+diversi) e di `8 × opzioni + 8` per quelle multiple, e sceglie il metodo di
+calcolo. Su F prova `score_details` se la risposta contiene `DETAILS_PRESENT`, e
+ripiega su `score_single` altrimenti. Restituisce `confidence` (arrotondata a
+quattro decimali, o `None`), `confidence_method` e `agent3_seconds`.
+
+**`score_record(form_data, audit_log)`** è il punto d'ingresso che
+`pipeline.run_pipeline` chiama. Scorre `config.SECTION_ORDER`, prende la risposta
+finale di ogni sezione da `form_data` e aggiunge i tre campi alla sua voce
+dell'audit log, stampando il valore a schermo. Assegna `confidence: None` con il
+motivo in `confidence_method` in tre casi: la sezione è in
+`config.CONFIDENCE_SKIP` (`skipped`), la sezione non ha risposta (`no_answer`),
+la richiesta fallisce (`error`, con il messaggio in `confidence_error`). Un
+fallimento dell'Agent 3 non interrompe la run.
+
+I valori possibili di `confidence_method` sono quindi `single`,
+`single_after_text`, `multi`, `details_exact`, `details_lower_bound`, e, quando
+il numero manca, `no_number`, `incomplete_lines`, `skipped`, `no_answer`,
+`error`. Su F, se `score_details` non trova la riga o il numero, il metodo
+registrato è quello del ripiego su `score_single`.
+
+---
+
+## 8. `pipeline.py`
+
+Orchestra un referto e dispatcha sulle quattro modalità: `agentic_graph` passa
+dal grafo di `agentic_graph.py`, le altre tre dal ciclo per sezione di questo
+modulo.
 
 **`SECTION_QUERIES`** associa a ogni sezione la query che dice ad Agent 1 cosa
 cercare, e che serve anche a recuperare il contesto dalla linea guida. La query
@@ -577,29 +729,36 @@ a cui arrivano dipende da come il PDF si è estratto, quindi da sole non dicono
 cosa Agente 2 abbia letto. Le sezioni senza ancora non compaiono.
 
 **`_run_config_snapshot(...)`** cattura tutto ciò che determina cosa una run
-produce: modalità, gate, hint, query e ancore con i rispettivi fingerprint, modelli per ruolo (con
-l'estrattore **effettivo**, che in modalità agentica è un modello diverso),
-ambiente, parametri di generazione, parametri di retrieval. Viene scritto
-nell'audit log sotto `_run_config`, chiave scelta per non poter collidere con un
-nome di sezione, così un file di risultati è auto-descrittivo mesi dopo.
+produce: modalità, gate, contesto della linea guida, intestazioni di sezione,
+hint, query e ancore con i rispettivi fingerprint, le impostazioni dell'Agent 3
+(`confidence.enabled` e `confidence.skipped_sections`), modelli per ruolo (con
+l'estrattore **effettivo**: `AGENTIC_LLM_MODEL_NAME` in modalità agentica,
+nessuno in `raw_record`), ambiente, parametri di generazione compreso
+`num_ctx`, parametri di retrieval. Viene scritto nell'audit log sotto la chiave
+`RUN_CONFIG_KEY = "_run_config"`, scelta per non poter collidere con un nome di
+sezione, così un file di risultati è auto-descrittivo mesi dopo.
 
 **`run_pipeline(record_id, patient_ehr_path, brighton_pdf_path)`** costruisce una
 sola volta embedding e valutatore, carica i due testi, costruisce la KB Brighton
-sempre e quella del referto solo dove serve. Il modello di Agent 1 viene
-costruito **dentro** il ramo che lo usa, così una modalità che non lo interroga
-non lo carica in VRAM.
+sempre e quella del referto solo dove serve. Risolve le ancore della linea guida
+dal testo del paper. Il modello di Agent 1 viene costruito **dentro** il ramo che
+lo usa, così una modalità che non lo interroga, come `raw_record`, non lo carica
+in VRAM.
 
-Nel ciclo per-sezione, ogni sezione passa da Agent 1, dal recupero del contesto
-Brighton ripulito, da Agent 2 e dai gate. Il fallimento di una sezione non
-compromette le altre: il campo resta `None`, l'errore va in `section_log["error"]`
-e l'ultima risposta del modello, se disponibile, in `section_log["reasoning"]`.
+Nel ciclo per-sezione, ogni sezione passa da Agent 1 (in `raw_record` l'evidenza
+è il referto intero), dal recupero del contesto Brighton ripulito, da Agent 2 e
+dai gate. Il fallimento di una sezione non compromette le altre: il campo resta
+`None`, l'errore va in `section_log["error"]` e l'ultima risposta del modello, se
+disponibile, in `section_log["reasoning"]`.
 
-Alla fine applica le regole cross-section una volta sola, aggiunge lo snapshot di
-configurazione e costruisce `DVT_CriteriaForm`.
+Alla fine applica le regole cross-section una volta sola; se
+`config.CONFIDENCE_ENABLED` è acceso chiama `confidence.score_record` sulle
+risposte finali; poi aggiunge lo snapshot di configurazione e costruisce
+`DVT_CriteriaForm`.
 
 ---
 
-## 8. `aggregation.py` e `main.py`
+## 9. `aggregation.py` e `main.py`
 
 **`aggregation.form_to_json_summary(form)`** serializza il form con
 `exclude_none=True`: le sezioni lasciate `None` da una valutazione fallita
@@ -613,10 +772,19 @@ sempre associabile e rilanciare non sovrascrive mai una run precedente.
 
 ---
 
-## 9. `run_synthetic_records.py`
+## 10. `run_synthetic_records.py`
 
 Esegue la pipeline su ogni referto del corpus, con la stessa convenzione di nomi
-di `main.py` così la valutazione li trova con i percorsi di default.
+di `main.py` così la valutazione li trova con i percorsi di default. Legge i
+referti da `RECORDS_DIR` (`data/synthetic_records/`) e il paper da
+`BRIGHTON_PDF_PATH`. **`run_one(record_id, record_path, output_dir)`** esegue un
+referto e scrive i suoi due file; **`main()`** li scorre in ordine di nome, e il
+fallimento di un referto non ferma il batch.
+
+`--output-dir` sceglie la cartella di destinazione, `DEFAULT_OUTPUT_DIR`
+(`./output`) se omesso. Ogni braccio sperimentale va in una cartella sua, perché
+`evaluate_predictions` ed `export_redcap_csv` tengono il file più recente per
+referto e due bracci nella stessa cartella si nasconderebbero a vicenda.
 
 `--only` restringe il batch ai referti il cui identificativo contiene una delle
 stringhe date, per ricontrollarne pochi dopo una modifica al prompt senza pagare
@@ -633,9 +801,32 @@ la durata varia con quante chiamate al tool l'estrattore agentico decide di fare
 
 ---
 
-## 10. `generate_synthetic_records.py`
+## 11. `generate_synthetic_records.py`
 
 Genera i referti sintetici in italiano con la ground truth corrispondente.
+`SCENARIOS` contiene i 40 scenari, `OUTPUT_DIR` è `data/synthetic_records/`.
+Il modello scrittore è `WRITER_MODEL_NAME = "qwen2.5:7b-instruct"`, a
+`WRITER_TEMPERATURE = 0.8` e con `WRITER_NUM_PREDICT = 3072`, ben sopra la
+lunghezza richiesta perché un tetto raggiunto a metà tronca il referto;
+`WRITER_SYSTEM_PROMPT` gli chiede di scrivere come un medico di pronto soccorso.
+
+Le funzioni, nell'ordine in cui lavorano:
+
+- **`directive_for(scenario, style)`** sceglie la direttiva di stile: quella
+  ricca di dettagli, o quella senza dettagli per gli scenari con `F = "Yes"`;
+- **`facts_to_prompt(scenario, style)`** compone il messaggio per lo scrittore:
+  direttiva, fatti clinici e le eventuali `writer_notes` dello scenario;
+- **`build_ground_truth(record_id, scenario)`** costruisce le risposte di
+  riferimento salvate accanto al referto;
+- **`generate_record(llm, scenario, style)`** chiede un referto allo scrittore,
+  senza controllarlo;
+- **`generate_checked_record(...)`**, **`_expected_markers(...)`**,
+  **`check_record(...)`** e **`check_existing_records()`** sono il controllo di
+  fedeltà descritto sotto, e `_FACT_MARKERS` ne contiene i marcatori;
+- **`main()`** riscrive sempre la ground truth; scrive i referti mancanti solo con
+  `--generate` (sovrascrive gli esistenti solo con `--force`), controlla il
+  corpus su disco con `--check`, e `--only` restringe il lavoro agli scenari
+  nominati.
 
 **Ground truth per costruzione.** Ogni scenario porta sia i fatti clinici sia le
 risposte corrette per tutte e dieci le sezioni, scritte a mano con le stringhe
@@ -674,14 +865,15 @@ fatti mancanti, non la violazione semantica: un referto può contenere il valore
 giusto e descriverlo male. Intercettarlo richiederebbe un secondo modello come
 giudice, deliberatamente non costruito per mantenere il controllo deterministico.
 
-**Un secondo limite, sui dati.** Un referto è di circa 1000 caratteri, cioè circa
-un chunk, mentre il retriever ne chiede 5: il retrieval restituisce ogni volta il
-referto intero. Le tre modalità di estrazione danno quindi ad Agent 2 lo stesso
-input e non sono confrontabili su questo dataset.
+**Un secondo limite, sui dati.** Un referto va da 317 a 1185 caratteri, cioè uno
+o due chunk da 800, mentre il retriever ne chiede 5: il retrieval restituisce
+ogni volta il referto intero, e cambia solo l'ordine dei chunk. Su questo dataset
+le modalità con retrieval non selezionano: l'estrattore riceve lo stesso testo
+che in `full_text`, diviso in chunk.
 
 ---
 
-## 11. `evaluate_predictions.py`
+## 12. `evaluate_predictions.py`
 
 Valuta una run contro la ground truth. Non esegue la pipeline. Legge predizioni e
 riferimenti da directory passate a riga di comando, così lo stesso script serve
@@ -716,11 +908,37 @@ tenere presente leggendo i numeri: un modello che fallisce molte sezioni ottiene
 un punteggio ottimisticamente alto.
 
 Dipende da scikit-learn e da `models.py`, ma non da langchain o Ollama: gira
-senza lo stack della pipeline installato.
+senza lo stack della pipeline installato. Per questo **`_field_info(section)`**
+reintroduce qui l'introspezione dello schema invece di importarla da `agents.py`.
+
+Le funzioni:
+
+- **`load_ground_truth(directory)`** e **`load_predictions(predictions_dir)`**
+  leggono riferimenti e predizioni; le predizioni saltano gli `*_audit_log.json` e
+  sono lette in ordine di nome, quindi cronologico, così vince la più recente.
+  I default sono `DEFAULT_GROUND_TRUTH_DIR` (`data/synthetic_records/`) e
+  `DEFAULT_PREDICTIONS_DIR` (`output/`);
+- **`_selected_set(value)`** riduce una risposta a un insieme di opzioni, così
+  scelta singola e multipla si confrontano allo stesso modo;
+- **`_binary_rows(pairs, options)`** trasforma le coppie in due matrici 0/1, una
+  colonna per opzione, la forma che scikit-learn si aspetta;
+- **`_wilson_interval(...)`**, **`_majority_baseline(pairs)`** e
+  **`_score_section(...)`** calcolano le metriche di una sezione;
+- **`evaluate(ground_truth, predictions)`** produce il report completo;
+- **`print_report(report, show_matrices)`** e **`print_confusion_matrices(report)`**
+  lo stampano, con `_pct`, `_num`, `_ci` e `_gain` per la formattazione;
+  `--no-matrices` omette le matrici;
+- **`main()`** salva il report in `reports/evaluation_<timestamp>.json`
+  (`REPORTS_DIR`, creata se manca).
+
+`print_report` calcola la colonna del guadagno complessivo come differenza fra
+accuratezza macro e baseline macro senza controllare che esistano: se nessuna
+sezione è stata confrontata, entrambe sono `None` e la stampa si interrompe con
+un `TypeError`.
 
 ---
 
-## 12. `compare_runs.py`
+## 13. `compare_runs.py`
 
 Confronta **due run tra loro** e riporta quante risposte sono cambiate. È il
 complemento di `evaluate_predictions.py`, che confronta una run contro la ground
@@ -739,9 +957,26 @@ sezione mancante in **entrambe** le run viene esclusa invece che contata come
 invariata, per non gonfiare la stabilità con sezioni che non hanno mai prodotto
 nulla.
 
+Le funzioni:
+
+- **`load_run_files(directory)`** raccoglie i file di output per referto,
+  ordinati dal più vecchio; salta gli audit log e i file il cui nome non porta un
+  timestamp leggibile secondo `_OUTPUT_NAME_RE`;
+- **`pair_up(dir_a, dir_b)`** forma le coppie da confrontare, con la regola a una
+  o due cartelle descritta sopra;
+- **`load_ground_truth()`** legge i riferimenti da `GROUND_TRUTH_DIR`, usati solo
+  per le due colonne di accuratezza;
+- **`_selected_set(value)`** riduce una risposta a un insieme di opzioni;
+- **`compare(pairs, ground_truth)`** confronta le due run sezione per sezione;
+- **`print_report(report)`** stampa il risultato, chiudendo con la cifra del
+  pavimento di rumore;
+- **`main()`** accetta una o due cartelle (`./output` se omesse) e salva il report
+  in `reports/run_stability_<timestamp>.json` (`REPORTS_DIR`, la stessa cartella
+  di `evaluate_predictions.py`).
+
 ---
 
-## 13. `export_redcap_csv.py`
+## 14. `export_redcap_csv.py`
 
 Converte l'output della pipeline nel CSV che REDCap importa, così il Level of
 Certainty può essere calcolato dal progetto REDCap stesso.
@@ -775,3 +1010,104 @@ sperimentale lasciata in `output/` diventa il CSV che va a REDCap. Va controllat
 
 È volutamente autonomo: importa solo `models.py`, quindi gira senza langchain né
 Ollama.
+
+Le funzioni:
+
+- **`_section_options(section_key)`** legge le opzioni nell'ordine dello schema, e
+  **`_option_code(section_key, answer)`** restituisce la posizione 1-based di
+  un'opzione come codice;
+- **`build_column_order(skip_empty_fields)`** produce le colonne nell'ordine
+  dell'export grezzo di REDCap. I campi del modulo che la pipeline non compila,
+  testo libero e date, stanno in `UNFILLED_FIELDS_BEFORE` e
+  `UNFILLED_FIELDS_AFTER`, posizionati rispetto ai campi dei criteri;
+  `--skip-empty-fields` li omette;
+- **`row_from_result(result, skip_empty_fields)`** converte un file di risultato in
+  una riga, e imposta `criteria_form_complete` a `FORM_COMPLETE_VALUE = "2"`.
+  Per le sezioni `yesno`, cioè F, usa `_YESNO_CODES` (`Yes` → 1, `No` → 0) al
+  posto di `_option_code`;
+- **`load_latest_results(source)`** tiene il file più recente per referto,
+  riconoscendolo dal nome con `_OUTPUT_NAME_RE`; accetta una cartella o un file;
+- **`write_csv(results, destination, skip_empty_fields)`** scrive il file;
+- **`main()`** legge `input_dir` (default `output`) e scrive `destination`
+  (default `redcap_import.csv`).
+
+---
+
+## 15. `export_prompts.py`
+
+Scrive su file ogni prompt, query e hint, così la tesi li include con
+`\lstinputlisting` invece che con una copia a mano. È in `.gitignore`, quindi non
+è versionato. I testi vengono letti dai moduli che li contengono: il testo
+incluso nella tesi e quello che ricevono i modelli sono lo stesso oggetto.
+
+- **`collect()`** raccoglie ogni testo da esportare, per nome di file: i prompt
+  dei due agenti, lo scheletro del messaggio di Agent 2, i due blocchi di
+  istruzioni finali, la descrizione del tool di ricerca e un file per hint;
+- **`_message_skeleton()`** e **`_answer_instructions(multi_select)`** passano da
+  `agents._build_reasoning_prompt` con segnaposto al posto dei contenuti, così
+  etichette, righe vuote e ordine sono quelli che il codice produce;
+- **`_retriever_description()`** legge la descrizione dal tool costruito, non dal
+  sorgente;
+- **`_section_label(section_key)`** scrive la sezione come la nomina il
+  questionario (A3_1 diventa A3.1);
+- **`_digest(text)`** calcola lunghezza e primi 12 caratteri esadecimali dello
+  sha256, la forma usata negli audit log;
+- **`main()`** scrive i file in `DEFAULT_OUTPUT_DIR` (`prompts_export/`) o in
+  `--output-dir`, più `queries.txt`, `queries.tex` (l'intera tabella),
+  `hints.tex` e un `manifest.txt` con due digest per file, quello del testo nel
+  codice e quello del file su disco. `--tex-prefix`, `--tex-query-width` e
+  `--tex-style` regolano i `.tex` generati.
+
+---
+
+## 16. Il pacchetto `myo/`
+
+Il braccio di trasferimento: esegue la stessa pipeline sulle sezioni E ed F del
+questionario Brighton della miocardite, su 17 casi dummy con ground truth scritta
+da due autori esterni al progetto. Nessun modulo della pipeline viene modificato:
+`myo/` sostituisce in memoria schema, sezioni, prompt e configurazione prima di
+chiamarla.
+
+**`models_myo.py`** contiene lo schema. `E_Electrocardiogram` (14 opzioni) e
+`F_Echocardiogram` (10 opzioni) sono entrambe a scelta multipla,
+`findings: List[Literal[...]]`, con le stringhe copiate dal questionario, virgole
+e asterischi compresi. `MYO_CriteriaForm` è il contenitore, esportato anche col
+nome `DVT_CriteriaForm` perché `pipeline.py` importa quel nome, e
+`SECTION_MODELS` ha le chiavi `E` e `F`.
+
+**`prompts_myo.py`** contiene i prompt con i termini della miocardite:
+`EXTRACTOR_SYSTEM_PROMPT_TEMPLATE` e `AGENTIC_EXTRACTOR_SUFFIX_TEMPLATE`, che
+portano il segnaposto `{no_evidence}`, `EVALUATOR_SYSTEM_PROMPT` e
+`RETRIEVER_TOOL_DESCRIPTION`.
+
+**`convert_cases.py`** trasforma `MYO_dummy_cases.xlsx` in un `.txt` e un
+`_ground_truth.json` per caso, in `RECORDS_DIR` (`myo/data/records/`).
+`record_id` unisce `Case_id` e `Variation_id`. `ANSWER_COLUMNS` indica le colonne
+delle risposte; **`parse_answer(section_key, raw)`** divide una cella sui `+` e
+riconosce ogni pezzo come opzione dello schema, direttamente o tramite
+`OPTION_ALIASES`, dopo che **`_collapse(text)`** ha uniformato spazi e
+maiuscole. Un pezzo che non corrisponde a nessuna opzione ferma la conversione,
+invece di essere scartato. **`_valid_options(section_key)`** legge le opzioni
+dallo schema.
+
+**`run_myo.py`** esegue la pipeline sui casi. Installa `models_myo` come modulo
+`models` prima di importare `pipeline`, che lega lo schema all'importazione.
+**`apply_domain(guideline=False)`** imposta sezioni `E` ed `F`, modalità
+`agentic_graph`, svuota hint, gate e regole cross-section, sostituisce i tre
+prompt degli agenti, le query di sezione (`SECTION_QUERIES`, scritte a partire
+dalla lista delle opzioni) e il tool di ricerca, e indica per il paper un indice
+suo, `myo/vectorstores/chroma_brighton_myo`, perché `build_brighton_kb`
+ricaricherebbe l'indice del paper della TVP senza leggere il testo che riceve.
+Da riga di comando: `--guideline` accende il contesto della linea guida,
+`--num-ctx` sostituisce `LLM_NUM_CTX`, `--brighton-pdf` indica il paper
+(`myo/main.pdf` di default), più `--records-dir`, `--output-dir` e `--only`.
+
+**`evaluate_myo.py`** valuta una run con `evaluate_predictions`, dopo aver
+installato `models_myo` come `models` e puntato le cartelle di default su
+`myo/data/records` e `myo/output_myo`.
+
+**`run_dvt_stripped.py`** è il termine di confronto: esegue il corpus TVP con
+**`strip()`**, che spegne in memoria hint, contesto, ancore, intestazioni di
+sezione, regole cross-section e tutti i gate, gli stessi componenti che il
+braccio della miocardite non ha. Poi chiama `run_synthetic_records.main()`, di
+cui accetta gli argomenti.

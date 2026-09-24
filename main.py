@@ -30,7 +30,7 @@ def main():
     brighton_pdf_path = str(PROJECT_ROOT / "data" / "reference" / "1-s2.0-S0264410X22010854-main.pdf")  # Brighton guidelines PDF
 
     form, audit_log = run_pipeline(record_id, patient_ehr_path, brighton_pdf_path)
-    summary = form_to_json_summary(form)
+    summary = form_to_json_summary(form, audit_log)
 
     print("\nFilled-in JSON (checkboxes)")
     print(json.dumps(summary, indent=2))

@@ -90,8 +90,8 @@ def apply_details_gate(section_key: str, section_result, reasoning_text: str):
 
     F asks whether the diagnosis was reported WITHOUT details, so "Yes" means
     a diagnosis was reported with no supporting detail and "No" means details
-    were present or no diagnosis was reported at all. The mapping here reads
-    only DETAILS_PRESENT, so it assumes a diagnosis was reported: on a record
+    were present or no diagnosis was reported at all. This function reads
+    only DETAILS_PRESENT, so its mapping assumes a diagnosis was reported: on a record
     with neither a diagnosis nor a finding it turns a correct "No" into "Yes".
     The inversion between details and answer is where Agent 2 was
     observed to contradict itself: its prose could correctly identify specific

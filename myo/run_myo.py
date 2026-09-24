@@ -172,7 +172,7 @@ def main():
             form, audit_log = pipeline.run_pipeline(
                 record_id, str(record_path), str(args.brighton_pdf)
             )
-            summary = form_to_json_summary(form)
+            summary = form_to_json_summary(form, audit_log)
             stamp = datetime.now().strftime("%Y%m%d_%H%M%S")
             with open(args.output_dir / f"{record_id}_{stamp}.json", "w",
                       encoding="utf-8") as handle:

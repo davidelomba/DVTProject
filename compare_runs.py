@@ -46,6 +46,8 @@ from typing import get_args, get_origin
 from models import SECTION_MODELS
 
 GROUND_TRUTH_DIR = Path(__file__).parent / "data" / "synthetic_records"
+# Where the saved reports go, shared with evaluate_predictions.py.
+REPORTS_DIR = Path(__file__).parent / "reports"
 
 # main.py and run_synthetic_records.py both name outputs
 # "<record_id>_<YYYYMMDD>_<HHMMSS>.json". record_id itself contains
@@ -267,7 +269,8 @@ def main():
     print_report(report)
 
     timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-    out_path = Path(__file__).parent / f"run_stability_{timestamp}.json"
+    REPORTS_DIR.mkdir(exist_ok=True)
+    out_path = REPORTS_DIR / f"run_stability_{timestamp}.json"
     out_path.write_text(json.dumps(report, indent=2, ensure_ascii=False), encoding="utf-8")
     print(f"\nSaved to: {out_path}")
 
