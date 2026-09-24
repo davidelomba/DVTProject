@@ -120,6 +120,7 @@ LLM_MODEL_NAME           = "llama3:8b-instruct-q4_0"
 EVALUATOR_LLM_MODEL_NAME = "qwen3.6:27b"
 AGENTIC_LLM_MODEL_NAME   = "qwen3.6:27b"
 LLM_REASONING            = False
+LLM_NUM_CTX              = 4096
 EXTRACTOR_MODE           = "agentic_graph"
 BRIGHTON_CONTEXT_ENABLED = True
 SECTION_DESCRIPTIONS_ENABLED = False
@@ -610,6 +611,45 @@ not say which governs, which is what the clinician question below is asking.
   effect from the log is exact, since gates are pure post-processing and every
   override records the pre-gate answer: it predicted F 40 of 40 and micro 99.5%,
   and the confirming run returned both, changing exactly the one section.
+- **The architecture transfers; the prompt tuning is what does not.** Two
+  sections of the Brighton myocarditis questionnaire, 17 dummy cases with a
+  ground truth written by two authors outside the project, run in
+  `agentic_graph` with no hints, no gates, no cross-section rules and no
+  guideline context: only the schema, the two section queries and the disease
+  terms in the prompts differ from the DVT arm. The matched control is the DVT
+  corpus stripped of the same four components, **353/399, micro 88.47%, macro
+  kappa 0.725**, against a prediction of 354 obtained by adding the components'
+  measured effects, so on this configuration they are close to additive.
+
+  **E scores 17 of 17 in every arm, and no intervention changes a single
+  answer** — not the guideline, not the context window. On an unseen
+  questionnaire, an unseen schema and two queries written once and blind. F
+  scores 3 to 5 of 17, and all thirteen errors of the first arm turn on one
+  distinction, `Segmental wall motion abnormalities` against `Global systolic or
+  diastolic function depression`: one disagreement repeated, seven of the
+  thirteen being seven variants of one base case. Two read in full are
+  defensible for the model; on one the ground truth answers `No abnormalities
+  seen on ECHO` while the record describes hypokinesia and a borderline ejection
+  fraction. The authors' own expected-ambiguity column does not predict the
+  errors either: 5 of 8 `low` are wrong.
+- **The guideline context is worth +2 on that corpus, and the DVT mechanism does
+  not reproduce.** Prediction before the run: F rises from 4 into the 4 to 7
+  band by correcting the additions-only records and leaving the five swaps
+  alone. The number held, the mechanism did not. False positives go 16 to 17 and
+  the options selected go 31 to 34 against a truth of 27, so the context makes
+  the model select **more**, the opposite of DVT, where turning it off costs two
+  false positives on A3.2. **Whether the guideline curbs over-selection depends
+  on the model and the corpus, not on the mechanism.** Four of the five swaps
+  stay swaps and one becomes an outright failure: the paper lists the five
+  echocardiogram findings without defining them, word for word F's option list.
+- **The context window was not truncating, and is not neutral either.** Widening
+  it from 4096 to 8192 changes 2 sections of 34, both on F, and F falls from 4
+  to 3: nothing was being cut, so the DVT arms run at Ollama's default are not
+  suspect. Two sections change all the same at temperature 0, so `num_ctx`
+  perturbs generation without truncating. `LLM_NUM_CTX` is now set in
+  `config.py` at 4096, the value already in force, and recorded under
+  `_run_config.generation`. At 8192 one section per arm fails outright, always
+  on F, with no parseable answer after three attempts; at 4096 none does.
 - Read the metrics in this order: majority baseline and gain, then kappa, then
   accuracy with its interval. Accuracy alone ranked F above A3_2 under the 8B
   model, where F gained nothing over a constant answer and A3_2 gained 13
@@ -657,9 +697,18 @@ not say which governs, which is what the clinician question below is asking.
   owes the study is a correct CSV, and that is verified, with the export read
   back and its codes reconverted, 300 sections of 300 identical to the source
   JSON.
-- **Agreement with an independent reviewer is not measurable yet.** Every number
-  here is scored against a ground truth written alongside the pipeline, so the
-  two are not independent and their agreement is not evidence. A validation study
+- **What F of the myocarditis questionnaire needs is a clinician, not a tool.**
+  Thirteen errors on one coding distinction, untouched by the guideline and by
+  the context window, and the paper does not define the two options it
+  separates. The question to ask is how a systolic function reported as *ai
+  limiti inferiori della norma* should be coded, and whether C0001_0_0's
+  echocardiogram is to be read as normal when the record describes hypokinesia.
+  Third time the project reaches the same conclusion from a different direction,
+  after A2 and SYN_10.
+- **Agreement with an independent reviewer is not measurable yet on DVT.** Every
+  number on that corpus is scored against a ground truth written alongside the
+  pipeline, so the two are not independent and their agreement is not evidence.
+  The myocarditis arm is the exception and the reason it was run. A validation study
   reports the concordance between two blind reviewers instead, neither of them
   treated as the truth; the SeValid myocarditis experiment reports 28 of 38, 74%.
   Measuring it here takes a clinician filling the questionnaire on a subset of
@@ -755,6 +804,17 @@ not say which governs, which is what the clinician question below is asking.
   show: B2's rewrite is worth +5 and +2, A3_2's is 0 and -2, A2's is -1 and +1,
   so **only B2's gap was a defect**. B2's rewrite is the one now in
   `SECTION_QUERIES`; A2's and A3_2's were not adopted.
+- **`print_report` raises when nothing was compared.** `_macro` returns None on
+  an empty section set, and the gain column computes `macro_accuracy -
+  macro_majority_baseline` without guarding it, so scoring a directory that
+  matches no record ends in a TypeError instead of an empty report. `_pct` and
+  `_num` already print `n/a`; the subtraction is the one place that does not.
+- **The audit log does not record which guideline was read.** `_run_config`
+  carries `brighton_context_enabled` and `guideline_anchors_fingerprint` but not
+  the paper, and there are two: the DVT case definition and the myocarditis one,
+  indexed into two stores. A `guideline_source` field holding the PDF name and a
+  digest of the extracted text would make the context traceable the way the
+  hints and the queries already are.
 - Test whether the TRANSCRIPTION RULE in `AGENTIC_EXTRACTOR_SYSTEM_PROMPT` does
   anything: it governs a string the code discards.
 - **The extractor prompt never says a negation is evidence**, while the

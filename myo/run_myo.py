@@ -28,19 +28,24 @@ import json
 import sys
 import time
 import traceback
+import agents
+import rag_setup
+import pipeline
+import config                                        # noqa: E402
+import prompts_myo                                   # noqa: E402
+import models_myo                                    # noqa: E402
 from datetime import datetime
 from pathlib import Path
+from aggregation import form_to_json_summary
+from langchain_core.tools.retriever import create_retriever_tool
+
 
 MYO_DIR = Path(__file__).resolve().parent
 PROJECT_ROOT = MYO_DIR.parent
 sys.path.insert(0, str(MYO_DIR))
 sys.path.insert(0, str(PROJECT_ROOT))
 
-import models_myo                                    # noqa: E402
 sys.modules["models"] = models_myo
-
-import config                                        # noqa: E402
-import prompts_myo                                   # noqa: E402
 
 # One query per section, written from the option list rather than from the
 # finding expected: on the DVT form the queries written the other way covered
@@ -83,10 +88,6 @@ def apply_domain(guideline: bool = False):
         "keyword": False, "details": False, "absent_pulses": False,
     }
 
-    import agents
-    import rag_setup
-    import pipeline
-
     extractor = prompts_myo.EXTRACTOR_SYSTEM_PROMPT_TEMPLATE.format(
         no_evidence=agents.NO_EVIDENCE
     )
@@ -99,7 +100,6 @@ def apply_domain(guideline: bool = False):
     agents.EVALUATOR_SYSTEM_PROMPT = prompts_myo.EVALUATOR_SYSTEM_PROMPT
     pipeline.SECTION_QUERIES = SECTION_QUERIES
 
-    from langchain_core.tools.retriever import create_retriever_tool
 
     def make_ehr_retriever_tool(ehr_vectorstore):
         """rag_setup.make_ehr_retriever_tool with this domain's description."""
@@ -143,7 +143,6 @@ def main():
     pipeline = apply_domain(guideline=args.guideline)
     if args.num_ctx is not None:
         config.LLM_NUM_CTX = args.num_ctx
-    from aggregation import form_to_json_summary
 
     record_paths = sorted(args.records_dir.glob("*.txt"))
     if args.only:
