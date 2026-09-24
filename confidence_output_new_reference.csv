@@ -1,0 +1,401 @@
+record,section,multi,answer,correct,confidence,scorer_agrees,format_ok,hint,agent2_seconds,scorer_seconds,scorer_output
+SYN_01_lower_dvt_doppler_v2,A1,False,"""No autopsy done, unknown if done, or done but results unavailable""",True,0.9992821997944409,True,True,verified,8.4,10.05,3
+SYN_01_lower_dvt_doppler_v2,A2,False,"""No surgical procedure done; or, done but either did not confirm presence of DVT or findings unknown; or unknown if done""",True,0.8601261885888373,True,True,verified,9.7,3.01,3
+SYN_01_lower_dvt_doppler_v2,A3_1,False,"""≥1 imaging study was done and confirmed DVT""",True,0.9999301475045159,True,True,verified,8.2,3.14,1
+SYN_01_lower_dvt_doppler_v2,A3_2,True,"[""Doppler/Duplex Ultrasound""]",True,0.7622073030412645,True,True,verified,9.1,3.79,1: NO | 2: NO | 3: NO | 4: YES | 5: NO
+SYN_01_lower_dvt_doppler_v2,B1_1,False,"""≥1 symptom or sign of DVT was reported""",True,0.9999578740600144,True,True,verified,7.8,3.11,1
+SYN_01_lower_dvt_doppler_v2,B1_2,True,"[""Lower extremity DVT""]",True,0.9999820042966365,True,True,none,8.2,3.38,1: YES | 2: NO
+SYN_01_lower_dvt_doppler_v2,B2,True,"[""Calf pain or tenderness"", ""Leg swelling or pitting oedema"", ""Redness, warmth, or pain in one or more extremities""]",True,0.9709762552848711,True,True,off,11.9,3.91,1: YES | 2: YES | 3: NO | 4: YES | 5: NO
+SYN_01_lower_dvt_doppler_v2,C,False,"""D-dimer exceeded test lab's upper limit of normal.""",True,0.9999856305978682,True,True,verified,7.4,3.06,1
+SYN_01_lower_dvt_doppler_v2,F,False,"""No""",True,,,False,verified,10.0,3.29,DETAILS_PRESENT:
+SYN_01_lower_dvt_doppler_v2,X,False,"""No alternative diagnosis was found to explain the acute illness""",True,0.9963966525443141,True,True,verified,9.2,3.09,2
+SYN_02_dvt_ruled_out_cellulitis_v2,A1,False,"""No autopsy done, unknown if done, or done but results unavailable""",True,0.9978688418184578,True,True,verified,8.3,1.8,3
+SYN_02_dvt_ruled_out_cellulitis_v2,A2,False,"""No surgical procedure done; or, done but either did not confirm presence of DVT or findings unknown; or unknown if done""",True,0.999032069960699,True,True,verified,9.0,2.97,3
+SYN_02_dvt_ruled_out_cellulitis_v2,A3_1,False,"""≥1 imaging study was done but didn't confirm DVT""",True,0.9998643920462612,True,True,verified,7.7,1.91,2
+SYN_02_dvt_ruled_out_cellulitis_v2,A3_2,True,"[""Compression ultrasonography""]",False,0.8881751953194985,True,True,verified,10.7,2.47,1: YES | 2: NO | 3: NO | 4: NO | 5: NO
+SYN_02_dvt_ruled_out_cellulitis_v2,B1_1,False,"""≥1 symptom or sign of DVT was reported""",True,0.8809505132289535,True,True,verified,10.6,1.73,1
+SYN_02_dvt_ruled_out_cellulitis_v2,B1_2,True,[],True,0.9996974107851583,True,True,none,10.1,3.35,1: NO | 2: NO
+SYN_02_dvt_ruled_out_cellulitis_v2,B2,True,"[""Redness, warmth, or pain in one or more extremities""]",True,0.47175445788635195,False,True,off,38.2,2.63,1: YES | 2: NO | 3: NO | 4: YES | 5: NO
+SYN_02_dvt_ruled_out_cellulitis_v2,C,False,"""D-dimer not tested, or tested but results unknown or not available""",True,0.9999142586140507,True,True,verified,6.6,1.75,3
+SYN_02_dvt_ruled_out_cellulitis_v2,F,False,"""No""",True,,,False,verified,8.5,1.92,DETAILS_PRESENT:
+SYN_02_dvt_ruled_out_cellulitis_v2,X,False,"""An alternative diagnosis was found that explained the acute illness""",True,0.9998306682223165,True,True,verified,8.2,1.89,1
+SYN_03_upper_extremity_catheter_v2,A1,False,"""No autopsy done, unknown if done, or done but results unavailable""",True,0.999172488497189,True,True,verified,7.5,1.97,3
+SYN_03_upper_extremity_catheter_v2,A2,False,"""Other procedure done that confirmed presence of DVT""",False,0.16811331135033203,False,True,verified,114.5,3.21,3
+SYN_03_upper_extremity_catheter_v2,A3_1,False,"""≥1 imaging study was done and confirmed DVT""",True,0.9996663689790222,True,True,verified,8.1,1.78,1
+SYN_03_upper_extremity_catheter_v2,A3_2,True,"[""CT or MR venography""]",True,0.9915081327700789,True,True,verified,8.3,2.59,1: NO | 2: YES | 3: NO | 4: NO | 5: NO
+SYN_03_upper_extremity_catheter_v2,B1_1,False,"""≥1 symptom or sign of DVT was reported""",True,0.9961044958405894,True,True,verified,8.8,1.97,1
+SYN_03_upper_extremity_catheter_v2,B1_2,True,"[""Upper extremity DVT""]",True,0.9996409769872614,True,True,none,9.1,3.4,1: NO | 2: YES
+SYN_03_upper_extremity_catheter_v2,B2,True,"[""Redness, warmth, or pain in one or more extremities""]",True,0.9927839982645875,True,True,off,13.6,2.67,1: NO | 2: NO | 3: NO | 4: YES | 5: NO
+SYN_03_upper_extremity_catheter_v2,C,False,"""D-dimer exceeded test lab's upper limit of normal.""",True,0.999968187890526,True,True,verified,7.1,1.79,1
+SYN_03_upper_extremity_catheter_v2,F,False,"""No""",True,,,False,verified,9.0,2.04,DETAILS_PRESENT:
+SYN_03_upper_extremity_catheter_v2,X,False,"""No alternative diagnosis was found to explain the acute illness""",True,0.9797856551144928,True,True,verified,10.7,1.82,2
+SYN_04_multi_imaging_confirmed_v2,A1,False,"""No autopsy done, unknown if done, or done but results unavailable""",True,0.9991331974019494,True,True,verified,7.5,1.98,3
+SYN_04_multi_imaging_confirmed_v2,A2,False,"""No surgical procedure done; or, done but either did not confirm presence of DVT or findings unknown; or unknown if done""",True,0.7121573082405661,True,True,verified,8.7,3.24,3
+SYN_04_multi_imaging_confirmed_v2,A3_1,False,"""≥1 imaging study was done and confirmed DVT""",True,0.9999450088638681,True,True,verified,7.9,1.96,1
+SYN_04_multi_imaging_confirmed_v2,A3_2,True,"[""Compression ultrasonography"", ""Doppler/Duplex Ultrasound""]",True,0.861693205518146,True,True,verified,10.2,2.66,1: YES | 2: NO | 3: NO | 4: YES | 5: NO
+SYN_04_multi_imaging_confirmed_v2,B1_1,False,"""≥1 symptom or sign of DVT was reported""",True,0.9998983053517954,True,True,verified,7.9,1.99,1
+SYN_04_multi_imaging_confirmed_v2,B1_2,True,"[""Lower extremity DVT""]",True,0.9999728928725572,True,True,none,9.7,3.44,1: YES | 2: NO
+SYN_04_multi_imaging_confirmed_v2,B2,True,"[""Calf pain or tenderness"", ""Leg swelling or pitting oedema""]",True,0.9927685008365067,True,True,off,10.1,2.55,1: YES | 2: YES | 3: NO | 4: NO | 5: NO
+SYN_04_multi_imaging_confirmed_v2,C,False,"""D-dimer exceeded test lab's upper limit of normal.""",True,0.9999809357540881,True,True,verified,7.0,1.85,1
+SYN_04_multi_imaging_confirmed_v2,F,False,"""No""",True,,,False,verified,7.9,2.08,DETAILS_PRESENT:
+SYN_04_multi_imaging_confirmed_v2,X,False,"""No alternative diagnosis was found to explain the acute illness""",True,0.9953640278517143,True,True,verified,7.9,1.98,2
+SYN_05_absent_flow_not_pulses_trap_v2,A1,False,"""No autopsy done, unknown if done, or done but results unavailable""",True,0.9992149946319073,True,True,verified,6.9,2.04,3
+SYN_05_absent_flow_not_pulses_trap_v2,A2,False,"""No surgical procedure done; or, done but either did not confirm presence of DVT or findings unknown; or unknown if done""",True,0.8723706319802145,True,True,verified,8.4,3.17,3
+SYN_05_absent_flow_not_pulses_trap_v2,A3_1,False,"""≥1 imaging study was done and confirmed DVT""",True,0.9999231383880387,True,True,verified,8.6,1.86,1
+SYN_05_absent_flow_not_pulses_trap_v2,A3_2,True,"[""Doppler/Duplex Ultrasound""]",True,0.7414967522854711,True,True,verified,12.3,2.44,1: NO | 2: NO | 3: NO | 4: YES | 5: NO
+SYN_05_absent_flow_not_pulses_trap_v2,B1_1,False,"""≥1 symptom or sign of DVT was reported""",True,0.9998925217450126,True,True,verified,8.9,1.81,1
+SYN_05_absent_flow_not_pulses_trap_v2,B1_2,True,"[""Lower extremity DVT""]",True,0.9999754682676776,True,True,none,8.4,3.41,1: YES | 2: NO
+SYN_05_absent_flow_not_pulses_trap_v2,B2,True,"[""Calf pain or tenderness"", ""Leg swelling or pitting oedema""]",True,0.8098860201319601,True,True,off,11.9,2.59,1: YES | 2: YES | 3: NO | 4: NO | 5: NO
+SYN_05_absent_flow_not_pulses_trap_v2,C,False,"""D-dimer exceeded test lab's upper limit of normal.""",True,0.9999796534358139,True,True,verified,7.1,1.94,1
+SYN_05_absent_flow_not_pulses_trap_v2,F,False,"""No""",True,,,False,verified,8.1,2.08,DETAILS_PRESENT:
+SYN_05_absent_flow_not_pulses_trap_v2,X,False,"""No alternative diagnosis was found to explain the acute illness""",True,0.9965159009154492,True,True,verified,8.6,1.85,2
+SYN_06_no_imaging_clinical_only_v2,A1,False,"""No autopsy done, unknown if done, or done but results unavailable""",True,0.9994042081998913,True,True,verified,6.8,1.92,3
+SYN_06_no_imaging_clinical_only_v2,A2,False,"""No surgical procedure done; or, done but either did not confirm presence of DVT or findings unknown; or unknown if done""",True,0.999638836929844,True,True,verified,8.8,3.23,3
+SYN_06_no_imaging_clinical_only_v2,A3_1,False,"""No imaging studies done, unknown if done, or done but results unknown""",True,0.9997362405141367,True,True,verified,8.0,1.71,3
+SYN_06_no_imaging_clinical_only_v2,A3_2,True,[],True,0.43157064382147814,False,True,verified,9.7,2.44,1: NO | 2: NO | 3: NO | 4: NO | 5: YES
+SYN_06_no_imaging_clinical_only_v2,B1_1,False,"""≥1 symptom or sign of DVT was reported""",True,0.9998975603981832,True,True,verified,7.8,1.84,1
+SYN_06_no_imaging_clinical_only_v2,B1_2,True,"[""Lower extremity DVT""]",True,0.9807851379887818,True,True,none,9.0,3.41,1: YES | 2: NO
+SYN_06_no_imaging_clinical_only_v2,B2,True,"[""Calf pain or tenderness"", ""Leg swelling or pitting oedema""]",True,0.8800385282810561,True,True,off,11.2,2.42,1: YES | 2: YES | 3: NO | 4: NO | 5: NO
+SYN_06_no_imaging_clinical_only_v2,C,False,"""D-dimer exceeded test lab's upper limit of normal.""",True,0.9999921374221724,True,True,verified,7.4,1.81,1
+SYN_06_no_imaging_clinical_only_v2,F,False,"""No""",True,,,False,verified,7.3,2.05,DETAILS_PRESENT:
+SYN_06_no_imaging_clinical_only_v2,X,False,"""No alternative diagnosis was found to explain the acute illness""",True,0.9947483833946935,True,True,verified,9.5,1.92,2
+SYN_07_thrombectomy_positive_v2,A1,False,"""No autopsy done, unknown if done, or done but results unavailable""",True,0.9968769152965224,True,True,verified,7.3,1.99,3
+SYN_07_thrombectomy_positive_v2,A2,False,"""Thrombectomy related to DVT performed""",True,0.9995995898617748,True,True,verified,7.1,3.26,1
+SYN_07_thrombectomy_positive_v2,A3_1,False,"""≥1 imaging study was done and confirmed DVT""",True,0.9999306688499134,True,True,verified,8.6,1.87,1
+SYN_07_thrombectomy_positive_v2,A3_2,True,"[""Doppler/Duplex Ultrasound""]",True,0.7229086087253475,True,True,verified,13.4,2.67,1: NO | 2: NO | 3: NO | 4: YES | 5: NO
+SYN_07_thrombectomy_positive_v2,B1_1,False,"""≥1 symptom or sign of DVT was reported""",True,0.999921955831399,True,True,verified,8.6,1.94,1
+SYN_07_thrombectomy_positive_v2,B1_2,True,"[""Lower extremity DVT""]",True,0.999933911296302,True,True,none,8.1,3.51,1: YES | 2: NO
+SYN_07_thrombectomy_positive_v2,B2,True,"[""Calf pain or tenderness"", ""Leg swelling or pitting oedema""]",True,0.22816705128139206,False,True,off,11.5,2.66,1: NO | 2: YES | 3: NO | 4: NO | 5: NO
+SYN_07_thrombectomy_positive_v2,C,False,"""D-dimer exceeded test lab's upper limit of normal.""",True,0.9999904223297715,True,True,verified,7.1,1.88,1
+SYN_07_thrombectomy_positive_v2,F,False,"""No""",True,,,False,verified,8.0,1.96,DETAILS_PRESENT:
+SYN_07_thrombectomy_positive_v2,X,False,"""No alternative diagnosis was found to explain the acute illness""",True,0.9951640418335919,True,True,verified,9.1,2.0,2
+SYN_08_autopsy_positive_v2,A1,False,"""Autopsy showed presence of DVT""",True,0.9998936142848062,True,True,verified,7.0,1.77,1
+SYN_08_autopsy_positive_v2,A2,False,"""No surgical procedure done; or, done but either did not confirm presence of DVT or findings unknown; or unknown if done""",True,0.9994019356840418,True,True,verified,9.1,3.12,3
+SYN_08_autopsy_positive_v2,A3_1,False,"""No imaging studies done, unknown if done, or done but results unknown""",True,0.9985702956729589,True,True,verified,8.1,1.71,3
+SYN_08_autopsy_positive_v2,A3_2,True,[],True,0.8423970172161467,True,True,verified,11.1,2.41,1: NO | 2: NO | 3: NO | 4: NO | 5: NO
+SYN_08_autopsy_positive_v2,B1_1,False,"""≥1 symptom or sign of DVT was reported""",True,0.9998332821529481,True,True,verified,7.3,1.75,1
+SYN_08_autopsy_positive_v2,B1_2,True,"[""Lower extremity DVT""]",True,0.9999258663762426,True,True,none,7.2,3.31,1: YES | 2: NO
+SYN_08_autopsy_positive_v2,B2,True,"[""Calf pain or tenderness"", ""Leg swelling or pitting oedema""]",True,0.7605792916139471,True,True,off,12.0,2.36,1: YES | 2: YES | 3: NO | 4: NO | 5: NO
+SYN_08_autopsy_positive_v2,C,False,"""D-dimer not tested, or tested but results unknown or not available""",True,0.9999595555124009,True,True,verified,7.2,1.82,3
+SYN_08_autopsy_positive_v2,F,False,"""No""",True,,,False,verified,6.8,1.77,DETAILS_PRESENT:
+SYN_08_autopsy_positive_v2,X,False,"""No alternative diagnosis was found to explain the acute illness""",True,0.9998159703580106,True,True,verified,7.2,1.76,2
+SYN_09_risk_factor_not_alt_diagnosis_v2,A1,False,"""No autopsy done, unknown if done, or done but results unavailable""",True,0.9992633869623283,True,True,verified,8.2,1.86,3
+SYN_09_risk_factor_not_alt_diagnosis_v2,A2,False,"""No surgical procedure done; or, done but either did not confirm presence of DVT or findings unknown; or unknown if done""",True,0.8865818285710937,True,True,verified,8.3,3.34,3
+SYN_09_risk_factor_not_alt_diagnosis_v2,A3_1,False,"""≥1 imaging study was done and confirmed DVT""",True,0.9999274744664192,True,True,verified,8.2,1.87,1
+SYN_09_risk_factor_not_alt_diagnosis_v2,A3_2,True,"[""Doppler/Duplex Ultrasound""]",True,0.7542303890129068,True,True,verified,10.9,2.59,1: NO | 2: NO | 3: NO | 4: YES | 5: NO
+SYN_09_risk_factor_not_alt_diagnosis_v2,B1_1,False,"""≥1 symptom or sign of DVT was reported""",True,0.999926700976731,True,True,verified,9.4,1.91,1
+SYN_09_risk_factor_not_alt_diagnosis_v2,B1_2,True,"[""Lower extremity DVT""]",True,0.9999606898233127,True,True,none,8.3,3.48,1: YES | 2: NO
+SYN_09_risk_factor_not_alt_diagnosis_v2,B2,True,"[""Calf pain or tenderness"", ""Leg swelling or pitting oedema""]",True,0.8608061855388267,True,True,off,10.6,2.52,1: YES | 2: YES | 3: NO | 4: NO | 5: NO
+SYN_09_risk_factor_not_alt_diagnosis_v2,C,False,"""D-dimer exceeded test lab's upper limit of normal.""",True,0.9999891106087638,True,True,verified,7.1,1.9,1
+SYN_09_risk_factor_not_alt_diagnosis_v2,F,False,"""No""",True,,,False,verified,8.8,2.07,DETAILS_PRESENT:
+SYN_09_risk_factor_not_alt_diagnosis_v2,X,False,"""No alternative diagnosis was found to explain the acute illness""",True,0.9998825899124509,True,True,verified,7.4,1.87,2
+SYN_10_unclear_sparse_record_v2,A1,False,"""No autopsy done, unknown if done, or done but results unavailable""",True,0.9992602735662851,True,True,verified,7.8,1.45,3
+SYN_10_unclear_sparse_record_v2,A2,False,"""No surgical procedure done; or, done but either did not confirm presence of DVT or findings unknown; or unknown if done""",True,0.9998032433042776,True,True,verified,8.8,2.97,3
+SYN_10_unclear_sparse_record_v2,A3_1,False,"""No imaging studies done, unknown if done, or done but results unknown""",True,0.9999230010773084,True,True,verified,6.4,1.55,3
+SYN_10_unclear_sparse_record_v2,A3_2,True,[],True,0.8440754735364356,True,True,verified,7.3,2.19,1: NO | 2: NO | 3: NO | 4: NO | 5: NO
+SYN_10_unclear_sparse_record_v2,B1_1,False,"""≥1 symptom or sign of DVT was reported""",False,0.8771846899521799,True,True,verified,8.8,1.5,1
+SYN_10_unclear_sparse_record_v2,B1_2,True,[],True,0.9889195363745802,True,True,none,9.1,3.21,1: NO | 2: NO
+SYN_10_unclear_sparse_record_v2,B2,True,"[""None of the above were present or it is unknown if any of 1-4 were present""]",True,0.8873522029464139,True,True,off,10.1,2.15,1: NO | 2: NO | 3: NO | 4: NO | 5: YES
+SYN_10_unclear_sparse_record_v2,C,False,"""D-dimer not tested, or tested but results unknown or not available""",True,0.9999520724075704,True,True,verified,6.6,1.55,3
+SYN_10_unclear_sparse_record_v2,F,False,"""No""",True,,,False,verified,9.1,1.61,DETAILS_PRESENT:
+SYN_10_unclear_sparse_record_v2,X,False,"""No alternative diagnosis was found to explain the acute illness""",True,0.8750009818797917,True,True,verified,7.5,1.46,2
+SYN_11_autopsy_negative_v2,A1,False,"""Autopsy done but showed no evidence of DVT""",True,0.9998902270068711,True,True,verified,7.0,1.73,2
+SYN_11_autopsy_negative_v2,A2,False,"""No surgical procedure done; or, done but either did not confirm presence of DVT or findings unknown; or unknown if done""",True,0.9992248373299131,True,True,verified,7.5,3.04,3
+SYN_11_autopsy_negative_v2,A3_1,False,"""No imaging studies done, unknown if done, or done but results unknown""",True,0.9656814490106245,True,True,verified,7.5,1.58,3
+SYN_11_autopsy_negative_v2,A3_2,True,[],True,0.94529272595082,True,True,verified,12.8,2.46,1: NO | 2: NO | 3: NO | 4: NO | 5: NO
+SYN_11_autopsy_negative_v2,B1_1,False,"""There was no report of a recognized DVT syndrome""",True,0.9982625918012379,True,True,verified,8.0,1.69,2
+SYN_11_autopsy_negative_v2,B1_2,True,[],True,0.9995234857997622,True,True,none,7.1,3.38,1: NO | 2: NO
+SYN_11_autopsy_negative_v2,B2,True,"[""None of the above were present or it is unknown if any of 1-4 were present""]",True,0.9962648454521498,True,True,off,9.6,2.39,1: NO | 2: NO | 3: NO | 4: NO | 5: YES
+SYN_11_autopsy_negative_v2,C,False,"""D-dimer not tested, or tested but results unknown or not available""",True,0.9999515147726342,True,True,verified,7.2,1.63,3
+SYN_11_autopsy_negative_v2,F,False,"""No""",True,,,False,verified,8.3,1.86,DETAILS_PRESENT:
+SYN_11_autopsy_negative_v2,X,False,"""An alternative diagnosis was found that explained the acute illness""",True,0.9809867024743792,True,True,verified,7.8,1.7,1
+SYN_12_other_procedure_positive_v2,A1,False,"""No autopsy done, unknown if done, or done but results unavailable""",True,0.9979496636959904,True,True,verified,8.4,1.97,3
+SYN_12_other_procedure_positive_v2,A2,False,"""Other procedure done that confirmed presence of DVT""",True,0.3006675709274291,False,True,verified,55.1,3.18,1
+SYN_12_other_procedure_positive_v2,A3_1,False,"""≥1 imaging study was done and confirmed DVT""",True,0.999944449700131,True,True,verified,8.3,1.81,1
+SYN_12_other_procedure_positive_v2,A3_2,True,"[""Doppler/Duplex Ultrasound""]",True,0.04500182213677101,False,True,verified,15.1,2.56,1: NO | 2: NO | 3: YES | 4: YES | 5: NO
+SYN_12_other_procedure_positive_v2,B1_1,False,"""≥1 symptom or sign of DVT was reported""",True,0.9999089383842995,True,True,verified,8.9,1.88,1
+SYN_12_other_procedure_positive_v2,B1_2,True,"[""Lower extremity DVT""]",True,0.9999564727161298,True,True,none,8.1,3.39,1: YES | 2: NO
+SYN_12_other_procedure_positive_v2,B2,True,"[""Calf pain or tenderness"", ""Leg swelling or pitting oedema""]",True,0.8350090991180608,True,True,off,10.0,2.45,1: YES | 2: YES | 3: NO | 4: NO | 5: NO
+SYN_12_other_procedure_positive_v2,C,False,"""D-dimer exceeded test lab's upper limit of normal.""",True,0.999979495327747,True,True,verified,6.9,1.93,1
+SYN_12_other_procedure_positive_v2,F,False,"""No""",True,,,False,verified,8.0,1.9,DETAILS_PRESENT:
+SYN_12_other_procedure_positive_v2,X,False,"""No alternative diagnosis was found to explain the acute illness""",True,0.9985233342497636,True,True,verified,9.8,1.92,2
+SYN_13_contrast_venography_only_v2,A1,False,"""No autopsy done, unknown if done, or done but results unavailable""",True,0.9989695253046552,True,True,verified,7.0,1.73,3
+SYN_13_contrast_venography_only_v2,A2,False,"""No surgical procedure done; or, done but either did not confirm presence of DVT or findings unknown; or unknown if done""",True,0.4872246570550187,False,True,verified,9.2,3.19,2
+SYN_13_contrast_venography_only_v2,A3_1,False,"""≥1 imaging study was done and confirmed DVT""",True,0.9996743358235269,True,True,verified,8.5,1.92,1
+SYN_13_contrast_venography_only_v2,A3_2,True,"[""Contrast venography""]",True,0.6427880858401964,True,True,verified,8.7,2.56,1: NO | 2: NO | 3: YES | 4: NO | 5: NO
+SYN_13_contrast_venography_only_v2,B1_1,False,"""≥1 symptom or sign of DVT was reported""",True,0.999880772852425,True,True,verified,9.3,1.86,1
+SYN_13_contrast_venography_only_v2,B1_2,True,"[""Lower extremity DVT""]",True,0.9999443430783217,True,True,none,7.9,3.34,1: YES | 2: NO
+SYN_13_contrast_venography_only_v2,B2,True,"[""Calf pain or tenderness"", ""Leg swelling or pitting oedema""]",True,0.9047987351572456,True,True,off,17.8,2.57,1: YES | 2: YES | 3: NO | 4: NO | 5: NO
+SYN_13_contrast_venography_only_v2,C,False,"""D-dimer exceeded test lab's upper limit of normal.""",True,0.9999807943968492,True,True,verified,7.0,1.88,1
+SYN_13_contrast_venography_only_v2,F,False,"""No""",True,,,False,verified,8.2,1.92,DETAILS_PRESENT:
+SYN_13_contrast_venography_only_v2,X,False,"""No alternative diagnosis was found to explain the acute illness""",True,0.996098867387512,True,True,verified,8.7,1.76,2
+SYN_14_other_imaging_incidental_v2,A1,False,"""No autopsy done, unknown if done, or done but results unavailable""",True,0.9980735237283943,True,True,verified,7.6,1.81,3
+SYN_14_other_imaging_incidental_v2,A2,False,"""No surgical procedure done; or, done but either did not confirm presence of DVT or findings unknown; or unknown if done""",True,0.9876508968043579,True,True,verified,8.8,3.19,3
+SYN_14_other_imaging_incidental_v2,A3_1,False,"""≥1 imaging study was done and confirmed DVT""",True,0.9997793109785562,True,True,verified,8.0,1.89,1
+SYN_14_other_imaging_incidental_v2,A3_2,True,"[""Other""]",True,0.00016254590445160825,False,True,verified,10.4,2.64,1: NO | 2: YES | 3: NO | 4: NO | 5: NO
+SYN_14_other_imaging_incidental_v2,B1_1,False,"""≥1 symptom or sign of DVT was reported""",True,0.9998530719146623,True,True,verified,8.5,1.85,1
+SYN_14_other_imaging_incidental_v2,B1_2,True,"[""Lower extremity DVT""]",True,0.9999486011066563,True,True,none,9.2,3.5,1: YES | 2: NO
+SYN_14_other_imaging_incidental_v2,B2,True,"[""Calf pain or tenderness""]",True,0.9334419490674425,True,True,off,9.1,2.57,1: YES | 2: NO | 3: NO | 4: NO | 5: NO
+SYN_14_other_imaging_incidental_v2,C,False,"""D-dimer exceeded test lab's upper limit of normal.""",True,0.9999884937888629,True,True,verified,7.0,1.94,1
+SYN_14_other_imaging_incidental_v2,F,False,"""No""",True,,,False,verified,7.6,1.94,DETAILS_PRESENT:
+SYN_14_other_imaging_incidental_v2,X,False,"""No alternative diagnosis was found to explain the acute illness""",True,0.9955336352551906,True,True,verified,8.9,1.91,2
+SYN_15_ddimer_negative_low_probability_v2,A1,False,"""No autopsy done, unknown if done, or done but results unavailable""",True,0.9988449699815125,True,True,verified,8.0,1.91,3
+SYN_15_ddimer_negative_low_probability_v2,A2,False,"""No surgical procedure done; or, done but either did not confirm presence of DVT or findings unknown; or unknown if done""",True,0.9997725853371564,True,True,verified,8.9,3.23,3
+SYN_15_ddimer_negative_low_probability_v2,A3_1,False,"""No imaging studies done, unknown if done, or done but results unknown""",True,0.9899401107895043,True,True,verified,7.5,1.92,3
+SYN_15_ddimer_negative_low_probability_v2,A3_2,True,[],True,0.8114079805113307,True,True,verified,23.6,2.57,1: NO | 2: NO | 3: NO | 4: NO | 5: NO
+SYN_15_ddimer_negative_low_probability_v2,B1_1,False,"""≥1 symptom or sign of DVT was reported""",True,0.769991592731651,True,True,verified,11.2,1.65,1
+SYN_15_ddimer_negative_low_probability_v2,B1_2,True,[],True,0.9904702290869086,True,True,none,6.8,3.37,1: NO | 2: NO
+SYN_15_ddimer_negative_low_probability_v2,B2,True,"[""Calf pain or tenderness""]",True,0.9887755859091745,True,True,off,15.5,2.5,1: YES | 2: NO | 3: NO | 4: NO | 5: NO
+SYN_15_ddimer_negative_low_probability_v2,C,False,"""D-dimer tested and was within test lab's range of normal""",True,0.9999557475796859,True,True,verified,7.1,1.87,2
+SYN_15_ddimer_negative_low_probability_v2,F,False,"""No""",True,,,False,verified,7.9,1.97,DETAILS_PRESENT:
+SYN_15_ddimer_negative_low_probability_v2,X,False,"""No alternative diagnosis was found to explain the acute illness""",True,0.8958076851685759,True,True,verified,10.5,1.98,2
+SYN_16_no_dvt_syndrome_reported_v2,A1,False,"""No autopsy done, unknown if done, or done but results unavailable""",True,0.9987185925753648,True,True,verified,8.1,1.88,3
+SYN_16_no_dvt_syndrome_reported_v2,A2,False,"""No surgical procedure done; or, done but either did not confirm presence of DVT or findings unknown; or unknown if done""",True,0.9996422255051766,True,True,verified,8.8,3.17,3
+SYN_16_no_dvt_syndrome_reported_v2,A3_1,False,"""No imaging studies done, unknown if done, or done but results unknown""",True,0.9998850119697517,True,True,verified,7.2,1.9,3
+SYN_16_no_dvt_syndrome_reported_v2,A3_2,True,[],True,0.9486834296162183,True,True,verified,9.1,2.49,1: NO | 2: NO | 3: NO | 4: NO | 5: NO
+SYN_16_no_dvt_syndrome_reported_v2,B1_1,False,"""There was no report of a recognized DVT syndrome""",True,0.9975085086477282,True,True,verified,9.3,1.83,2
+SYN_16_no_dvt_syndrome_reported_v2,B1_2,True,[],True,0.9997422554051941,True,True,none,8.3,3.55,1: NO | 2: NO
+SYN_16_no_dvt_syndrome_reported_v2,B2,True,"[""None of the above were present or it is unknown if any of 1-4 were present""]",True,0.9954480344450027,True,True,off,9.3,2.48,1: NO | 2: NO | 3: NO | 4: NO | 5: YES
+SYN_16_no_dvt_syndrome_reported_v2,C,False,"""D-dimer not tested, or tested but results unknown or not available""",True,0.9999453077086097,True,True,verified,6.9,1.79,3
+SYN_16_no_dvt_syndrome_reported_v2,F,False,"""No""",True,,,False,verified,13.6,1.96,DETAILS_PRESENT:
+SYN_16_no_dvt_syndrome_reported_v2,X,False,"""An alternative diagnosis was found that explained the acute illness""",True,0.9998334649939937,True,True,verified,7.4,2.0,1
+SYN_17_diagnosis_no_details_v2,A1,False,"""No autopsy done, unknown if done, or done but results unavailable""",True,0.9991659101777984,True,True,verified,7.9,1.4,3
+SYN_17_diagnosis_no_details_v2,A2,False,"""No surgical procedure done; or, done but either did not confirm presence of DVT or findings unknown; or unknown if done""",True,0.99907924658182,True,True,verified,7.7,2.99,3
+SYN_17_diagnosis_no_details_v2,A3_1,False,"""No imaging studies done, unknown if done, or done but results unknown""",True,0.9989802295033199,True,True,verified,7.9,1.32,3
+SYN_17_diagnosis_no_details_v2,A3_2,True,[],True,0.5896331294269,True,True,verified,10.8,2.2,1: NO | 2: NO | 3: NO | 4: NO | 5: NO
+SYN_17_diagnosis_no_details_v2,B1_1,False,"""It is unknown if there was a report of a DVT syndrome""",True,0.7665038812296494,True,True,verified,10.8,1.5,3
+SYN_17_diagnosis_no_details_v2,B1_2,True,"[""Lower extremity DVT""]",True,0.9983811088192157,True,True,none,7.1,3.11,1: YES | 2: NO
+SYN_17_diagnosis_no_details_v2,B2,True,"[""None of the above were present or it is unknown if any of 1-4 were present""]",True,0.9984973318307367,True,True,off,9.6,3.93,1: NO | 2: NO | 3: NO | 4: NO | 5: YES
+SYN_17_diagnosis_no_details_v2,C,False,"""D-dimer not tested, or tested but results unknown or not available""",True,0.99966522156144,True,True,verified,8.0,1.43,3
+SYN_17_diagnosis_no_details_v2,F,False,"""Yes""",True,,,False,verified,7.1,1.49,DETAILS_PRESENT:
+SYN_17_diagnosis_no_details_v2,X,False,"""No alternative diagnosis was found to explain the acute illness""",True,0.9773939076993335,True,True,verified,7.6,1.46,2
+SYN_18_absent_pulses_true_positive_v2,A1,False,"""No autopsy done, unknown if done, or done but results unavailable""",True,0.9992281331695667,True,True,verified,8.8,1.89,3
+SYN_18_absent_pulses_true_positive_v2,A2,False,"""No surgical procedure done; or, done but either did not confirm presence of DVT or findings unknown; or unknown if done""",True,0.9553612913130901,True,True,verified,9.1,3.3,3
+SYN_18_absent_pulses_true_positive_v2,A3_1,False,"""≥1 imaging study was done and confirmed DVT""",True,0.9999122554989507,True,True,verified,8.6,1.86,1
+SYN_18_absent_pulses_true_positive_v2,A3_2,True,"[""Doppler/Duplex Ultrasound""]",True,0.9020614480628794,True,True,verified,9.2,2.69,1: NO | 2: NO | 3: NO | 4: YES | 5: NO
+SYN_18_absent_pulses_true_positive_v2,B1_1,False,"""≥1 symptom or sign of DVT was reported""",True,0.9999435685471242,True,True,verified,8.3,1.99,1
+SYN_18_absent_pulses_true_positive_v2,B1_2,True,"[""Lower extremity DVT""]",True,0.9999249671069826,True,True,none,9.5,3.22,1: YES | 2: NO
+SYN_18_absent_pulses_true_positive_v2,B2,True,"[""Calf pain or tenderness"", ""Leg swelling or pitting oedema"", ""Absent pulses in legs or arms""]",True,0.8783177580177113,True,True,off,12.3,2.91,1: YES | 2: YES | 3: YES | 4: NO | 5: NO
+SYN_18_absent_pulses_true_positive_v2,C,False,"""D-dimer exceeded test lab's upper limit of normal.""",True,0.9999869320034398,True,True,verified,7.2,1.95,1
+SYN_18_absent_pulses_true_positive_v2,F,False,"""No""",True,,,False,verified,9.1,2.05,DETAILS_PRESENT:
+SYN_18_absent_pulses_true_positive_v2,X,False,"""No alternative diagnosis was found to explain the acute illness""",True,0.9828981862124891,True,True,verified,10.0,1.92,2
+SYN_19_autopsy_positive_upper_extremity_v2,A1,False,"""Autopsy showed presence of DVT""",True,0.9998504649763134,True,True,verified,7.5,1.64,1
+SYN_19_autopsy_positive_upper_extremity_v2,A2,False,"""No surgical procedure done; or, done but either did not confirm presence of DVT or findings unknown; or unknown if done""",True,0.9991894505501822,True,True,verified,8.7,3.2,3
+SYN_19_autopsy_positive_upper_extremity_v2,A3_1,False,"""No imaging studies done, unknown if done, or done but results unknown""",True,0.997851886670853,True,True,verified,7.9,1.59,3
+SYN_19_autopsy_positive_upper_extremity_v2,A3_2,True,[],True,0.8612796580563304,True,True,verified,9.1,2.49,1: NO | 2: NO | 3: NO | 4: NO | 5: NO
+SYN_19_autopsy_positive_upper_extremity_v2,B1_1,False,"""≥1 symptom or sign of DVT was reported""",True,0.9996986675505832,True,True,verified,7.9,1.8,1
+SYN_19_autopsy_positive_upper_extremity_v2,B1_2,True,"[""Upper extremity DVT""]",True,0.9981236987255255,True,True,none,9.0,3.4,1: NO | 2: YES
+SYN_19_autopsy_positive_upper_extremity_v2,B2,True,"[""Redness, warmth, or pain in one or more extremities""]",True,0.9949447492296173,True,True,off,9.4,2.86,1: NO | 2: NO | 3: NO | 4: YES | 5: NO
+SYN_19_autopsy_positive_upper_extremity_v2,C,False,"""D-dimer not tested, or tested but results unknown or not available""",True,0.9999337599139604,True,True,verified,7.4,1.8,3
+SYN_19_autopsy_positive_upper_extremity_v2,F,False,"""No""",True,,,False,verified,7.6,1.88,DETAILS_PRESENT:
+SYN_19_autopsy_positive_upper_extremity_v2,X,False,"""No alternative diagnosis was found to explain the acute illness""",True,0.9997881385018726,True,True,verified,7.2,1.84,2
+SYN_20_autopsy_negative_trauma_v2,A1,False,"""Autopsy done but showed no evidence of DVT""",True,0.999889918728385,True,True,verified,6.9,1.72,2
+SYN_20_autopsy_negative_trauma_v2,A2,False,"""No surgical procedure done; or, done but either did not confirm presence of DVT or findings unknown; or unknown if done""",True,0.9992273227669807,True,True,verified,8.0,3.25,3
+SYN_20_autopsy_negative_trauma_v2,A3_1,False,"""No imaging studies done, unknown if done, or done but results unknown""",True,0.9716799359066345,True,True,verified,7.5,1.72,3
+SYN_20_autopsy_negative_trauma_v2,A3_2,True,[],True,0.9171174272278324,True,True,verified,8.9,2.37,1: NO | 2: NO | 3: NO | 4: NO | 5: NO
+SYN_20_autopsy_negative_trauma_v2,B1_1,False,"""There was no report of a recognized DVT syndrome""",True,0.994976535758394,True,True,verified,8.3,1.81,2
+SYN_20_autopsy_negative_trauma_v2,B1_2,True,[],True,0.9994332000474972,True,True,none,8.2,3.37,1: NO | 2: NO
+SYN_20_autopsy_negative_trauma_v2,B2,True,"[""None of the above were present or it is unknown if any of 1-4 were present""]",True,0.9957755606198258,True,True,off,21.2,2.84,1: NO | 2: NO | 3: NO | 4: NO | 5: YES
+SYN_20_autopsy_negative_trauma_v2,C,False,"""D-dimer not tested, or tested but results unknown or not available""",True,0.9998747595914362,True,True,verified,7.9,1.79,3
+SYN_20_autopsy_negative_trauma_v2,F,False,"""No""",True,,,False,verified,7.0,1.89,DETAILS_PRESENT:
+SYN_20_autopsy_negative_trauma_v2,X,False,"""An alternative diagnosis was found that explained the acute illness""",True,0.8887718043689505,True,True,verified,6.8,1.7,1
+SYN_21_alt_diagnosis_bakers_cyst_v2,A1,False,"""No autopsy done, unknown if done, or done but results unavailable""",True,0.9986055319611963,True,True,verified,7.4,1.84,3
+SYN_21_alt_diagnosis_bakers_cyst_v2,A2,False,"""No surgical procedure done; or, done but either did not confirm presence of DVT or findings unknown; or unknown if done""",True,0.9983371863445273,True,True,verified,9.0,3.29,3
+SYN_21_alt_diagnosis_bakers_cyst_v2,A3_1,False,"""≥1 imaging study was done but didn't confirm DVT""",True,0.9998857507734397,True,True,verified,7.2,1.92,2
+SYN_21_alt_diagnosis_bakers_cyst_v2,A3_2,True,"[""Compression ultrasonography""]",False,0.8577354859469719,True,True,verified,10.6,2.55,1: YES | 2: NO | 3: NO | 4: NO | 5: NO
+SYN_21_alt_diagnosis_bakers_cyst_v2,B1_1,False,"""≥1 symptom or sign of DVT was reported""",True,0.979603238231509,True,True,verified,10.5,1.86,1
+SYN_21_alt_diagnosis_bakers_cyst_v2,B1_2,True,[],True,0.9997931007762497,True,True,none,8.4,3.47,1: NO | 2: NO
+SYN_21_alt_diagnosis_bakers_cyst_v2,B2,True,"[""Calf pain or tenderness"", ""Leg swelling or pitting oedema""]",True,0.8956801828939234,True,True,off,10.4,2.89,1: YES | 2: YES | 3: NO | 4: NO | 5: NO
+SYN_21_alt_diagnosis_bakers_cyst_v2,C,False,"""D-dimer tested and was within test lab's range of normal""",True,0.9999546848742233,True,True,verified,7.6,1.69,2
+SYN_21_alt_diagnosis_bakers_cyst_v2,F,False,"""No""",True,,,False,verified,7.7,1.88,DETAILS_PRESENT:
+SYN_21_alt_diagnosis_bakers_cyst_v2,X,False,"""An alternative diagnosis was found that explained the acute illness""",True,0.9999717523262763,True,True,verified,8.1,1.87,1
+SYN_22_upper_extremity_effort_thrombosis_v2,A1,False,"""No autopsy done, unknown if done, or done but results unavailable""",True,0.9988578025413254,True,True,verified,8.1,1.83,3
+SYN_22_upper_extremity_effort_thrombosis_v2,A2,False,"""No surgical procedure done; or, done but either did not confirm presence of DVT or findings unknown; or unknown if done""",True,0.9291287262550081,True,True,verified,8.4,3.28,3
+SYN_22_upper_extremity_effort_thrombosis_v2,A3_1,False,"""≥1 imaging study was done and confirmed DVT""",True,0.9997396448869706,True,True,verified,8.7,1.7,1
+SYN_22_upper_extremity_effort_thrombosis_v2,A3_2,True,"[""Doppler/Duplex Ultrasound""]",True,0.9519965627485063,True,True,verified,12.2,2.44,1: NO | 2: NO | 3: NO | 4: YES | 5: NO
+SYN_22_upper_extremity_effort_thrombosis_v2,B1_1,False,"""≥1 symptom or sign of DVT was reported""",True,0.9997088624405019,True,True,verified,8.8,1.77,1
+SYN_22_upper_extremity_effort_thrombosis_v2,B1_2,True,"[""Upper extremity DVT""]",True,0.999848593159196,True,True,none,8.6,3.43,1: NO | 2: YES
+SYN_22_upper_extremity_effort_thrombosis_v2,B2,True,"[""Redness, warmth, or pain in one or more extremities""]",True,0.9984320156795172,True,True,off,11.4,2.94,1: NO | 2: NO | 3: NO | 4: YES | 5: NO
+SYN_22_upper_extremity_effort_thrombosis_v2,C,False,"""D-dimer exceeded test lab's upper limit of normal.""",True,0.999986000177512,True,True,verified,7.0,1.76,1
+SYN_22_upper_extremity_effort_thrombosis_v2,F,False,"""No""",True,,,False,verified,8.4,2.0,DETAILS_PRESENT:
+SYN_22_upper_extremity_effort_thrombosis_v2,X,False,"""No alternative diagnosis was found to explain the acute illness""",True,0.951659188736109,True,True,verified,9.2,1.87,2
+SYN_23_other_procedure_ivc_filter_v2,A1,False,"""No autopsy done, unknown if done, or done but results unavailable""",True,0.9991820112898153,True,True,verified,7.1,1.78,3
+SYN_23_other_procedure_ivc_filter_v2,A2,False,"""Other procedure done that confirmed presence of DVT""",True,0.8761709292778612,True,True,verified,40.1,3.17,2
+SYN_23_other_procedure_ivc_filter_v2,A3_1,False,"""≥1 imaging study was done and confirmed DVT""",True,0.999902375473314,True,True,verified,8.1,1.86,1
+SYN_23_other_procedure_ivc_filter_v2,A3_2,True,"[""Doppler/Duplex Ultrasound""]",True,0.04377138219620119,False,True,verified,18.4,2.66,1: NO | 2: NO | 3: YES | 4: YES | 5: NO
+SYN_23_other_procedure_ivc_filter_v2,B1_1,False,"""≥1 symptom or sign of DVT was reported""",True,0.9997592742531809,True,True,verified,8.2,1.91,1
+SYN_23_other_procedure_ivc_filter_v2,B1_2,True,"[""Lower extremity DVT""]",True,0.9999607793508103,True,True,none,8.1,3.48,1: YES | 2: NO
+SYN_23_other_procedure_ivc_filter_v2,B2,True,"[""Calf pain or tenderness"", ""Leg swelling or pitting oedema""]",True,0.7562458752759265,True,True,off,16.1,2.82,1: YES | 2: YES | 3: NO | 4: NO | 5: NO
+SYN_23_other_procedure_ivc_filter_v2,C,False,"""D-dimer exceeded test lab's upper limit of normal.""",True,0.9999455297887097,True,True,verified,7.1,1.9,1
+SYN_23_other_procedure_ivc_filter_v2,F,False,"""No""",True,,,False,verified,9.1,1.99,DETAILS_PRESENT:
+SYN_23_other_procedure_ivc_filter_v2,X,False,"""No alternative diagnosis was found to explain the acute illness""",True,0.9970647523046663,True,True,verified,9.5,1.86,2
+SYN_24_imaging_inconclusive_no_alt_diagnosis_v2,A1,False,"""No autopsy done, unknown if done, or done but results unavailable""",True,0.999031955835009,True,True,verified,7.7,1.85,3
+SYN_24_imaging_inconclusive_no_alt_diagnosis_v2,A2,False,"""No surgical procedure done; or, done but either did not confirm presence of DVT or findings unknown; or unknown if done""",True,0.998567945572775,True,True,verified,9.9,3.21,3
+SYN_24_imaging_inconclusive_no_alt_diagnosis_v2,A3_1,False,"""≥1 imaging study was done but didn't confirm DVT""",True,0.9999196364820779,True,True,verified,8.3,1.81,2
+SYN_24_imaging_inconclusive_no_alt_diagnosis_v2,A3_2,True,"[""Compression ultrasonography""]",False,0.8814093447852194,True,True,verified,9.6,2.56,1: YES | 2: NO | 3: NO | 4: NO | 5: NO
+SYN_24_imaging_inconclusive_no_alt_diagnosis_v2,B1_1,False,"""≥1 symptom or sign of DVT was reported""",True,0.98937423666028,True,True,verified,8.7,1.77,1
+SYN_24_imaging_inconclusive_no_alt_diagnosis_v2,B1_2,True,[],True,0.9967875001704016,True,True,none,9.7,3.49,1: NO | 2: NO
+SYN_24_imaging_inconclusive_no_alt_diagnosis_v2,B2,True,"[""Calf pain or tenderness""]",True,0.9905977239933585,True,True,off,9.8,2.66,1: YES | 2: NO | 3: NO | 4: NO | 5: NO
+SYN_24_imaging_inconclusive_no_alt_diagnosis_v2,C,False,"""D-dimer exceeded test lab's upper limit of normal.""",True,0.9999555345084663,True,True,verified,7.0,1.76,1
+SYN_24_imaging_inconclusive_no_alt_diagnosis_v2,F,False,"""No""",True,,,False,verified,8.2,1.88,DETAILS_PRESENT:
+SYN_24_imaging_inconclusive_no_alt_diagnosis_v2,X,False,"""No alternative diagnosis was found to explain the acute illness""",True,0.9998104830509054,True,True,verified,6.9,1.97,2
+SYN_25_thrombectomy_postpartum_v2,A1,False,"""No autopsy done, unknown if done, or done but results unavailable""",True,0.9984292967112368,True,True,verified,7.2,1.91,3
+SYN_25_thrombectomy_postpartum_v2,A2,False,"""Thrombectomy related to DVT performed""",True,0.9993207818336391,True,True,verified,7.5,3.23,1
+SYN_25_thrombectomy_postpartum_v2,A3_1,False,"""≥1 imaging study was done and confirmed DVT""",True,0.9999235411597706,True,True,verified,8.4,1.94,1
+SYN_25_thrombectomy_postpartum_v2,A3_2,True,"[""Doppler/Duplex Ultrasound""]",True,0.8487985072698003,True,True,verified,8.7,2.71,1: NO | 2: NO | 3: NO | 4: YES | 5: NO
+SYN_25_thrombectomy_postpartum_v2,B1_1,False,"""≥1 symptom or sign of DVT was reported""",True,0.9998956311782254,True,True,verified,9.1,1.98,1
+SYN_25_thrombectomy_postpartum_v2,B1_2,True,"[""Lower extremity DVT""]",True,0.9999407376645981,True,True,none,9.9,3.38,1: YES | 2: NO
+SYN_25_thrombectomy_postpartum_v2,B2,True,"[""Calf pain or tenderness"", ""Leg swelling or pitting oedema""]",True,0.2947781772310132,False,True,off,89.3,2.89,1: YES | 2: YES | 3: NO | 4: YES | 5: NO
+SYN_25_thrombectomy_postpartum_v2,C,False,"""D-dimer exceeded test lab's upper limit of normal.""",True,0.9999853570265135,True,True,verified,7.1,1.87,1
+SYN_25_thrombectomy_postpartum_v2,F,False,"""No""",True,,,False,verified,8.0,2.05,DETAILS_PRESENT:
+SYN_25_thrombectomy_postpartum_v2,X,False,"""No alternative diagnosis was found to explain the acute illness""",True,0.9968001844162493,True,True,verified,9.7,2.0,2
+SYN_26_ct_venography_pregnancy_pelvic_v2,A1,False,"""No autopsy done, unknown if done, or done but results unavailable""",True,0.9992615799975317,True,True,verified,8.1,2.03,3
+SYN_26_ct_venography_pregnancy_pelvic_v2,A2,False,"""No surgical procedure done; or, done but either did not confirm presence of DVT or findings unknown; or unknown if done""",True,0.8368475385358682,True,True,verified,7.4,3.26,3
+SYN_26_ct_venography_pregnancy_pelvic_v2,A3_1,False,"""≥1 imaging study was done and confirmed DVT""",True,0.999768155156305,True,True,verified,8.5,1.95,1
+SYN_26_ct_venography_pregnancy_pelvic_v2,A3_2,True,"[""CT or MR venography""]",True,0.6387922265960273,True,True,verified,11.2,2.76,1: NO | 2: YES | 3: NO | 4: NO | 5: NO
+SYN_26_ct_venography_pregnancy_pelvic_v2,B1_1,False,"""≥1 symptom or sign of DVT was reported""",True,0.9999127015462134,True,True,verified,9.2,1.97,1
+SYN_26_ct_venography_pregnancy_pelvic_v2,B1_2,True,"[""Lower extremity DVT""]",True,0.9997942781443772,True,True,none,9.5,3.59,1: YES | 2: NO
+SYN_26_ct_venography_pregnancy_pelvic_v2,B2,True,"[""Calf pain or tenderness"", ""Leg swelling or pitting oedema""]",True,0.862524528618435,True,True,off,38.1,2.99,1: YES | 2: YES | 3: NO | 4: NO | 5: NO
+SYN_26_ct_venography_pregnancy_pelvic_v2,C,False,"""D-dimer exceeded test lab's upper limit of normal.""",True,0.9999834048538769,True,True,verified,7.1,1.96,1
+SYN_26_ct_venography_pregnancy_pelvic_v2,F,False,"""No""",True,,,False,verified,7.9,2.03,DETAILS_PRESENT:
+SYN_26_ct_venography_pregnancy_pelvic_v2,X,False,"""No alternative diagnosis was found to explain the acute illness""",True,0.9947271173972773,True,True,verified,8.2,1.86,2
+SYN_27_contrast_venography_absent_pulses_v2,A1,False,"""No autopsy done, unknown if done, or done but results unavailable""",True,0.9993968508440109,True,True,verified,8.0,2.02,3
+SYN_27_contrast_venography_absent_pulses_v2,A2,False,"""No surgical procedure done; or, done but either did not confirm presence of DVT or findings unknown; or unknown if done""",True,0.7017338066174801,True,True,verified,11.2,3.24,3
+SYN_27_contrast_venography_absent_pulses_v2,A3_1,False,"""≥1 imaging study was done and confirmed DVT""",True,0.9998404474176302,True,True,verified,7.9,1.98,1
+SYN_27_contrast_venography_absent_pulses_v2,A3_2,True,"[""Contrast venography""]",True,0.8906231574135649,True,True,verified,9.6,2.64,1: NO | 2: NO | 3: YES | 4: NO | 5: NO
+SYN_27_contrast_venography_absent_pulses_v2,B1_1,False,"""≥1 symptom or sign of DVT was reported""",True,0.9999000215442695,True,True,verified,8.4,1.9,1
+SYN_27_contrast_venography_absent_pulses_v2,B1_2,True,"[""Lower extremity DVT""]",True,0.9999250916162624,True,True,none,8.7,3.57,1: YES | 2: NO
+SYN_27_contrast_venography_absent_pulses_v2,B2,True,"[""Calf pain or tenderness"", ""Leg swelling or pitting oedema"", ""Absent pulses in legs or arms""]",True,0.5544014445520243,True,True,off,41.5,3.0,1: YES | 2: YES | 3: YES | 4: NO | 5: NO
+SYN_27_contrast_venography_absent_pulses_v2,C,False,"""D-dimer exceeded test lab's upper limit of normal.""",True,0.9999818221589748,True,True,verified,7.3,2.01,1
+SYN_27_contrast_venography_absent_pulses_v2,F,False,"""No""",True,,,False,verified,7.9,1.96,DETAILS_PRESENT:
+SYN_27_contrast_venography_absent_pulses_v2,X,False,"""No alternative diagnosis was found to explain the acute illness""",True,0.9914369380387839,True,True,verified,9.6,2.0,2
+SYN_28_other_modality_plethysmography_v2,A1,False,"""No autopsy done, unknown if done, or done but results unavailable""",True,0.9985355265021851,True,True,verified,7.3,1.95,3
+SYN_28_other_modality_plethysmography_v2,A2,False,"""No surgical procedure done; or, done but either did not confirm presence of DVT or findings unknown; or unknown if done""",True,0.8811408858917236,True,True,verified,30.1,3.25,3
+SYN_28_other_modality_plethysmography_v2,A3_1,False,"""≥1 imaging study was done and confirmed DVT""",True,0.8163153250765202,True,True,verified,10.3,1.86,1
+SYN_28_other_modality_plethysmography_v2,A3_2,True,"[""Other""]",True,0.9937599794233005,True,True,verified,10.0,2.67,1: NO | 2: NO | 3: NO | 4: NO | 5: YES
+SYN_28_other_modality_plethysmography_v2,B1_1,False,"""≥1 symptom or sign of DVT was reported""",True,0.9999038522324859,True,True,verified,8.4,1.8,1
+SYN_28_other_modality_plethysmography_v2,B1_2,True,"[""Lower extremity DVT""]",True,0.9991182004677452,True,True,none,7.7,3.49,1: YES | 2: NO
+SYN_28_other_modality_plethysmography_v2,B2,True,"[""Calf pain or tenderness"", ""Leg swelling or pitting oedema""]",True,0.857827096746369,True,True,off,11.0,2.95,1: YES | 2: YES | 3: NO | 4: NO | 5: NO
+SYN_28_other_modality_plethysmography_v2,C,False,"""D-dimer exceeded test lab's upper limit of normal.""",True,0.9999887461859619,True,True,verified,7.1,1.91,1
+SYN_28_other_modality_plethysmography_v2,F,False,"""No""",True,,,False,verified,7.8,2.05,DETAILS_PRESENT:
+SYN_28_other_modality_plethysmography_v2,X,False,"""No alternative diagnosis was found to explain the acute illness""",True,0.9966958010526461,True,True,verified,8.9,1.84,2
+SYN_29_diagnosis_no_details_second_v2,A1,False,"""No autopsy done, unknown if done, or done but results unavailable""",True,0.9982940832844794,True,True,verified,8.1,1.45,3
+SYN_29_diagnosis_no_details_second_v2,A2,False,"""No surgical procedure done; or, done but either did not confirm presence of DVT or findings unknown; or unknown if done""",True,0.9991952982001322,True,True,verified,8.0,3.05,3
+SYN_29_diagnosis_no_details_second_v2,A3_1,False,"""No imaging studies done, unknown if done, or done but results unknown""",True,0.9973695663739741,True,True,verified,9.1,1.53,3
+SYN_29_diagnosis_no_details_second_v2,A3_2,True,[],True,0.6574877336011499,True,True,verified,9.4,2.07,1: NO | 2: NO | 3: NO | 4: NO | 5: NO
+SYN_29_diagnosis_no_details_second_v2,B1_1,False,"""It is unknown if there was a report of a DVT syndrome""",True,0.6332065224346913,True,True,verified,9.4,1.42,3
+SYN_29_diagnosis_no_details_second_v2,B1_2,True,"[""Lower extremity DVT""]",True,0.999692827175314,True,True,none,7.0,3.12,1: YES | 2: NO
+SYN_29_diagnosis_no_details_second_v2,B2,True,"[""None of the above were present or it is unknown if any of 1-4 were present""]",True,0.9978903936418573,True,True,off,10.6,2.58,1: NO | 2: NO | 3: NO | 4: NO | 5: YES
+SYN_29_diagnosis_no_details_second_v2,C,False,"""D-dimer not tested, or tested but results unknown or not available""",True,0.9997821559743786,True,True,verified,8.2,1.54,3
+SYN_29_diagnosis_no_details_second_v2,F,False,"""Yes""",True,,,False,verified,8.0,1.38,DETAILS_PRESENT:
+SYN_29_diagnosis_no_details_second_v2,X,False,"""No alternative diagnosis was found to explain the acute illness""",True,0.9685050412160963,True,True,verified,8.0,1.47,2
+SYN_30_confirmed_dvt_normal_ddimer_v2,A1,False,"""No autopsy done, unknown if done, or done but results unavailable""",True,0.999015369654405,True,True,verified,8.8,1.89,3
+SYN_30_confirmed_dvt_normal_ddimer_v2,A2,False,"""No surgical procedure done; or, done but either did not confirm presence of DVT or findings unknown; or unknown if done""",True,0.8474181281123381,True,True,verified,8.5,3.17,3
+SYN_30_confirmed_dvt_normal_ddimer_v2,A3_1,False,"""≥1 imaging study was done and confirmed DVT""",True,0.9998609650687472,True,True,verified,8.5,1.77,1
+SYN_30_confirmed_dvt_normal_ddimer_v2,A3_2,True,"[""Doppler/Duplex Ultrasound""]",True,0.6162333049308687,True,True,verified,9.6,2.57,1: NO | 2: NO | 3: NO | 4: YES | 5: NO
+SYN_30_confirmed_dvt_normal_ddimer_v2,B1_1,False,"""≥1 symptom or sign of DVT was reported""",True,0.999922676497515,True,True,verified,7.4,1.83,1
+SYN_30_confirmed_dvt_normal_ddimer_v2,B1_2,True,"[""Lower extremity DVT""]",True,0.9999418604804965,True,True,none,8.1,3.51,1: YES | 2: NO
+SYN_30_confirmed_dvt_normal_ddimer_v2,B2,True,"[""Calf pain or tenderness"", ""Leg swelling or pitting oedema""]",True,0.822141880721368,True,True,off,10.5,2.99,1: YES | 2: YES | 3: NO | 4: NO | 5: NO
+SYN_30_confirmed_dvt_normal_ddimer_v2,C,False,"""D-dimer tested and was within test lab's range of normal""",True,0.9999141102665754,True,True,verified,7.4,1.83,2
+SYN_30_confirmed_dvt_normal_ddimer_v2,F,False,"""No""",True,,,False,verified,8.9,1.95,DETAILS_PRESENT:
+SYN_30_confirmed_dvt_normal_ddimer_v2,X,False,"""No alternative diagnosis was found to explain the acute illness""",True,0.9921031457111464,True,True,verified,9.8,1.85,2
+SYN_31_diagnosis_no_details_upper_v2,A1,False,"""No autopsy done, unknown if done, or done but results unavailable""",True,0.9994994453285834,True,True,verified,8.7,1.53,3
+SYN_31_diagnosis_no_details_upper_v2,A2,False,"""No surgical procedure done; or, done but either did not confirm presence of DVT or findings unknown; or unknown if done""",True,0.9994780399541062,True,True,verified,7.8,3.03,3
+SYN_31_diagnosis_no_details_upper_v2,A3_1,False,"""No imaging studies done, unknown if done, or done but results unknown""",True,0.9997283659616674,True,True,verified,8.8,1.51,3
+SYN_31_diagnosis_no_details_upper_v2,A3_2,True,[],True,0.45116934034753026,False,True,verified,8.6,2.18,1: NO | 2: NO | 3: NO | 4: NO | 5: YES
+SYN_31_diagnosis_no_details_upper_v2,B1_1,False,"""It is unknown if there was a report of a DVT syndrome""",True,0.47772210978383667,False,True,verified,21.2,1.45,1
+SYN_31_diagnosis_no_details_upper_v2,B1_2,True,"[""Upper extremity DVT""]",True,0.9502240507003702,True,True,none,7.4,3.14,1: NO | 2: YES
+SYN_31_diagnosis_no_details_upper_v2,B2,True,"[""None of the above were present or it is unknown if any of 1-4 were present""]",True,0.9969840468131043,True,True,off,9.6,2.68,1: NO | 2: NO | 3: NO | 4: NO | 5: YES
+SYN_31_diagnosis_no_details_upper_v2,C,False,"""D-dimer not tested, or tested but results unknown or not available""",True,0.9997911512930081,True,True,verified,9.0,1.48,3
+SYN_31_diagnosis_no_details_upper_v2,F,False,"""Yes""",True,,,False,verified,8.9,1.44,DETAILS_PRESENT:
+SYN_31_diagnosis_no_details_upper_v2,X,False,"""No alternative diagnosis was found to explain the acute illness""",True,0.9581678304513263,True,True,verified,8.8,1.44,2
+SYN_32_discharge_letter_dvt_v2,A1,False,"""No autopsy done, unknown if done, or done but results unavailable""",True,0.9982258025700657,True,True,verified,7.8,1.4,3
+SYN_32_discharge_letter_dvt_v2,A2,False,"""No surgical procedure done; or, done but either did not confirm presence of DVT or findings unknown; or unknown if done""",True,0.9993004122124066,True,True,verified,7.3,2.98,3
+SYN_32_discharge_letter_dvt_v2,A3_1,False,"""No imaging studies done, unknown if done, or done but results unknown""",True,0.9994783677465247,True,True,verified,8.5,1.42,3
+SYN_32_discharge_letter_dvt_v2,A3_2,True,[],True,0.5773725672559181,True,True,verified,8.7,2.05,1: NO | 2: NO | 3: NO | 4: NO | 5: NO
+SYN_32_discharge_letter_dvt_v2,B1_1,False,"""It is unknown if there was a report of a DVT syndrome""",True,0.6047882529814358,True,True,verified,8.7,1.46,3
+SYN_32_discharge_letter_dvt_v2,B1_2,True,"[""Lower extremity DVT""]",True,0.9154921754261549,True,True,none,7.0,3.14,1: YES | 2: NO
+SYN_32_discharge_letter_dvt_v2,B2,True,"[""None of the above were present or it is unknown if any of 1-4 were present""]",True,0.9981146241007552,True,True,off,11.7,2.63,1: NO | 2: NO | 3: NO | 4: NO | 5: YES
+SYN_32_discharge_letter_dvt_v2,C,False,"""D-dimer not tested, or tested but results unknown or not available""",True,0.9997592847728762,True,True,verified,7.1,1.45,3
+SYN_32_discharge_letter_dvt_v2,F,False,"""Yes""",True,,,False,verified,7.1,1.52,DETAILS_PRESENT:
+SYN_32_discharge_letter_dvt_v2,X,False,"""No alternative diagnosis was found to explain the acute illness""",True,0.9858764781466829,True,True,verified,10.0,1.45,2
+SYN_33_transfer_note_dvt_upper_v2,A1,False,"""No autopsy done, unknown if done, or done but results unavailable""",True,0.9987807515096078,True,True,verified,9.0,1.33,3
+SYN_33_transfer_note_dvt_upper_v2,A2,False,"""No surgical procedure done; or, done but either did not confirm presence of DVT or findings unknown; or unknown if done""",True,0.99933670151956,True,True,verified,8.1,2.95,3
+SYN_33_transfer_note_dvt_upper_v2,A3_1,False,"""No imaging studies done, unknown if done, or done but results unknown""",True,0.9986796528371813,True,True,verified,8.3,1.38,3
+SYN_33_transfer_note_dvt_upper_v2,A3_2,True,[],True,0.5107427717108622,True,True,verified,29.5,2.16,1: NO | 2: NO | 3: NO | 4: NO | 5: NO
+SYN_33_transfer_note_dvt_upper_v2,B1_1,False,"""It is unknown if there was a report of a DVT syndrome""",True,0.7366659921766812,True,True,verified,10.5,1.45,3
+SYN_33_transfer_note_dvt_upper_v2,B1_2,True,"[""Upper extremity DVT""]",True,0.9974225003170044,True,True,none,6.9,3.15,1: NO | 2: YES
+SYN_33_transfer_note_dvt_upper_v2,B2,True,"[""None of the above were present or it is unknown if any of 1-4 were present""]",True,0.998197036370422,True,True,off,11.5,2.62,1: NO | 2: NO | 3: NO | 4: NO | 5: YES
+SYN_33_transfer_note_dvt_upper_v2,C,False,"""D-dimer not tested, or tested but results unknown or not available""",True,0.9996811321666068,True,True,verified,10.7,1.46,3
+SYN_33_transfer_note_dvt_upper_v2,F,False,"""Yes""",True,,,False,verified,7.3,1.58,DETAILS_PRESENT:
+SYN_33_transfer_note_dvt_upper_v2,X,False,"""No alternative diagnosis was found to explain the acute illness""",True,0.9682322064556759,True,True,verified,18.7,1.49,2
+SYN_34_dvt_reported_other_facility_v2,A1,False,"""No autopsy done, unknown if done, or done but results unavailable""",True,0.9993080099151443,True,True,verified,8.2,1.42,3
+SYN_34_dvt_reported_other_facility_v2,A2,False,"""No surgical procedure done; or, done but either did not confirm presence of DVT or findings unknown; or unknown if done""",True,0.9993779118504147,True,True,verified,8.3,2.81,3
+SYN_34_dvt_reported_other_facility_v2,A3_1,False,"""No imaging studies done, unknown if done, or done but results unknown""",True,0.9993379636393366,True,True,verified,9.4,1.34,3
+SYN_34_dvt_reported_other_facility_v2,A3_2,True,[],True,0.8212032455953183,True,True,verified,12.0,2.16,1: NO | 2: NO | 3: NO | 4: NO | 5: NO
+SYN_34_dvt_reported_other_facility_v2,B1_1,False,"""It is unknown if there was a report of a DVT syndrome""",True,0.7848188577330112,True,True,verified,9.5,1.44,3
+SYN_34_dvt_reported_other_facility_v2,B1_2,True,"[""Lower extremity DVT""]",True,0.7206853310884958,True,True,none,7.0,3.24,1: YES | 2: NO
+SYN_34_dvt_reported_other_facility_v2,B2,True,"[""None of the above were present or it is unknown if any of 1-4 were present""]",True,0.9935228586595067,True,True,off,14.3,2.66,1: NO | 2: NO | 3: NO | 4: NO | 5: YES
+SYN_34_dvt_reported_other_facility_v2,C,False,"""D-dimer not tested, or tested but results unknown or not available""",True,0.9997595867605714,True,True,verified,7.9,1.51,3
+SYN_34_dvt_reported_other_facility_v2,F,False,"""Yes""",True,,,False,verified,8.6,1.58,DETAILS_PRESENT:
+SYN_34_dvt_reported_other_facility_v2,X,False,"""No alternative diagnosis was found to explain the acute illness""",True,0.9721547458709766,True,True,verified,14.6,1.46,2
+SYN_35_specialist_note_dvt_lower_v2,A1,False,"""No autopsy done, unknown if done, or done but results unavailable""",True,0.9989729866218949,True,True,verified,7.9,1.42,3
+SYN_35_specialist_note_dvt_lower_v2,A2,False,"""No surgical procedure done; or, done but either did not confirm presence of DVT or findings unknown; or unknown if done""",True,0.999069885245483,True,True,verified,8.8,3.03,3
+SYN_35_specialist_note_dvt_lower_v2,A3_1,False,"""No imaging studies done, unknown if done, or done but results unknown""",True,0.9996322071040901,True,True,verified,7.9,1.48,3
+SYN_35_specialist_note_dvt_lower_v2,A3_2,True,[],True,0.8356835838820413,True,True,verified,10.7,2.16,1: NO | 2: NO | 3: NO | 4: NO | 5: NO
+SYN_35_specialist_note_dvt_lower_v2,B1_1,False,"""It is unknown if there was a report of a DVT syndrome""",True,0.7055432427851127,True,True,verified,9.9,1.34,3
+SYN_35_specialist_note_dvt_lower_v2,B1_2,True,"[""Lower extremity DVT""]",True,0.9788139209297544,True,True,none,7.2,3.08,1: YES | 2: NO
+SYN_35_specialist_note_dvt_lower_v2,B2,True,"[""None of the above were present or it is unknown if any of 1-4 were present""]",True,0.9977283495167235,True,True,off,8.8,2.7,1: NO | 2: NO | 3: NO | 4: NO | 5: YES
+SYN_35_specialist_note_dvt_lower_v2,C,False,"""D-dimer not tested, or tested but results unknown or not available""",True,0.9997993003681105,True,True,verified,7.8,1.43,3
+SYN_35_specialist_note_dvt_lower_v2,F,False,"""Yes""",True,,,False,verified,8.0,1.55,DETAILS_PRESENT:
+SYN_35_specialist_note_dvt_lower_v2,X,False,"""No alternative diagnosis was found to explain the acute illness""",True,0.9774766492599728,True,True,verified,7.5,1.31,2
+SYN_36_calf_muscle_tear_v2,A1,False,"""No autopsy done, unknown if done, or done but results unavailable""",True,0.9986783321843672,True,True,verified,7.4,1.93,3
+SYN_36_calf_muscle_tear_v2,A2,False,"""No surgical procedure done; or, done but either did not confirm presence of DVT or findings unknown; or unknown if done""",True,0.999747990278718,True,True,verified,8.4,3.19,3
+SYN_36_calf_muscle_tear_v2,A3_1,False,"""≥1 imaging study was done but didn't confirm DVT""",True,0.9999114288272231,True,True,verified,7.6,1.87,2
+SYN_36_calf_muscle_tear_v2,A3_2,True,"[""Compression ultrasonography""]",False,0.7813123016966261,True,True,verified,8.4,2.67,1: YES | 2: NO | 3: NO | 4: NO | 5: NO
+SYN_36_calf_muscle_tear_v2,B1_1,False,"""≥1 symptom or sign of DVT was reported""",True,0.989276069313425,True,True,verified,10.1,1.87,1
+SYN_36_calf_muscle_tear_v2,B1_2,True,[],True,0.9998683614118334,True,True,none,8.7,3.39,1: NO | 2: NO
+SYN_36_calf_muscle_tear_v2,B2,True,"[""Calf pain or tenderness"", ""Leg swelling or pitting oedema""]",True,0.8665410604470614,True,True,off,9.6,2.92,1: YES | 2: YES | 3: NO | 4: NO | 5: NO
+SYN_36_calf_muscle_tear_v2,C,False,"""D-dimer not tested, or tested but results unknown or not available""",True,0.9999470711394804,True,True,verified,7.0,2.03,3
+SYN_36_calf_muscle_tear_v2,F,False,"""No""",True,,,False,verified,7.4,1.99,DETAILS_PRESENT:
+SYN_36_calf_muscle_tear_v2,X,False,"""An alternative diagnosis was found that explained the acute illness""",True,0.9999479574756956,True,True,verified,9.8,1.87,1
+SYN_37_lymphatic_obstruction_v2,A1,False,"""No autopsy done, unknown if done, or done but results unavailable""",True,0.9989840529003232,True,True,verified,7.1,1.98,3
+SYN_37_lymphatic_obstruction_v2,A2,False,"""No surgical procedure done; or, done but either did not confirm presence of DVT or findings unknown; or unknown if done""",True,0.999333427695635,True,True,verified,9.3,3.19,3
+SYN_37_lymphatic_obstruction_v2,A3_1,False,"""≥1 imaging study was done but didn't confirm DVT""",True,0.9999274837611652,True,True,verified,7.9,2.0,2
+SYN_37_lymphatic_obstruction_v2,A3_2,True,"[""Doppler/Duplex Ultrasound""]",False,0.7686982143009569,True,True,verified,35.1,2.7,1: NO | 2: NO | 3: NO | 4: YES | 5: NO
+SYN_37_lymphatic_obstruction_v2,B1_1,False,"""≥1 symptom or sign of DVT was reported""",True,0.6324025504277315,True,True,verified,10.1,2.03,1
+SYN_37_lymphatic_obstruction_v2,B1_2,True,[],True,0.9998533596486101,True,True,none,8.8,3.46,1: NO | 2: NO
+SYN_37_lymphatic_obstruction_v2,B2,True,"[""Leg swelling or pitting oedema""]",True,0.9911826951148501,True,True,off,24.7,3.04,1: NO | 2: YES | 3: NO | 4: NO | 5: NO
+SYN_37_lymphatic_obstruction_v2,C,False,"""D-dimer tested and was within test lab's range of normal""",True,0.9999559604342794,True,True,verified,7.1,1.98,2
+SYN_37_lymphatic_obstruction_v2,F,False,"""No""",True,,,False,verified,7.7,2.06,DETAILS_PRESENT:
+SYN_37_lymphatic_obstruction_v2,X,False,"""An alternative diagnosis was found that explained the acute illness""",True,0.9998884392559353,True,True,verified,8.7,1.96,1
+SYN_38_compartment_syndrome_v2,A1,False,"""No autopsy done, unknown if done, or done but results unavailable""",True,0.9988791951029079,True,True,verified,6.9,1.89,3
+SYN_38_compartment_syndrome_v2,A2,False,"""No surgical procedure done; or, done but either did not confirm presence of DVT or findings unknown; or unknown if done""",True,0.9986377456403577,True,True,verified,8.5,3.29,3
+SYN_38_compartment_syndrome_v2,A3_1,False,"""≥1 imaging study was done but didn't confirm DVT""",True,0.9998338056200894,True,True,verified,8.0,1.91,2
+SYN_38_compartment_syndrome_v2,A3_2,True,"[""Doppler/Duplex Ultrasound""]",False,0.8484878307454026,True,True,verified,12.1,2.48,1: NO | 2: NO | 3: NO | 4: YES | 5: NO
+SYN_38_compartment_syndrome_v2,B1_1,False,"""≥1 symptom or sign of DVT was reported""",True,0.8706393663992675,True,True,verified,10.0,1.95,1
+SYN_38_compartment_syndrome_v2,B1_2,True,[],True,0.9997820777183363,True,True,none,7.8,3.44,1: NO | 2: NO
+SYN_38_compartment_syndrome_v2,B2,True,"[""Calf pain or tenderness"", ""Leg swelling or pitting oedema"", ""Absent pulses in legs or arms""]",True,0.732819134947777,True,True,off,11.2,2.8,1: YES | 2: YES | 3: YES | 4: NO | 5: NO
+SYN_38_compartment_syndrome_v2,C,False,"""D-dimer not tested, or tested but results unknown or not available""",True,0.999942636513754,True,True,verified,7.1,1.95,3
+SYN_38_compartment_syndrome_v2,F,False,"""No""",True,,,False,verified,8.4,1.91,DETAILS_PRESENT:
+SYN_38_compartment_syndrome_v2,X,False,"""An alternative diagnosis was found that explained the acute illness""",True,0.9998498254666845,True,True,verified,9.0,1.87,1
+SYN_39_external_vein_compression_v2,A1,False,"""No autopsy done, unknown if done, or done but results unavailable""",True,0.9989097345214767,True,True,verified,8.3,1.93,3
+SYN_39_external_vein_compression_v2,A2,False,"""No surgical procedure done; or, done but either did not confirm presence of DVT or findings unknown; or unknown if done""",True,0.9995385691503119,True,True,verified,8.8,3.22,3
+SYN_39_external_vein_compression_v2,A3_1,False,"""≥1 imaging study was done but didn't confirm DVT""",True,0.9998433006520291,True,True,verified,8.5,1.93,2
+SYN_39_external_vein_compression_v2,A3_2,True,"[""Doppler/Duplex Ultrasound""]",False,0.6715055443398027,True,True,verified,10.2,2.66,1: NO | 2: NO | 3: NO | 4: YES | 5: NO
+SYN_39_external_vein_compression_v2,B1_1,False,"""≥1 symptom or sign of DVT was reported""",True,0.9328360369785063,True,True,verified,10.4,1.95,1
+SYN_39_external_vein_compression_v2,B1_2,True,[],True,0.9989818721422361,True,True,none,7.2,3.5,1: NO | 2: NO
+SYN_39_external_vein_compression_v2,B2,True,"[""Leg swelling or pitting oedema""]",True,0.987253243256737,True,True,off,10.0,3.02,1: NO | 2: YES | 3: NO | 4: NO | 5: NO
+SYN_39_external_vein_compression_v2,C,False,"""D-dimer tested and was within test lab's range of normal""",True,0.9999177540980896,True,True,verified,7.2,1.89,2
+SYN_39_external_vein_compression_v2,F,False,"""No""",True,,,False,verified,9.7,1.96,DETAILS_PRESENT:
+SYN_39_external_vein_compression_v2,X,False,"""An alternative diagnosis was found that explained the acute illness""",True,0.9991510667812101,True,True,verified,8.2,1.95,1
+SYN_40_imaging_report_pending_v2,A1,False,"""No autopsy done, unknown if done, or done but results unavailable""",True,0.9993927554643283,True,True,verified,8.2,1.86,3
+SYN_40_imaging_report_pending_v2,A2,False,"""No surgical procedure done; or, done but either did not confirm presence of DVT or findings unknown; or unknown if done""",True,0.999280570963374,True,True,verified,9.4,3.3,3
+SYN_40_imaging_report_pending_v2,A3_1,False,"""No imaging studies done, unknown if done, or done but results unknown""",True,0.9999121905119293,True,True,verified,9.2,1.88,3
+SYN_40_imaging_report_pending_v2,A3_2,True,"[""Compression ultrasonography""]",False,0.07007074543479054,False,True,verified,40.2,2.52,1: NO | 2: NO | 3: NO | 4: YES | 5: NO
+SYN_40_imaging_report_pending_v2,B1_1,False,"""≥1 symptom or sign of DVT was reported""",True,0.9998422799162041,True,True,verified,8.9,1.89,1
+SYN_40_imaging_report_pending_v2,B1_2,True,[],True,0.5217926674423173,True,True,none,10.6,3.32,1: NO | 2: NO
+SYN_40_imaging_report_pending_v2,B2,True,"[""Calf pain or tenderness"", ""Leg swelling or pitting oedema""]",True,0.8772825391539751,True,True,off,10.4,2.94,1: YES | 2: YES | 3: NO | 4: NO | 5: NO
+SYN_40_imaging_report_pending_v2,C,False,"""D-dimer exceeded test lab's upper limit of normal.""",True,0.9999738574901793,True,True,verified,7.7,1.91,1
+SYN_40_imaging_report_pending_v2,F,False,"""No""",True,,,False,verified,8.1,1.9,DETAILS_PRESENT:
+SYN_40_imaging_report_pending_v2,X,False,"""No alternative diagnosis was found to explain the acute illness""",True,0.9926837674560307,True,True,verified,9.2,1.88,2
