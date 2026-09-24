@@ -462,7 +462,9 @@ default negativo. La ricostruzione passa dal costruttore Pydantic e non da
 **`apply_details_gate(...)`** riguarda la sola sezione F. Legge la riga
 `DETAILS_PRESENT` che l'hint di F chiede al modello — un giudizio fattuale,
 non una mappatura sullo schema — e ne deriva meccanicamente l'etichetta:
-dettagli presenti implica `"No"`, assenti implica `"Yes"`. Se la riga manca, la
+dettagli presenti implica `"No"`, assenti implica `"Yes"`. La mappatura presume
+che una diagnosi sia riportata: su un record senza diagnosi e senza reperti
+trasforma un `"No"` corretto in `"Yes"`. Se la riga manca, la
 funzione non fa nulla e si fida del modello anziché far fallire la sezione.
 Attualmente il gate è spento in `config.SECTION_GATES_ENABLED`.
 

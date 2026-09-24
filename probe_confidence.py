@@ -116,18 +116,82 @@ def mass(token, accept):
 
 
 def score_single(logprobs, n, chosen):
-    """p(chosen) among the valid option numbers, and the scorer's own pick."""
+    """p(chosen) among the valid option numbers, the scorer's own pick, and
+    whether the number came after other text.
+
+    Read at the first token that is a valid option number. When the model wrote
+    something before it, as F does when its hint asks for a DETAILS_PRESENT
+    line, the probability is conditioned on that text.
+    """
+    after_text = False
     for token in logprobs:
-        if not token["token"].strip():
+        word = token["token"].strip()
+        if not word:
             continue
-        if not token["token"].strip().isdigit():
-            return None, None
+        if not (word.isdigit() and 1 <= int(word) <= n):
+            after_text = True
+            continue
         masses = {k: mass(token, lambda t, k=k: t.strip() == str(k)) for k in range(1, n + 1)}
         total = sum(masses.values())
         if total == 0:
-            return None, None
-        return masses[chosen] / total, max(masses, key=masses.get)
-    return None, None
+            return None, None, after_text
+        return masses[chosen] / total, max(masses, key=masses.get), after_text
+    return None, None, after_text
+
+
+def score_details(logprobs, options, chosen):
+    """F's confidence from the DETAILS_PRESENT token and the number after it.
+
+    F's hint makes present details imply "No", and absent details imply "Yes"
+    only when a diagnosis was reported, "No" otherwise. The number the model
+    writes after its DETAILS_PRESENT line carries that second condition, but
+    only for the branch it wrote. So:
+      - model wrote "no":  P(Yes) = p(no) q(Yes|no),
+                           P(No)  = p(yes) + p(no) q(No|no)    exact under the hint
+      - model wrote "yes": P(a) >= p(yes) q(a|yes)             lower bound, the
+                           "no" branch not having been generated
+
+    Returns (confidence of Agent 2's answer, scorer's own pick, method), or
+    (None, None, None) when the DETAILS_PRESENT token or the number is missing.
+    """
+    if "Yes" not in options or "No" not in options:
+        return None, None, None
+    number = {"Yes": options.index("Yes") + 1, "No": options.index("No") + 1}
+    text, p_yes = "", None
+    for position, token in enumerate(logprobs):
+        word = token["token"].strip().lower()
+        if re.search(r"DETAILS_PRESENT\s*:\s*$", text) and (word.startswith("yes") or word.startswith("no")):
+            yes = mass(token, lambda t: t.strip().lower().startswith("yes"))
+            no = mass(token, lambda t: t.strip().lower().startswith("no"))
+            if yes + no == 0:
+                return None, None, None
+            p_yes, branch = yes / (yes + no), ("yes" if word.startswith("yes") else "no")
+            rest = logprobs[position + 1:]
+            break
+        text += token["token"]
+    if p_yes is None:
+        return None, None, None
+
+    n = len(options)
+    q = None
+    for token in rest:
+        word = token["token"].strip()
+        if word.isdigit() and 1 <= int(word) <= n:
+            masses = {k: mass(token, lambda t, k=k: t.strip() == str(k)) for k in range(1, n + 1)}
+            total = sum(masses.values())
+            if total:
+                q = {label: masses[k] / total for label, k in number.items()}
+            own = "Yes" if int(word) == number["Yes"] else "No"
+            break
+    if q is None:
+        return None, None, None
+
+    answer = "Yes" if chosen == number["Yes"] else "No"
+    if branch == "no":
+        p = {"Yes": (1 - p_yes) * q["Yes"], "No": p_yes + (1 - p_yes) * q["No"]}
+        return p[answer], number[own], "details_exact"
+    p_branch = {"Yes": p_yes * q["Yes"], "No": p_yes * q["No"]}
+    return p_branch[answer], number[own], "details_lower_bound"
 
 
 def score_multi(logprobs, n, chosen):
@@ -211,28 +275,46 @@ def main():
             prompt = build_prompt(entry.get("evidence"), entry.get("brighton_context") or "",
                                   hint, options, multi)
             started = time.time()
-            reply = chat(prompt, 8 * len(options) + 8 if multi else 4)
+            # A single-choice answer is one token, but F's hint makes the model
+            # write a DETAILS_PRESENT line first, which alone takes several.
+            reply = chat(prompt, 8 * len(options) + 8 if multi else 32)
             seconds = time.time() - started
             logprobs = reply.get("logprobs") or []
+            method = None
             if multi:
                 confidence, own = score_multi(logprobs, len(options), chosen)
-                agrees = None if own is None else own == chosen
+                after_text, method = False, "multi"
             else:
-                confidence, own = score_single(logprobs, len(options), chosen)
-                agrees = None if own is None else own == chosen
+                confidence, own, method = (None, None, None)
+                after_text = False
+                if section == "F" and "DETAILS_PRESENT" in reply["message"]["content"]:
+                    confidence, own, method = score_details(logprobs, options, chosen)
+                if confidence is None:
+                    confidence, own, after_text = score_single(logprobs, len(options), chosen)
+                    method = "single"
+            agrees = None if own is None else own == chosen
 
             rows.append({
                 "record": record, "section": section, "multi": multi,
                 "answer": json.dumps(answer, ensure_ascii=False),
                 "correct": correct, "confidence": confidence, "scorer_agrees": agrees,
-                "format_ok": confidence is not None, "hint": hint_state,
+                "format_ok": confidence is not None, "method": method,
+                "after_text": after_text,
+                "hint": hint_state,
                 "agent2_seconds": entry.get("agent2_seconds"),
                 "scorer_seconds": round(seconds, 2),
+                "done_reason": reply.get("done_reason"),
                 "scorer_output": reply["message"]["content"].strip().replace("\n", " | ")[:120],
             })
             shown = "n/a" if confidence is None else f"{confidence:.4f}"
             mark = {True: "ok", False: "WRONG", None: "?"}[correct]
-            print(f"    {section:5s} {mark:5s} conf {shown:>7s}  {seconds:5.1f}s", flush=True)
+            note = "  (after text)" if after_text else ""
+            if method and method.startswith("details"):
+                note = f"  ({method})"
+            if confidence is None:
+                note += (f"  done_reason={reply.get('done_reason')} "
+                         f"output={reply['message']['content'].strip()[:60]!r}")
+            print(f"    {section:5s} {mark:5s} conf {shown:>7s}  {seconds:5.1f}s{note}", flush=True)
 
     with open(csv_path, "w", newline="", encoding="utf-8") as handle:
         writer = csv.DictWriter(handle, fieldnames=list(rows[0].keys()))
@@ -256,6 +338,21 @@ def main():
     a_time = auroc([-r["agent2_seconds"] for r in timed], [r["correct"] for r in timed])
     print(f"AUROC confidence: {'n/a' if a_conf is None else f'{a_conf:.3f}'}   "
           f"AUROC agent2_seconds (baseline): {'n/a' if a_time is None else f'{a_time:.3f}'}")
+    print(f"answers read after other text: {sum(r['after_text'] for r in rows)}   "
+          f"methods: { {m: sum(r['method'] == m for r in rows) for m in sorted({str(r['method']) for r in rows})} }")
+
+    def fmt(value):
+        return "n/a" if value is None else f"{value:.3f}"
+
+    for kind, is_multi in (("single choice", False), ("multiple choice", True)):
+        part = [r for r in scored if r["multi"] == is_multi]
+        part_timed = [r for r in part if r["agent2_seconds"] is not None]
+        values = sorted(r["confidence"] for r in part)
+        median = f"{values[len(values) // 2]:.4f}" if values else "n/a"
+        print(f"  {kind:16s} n={len(part):4d}  wrong={sum(not r['correct'] for r in part):3d}  "
+              f"median conf {median}  "
+              f"AUROC conf {fmt(auroc([r['confidence'] for r in part], [r['correct'] for r in part]))}  "
+              f"AUROC time {fmt(auroc([-r['agent2_seconds'] for r in part_timed], [r['correct'] for r in part_timed]))}")
     if wrong:
         print("\nwrong sections, lowest confidence first (rank among all scored):")
         for r in sorted(wrong, key=lambda r: r["confidence"]):

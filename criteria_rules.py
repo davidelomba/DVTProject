@@ -89,8 +89,11 @@ def apply_details_gate(section_key: str, section_result, reasoning_text: str):
     line instead of from the answer it selected.
 
     F asks whether the diagnosis was reported WITHOUT details, so "Yes" means
-    no supporting detail was given and "No" means details were present (or the
-    diagnosis was not reported at all). That inversion is where Agent 2 was
+    a diagnosis was reported with no supporting detail and "No" means details
+    were present or no diagnosis was reported at all. The mapping here reads
+    only DETAILS_PRESENT, so it assumes a diagnosis was reported: on a record
+    with neither a diagnosis nor a finding it turns a correct "No" into "Yes".
+    The inversion between details and answer is where Agent 2 was
     observed to contradict itself: its prose could correctly identify specific
     findings and its FINAL_OPTION/FINAL_ANSWER lines still answer "Yes". Both
     lines agreeing with each other, the cross-check in agents.evaluate_section
@@ -120,7 +123,8 @@ def apply_details_gate(section_key: str, section_result, reasoning_text: str):
         return section_result, reasoning_text
 
     details_present = match.group(1).lower() == "yes"
-    # The schema's "Yes"/"No" are inverted with respect to the presence of details.
+    # The schema's "Yes"/"No" are inverted with respect to the presence of
+    # details. Absent details map to "Yes" whether or not a diagnosis was reported.
     correct_answer = "No" if details_present else "Yes"
 
     field_name = list(type(section_result).model_fields.keys())[0]
