@@ -217,18 +217,26 @@ SECTION_HINTS = {
     # option it then chooses.
     "A2": (
         "CRITICAL FOR A2: Pay extreme attention to ANY negations preceding surgical terms. "
-        "If the clinical record explicitly states that a surgical procedure was denied, "
-        "not performed, or is absent, you MUST NOT select options 1 or 2. "
+        "If the clinical record explicitly states that a surgical procedure was not "
+        "performed, was refused, or is absent, you MUST NOT select options 1 or 2. "
+        "An imaging study done on its own, such as an ultrasound or a CT or MR "
+        "venography, is not a procedure and does not count here."
     ),
     "A3_1": (
-        "A NEGATIVE result is still a result: a study reporting compressible veins, "
-        "no thrombosis, or DVT ruled out was performed and did not confirm DVT. "
-        "Option 3's 'result not reported' means the report is missing, not that it "
-        "says there is no DVT. An autopsy is not an imaging study."
+        "A study that found no DVT still has a result: compressible veins, no "
+        "thrombosis, DVT ruled out or an inconclusive finding mean the study was done "
+        "and did not confirm DVT, which is option 2. Option 3's 'results unknown' "
+        "means the report is missing or not yet available, not that it says there is "
+        "no DVT. An autopsy is not an imaging study."
     ),
     "A3_2": (
-        "An imaging test that is none of the four named modalities, such as impedance "
-        "plethysmography or a CT performed for another purpose, is 'Other'."
+        "Select only the studies that CONFIRMED DVT: a study that was done and did not "
+        "confirm it is not selected, and if no study confirmed DVT, answer none as "
+        "described below. A venography performed during an interventional procedure "
+        "is part of that procedure and is not selected here. An imaging test that is "
+        "none of the four named modalities is 'Other': for example an impedance "
+        "plethysmography, or a CT scan that is not a venography and shows the thrombus "
+        "while done for another purpose."
     ),
     "B1_1": (
         "The difference between the last two options is what you know about the "
@@ -237,7 +245,8 @@ SECTION_HINTS = {
         "have signs or symptoms, for example 'no leg swelling', 'no calf pain'. "
         "Choose 'It is unknown' when the record leaves you not knowing whether "
         "the patient had them: a note stating that it contains no symptom "
-        "section, or silent on the matter, is this case. The absence of a report "
+        "section, or a record that says nothing about symptoms, is this case. The "
+        "absence of a report "
         "is not a report of absence."
     ),
     "B2": (
@@ -275,7 +284,7 @@ SECTION_HINTS = {
         "stated as a bare conclusion with no supporting finding of any kind. Then "
         "continue with your reasoning as instructed below.\n"
         "This criterion applies only when a diagnosis of DVT was actually reported in "
-        "the record. If no diagnosis is reported at all, select 'No': there is no "
+        "the record. If no diagnosis of DVT is reported, select 'No': there is no "
         "report to describe as detailed or undetailed.\n"
         "This criterion asks if the diagnosis was reported 'WITHOUT details'. If such "
         "details are present you MUST select 'No', even when the finding is not itself "

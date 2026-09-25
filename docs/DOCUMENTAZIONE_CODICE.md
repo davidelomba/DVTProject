@@ -542,7 +542,10 @@ che il valore forzato viene dalla regola e la classe si legge da
 `SECTION_MODELS`. Questo permette a una regola di riempire una sezione che una
 valutazione fallita aveva lasciato vuota. Sovrascrive solo quando il valore
 corrente differisce da quello forzato, per non riempire il log di voci in cui
-Agent 2 era già d'accordo.
+Agent 2 era già d'accordo. Quando sovrascrive, aggiunge alla voce della sezione
+nell'audit log la nota `[SYSTEM OVERRIDE]` e la chiave `overridden_by`, con il
+nome della sezione sorgente (`A3_1` o `B2`); `confidence.score_record` la usa per
+assegnare la confidenza.
 
 ---
 
@@ -677,14 +680,23 @@ quattro decimali, o `None`), `confidence_method` e `agent3_seconds`.
 **`score_record(form_data, audit_log)`** è il punto d'ingresso che
 `pipeline.run_pipeline` chiama. Scorre `config.SECTION_ORDER`, prende la risposta
 finale di ogni sezione da `form_data` e aggiunge i tre campi alla sua voce
-dell'audit log, stampando il valore a schermo. Assegna `confidence: None` con il
+dell'audit log, stampando il valore a schermo con **`_report`**. Una sezione con
+la chiave `overridden_by`, cioè la cui risposta è stata scritta da una regola
+cross-section, non riceve una richiesta: prende la confidenza della sezione
+sorgente, con `confidence_method` `rule:<sorgente>`, per esempio `rule:A3_1`.
+Lo fa in un secondo passaggio, perché una sorgente può venire dopo la sezione
+che la regola cambia (B2 viene dopo B1_1). La ragione è che quella risposta non è
+di Agent 2 ma della regola, e dipende interamente dalla sorgente: interrogato
+sulla sola A3_2, il modello vede l'esame eseguito e non sa che A3.1 ha stabilito
+che non ha confermato la TVP. Assegna `confidence: None` con il
 motivo in `confidence_method` in tre casi: la sezione è in
 `config.CONFIDENCE_SKIP` (`skipped`), la sezione non ha risposta (`no_answer`),
 la richiesta fallisce (`error`, con il messaggio in `confidence_error`). Un
 fallimento dell'Agent 3 non interrompe la run.
 
 I valori possibili di `confidence_method` sono quindi `single`,
-`single_after_text`, `multi`, `details_exact`, `details_lower_bound`, e, quando
+`single_after_text`, `multi`, `details_exact`, `details_lower_bound`,
+`rule:<sorgente>`, e, quando
 il numero manca, `no_number`, `incomplete_lines`, `skipped`, `no_answer`,
 `error`. Su F, se `score_details` non trova la riga o il numero, il metodo
 registrato è quello del ripiego su `score_single`.

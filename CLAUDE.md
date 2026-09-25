@@ -38,7 +38,9 @@ When something is unverified, say so.
   straight to Ollama's local `/api/chat` for the logprobs; the confidence is
   the probability the model puts on the form's answer. It never changes an
   answer. The value goes to the audit log and to the result file under
-  `_confidence`. F is in `CONFIDENCE_SKIP`.
+  `_confidence`. F is in `CONFIDENCE_SKIP`. A section a cross-section rule
+  rewrote, marked `overridden_by` in the audit log, sends no request and takes
+  its source section's confidence (`confidence_method` `rule:<source>`).
 - `docs/DOCUMENTAZIONE_CODICE.md` describes the code module by module,
   `docs/RISULTATI_SPERIMENTALI.md` holds every measurement with the
   configuration that produced it, and `docs/SCALETTA_TESI.md` the thesis
@@ -660,8 +662,24 @@ not say which governs, which is what the clinician question below is asking.
   `config.py` at 4096, the value already in force, and recorded under
   `_run_config.generation`. At 8192 one section per arm fails outright, always
   on F, with no parseable answer after three attempts; at 4096 none does.
-- **Agent 3's confidence is reliable only when it is very high.** Measured by
-  two probe scripts on stored answers, not yet by the pipeline itself. The
+- **Agent 3 inside the pipeline changes no answer, and a rule-written answer
+  needs the rule's confidence.** `output_confidence`, the reference with
+  `CONFIDENCE_ENABLED` True: 0 of 400 sections changed against
+  `output_new_reference`, 185 seconds a record against 174, SYN_03 A2 and
+  SYN_10 B1_1 at the probe's values to the fourth digit. On SYN_02, 21, 24, 36,
+  37, 38, 39 and 40 Agent 2 ticks the imaging study performed in A3_2 and the
+  cross-section rule clears it; Agent 3, asked A3_2 alone, scored the correct
+  empty answer 0.008 to 0.138. Inheriting A3_1's confidence, recomputed exactly
+  on that run, takes them to 0.9998, the values under 0.5 from 20 to 12, SYN_03
+  from 12th to 4th of 360, and the sections above 0.99 to 250, none wrong. Agent
+  2 reads those records correctly, writing that the veins are compressible, and
+  picks the study as the best description of the test performed: its A3_2 prompt
+  lists modalities and never says confirmed, a word that only the section
+  heading carries. In `output_descriptions`, headings on, it leaves all eight
+  empty but adds `Contrast venography` on SYN_12 and SYN_23, so after the rule
+  an A3_2 heading is worth -2, a prediction not run as its own arm.
+- **Agent 3's confidence is reliable only when it is very high.** The figures
+  below come from two probe scripts on stored answers. The
   logprob of the `FINAL_ANSWER` number after reasoning is saturated, above
   0.99998 on three replayed sections including SYN_10, which is wrong; hence
   the separate unreasoned request. On the stripped arm (46 errors) the AUROC is
@@ -776,7 +794,9 @@ not say which governs, which is what the clinician question below is asking.
     record says confirmed the thrombus, belong in A3.2 among the studies that
     confirmed DVT, or only in A2 as the procedure? SYN_12 and SYN_23 turn on
     it: the ground truth counts it in A2 and not in A3_2, which avoids counting
-    one event twice but is a convention the form does not state.
+    one event twice but is a convention the form does not state. The answer
+    also decides whether A3_2 should carry its heading, which fixes eight
+    records without the cross-section rule and adds this venography.
   - Does B2 option 4 apply when only calf pain is documented?
   - Does B2's "Absent pulses in legs or arms" need a pulse examination, or does
     absent flow on a Doppler study count?
@@ -839,13 +859,10 @@ not say which governs, which is what the clinician question below is asking.
   indexed into two stores. A `guideline_source` field holding the PDF name and a
   digest of the extracted text would make the context traceable the way the
   hints and the queries already are.
-- **Agent 3 has not run inside the pipeline.** The probes sent the same prompt
-  as `confidence.py` but scored the answer before the cross-section rules. On
-  the stripped arm the rules and the context are off, so its figures hold for
-  `confidence.py` as they are. The reference needs a confirming run in its own
-  directory with `CONFIDENCE_ENABLED = True`; `compare_runs` against it must
-  show zero changed answers. The 0.99 threshold still needs an arm with hints
-  on and more errors, such as 200/40/3.
+- **Agent 3's 0.99 threshold is untested with hints on and many errors.** The
+  stripped arm has 46 errors and no hints, the reference hints and 2 errors. An
+  arm such as 200/40/3 with `CONFIDENCE_ENABLED` True would settle it.
+  Inheritance from B2's rule has never been observed.
 - Test whether the TRANSCRIPTION RULE in `AGENTIC_EXTRACTOR_SYSTEM_PROMPT` does
   anything: it governs a string the code discards.
 - **The extractor prompt never says a negation is evidence**, while the
