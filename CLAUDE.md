@@ -139,20 +139,22 @@ BRIGHTON_CONTEXT_ENABLED = True
 SECTION_DESCRIPTIONS_ENABLED = False
 SECTION_HINTS_ENABLED    = True
 SECTION_HINTS_DISABLED   = {"B2"}
-CONFIDENCE_ENABLED       = False
+CONFIDENCE_ENABLED       = True
 ```
 
-The measured reference ran with the keyword and details gates off and
-`absent_pulses` on; `absent_pulses` never fired under qwen3.6:27b, so removing
-the gates changes none of its answers. The cross-section rules have no switch
-and encode the form's structure rather than a model weakness.
-
-`config.py` now carries hints revised against the printed questionnaire (A2,
-A3_1, A3_2, B1_1 and F), fingerprint `0d4a00c11404`, not yet measured. Every
-number below was produced with `ab63b8e5f5af`.
+The reference run is `output_hints_v2`, 2026-09-25: hints revised against the
+printed questionnaire (A2, A3_1, A3_2, B1_1 and F), fingerprint `0d4a00c11404`,
+no per-section gates, Agent 3 on. Agent 3 changes no answer, so the answers do
+not depend on `CONFIDENCE_ENABLED`. Every arm measured before that date carries
+hint fingerprint `ab63b8e5f5af` and is compared against `output_new_reference`,
+the previous reference, 398/400; the arms that ran with the keyword and details
+gates off and `absent_pulses` on are unaffected by the gates' removal, since
+`absent_pulses` never fired under qwen3.6:27b. The cross-section rules have no
+switch and encode the form's structure rather than a model weakness.
 
 Agent 1 and Agent 2 run the same model tag, which is why the reference costs 174
-seconds a record against the 250 to 310 an arm with two tags pays. They stay two
+seconds a record without Agent 3 and 184 with it, against the 250 to 310 an arm
+with two tags pays. They stay two
 separate settings: change `AGENTIC_LLM_MODEL_NAME` alone to vary the agent and
 `EVALUATOR_LLM_MODEL_NAME` alone to vary the evaluator. `LLM_MODEL_NAME` is the
 extractor of the `rag` and `full_text` baselines and the reference mode does not
@@ -224,19 +226,18 @@ belongs to the machine that produced it.
 
 ## What the measurements say
 
-On the 40-record corpus, qwen3.6:27b scores micro 99.5%, macro kappa
-0.982, two wrong sections out of 400. Eight sections of ten are at 100%; A2 and
-B1.1 miss one record each. The ten scenarios added in September score at the
-same rate as the original thirty, so the sections that had been unmeasurable
-hold up.
+On the 40-record corpus, the reference scores micro 99.75%, macro kappa 0.994,
+one wrong section out of 400, Wilson interval [98.6, 99.96]. Nine sections of
+ten are at 100%; B1.1 misses one record. The ten scenarios added in September
+score at the same rate as the original thirty, so the sections that had been
+unmeasurable hold up.
 
-**One residual error is a genuine mistake, the other is a reading the ground
-truth disagrees with.** SYN_03
-calls a CT venography A2's "other procedure"; SYN_10 counts an uncharacterised
-leg discomfort as a B1.1 symptom, citing the guideline's own list of
-non-specific signs. SYN_10 is not settled inside the project. **SYN_03 is:** a
-CT venography is an imaging study, not a procedure recovering a thrombus, and
-the ground truth is right.
+**The residual error is a reading the ground truth disagrees with, not a
+mistake.** SYN_10 counts an uncharacterised leg discomfort as a B1.1 symptom,
+citing the guideline's own list of non-specific signs, and is not settled
+inside the project. The previous reference had a second one, SYN_03, which
+called a CT venography A2's "other procedure"; that one was a genuine mistake,
+since a CT venography is an imaging study, and the revised A2 hint removed it.
 
 **What section 4.1 settles about A2 is narrower than it looked.** It names a
 *surgical or a catheterization procedure* together, so the method being
@@ -376,13 +377,17 @@ not say which governs, which is what the clinician question below is asking.
   B2's query rewrite, they move 385 to 386 of 400: five sections corrected, four
   broken, and A2 on SYN_23 fails outright with no parseable answer after three
   attempts. A2 is where the model is least stable under any intervention.
-- **Twenty-two configurations measured on the same base**, each varying one
+- **Twenty-five configurations measured on the same base**, each varying one
   component. `docs/RISULTATI_SPERIMENTALI.md` section 8 has the full per-section
-  table.
+  table. The first three rows carry the revised hints `0d4a00c11404`, the rest
+  `ab63b8e5f5af` or none.
 
   ```
                                     exact     micro    macro kappa
-  agentic_graph (reference)        398/400    99.5%      0.982
+  agentic_graph (reference)        399/400    99.75%     0.994
+  revised hints, section headings  392/399    98.2%      0.944
+  revised hints, 200/40/3          390/400    97.5%      0.946
+  previous reference, old hints    398/400    99.5%      0.982
   same, 8B agent and old B2 query  398/400    99.5%      0.982
   agentic without the context      395/400    98.75%     0.970
   raw_record                       392/400    98.0%      0.966
@@ -698,6 +703,47 @@ not say which governs, which is what the clinician question below is asking.
   the unreasoned request misreads the inversion and the diagnosis condition.
   SYN_03 A2 is fifth lowest of 400, yet SYN_13 A2, the same error type, scores
   0.993 on the stripped arm. 1.95 seconds a section.
+- **Hints revised against the printed questionnaire fix the one genuine error
+  and change nothing else.** `output_hints_v2` against `output_new_reference`,
+  the gates' removal being inert under qwen: 1 section of 400 changes, SYN_03
+  A2, whose reasoning cites the new sentence that an imaging study done on its
+  own is not a procedure. 399/400. The A3_2 hint changes how the answer is
+  reached, not the score: Agent 2 now leaves A3_2 empty on its own on the eight
+  records the rule used to clear, and no cross-section rule fires in the run.
+- **At 200/40/3 the revised hints are worth +5, and what they cannot touch is
+  coverage.** Against `output_small_control`, only the hints differing, 385 to
+  390: A2 on SYN_05 and SYN_27 stop calling imaging a procedure, A3_2 on SYN_12
+  and SYN_23 drops the intraprocedural venography citing the hint, SYN_28's
+  plethysmography is now an imaging study with a result on A3_1, which also
+  keeps the rule from clearing A3_2's `Other`; SYN_04 A3_2 loses Doppler on
+  identical evidence, the compression-versus-Doppler pairing again. So the A2
+  sentence corrected three records across two regimes and cost none with the
+  headings off. Of the ten errors left, seven are the fact not being in the
+  three fragments: X on SYN_02, 11 and 38 (no alternative diagnosis named), A3_1
+  on SYN_13 (the fragment stops after the venography is announced, and the rule
+  then clears a correct A3_2), and absent pulses on SYN_27 and 38 (both
+  fragments end on the word for pulses, cut before "not palpable"). Coverage is 60% in all three 200/40/3 arms by
+  locating each evidence fragment in the record, a different measure from the
+  66.4% quoted above. The B2 rule fires on SYN_15 and SYN_37, both corrections,
+  the first run with Agent 3 in which it does.
+- **With the revised hints the headings cost 7, and the A3_2 heading is no
+  longer needed.** `output_hints_v2_descriptions` against `output_hints_v2`:
+  A2 lost on SYN_12 and SYN_23 as in the earlier headings arm, the model reading
+  *Surgical procedure* as excluding a catheter intervention whose confirmation
+  came from imaging; B2 option 4 added on SYN_07, 25 and 27 on a literal reading
+  of "or pain", clinician question four; B2 on SYN_23 failing after three
+  attempts with no `FINAL_ANSWER` line; B1_2 filled on SYN_40. A3_2 is 40 of 40
+  without the heading, so the -2 predicted for an A3_2 heading no longer
+  applies. Headings stay off.
+- **Above 0.99 Agent 3 has not been wrong with hints on, and it cannot see
+  missing evidence.** Across the three revised-hint arms, 763 sections score
+  above 0.99 and none is wrong, including the 200/40/3 arm with ten errors. The
+  errors of the headings arm sit 2nd to 13th lowest of 359, except SYN_10. The
+  coverage errors do not: X on SYN_38 scores 0.965, SYN_02 0.897, SYN_11 0.753,
+  because Agent 3 reads the same truncated evidence as Agent 2. It flags
+  ambiguous evidence, not incomplete evidence. Rule inheritance works both ways:
+  SYN_15 and SYN_37 B1_1 take 0.9901 and 0.9968 from B2 and are right, SYN_13
+  A3_2 takes 0.4222 from a wrong A3_1.
 - Read the metrics in this order: majority baseline and gain, then kappa, then
   accuracy with its interval. Accuracy alone ranked F above A3_2 under the 8B
   model, where F gained nothing over a constant answer and A3_2 gained 13
@@ -722,8 +768,16 @@ not say which governs, which is what the clinician question below is asking.
   that states a criterion the section's options do not ask about, so an anchor
   is only as good as the match between the paper's definition and the
   questionnaire's wording — and on A2, A3_1 and B2 that match is exactly what
-  the clinician questions are about. Anchoring to Table 3, the case definition
-  the questionnaire follows, is the variant not yet tried on A2 and A3_1.
+  the clinician questions are about. The variant not yet run anchors by
+  principle rather than by content: Table 3, the case definition the
+  questionnaire follows, plus its rationale in 5.2.x and the tables it cites —
+  A1 Table 3 and 5.2.2, A2 Table 3, A3_1 and A3_2 Table 3 and Table 1, B1_1,
+  B1_2 and B2 Table 3 and 5.2.1, X Table 3, 5.2.7 and Table 2, C and F without
+  an anchor. Section 4 is background and 5.2.3's modality list contradicts
+  A3.2's options. The resolved Table 3 lacks Level 3, which the PDF extraction
+  moves past section 6, and A3_2's prompt would reach about 11,400 characters
+  with the longest record, so the token count must be checked against
+  `LLM_NUM_CTX` first.
   Text resolves with hyphenated line breaks
   (`Dop-\npler`) in both paths, which de-hyphenating would change for both at
   once and is therefore its own experiment.
@@ -738,8 +792,10 @@ not say which governs, which is what the clinician question below is asking.
   answered positively in any A section takes its level from that section alone,
   and the answers to B, C, F and X never enter. That is why a section-level
   score and the LOC are not the same measurement. Two REDCap round trips would
-  add little to it, since only two of the 40 rows differ from the ground truth,
-  `criteria_a2` on SYN_03 and `criteria_b1_1` on SYN_10. The claim worth making
+  add little to it: on the previous reference only two of the 40 rows differed
+  from the ground truth, `criteria_a2` on SYN_03 and `criteria_b1_1` on SYN_10,
+  and the current reference differs on `criteria_b1_1` of SYN_10 alone, an
+  expectation from the JSON since the export has not been rerun. The claim worth making
   is structural: count the ground-truth records carrying a positive A criterion,
   and on those the errors left in B and X cannot propagate. What the pipeline
   owes the study is a correct CSV, and that is verified, with the export read
@@ -763,9 +819,9 @@ not say which governs, which is what the clinician question below is asking.
   the corpus without seeing the output or the ground truth, then agreement at
   three levels, per section, per case decision and per LOC, the last one ordinal
   and so quadratic weighted. Discordant records go to a second clinician, and
-  that adjudicated standard is what gives each reviewer a sensitivity. Of the
-  two sections left, A2 on SYN_03 is a genuine model error and B1.1 on SYN_10 a
-  disagreement argued from the guideline; accuracy scores both as errors.
+  that adjudicated standard is what gives each reviewer a sensitivity. The one
+  section left, B1.1 on SYN_10, is a disagreement argued from the guideline,
+  and accuracy scores it as an error.
 - **A2 still rests on few records**, 4 of 40. X went from 6 positives to 9 with
   the ground-truth correction of 2026-09-15. F went from 2 positives to 7 with
   the September expansion and now scores kappa 0.918.
@@ -803,7 +859,9 @@ not say which governs, which is what the clinician question below is asking.
     one event twice but is a convention the form does not state. The answer
     also decides whether A3_2 should carry its heading, which fixes eight
     records without the cross-section rule and adds this venography.
-  - Does B2 option 4 apply when only calf pain is documented?
+  - Does B2 option 4 apply when only calf pain is documented? With the section
+    headings on, the model selects it on SYN_07, SYN_25 and SYN_27, reading
+    "or pain" literally; the ground truth does not.
   - Does B2's "Absent pulses in legs or arms" need a pulse examination, or does
     absent flow on a Doppler study count?
   - Is A3_2 or B1_2 meant to be left empty when no option applies, the printed
@@ -868,10 +926,11 @@ not say which governs, which is what the clinician question below is asking.
   indexed into two stores. A `guideline_source` field holding the PDF name and a
   digest of the extracted text would make the context traceable the way the
   hints and the queries already are.
-- **Agent 3's 0.99 threshold is untested with hints on and many errors.** The
-  stripped arm has 46 errors and no hints, the reference hints and 2 errors. An
-  arm such as 200/40/3 with `CONFIDENCE_ENABLED` True would settle it.
-  Inheritance from B2's rule has never been observed.
+- **Agent 3 cannot flag an answer wrong for lack of evidence.** Settled with
+  hints on: no section above 0.99 is wrong in the three revised-hint arms. What
+  stays open is the coverage errors of the 200/40/3 arm, scored 0.75 to 0.965
+  because Agent 3 reads the same fragments as Agent 2. Scoring against the
+  whole record instead of the evidence is one way to reach them, not measured.
 - Test whether the TRANSCRIPTION RULE in `AGENTIC_EXTRACTOR_SYSTEM_PROMPT` does
   anything: it governs a string the code discards.
 - **The extractor prompt never says a negation is evidence**, while the
@@ -889,8 +948,8 @@ not say which governs, which is what the clinician question below is asking.
   back empty, and `_run_config`; those keep provenance and the reliability
   flags, and lose the ability to reconstruct why an answer is wrong. The reduced
   form has not been designed.
-- **Two wrong sections in 400 is past what 40 records can resolve.** Each record
-  is worth 0.25 points and the 95% interval on the total is [98, 100], so a
+- **One wrong section in 400 is past what 40 records can resolve.** Each record
+  is worth 0.25 points and the 95% interval on the total is [98.6, 99.96], so a
   one-section change is not a measurable difference. What is still worth reading
   is which category an error falls into, not the total. Further tuning on this
   corpus is fitting 40 records written by their own evaluator.
