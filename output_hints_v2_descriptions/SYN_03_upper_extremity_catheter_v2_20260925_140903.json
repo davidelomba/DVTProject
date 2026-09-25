@@ -1,0 +1,51 @@
+{
+  "record_id": "SYN_03_upper_extremity_catheter_v2",
+  "a1": {
+    "answer": "No autopsy done, unknown if done, or done but results unavailable"
+  },
+  "a2": {
+    "answer": "No surgical procedure done; or, done but either did not confirm presence of DVT or findings unknown; or unknown if done"
+  },
+  "a3_1": {
+    "answer": "≥1 imaging study was done and confirmed DVT"
+  },
+  "a3_2": {
+    "studies": [
+      "CT or MR venography"
+    ]
+  },
+  "b1_1": {
+    "answer": "≥1 symptom or sign of DVT was reported"
+  },
+  "b1_2": {
+    "types": [
+      "Upper extremity DVT"
+    ]
+  },
+  "b2": {
+    "symptoms": [
+      "Redness, warmth, or pain in one or more extremities"
+    ]
+  },
+  "c": {
+    "answer": "D-dimer exceeded test lab's upper limit of normal."
+  },
+  "f": {
+    "answer": "No"
+  },
+  "x": {
+    "answer": "No alternative diagnosis was found to explain the acute illness"
+  },
+  "_confidence": {
+    "A1": 0.9992,
+    "A2": 0.9661,
+    "A3_1": 0.9994,
+    "A3_2": 0.9959,
+    "B1_1": 0.997,
+    "B1_2": 0.9996,
+    "B2": 0.9934,
+    "C": 1.0,
+    "F": null,
+    "X": 0.9798
+  }
+}

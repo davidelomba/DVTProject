@@ -1,0 +1,194 @@
+{
+  "records_compared": 40,
+  "sections": {
+    "A1": {
+      "compared": 40,
+      "changed": 0,
+      "correct_a": 40,
+      "correct_b": 40,
+      "stability": 1.0
+    },
+    "A2": {
+      "compared": 40,
+      "changed": 2,
+      "correct_a": 38,
+      "correct_b": 40,
+      "stability": 0.95
+    },
+    "A3_1": {
+      "compared": 40,
+      "changed": 1,
+      "correct_a": 38,
+      "correct_b": 39,
+      "stability": 0.975
+    },
+    "A3_2": {
+      "compared": 40,
+      "changed": 4,
+      "correct_a": 36,
+      "correct_b": 38,
+      "stability": 0.9
+    },
+    "B1_1": {
+      "compared": 40,
+      "changed": 0,
+      "correct_a": 39,
+      "correct_b": 39,
+      "stability": 1.0
+    },
+    "B1_2": {
+      "compared": 40,
+      "changed": 0,
+      "correct_a": 39,
+      "correct_b": 39,
+      "stability": 1.0
+    },
+    "B2": {
+      "compared": 40,
+      "changed": 3,
+      "correct_a": 36,
+      "correct_b": 38,
+      "stability": 0.925
+    },
+    "C": {
+      "compared": 40,
+      "changed": 0,
+      "correct_a": 40,
+      "correct_b": 40,
+      "stability": 1.0
+    },
+    "F": {
+      "compared": 40,
+      "changed": 0,
+      "correct_a": 40,
+      "correct_b": 40,
+      "stability": 1.0
+    },
+    "X": {
+      "compared": 40,
+      "changed": 0,
+      "correct_a": 37,
+      "correct_b": 37,
+      "stability": 1.0
+    }
+  },
+  "differences": [
+    {
+      "record_id": "SYN_04_multi_imaging_confirmed_v2",
+      "section": "A3_2",
+      "run_a": [
+        "Compression ultrasonography",
+        "Doppler/Duplex Ultrasound"
+      ],
+      "run_b": [
+        "Compression ultrasonography"
+      ]
+    },
+    {
+      "record_id": "SYN_05_absent_flow_not_pulses_trap_v2",
+      "section": "A2",
+      "run_a": [
+        "Other procedure done that confirmed presence of DVT"
+      ],
+      "run_b": [
+        "No surgical procedure done; or, done but either did not confirm presence of DVT or findings unknown; or unknown if done"
+      ]
+    },
+    {
+      "record_id": "SYN_12_other_procedure_positive_v2",
+      "section": "A3_2",
+      "run_a": [
+        "Contrast venography",
+        "Doppler/Duplex Ultrasound"
+      ],
+      "run_b": [
+        "Doppler/Duplex Ultrasound"
+      ]
+    },
+    {
+      "record_id": "SYN_18_absent_pulses_true_positive_v2",
+      "section": "B2",
+      "run_a": [
+        "Calf pain or tenderness",
+        "Leg swelling or pitting oedema"
+      ],
+      "run_b": [
+        "Absent pulses in legs or arms",
+        "Calf pain or tenderness",
+        "Leg swelling or pitting oedema"
+      ]
+    },
+    {
+      "record_id": "SYN_23_other_procedure_ivc_filter_v2",
+      "section": "A3_2",
+      "run_a": [
+        "Contrast venography",
+        "Doppler/Duplex Ultrasound"
+      ],
+      "run_b": [
+        "Doppler/Duplex Ultrasound"
+      ]
+    },
+    {
+      "record_id": "SYN_26_ct_venography_pregnancy_pelvic_v2",
+      "section": "B2",
+      "run_a": [
+        "Calf pain or tenderness",
+        "Leg swelling or pitting oedema",
+        "Redness, warmth, or pain in one or more extremities"
+      ],
+      "run_b": [
+        "Calf pain or tenderness",
+        "Leg swelling or pitting oedema"
+      ]
+    },
+    {
+      "record_id": "SYN_27_contrast_venography_absent_pulses_v2",
+      "section": "A2",
+      "run_a": [
+        "Other procedure done that confirmed presence of DVT"
+      ],
+      "run_b": [
+        "No surgical procedure done; or, done but either did not confirm presence of DVT or findings unknown; or unknown if done"
+      ]
+    },
+    {
+      "record_id": "SYN_27_contrast_venography_absent_pulses_v2",
+      "section": "B2",
+      "run_a": [
+        "Calf pain or tenderness",
+        "Leg swelling or pitting oedema",
+        "Redness, warmth, or pain in one or more extremities"
+      ],
+      "run_b": [
+        "Calf pain or tenderness",
+        "Leg swelling or pitting oedema"
+      ]
+    },
+    {
+      "record_id": "SYN_28_other_modality_plethysmography_v2",
+      "section": "A3_1",
+      "run_a": [
+        "No imaging studies done, unknown if done, or done but results unknown"
+      ],
+      "run_b": [
+        "≥1 imaging study was done and confirmed DVT"
+      ]
+    },
+    {
+      "record_id": "SYN_28_other_modality_plethysmography_v2",
+      "section": "A3_2",
+      "run_a": [],
+      "run_b": [
+        "Other"
+      ]
+    }
+  ],
+  "overall": {
+    "compared": 400,
+    "changed": 10,
+    "correct_a": 383,
+    "correct_b": 390,
+    "stability": 0.975
+  }
+}
