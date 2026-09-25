@@ -256,7 +256,8 @@ def apply_cross_section_rules(form_data: dict, audit_log: dict) -> dict:
         form_data: section key (lowercase) -> Pydantic instance or None.
         audit_log: section key (original casing) -> per-section log dict;
             overridden sections get a "[SYSTEM OVERRIDE]" note appended to
-            their reasoning, so the override is traceable without re-running.
+            their reasoning and an "overridden_by" key naming the source
+            section, so the override is traceable without re-running.
 
     Returns:
         form_data, mutated in place.
@@ -307,5 +308,6 @@ def apply_cross_section_rules(form_data: dict, audit_log: dict) -> dict:
                         audit_log[audit_key].get("reasoning", "")
                         + f"\n\n[SYSTEM OVERRIDE]: {rule['override_message']}"
                     )
+                    audit_log[audit_key]["overridden_by"] = rule["if_section"].upper()
 
     return form_data

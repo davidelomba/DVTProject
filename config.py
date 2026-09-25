@@ -17,15 +17,18 @@ LLM_TEMPERATURE = 0.0  # deterministic output for all agents
 LLM_NUM_PREDICT = 1024  # token cap: prevents runaway generation. The two
                         # answer lines close the response, so a cap the model
                         # reaches first costs the whole section.
+
 # How many layers to place on the GPU. 999 means all of them: Ollama's own
 # split left a model 7% on CPU with 5 GB of VRAM still free, and layers on
 # CPU dominate the time per token.
 LLM_NUM_GPU = 999
+
 # Thinking mode. False turns it off on models that have one: with it on the
 # model can spend the whole token cap reasoning and return empty content,
 # since the reasoning does not travel in the response body. None sends
 # nothing to Ollama, leaving the model's own default.
 LLM_REASONING = False
+
 # Size of the context window Ollama allocates for a request, in tokens. Named
 # here because Ollama's own default reaches no audit log, leaving the window a
 # run was produced under unknown once the machine has moved on. 4096 is the
@@ -42,6 +45,7 @@ LLM_REQUEST_TIMEOUT = 180  # seconds; allows time for reasoning on slower hardwa
 # stored in the section's audit log entry under "confidence". When False, the
 # pipeline sends no extra request.
 CONFIDENCE_ENABLED = True
+
 # Sections left without a confidence value. F's answer rests on an inverted
 # question and on whether a diagnosis was reported, and Agent 3 judges both
 # without reasoning. Removing "F" scores it through its DETAILS_PRESENT line
@@ -62,6 +66,7 @@ EMBEDDING_MODEL_NAME = "intfloat/multilingual-e5-small"
 # "raw_record": skips Agent 1. Agent 2 reads the record itself, so nothing
 #   selects the evidence and no extractor model is loaded.
 EXTRACTOR_MODE = "agentic_graph"  # "full_text", "rag", "agentic_graph", "raw_record"
+
 AGENTIC_MAX_ITERATIONS = 5  # cap on tool calls per section, used by "agentic_graph" mode
 
 # Chunking for the clinical record (EHR)

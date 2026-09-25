@@ -18,6 +18,9 @@ puts on the answer the form holds, from 0 to 1:
   - F, when its hint makes the model write a DETAILS_PRESENT line first: see
     score_details.
 
+A section whose answer a cross-section rule wrote gets no request: the rule's
+source section sets that answer, so the section takes the source's confidence.
+
 The request goes straight to Ollama's /api/chat, whose logprobs fields carry the
 token probabilities.
 """
@@ -273,11 +276,19 @@ def score_record(form_data: dict, audit_log: dict) -> None:
     whose request fails get confidence None with the reason in
     "confidence_method". A failure never affects the answers.
 
+    A section whose entry carries "overridden_by", the key
+    criteria_rules.apply_cross_section_rules writes when a rule replaces its
+    answer, gets no request: it takes the confidence of the source section named
+    there, with confidence_method "rule:<source>". The inherited values are
+    assigned in a second pass, since a source can come after its target in
+    config.SECTION_ORDER (B2 after B1_1).
+
     Args:
         form_data: section key in lower case -> the section's final answer, as
             returned by the cross-section rules.
         audit_log: section key -> that section's log entry, updated in place.
     """
+    inherited = []
     for section_key in config.SECTION_ORDER:
         entry = audit_log.get(section_key)
         if entry is None:
@@ -286,20 +297,31 @@ def score_record(form_data: dict, audit_log: dict) -> None:
 
         if section_key in config.CONFIDENCE_SKIP:
             entry.update({"confidence": None, "confidence_method": "skipped"})
-            continue
-        if result is None:
+        elif result is None:
             entry.update({"confidence": None, "confidence_method": "no_answer"})
+        elif entry.get("overridden_by"):
+            inherited.append(section_key)
             continue
+        else:
+            values = result.model_dump() if hasattr(result, "model_dump") else dict(result)
+            answer = next(iter(values.values()))
+            try:
+                entry.update(score_section(section_key, answer, entry.get("evidence"),
+                                           entry.get("brighton_context") or ""))
+            except Exception as exc:
+                entry.update({"confidence": None, "confidence_method": "error",
+                              "confidence_error": str(exc)})
+        _report(section_key, entry)
 
-        values = result.model_dump() if hasattr(result, "model_dump") else dict(result)
-        answer = next(iter(values.values()))
-        try:
-            entry.update(score_section(section_key, answer, entry.get("evidence"),
-                                       entry.get("brighton_context") or ""))
-        except Exception as exc:
-            entry.update({"confidence": None, "confidence_method": "error",
-                          "confidence_error": str(exc)})
+    for section_key in inherited:
+        entry = audit_log[section_key]
+        source = entry["overridden_by"]
+        entry.update({"confidence": (audit_log.get(source) or {}).get("confidence"),
+                      "confidence_method": f"rule:{source}"})
+        _report(section_key, entry)
 
-        shown = "n/a" if entry["confidence"] is None else f"{entry['confidence']:.4f}"
-        print(f"[{section_key}] Agent 3 confidence {shown} ({entry['confidence_method']})",
-              flush=True)
+
+def _report(section_key: str, entry: dict) -> None:
+    shown = "n/a" if entry["confidence"] is None else f"{entry['confidence']:.4f}"
+    print(f"[{section_key}] Agent 3 confidence {shown} ({entry['confidence_method']})",
+          flush=True)
