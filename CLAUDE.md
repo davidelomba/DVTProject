@@ -31,7 +31,10 @@ When something is unverified, say so.
 - `models.py` holds the Pydantic schema and is the single source of truth for
   section options and their order. Other modules introspect it rather than
   repeating the options.
-- Deterministic post-processing lives in `criteria_rules.py`.
+- `criteria_rules.py` holds the cross-section rules, the only deterministic
+  post-processing. The per-section gates (keyword, details, absent_pulses) were
+  removed on 2026-09-25: under qwen3.6:27b none of them ever made a correct
+  change, and the 8B they were built for is no longer used.
 - Agent 3 (`confidence.py`) scores each final answer after the cross-section
   rules, when `config.CONFIDENCE_ENABLED` is set. One short request per section
   to the evaluator model, without reasoning and without Agent 2's answer, sent
@@ -71,8 +74,7 @@ but performs no evidence selection.
   (swelling, pain, redness, warmth, absent pulses) are the other branch of that
   table and belong to B2. A syndrome ruled out by imaging leaves B1.2 empty; a
   reported diagnosis with no documented symptom still fills it.
-- **Cross-section rules are always on**, deliberately outside the
-  `config.SECTION_GATES_ENABLED` ablation switches: they encode the form's
+- **Cross-section rules are always on**, with no switch: they encode the form's
   structure, not a workaround for a model weakness.
 - **Keep the pipeline language-agnostic.** Do not hardcode Italian-only queries
   or logic; rely on the multilingual embedding model. The bilingual stems in
@@ -137,13 +139,17 @@ BRIGHTON_CONTEXT_ENABLED = True
 SECTION_DESCRIPTIONS_ENABLED = False
 SECTION_HINTS_ENABLED    = True
 SECTION_HINTS_DISABLED   = {"B2"}
-SECTION_GATES_ENABLED    = {"keyword": False, "details": False, "absent_pulses": True}
 CONFIDENCE_ENABLED       = False
 ```
 
-The keyword and details gates are off. `absent_pulses` is on and has never fired
-on this corpus. The cross-section rules are outside the switch and encode the
-form's structure rather than a model weakness.
+The measured reference ran with the keyword and details gates off and
+`absent_pulses` on; `absent_pulses` never fired under qwen3.6:27b, so removing
+the gates changes none of its answers. The cross-section rules have no switch
+and encode the form's structure rather than a model weakness.
+
+`config.py` now carries hints revised against the printed questionnaire (A2,
+A3_1, A3_2, B1_1 and F), fingerprint `0d4a00c11404`, not yet measured. Every
+number below was produced with `ab63b8e5f5af`.
 
 Agent 1 and Agent 2 run the same model tag, which is why the reference costs 174
 seconds a record against the 250 to 310 an arm with two tags pays. They stay two
@@ -806,9 +812,12 @@ not say which governs, which is what the clinician question below is asking.
     is not yet available and no specialist diagnosis is on file, and the ground
     truth leaves B1.2 empty. Is a reported syndrome with no specific type the
     intended combination?
-- **Two of the three per-section gates are now off.** The details gate reverted a
-  correct answer once the F hint gained its precondition. The absent-pulses gate
-  is still on and has never fired. The keyword gate was removed on 2026-09-15 together with a
+- **The per-section gates are removed from the code (2026-09-25).** Counted over
+  every audit log: under qwen3.6:27b absent_pulses never fired in about 17 runs,
+  keyword fired 12 times in the five arms that had it on and was wrong every
+  time, details fired once and was wrong. Under the 8B absent_pulses fired 5
+  times a run, all correct removals. The details gate reverted a
+  correct answer once the F hint gained its precondition. The keyword gate was switched off on 2026-09-15 together with a
   ground-truth correction: it fired 3 times in 400, always on X, on SYN_11
   (death from acute myocardial infarction, autopsy excluding DVT), SYN_16 (chest
   pain attributed to a musculoskeletal cause) and SYN_20 (death from traumatic

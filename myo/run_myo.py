@@ -3,9 +3,9 @@ Runs the pipeline over the myocarditis cases, in agentic_graph mode.
 
 Same code as the DVT runs: pipeline.run_pipeline, both agents, the verbatim
 evidence of agentic_graph. What differs is the schema, the two section queries
-and the terms naming the condition in the prompts. The deterministic layer is
-off, not translated: the gates and the cross-section rules encode the DVT form,
-and a myocarditis run measures the architecture without them.
+and the terms naming the condition in the prompts. The cross-section rules are
+off, not translated: they encode the DVT form, and a myocarditis run measures
+the architecture without them.
 
 models_myo is installed as `models` before pipeline is imported, because
 pipeline and criteria_rules bind SECTION_MODELS at import time.
@@ -82,11 +82,7 @@ def apply_domain(guideline: bool = False):
     config.SECTION_DESCRIPTIONS_ENABLED = False
     config.SECTION_HINTS = {}
     config.SECTION_HINTS_DISABLED = set()
-    config.SECTION_KEYWORD_GATES = {}
     config.CROSS_SECTION_RULES = []
-    config.SECTION_GATES_ENABLED = {
-        "keyword": False, "details": False, "absent_pulses": False,
-    }
 
     extractor = prompts_myo.EXTRACTOR_SYSTEM_PROMPT_TEMPLATE.format(
         no_evidence=agents.NO_EVIDENCE

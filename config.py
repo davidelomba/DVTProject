@@ -1,7 +1,7 @@
 """
 Central configuration for the clinical extraction pipeline: model names and
-parameters, retrieval settings, section order, the deterministic gates and
-the per-section prompt hints.
+parameters, retrieval settings, section order, the per-section prompt hints
+and the cross-section rules.
 """
 
 from pathlib import Path
@@ -89,65 +89,6 @@ SECTION_ORDER = [
     "C", "F", "X",
 ]
 
-# Per-section deterministic gates: on/off switches
-# Switches the post-processing applied to each section's answer (see
-# criteria_rules.apply_section_gates); setting one to False skips that
-# gate, leaving the model's answer unchanged.
-# CROSS_SECTION_RULES below are excluded on purpose and always apply.
-SECTION_GATES_ENABLED = {
-    # Reverts a positive answer when the evidence never names the procedure
-    # (A1, A2, X: see SECTION_KEYWORD_GATES below).
-    # Off: on X it enforces Table 2 as a closed list, which the paper presents
-    # as examples, and it reads a keyword missing from a lossy extraction as a
-    # condition absent from the record.
-    "keyword": False,
-    # Derives section F's Yes/No from the model's own DETAILS_PRESENT line.
-    # The mapping treats absent details as a bare conclusion, which is wrong
-    # when no diagnosis was reported at all.
-    "details": False,
-    # Drops B2's "Absent pulses" when no pulse examination is in the evidence.
-    "absent_pulses": True,
-}
-
-# Deterministic keyword gates
-# Sections asking whether one specific thing is present (A1 autopsy, A2
-# surgery, X an alternative diagnosis): a small model can answer positively
-# even when the evidence never names it. If none of the keywords appear in
-# Agent 1's evidence the section is forced to its negative default, without
-# an LLM call. A keyword being present changes nothing on its own: the
-# evidence could be negating it, so the model still evaluates normally.
-# An optional "gated_options" names the answers the keywords can speak for.
-# Without it every answer other than the default is checked against them.
-SECTION_KEYWORD_GATES = {
-    "A1": {
-        "keywords": ["autops", "autoptic", "postmortem", "post-mortem", "necrosc"],
-        "default_option_text": "No autopsy done, unknown if done, or done but results unavailable"
-    },
-    "A2": {
-        "keywords": ["thrombectom", "trombectom", "embolectom"],
-        "default_option_text": "No surgical procedure done; or, done but either did not confirm presence of DVT or findings unknown; or unknown if done",
-        # These words name thrombectomy only. Checking the "Other procedure"
-        # option against them rejects it on every record.
-        "gated_options": ["Thrombectomy related to DVT performed"],
-    },
-    "X": {
-        # Names of competing conditions from Brighton Table 2. Most share a
-        # Latin/Greek root across Italian and English (cellulit-, vasculit-,
-        # cirrosi/cirrhosis); where they do not, both terms are listed.
-        "keywords": [
-            "cellulit", "baker", "fractur", "frattur", "compartment", "compartimental",
-            "vasculit", "cirrhosis", "cirrosi", "nephrotic", "nefrosic",
-            "lymphatic", "linfatic", "heart failure", "scompenso cardiaco",
-            "muscle tear", "strappo muscolare", "hematoma", "ematoma",
-            "septic arthritis", "artrite settica", "fistula", "fistola",
-            "dependent edema", "edema declive",
-            "achilles", "achille", "external compression", "compressione esterna",
-            "congenital vascular", "malformazione vascolare",
-        ],
-        "default_option_text": "No alternative diagnosis was found to explain the acute illness"
-    }
-}
-
 # Whether Agent 2 receives the guideline terminology retrieved for its section.
 # False sends no reference context at all, so the model answers from the
 # evidence and the options alone.
@@ -192,9 +133,9 @@ GUIDELINE_ANCHORS = {
 # themselves, and is what every run recorded so far was produced with.
 SECTION_DESCRIPTIONS_ENABLED = False
 
-# Master switch for SECTION_HINTS, the counterpart of SECTION_GATES_ENABLED.
-# The hint for F asks for the DETAILS_PRESENT line that apply_details_gate
-# reads, so turning hints off also disables that gate.
+# Master switch for SECTION_HINTS. The hint for F asks for the DETAILS_PRESENT
+# line that confidence.score_details reads, so with hints off Agent 3 scores F
+# as any other single-choice section.
 SECTION_HINTS_ENABLED = True
 
 # Sections whose hint is suppressed while SECTION_HINTS_ENABLED is True, so one
@@ -213,8 +154,7 @@ SECTION_HINTS = {
         "is not an autopsy."
     ),
     # Without the capitals and the repetition the model stops treating an
-    # explicit negation as binding, and the keyword gate does not cover the
-    # option it then chooses.
+    # explicit negation as binding.
     "A2": (
         "CRITICAL FOR A2: Pay extreme attention to ANY negations preceding surgical terms. "
         "If the clinical record explicitly states that a surgical procedure was not "

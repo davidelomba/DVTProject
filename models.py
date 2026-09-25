@@ -131,7 +131,7 @@ class F_ReportedBySpecialist(BaseModel):
 
     Note the inversion: "Yes" means reported WITHOUT supporting detail, "No"
     means details were given or the diagnosis was not reported at all.
-    criteria_rules.apply_details_gate relies on this convention.
+    confidence.score_details relies on this convention.
     """
 
     answer: Literal["Yes", "No"] = Field(

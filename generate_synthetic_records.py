@@ -27,9 +27,9 @@ an existing corpus without calling any LLM:
 INTERPRETIVE ASSUMPTIONS, worth re-checking against the Brighton paper:
   - B1_1/B1_2 record what was REPORTED as a DVT syndrome, whether or not
     A3_1/X later confirm or rule it out.
-  - F follows criteria_rules.apply_details_gate: "No" covers both "reported
-    WITH details" and "not reported at all"; "Yes" only "reported WITHOUT
-    details".
+  - F follows the convention stated in models.F_ReportedBySpecialist: "No"
+    covers both "reported WITH details" and "not reported at all"; "Yes" only
+    "reported WITHOUT details".
   - B2 offers no generic swelling option for arms, so upper-extremity
     scenarios count arm swelling toward no option rather than stretching
     "Leg swelling or pitting oedema".

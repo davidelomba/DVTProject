@@ -17,11 +17,9 @@ evidence, not which sections get evaluated or in what order.
 Graph shape:
     select_next -> {search_record, finalize} -> answer_criterion -> select_next (loop)
 
-The per-section gates (criteria_rules.apply_section_gates) are applied inside
-answer_criterion, exactly as in every other mode. Cross-section dependency
-rules are NOT applied here: they run once in pipeline.run_pipeline after this
-graph returns, so both safety nets have a single source of truth across all
-execution modes.
+Cross-section dependency rules are NOT applied here: they run once in
+pipeline.run_pipeline after this graph returns, so every execution mode goes
+through the same code.
 
 Requires the `langgraph` package and a tool-calling model pulled in Ollama.
 """
@@ -35,7 +33,6 @@ from langchain_ollama import ChatOllama
 import config
 from models import SECTION_MODELS
 from agents import extract_evidence_agentic, evaluate_section
-from criteria_rules import apply_section_gates
 from rag_setup import retrieve_brighton_context, section_is_anchored
 
 
@@ -173,12 +170,11 @@ def _make_answer_node(llm, brighton_kb, section_queries: dict, guideline_anchors
             config.GUIDELINE_ANCHORS_ENABLED is True.
 
     Returns:
-        The node function, which runs Agent 2 and then the same deterministic
-        gates every other execution mode applies.
+        The node function, which runs Agent 2 for the current section.
     """
 
     def answer_criterion(state: GraphState) -> GraphState:
-        """Runs Agent 2 and the deterministic gates for the current section.
+        """Runs Agent 2 for the current section.
 
         A section that fails is left as None and its error recorded, so one bad
         section does not lose the work already done on the others.
@@ -220,11 +216,6 @@ def _make_answer_node(llm, brighton_kb, section_queries: dict, guideline_anchors
             # None unless the model's two answer lines disagreed; kept as a
             # review flag for this section (see agents.evaluate_section).
             section_log["answer_conflict"] = answer_conflict
-
-            # Apply section-specific gates (criteria_rules) to the result and reasoning text
-            section_result, reasoning_text = apply_section_gates(
-                section_key, section_result, evidence, reasoning_text
-            )
 
             section_log["reasoning"] = reasoning_text
             section_log["result"] = section_result.model_dump()

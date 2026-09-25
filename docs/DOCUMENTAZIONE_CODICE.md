@@ -12,11 +12,11 @@ dice **cosa fa** il codice, quello dice **cosa è stato misurato**.
 
 | modulo | ruolo |
 |---|---|
-| `config.py` | costanti, prompt hint, gate, regole cross-section |
+| `config.py` | costanti, prompt hint, regole cross-section |
 | `models.py` | schema Pydantic delle 10 sezioni, unica fonte di verità sulle opzioni |
 | `rag_setup.py` | embedding, vector store, loader, tool di ricerca |
 | `agents.py` | i due agenti e il parsing delle risposte |
-| `criteria_rules.py` | post-processing deterministico |
+| `criteria_rules.py` | regole cross-section |
 | `agentic_graph.py` | macchina a stati LangGraph della modalità agentica |
 | `confidence.py` | Agent 3, la confidenza di ogni risposta finale |
 | `pipeline.py` | orchestrazione di un referto |
@@ -152,47 +152,6 @@ interruttore acceso.
 l'ordine di esecuzione in entrambi i percorsi, il ciclo di `pipeline.py` e la
 coda del grafo.
 
-### `SECTION_GATES_ENABLED`
-
-Tre interruttori per il post-processing deterministico, così un'ablazione non
-richiede modifiche al codice:
-
-```python
-{"keyword": False, "details": False, "absent_pulses": True}
-```
-
-`keyword` è spento: su X tratta la Tabella 2 come un elenco chiuso, mentre il
-paper la presenta come esempi, e legge una parola chiave assente da
-un'estrazione lossy come una condizione assente dal referto. `details` è spento:
-la sua mappatura tratta l'assenza di dettagli come una conclusione nuda, il che è
-falso quando nessuna diagnosi è stata riportata.
-
-Le regole cross-section sono deliberatamente **fuori** da questi interruttori e
-si applicano sempre: codificano la struttura del modulo, non una debolezza del
-modello.
-
-### `SECTION_KEYWORD_GATES`
-
-Tre voci, `A1`, `A2` e `X`. Ognuna ha una lista di `keywords` e un
-`default_option_text`, cioè la risposta negativa della sezione. Se Agent 2 dà una
-risposta che le parole chiave sono autorizzate a controllare e nessuna di quelle
-parole compare nell'evidenza, la risposta viene riportata al default. Le voci
-restano nel file, ma il gate che le legge è spento in `SECTION_GATES_ENABLED`.
-
-Il campo opzionale `gated_options` nomina le risposte su cui le parole chiave
-hanno voce. `A2` lo usa per elencare la sola opzione "thrombectomy": senza,
-l'opzione "Other procedure done that confirmed presence of DVT" veniva respinta
-su ogni referto perché non conteneva parole di trombectomia.
-
-Il gate è **unidirezionale per costruzione**: può solo rimuovere un positivo non
-supportato, mai aggiungerne uno mancante. La presenza di una parola chiave non
-implica una risposta positiva, dato che l'evidenza potrebbe negare la procedura.
-
-`X` elenca le condizioni concorrenti della Tabella 2 del paper. La maggior parte
-condivide una radice greco-latina tra italiano e inglese (`cellulit-`,
-`vasculit-`, `cirrosi`/`cirrhosis`); dove non accade sono elencati entrambi i
-termini.
-
 ### `SECTION_HINTS` e i suoi interruttori
 
 `SECTION_HINTS` associa a una sezione un testo aggiunto al prompt di Agent 2.
@@ -202,9 +161,9 @@ opzioni e il contesto della linea guida.
 
 Due interruttori permettono l'ablazione senza toccare il codice:
 
-- `SECTION_HINTS_ENABLED = True` — interruttore generale. Nota che l'hint di F
-  chiede la riga `DETAILS_PRESENT` che il details gate legge, quindi spegnere
-  gli hint disattiva di fatto anche quel gate.
+- `SECTION_HINTS_ENABLED = True` — interruttore generale. L'hint di F chiede
+  la riga `DETAILS_PRESENT` che `confidence.score_details` legge: con gli hint
+  spenti l'Agent 3 valuta F come ogni altra sezione a scelta singola.
 - `SECTION_HINTS_DISABLED = {"B2"}` — sezioni sospese individualmente. B2 è
   elencata perché il suo hint abbassa l'accuratezza di B2; il testo è conservato
   così l'ablazione è ripetibile.
@@ -272,7 +231,7 @@ ricostruiscono, non solo la prima risposta del modello.
 `F_ReportedBySpecialist` merita attenzione per l'inversione: `"Yes"` significa
 riportata **senza** dettagli, `"No"` significa che i dettagli c'erano **oppure**
 che la diagnosi non è stata riportata affatto. È la convenzione su cui poggia
-`criteria_rules.apply_details_gate`.
+`confidence.score_details`.
 
 `DVT_CriteriaForm` è il contenitore: `record_id` obbligatorio più dieci campi
 opzionali, uno per sezione. Una sezione che la pipeline non è riuscita a
@@ -496,42 +455,13 @@ scritto.
 
 ## 5. `criteria_rules.py`
 
-Reti di sicurezza deterministiche applicate sopra l'output dei due agenti.
-Nessuna funzione qui chiama un modello: ognuna o mantiene la risposta di Agent 2
-o la sostituisce con un valore derivato meccanicamente dall'evidenza o da
-un'altra sezione. Ogni override lascia una nota `[SYSTEM OVERRIDE]` nel testo di
-ragionamento, così una risposta forzata non è mai indistinguibile da una
-prodotta dal modello — ed è questa proprietà che rende possibile ricostruire
-l'effetto di un gate dagli audit log senza rieseguire nulla.
-
-**`apply_keyword_gate(...)`** implementa `SECTION_KEYWORD_GATES`. Legge il campo
-unico dello schema, così funziona su scelta singola e multipla senza un ramo per
-ciascuna, determina se la risposta è fra quelle che le parole chiave possono
-controllare, e in caso di assenza di ogni parola chiave ricostruisce l'istanza sul
-default negativo. La ricostruzione passa dal costruttore Pydantic e non da
-`setattr`, così il valore forzato viene rivalidato contro lo schema.
-
-**`apply_details_gate(...)`** riguarda la sola sezione F. Legge la riga
-`DETAILS_PRESENT` che l'hint di F chiede al modello — un giudizio fattuale,
-non una mappatura sullo schema — e ne deriva meccanicamente l'etichetta:
-dettagli presenti implica `"No"`, assenti implica `"Yes"`. La mappatura presume
-che una diagnosi sia riportata: su un record senza diagnosi e senza reperti
-trasforma un `"No"` corretto in `"Yes"`. Se la riga manca, la
-funzione non fa nulla e si fida del modello anziché far fallire la sezione.
-Attualmente il gate è spento in `config.SECTION_GATES_ENABLED`.
-
-**`apply_absent_pulses_gate(...)`** rimuove da B2 la sola opzione
-`"Absent pulses in legs or arms"` quando nell'evidenza non compare alcun esame
-dei polsi. Il modello la sceglieva sulla base del solo linguaggio dell'imaging,
-ragionando che un flusso assente al Doppler implichi polsi assenti: sono reperti
-diversi, uno di imaging vascolare e uno di esame obiettivo. È ristretto a questa
-singola coppia sezione-opzione e non generalizzato, perché l'evidenza che la
-distingue è quasi non ambigua — le parole `polso`, `polsi`, `pulse` compaiono o
-no — mentre le altre opzioni di B2 e le modalità di A3.2 variano troppo nella
-formulazione perché una lista corta di parole chiave sia sicura.
-
-**`apply_section_gates(...)`** applica in ordine i gate abilitati. Con tutti
-disattivati è la funzione identità, cioè la risposta grezza del modello.
+Le regole cross-section, applicate sopra le risposte di Agent 2 dopo che tutte
+le sezioni sono state compilate. Nessuna funzione qui chiama un modello: una
+regola sostituisce la risposta di una sezione con un valore derivato dalla
+risposta di un'altra. Ogni override lascia una nota `[SYSTEM OVERRIDE]` nel testo
+di ragionamento, così una risposta forzata non è mai indistinguibile da una
+prodotta dal modello, e il suo effetto si ricostruisce dagli audit log senza
+rieseguire nulla.
 
 **`apply_cross_section_rules(form_data, audit_log)`** applica
 `CROSS_SECTION_RULES` una volta sola, dopo che tutte le sezioni sono state
@@ -583,8 +513,7 @@ nodi diretti, perché un nodo LangGraph riceve solo lo stato mentre questi due
 passi hanno bisogno anche del modello, del tool e delle query. Il nodo di
 ricerca cronometra anche i fallimenti, così una sezione lenta perché ha
 continuato a ritentare resta visibile nel log. Il nodo di risposta recupera il
-contesto della linea guida, ancore comprese se accese, e applica gli stessi gate
-per-sezione di ogni altra modalità.
+contesto della linea guida, ancore comprese se accese, e chiama Agent 2.
 
 **`build_graph(...)`** collega i quattro nodi e compila la macchina a stati. Il
 modello di ricerca e quello di risposta sono due parametri distinti, perché
@@ -741,7 +670,7 @@ a cui arrivano dipende da come il PDF si è estratto, quindi da sole non dicono
 cosa Agente 2 abbia letto. Le sezioni senza ancora non compaiono.
 
 **`_run_config_snapshot(...)`** cattura tutto ciò che determina cosa una run
-produce: modalità, gate, contesto della linea guida, intestazioni di sezione,
+produce: modalità, contesto della linea guida, intestazioni di sezione,
 hint, query e ancore con i rispettivi fingerprint, le impostazioni dell'Agent 3
 (`confidence.enabled` e `confidence.skipped_sections`), modelli per ruolo (con
 l'estrattore **effettivo**: `AGENTIC_LLM_MODEL_NAME` in modalità agentica,
@@ -758,8 +687,8 @@ lo usa, così una modalità che non lo interroga, come `raw_record`, non lo cari
 in VRAM.
 
 Nel ciclo per-sezione, ogni sezione passa da Agent 1 (in `raw_record` l'evidenza
-è il referto intero), dal recupero del contesto Brighton ripulito, da Agent 2 e
-dai gate. Il fallimento di una sezione non compromette le altre: il campo resta
+è il referto intero), dal recupero del contesto Brighton ripulito e da Agent 2.
+Il fallimento di una sezione non compromette le altre: il campo resta
 `None`, l'errore va in `section_log["error"]` e l'ultima risposta del modello, se
 disponibile, in `section_log["reasoning"]`.
 
@@ -1111,7 +1040,7 @@ dallo schema.
 **`run_myo.py`** esegue la pipeline sui casi. Installa `models_myo` come modulo
 `models` prima di importare `pipeline`, che lega lo schema all'importazione.
 **`apply_domain(guideline=False)`** imposta sezioni `E` ed `F`, modalità
-`agentic_graph`, svuota hint, gate e regole cross-section, sostituisce i tre
+`agentic_graph`, svuota hint e regole cross-section, sostituisce i tre
 prompt degli agenti, le query di sezione (`SECTION_QUERIES`, scritte a partire
 dalla lista delle opzioni) e il tool di ricerca, e indica per il paper un indice
 suo, `myo/vectorstores/chroma_brighton_myo`, perché `build_brighton_kb`
@@ -1126,6 +1055,6 @@ installato `models_myo` come `models` e puntato le cartelle di default su
 
 **`run_dvt_stripped.py`** è il termine di confronto: esegue il corpus TVP con
 **`strip()`**, che spegne in memoria hint, contesto, ancore, intestazioni di
-sezione, regole cross-section e tutti i gate, gli stessi componenti che il
+sezione e regole cross-section, gli stessi componenti che il
 braccio della miocardite non ha. Poi chiama `run_synthetic_records.main()`, di
 cui accetta gli argomenti.

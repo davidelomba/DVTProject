@@ -29,7 +29,7 @@ from rag_setup import (
     section_is_anchored,
 )
 from agents import build_llm, evaluate_section, extract_evidence, extract_evidence_full_text
-from criteria_rules import apply_section_gates, apply_cross_section_rules
+from criteria_rules import apply_cross_section_rules
 from agentic_graph import build_agentic_llm, run_agentic_graph_pipeline
 from confidence import score_record
 
@@ -166,9 +166,9 @@ def _run_config_snapshot(guideline_anchors: dict = None) -> dict:
     """Captures the settings that determine what a run produces.
 
     Recorded in the audit log so an output file is self-describing: without it
-    there is no way to tell, months later, whether a given result came from a
-    run with the deterministic gates enabled, which model answered, or which
-    extraction mode was used -- all of which are varied between experiments.
+    there is no way to tell, months later, which hints and context a given
+    result was produced with, which model answered, or which extraction mode
+    was used -- all of which are varied between experiments.
 
     Args:
         guideline_anchors: the resolved anchors, digested into the snapshot.
@@ -188,7 +188,6 @@ def _run_config_snapshot(guideline_anchors: dict = None) -> dict:
 
     return {
         "extractor_mode": config.EXTRACTOR_MODE,
-        "section_gates_enabled": dict(config.SECTION_GATES_ENABLED),
         "brighton_context_enabled": config.BRIGHTON_CONTEXT_ENABLED,
         "section_descriptions_enabled": config.SECTION_DESCRIPTIONS_ENABLED,
         "section_hints_enabled": config.SECTION_HINTS_ENABLED,
@@ -348,12 +347,6 @@ def run_pipeline(record_id: str, patient_ehr_path: str, brighton_pdf_path: str):
                 # None unless the model's two answer lines disagreed; kept as a
                 # review flag for this section (see agents.evaluate_section).
                 section_log["answer_conflict"] = answer_conflict
-
-                # Per-section deterministic gates, individually switchable in
-                # config.SECTION_GATES_ENABLED and shared with agentic_graph.py.
-                section_result, reasoning_text = apply_section_gates(
-                    section_key, section_result, evidence, reasoning_text
-                )
 
                 section_log["reasoning"] = reasoning_text
                 section_log["result"] = section_result.model_dump()
