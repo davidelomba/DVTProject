@@ -1,16 +1,16 @@
 #!/bin/bash
-# Two runs with the revised hints and Agent 3 on, one after the other, each in
-# its own directory:
-#   1. output_hints_v2_raw         EXTRACTOR_MODE = "raw_record"
-#   2. output_hints_v2_anchors_t3  guideline anchors chosen by principle
-#                                  (Table 3, its rationale in 5.2.x and the
-#                                  tables it cites; C and F not anchored)
-# Run 2 sets the anchors in memory and leaves config.py as it is. Before it
-# starts, a check builds every anchored section's Agent 2 prompt on the
-# longest record and asks Ollama how many tokens it takes; run 2 is skipped
-# when any prompt exceeds LLM_NUM_CTX minus LLM_NUM_PREDICT.
-# config.py is copied before the first run and restored on exit, also when a
-# run fails or the script is stopped.
+# One run with the revised hints and Agent 3 on, in its own directory:
+#   output_hints_v2_anchors_t3  guideline anchors chosen by principle
+#                               (Table 3, its rationale in 5.2.x and the
+#                               tables it cites; C and F not anchored)
+# The anchors are set in memory and config.py is left as it is.
+# Before the run, a check builds every anchored section's Agent 2 prompt on
+# the longest record, asks Ollama how many tokens it takes and warns about
+# any prompt above LLM_NUM_CTX minus LLM_NUM_PREDICT. After the run, a second
+# check reads agent2_tokens from every audit log and lists the calls whose
+# prompt and output together exceeded LLM_NUM_CTX.
+# config.py is copied before the run and restored on exit, also when the run
+# fails or the script is stopped.
 #
 # Launch from the project root:
 #   systemd-run --user --unit=dvtnext --working-directory=$HOME/DVTProject \
@@ -24,7 +24,7 @@ rm -f __pycache__/config.*.pyc
 cp config.py /tmp/config.py.bak
 trap 'cp /tmp/config.py.bak config.py; echo "config.py restored"' EXIT
 
-# The anchor map of run 2, shared by the token check and by the run itself.
+# The anchor map, shared by the token check and by the run itself.
 cat > /tmp/anchors_t3.py <<'PYMAP'
 import config
 
@@ -69,18 +69,15 @@ for line in bad:
 sys.exit(1 if bad else 0)
 PYCHECK
 
-echo "=== run 1: output_hints_v2_raw ==="
-sed -i 's/^EXTRACTOR_MODE = "agentic_graph"/EXTRACTOR_MODE = "raw_record"/' config.py
-grep -n '^EXTRACTOR_MODE' config.py
-$PY run_synthetic_records.py --output-dir ./output_hints_v2_raw
-cp /tmp/config.py.bak config.py
-
-echo "=== token check for run 2 ==="
-$PY - <<'PYTOKENS' || { echo "run 2 skipped"; exit 1; }
+echo "=== token check before the run ==="
+$PY - <<'PYTOKENS' || exit 1
 # Agent 2's prompt for every anchored section on the longest record, with the
 # evidence the reference run stored for it. Each request carries a distinct
 # first line, so Ollama cannot reuse a cached prefix and prompt_eval_count
 # counts the whole prompt; the check therefore overestimates by a few tokens.
+# A prompt above the limit is reported, not blocking: the check after the run
+# says whether any call actually exceeded the window. The counts are saved to
+# /tmp/token_check.json for that comparison.
 import glob
 import json
 import sys
@@ -111,6 +108,7 @@ limit = config.LLM_NUM_CTX - config.LLM_NUM_PREDICT
 print(f"record {longest.stem}, {longest.stat().st_size} bytes; limit {limit} prompt tokens")
 
 worst = 0
+counts = {}
 for n, section_key in enumerate(sorted(resolved)):
     evidence = audit.get(section_key, {}).get("evidence") or longest.read_text(encoding="utf-8")
     _, options, multi, _ = _get_field_info(SECTION_MODELS[section_key])
@@ -137,13 +135,15 @@ for n, section_key in enumerate(sorted(resolved)):
     with urllib.request.urlopen(request, timeout=config.LLM_REQUEST_TIMEOUT) as response:
         tokens = json.loads(response.read())["prompt_eval_count"]
     worst = max(worst, tokens)
-    print(f"  {section_key:5} {len(prompt):6} chars  {tokens:5} tokens  {'OK' if tokens <= limit else 'OVER'}")
+    counts[section_key] = tokens
+    print(f"  {section_key:5} {len(prompt):6} chars  {tokens:5} tokens  {'OK' if tokens <= limit else 'WARNING: over'}")
 
-print(f"largest prompt {worst} tokens against {limit}:", "OK" if worst <= limit else "TOO LONG")
-sys.exit(0 if worst <= limit else 1)
+json.dump({"record": longest.stem, "tokens": counts}, open("/tmp/token_check.json", "w"))
+print(f"largest prompt {worst} tokens against {limit}:",
+      "OK" if worst <= limit else "WARNING, the run goes ahead and the check after it decides")
 PYTOKENS
 
-echo "=== run 2: output_hints_v2_anchors_t3 ==="
+echo "=== run: output_hints_v2_anchors_t3 ==="
 $PY - <<'PYRUN'
 import sys
 sys.path.insert(0, "/tmp")
@@ -157,3 +157,51 @@ import run_synthetic_records
 sys.argv = ["run_synthetic_records.py", "--output-dir", "./output_hints_v2_anchors_t3"]
 run_synthetic_records.main()
 PYRUN
+
+echo "=== token check after the run ==="
+$PY - <<'PYAFTER'
+# Every Agent 2 call of the run, from agent2_tokens in the audit logs. A call
+# whose prompt and output together exceed LLM_NUM_CTX did not fit the window.
+# The record checked before the run is compared with its own audit log: a
+# prompt count lower there than before means Ollama reused a cached prefix and
+# reports only the tokens it evaluated, so the sums below undercount.
+import glob
+import json
+import os
+import config
+
+window = config.LLM_NUM_CTX
+calls = over = 0
+largest = (0, None)
+for path in sorted(glob.glob("output_hints_v2_anchors_t3/*_audit_log.json")):
+    audit = json.load(open(path))
+    record = os.path.basename(path).split("_2026")[0]
+    for section_key, entry in audit.items():
+        if section_key.startswith("_"):
+            continue
+        for n, count in enumerate(entry.get("agent2_tokens") or [], 1):
+            if count.get("prompt") is None or count.get("output") is None:
+                print(f"  {record} {section_key} attempt {n}: counts missing")
+                continue
+            calls += 1
+            total = count["prompt"] + count["output"]
+            largest = max(largest, (total, f"{record} {section_key}"))
+            if total > window:
+                over += 1
+                print(f"  OVER {record} {section_key} attempt {n}: "
+                      f"{count['prompt']} + {count['output']} = {total} > {window}")
+
+print(f"{calls} calls, largest {largest[0]} tokens ({largest[1]})")
+print("no call exceeded LLM_NUM_CTX" if over == 0 else f"{over} calls exceeded LLM_NUM_CTX")
+
+try:
+    before = json.load(open("/tmp/token_check.json"))
+except FileNotFoundError:
+    before = None
+if before:
+    for path in glob.glob(f"output_hints_v2_anchors_t3/{before['record']}_*_audit_log.json"):
+        audit = json.load(open(path))
+        for section_key, tokens in before["tokens"].items():
+            logged = (audit.get(section_key, {}).get("agent2_tokens") or [{}])[0].get("prompt")
+            print(f"  {section_key:5} before the run {tokens:5}, in the audit log {logged}")
+PYAFTER

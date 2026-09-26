@@ -197,6 +197,8 @@ def _make_answer_node(llm, brighton_kb, section_queries: dict, guideline_anchors
             audit_log[section_key] = section_log
             return {**state, "form_data": form_data, "audit_log": audit_log}
 
+        # Agent 2's token counts, one entry per attempt.
+        token_counts = []
         try:
             brighton_context = retrieve_brighton_context(
                 brighton_kb, query, section_key, guideline_anchors
@@ -209,6 +211,7 @@ def _make_answer_node(llm, brighton_kb, section_queries: dict, guideline_anchors
             section_result, reasoning_text, answer_conflict = evaluate_section(
                 llm, section_model, evidence, brighton_context, extra_instructions,
                 context_is_anchored=section_is_anchored(section_key, guideline_anchors),
+                token_counts=token_counts,
             )
             elapsed = time.time() - t0
             print(f"[{section_key}] Agent 2 done in {elapsed:.1f}s", flush=True)
@@ -229,6 +232,9 @@ def _make_answer_node(llm, brighton_kb, section_queries: dict, guideline_anchors
             # Kept so the answer that could not be parsed stays readable.
             section_log["reasoning"] = getattr(exc, "last_response", None)
 
+        # Written on failure too, since a truncated prompt is one way a
+        # section ends up with no parseable answer.
+        section_log["agent2_tokens"] = token_counts
         audit_log[section_key] = section_log
         return {**state, "form_data": form_data, "audit_log": audit_log}
 

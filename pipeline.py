@@ -307,6 +307,8 @@ def run_pipeline(record_id: str, patient_ehr_path: str, brighton_pdf_path: str):
 
             print(f"\n=== Section {section_key} ===", flush=True)
             section_log = {"query": query}
+            # Agent 2's token counts, one entry per attempt.
+            token_counts = []
 
             try:
                 # Agent 1: extraction mode per config.EXTRACTOR_MODE
@@ -339,6 +341,7 @@ def run_pipeline(record_id: str, patient_ehr_path: str, brighton_pdf_path: str):
                 section_result, reasoning_text, answer_conflict = evaluate_section(
                     evaluator_llm, section_model, evidence, brighton_context, extra_instructions,
                     context_is_anchored=section_is_anchored(section_key, guideline_anchors),
+                    token_counts=token_counts,
                 )
                 elapsed = time.time() - t0
                 print(f"[{section_key}] Agent 2 done in {elapsed:.1f}s", flush=True)
@@ -364,6 +367,9 @@ def run_pipeline(record_id: str, patient_ehr_path: str, brighton_pdf_path: str):
                 # Kept so the answer that could not be parsed stays readable.
                 section_log["reasoning"] = getattr(exc, "last_response", None)
 
+            # Written on failure too, since a truncated prompt is one way a
+            # section ends up with no parseable answer.
+            section_log["agent2_tokens"] = token_counts
             audit_log[section_key] = section_log
 
     # Cross-section dependency rules (see config.CROSS_SECTION_RULES), applied

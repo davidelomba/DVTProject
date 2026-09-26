@@ -451,6 +451,15 @@ risposta del modello** come attributo `last_response`: una sezione fallita è
 l'unico caso in cui il chiamante non ha altra copia di ciò che il modello ha
 scritto.
 
+Il parametro facoltativo `token_counts` è una lista a cui la funzione aggiunge,
+per ogni tentativo, i conteggi che Ollama restituisce con la risposta:
+`{"prompt": prompt_eval_count, "output": eval_count}`, letti da
+`response_metadata`. La lista si riempie anche quando tutti i tentativi
+falliscono. `pipeline.py` e `agentic_graph.py` la passano e la scrivono
+nell'audit log della sezione sotto `agent2_tokens`, anche quando la sezione
+fallisce: la somma di prompt e risposta confrontata con `LLM_NUM_CTX` dice se
+una chiamata è rimasta nella finestra di contesto.
+
 ---
 
 ## 5. `criteria_rules.py`

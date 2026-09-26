@@ -24,7 +24,9 @@ When something is unverified, say so.
 
 - `pipeline.py` orchestrates one record; `agents.py` holds both agents.
 - Agent 1 (extractor) copies evidence verbatim. Agent 2 (evaluator) answers with
-  `FINAL_OPTION` / `FINAL_ANSWER` lines.
+  `FINAL_OPTION` / `FINAL_ANSWER` lines; the prompt and output token counts
+  Ollama reports for each of its attempts go to the audit log under
+  `agent2_tokens`.
 - `config.EXTRACTOR_MODE` selects `full_text`, `rag` (baselines),
   `agentic_graph` (reference mode, a LangGraph state machine) or `raw_record`
   (no Agent 1 at all).
@@ -377,14 +379,15 @@ not say which governs, which is what the clinician question below is asking.
   B2's query rewrite, they move 385 to 386 of 400: five sections corrected, four
   broken, and A2 on SYN_23 fails outright with no parseable answer after three
   attempts. A2 is where the model is least stable under any intervention.
-- **Twenty-five configurations measured on the same base**, each varying one
+- **Twenty-six configurations measured on the same base**, each varying one
   component. `docs/RISULTATI_SPERIMENTALI.md` section 8 has the full per-section
-  table. The first three rows carry the revised hints `0d4a00c11404`, the rest
+  table. The first four rows carry the revised hints `0d4a00c11404`, the rest
   `ab63b8e5f5af` or none.
 
   ```
                                     exact     micro    macro kappa
   agentic_graph (reference)        399/400    99.75%     0.994
+  revised hints, raw_record        396/400    99.0%      0.959
   revised hints, section headings  392/399    98.2%      0.944
   revised hints, 200/40/3          390/400    97.5%      0.946
   previous reference, old hints    398/400    99.5%      0.982
@@ -744,6 +747,19 @@ not say which governs, which is what the clinician question below is asking.
   ambiguous evidence, not incomplete evidence. Rule inheritance works both ways:
   SYN_15 and SYN_37 B1_1 take 0.9901 and 0.9968 from B2 and are right, SYN_13
   A3_2 takes 0.4222 from a wrong A3_1.
+- **Without the extractor the revised hints score 396, three below the
+  reference, and the frontier keeps its two points.** `output_hints_v2_raw`,
+  the reference with `EXTRACTOR_MODE` `raw_record` alone changed: A2 loses
+  SYN_12, the pharmacomechanical thrombolysis read as a thrombectomy
+  (confidence 0.906), and SYN_23, the invasive venography read as imaging with
+  the new A2 sentence cited (0.170, second lowest of 360); B1_2 fills SYN_40
+  citing Brighton Level 2, as in both headings arms. 117 seconds a record
+  against 184, Agent 3 included in both, `agent2` at 89 in both. Wilson
+  intervals [97.5, 99.6] and [98.6, 99.96] overlap. Against the old-hint
+  `raw_record` (392 reconstructed) it gains 6 and loses 2, but that comparison
+  also carries B2's query rewrite, which moves SYN_07 and SYN_18 on B2 through
+  the guideline context. 272 sections above 0.99 of confidence, none wrong,
+  1035 across the four revised-hint arms.
 - Read the metrics in this order: majority baseline and gain, then kappa, then
   accuracy with its interval. Accuracy alone ranked F above A3_2 under the 8B
   model, where F gained nothing over a constant answer and A3_2 gained 13
@@ -777,7 +793,18 @@ not say which governs, which is what the clinician question below is asking.
   A3.2's options. The resolved Table 3 lacks Level 3, which the PDF extraction
   moves past section 6, and A3_2's prompt would reach about 11,400 characters
   with the longest record, so the token count must be checked against
-  `LLM_NUM_CTX` first.
+  `LLM_NUM_CTX` first. Measured on mari with the nonce-prefixed request
+  in `run_next.sh`, on SYN_01: A3_2 3165 tokens, A3_1 2969, X 2943, B sections
+  2512 to 2561, A1 and A2 about 2150, so only A3_2 exceeds `LLM_NUM_CTX` minus
+  `LLM_NUM_PREDICT`, 3072, and the first launch skipped the arm for it. Whether a
+  call actually overflows depends on the output, typically about 200 tokens on
+  A3_2 but up to about 1100 on the longest answers seen, so the check now warns
+  and the arm runs; `agent2_tokens` in the audit log, Ollama's
+  `prompt_eval_count` and `eval_count` per attempt, tells afterwards whether any
+  call exceeded the window. `prompt_eval_count` may count only the tokens Ollama
+  evaluated rather than those it reused from a cached prefix; the script
+  compares SYN_01's logged counts with the pre-run ones to show whether it
+  does.
   Text resolves with hyphenated line breaks
   (`Dop-\npler`) in both paths, which de-hyphenating would change for both at
   once and is therefore its own experiment.

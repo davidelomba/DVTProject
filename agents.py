@@ -558,6 +558,7 @@ def evaluate_section(
     extra_instructions: str = "",
     max_retries: int = 2,
     context_is_anchored: bool = False,
+    token_counts: list = None,
 ):
     """Fills in one section's schema from the evidence (Agent 2).
 
@@ -571,6 +572,9 @@ def evaluate_section(
             failure; each retry appends the error to the prompt.
         context_is_anchored: whether brighton_context is an anchored passage,
             which decides how the guideline block is announced.
+        token_counts: when given, one {"prompt", "output"} entry is appended
+            per attempt, the prompt_eval_count and eval_count Ollama reports
+            for that call. Filled even when every attempt fails.
 
     Returns:
         (section instance, reasoning_text, conflict). The full response is kept
@@ -600,6 +604,12 @@ def evaluate_section(
             ("human", prompt),
         ])
         content = response.content
+        if token_counts is not None:
+            meta = response.response_metadata or {}
+            token_counts.append({
+                "prompt": meta.get("prompt_eval_count"),
+                "output": meta.get("eval_count"),
+            })
 
         try:
             raw_final = _extract_final_answer_line(content)
