@@ -67,8 +67,10 @@ but performs no evidence selection.
   list possible rather than complete. What the paper leaves unsettled is whether
   the alternative has to explain the symptoms that suggested thrombosis or only
   the acute illness; Table 2 is built the first way, one row per syndrome
-  indexed by that syndrome's non-specific symptoms. Table 2 reaches the
-  evaluator through the context retrieved for the section.
+  indexed by that syndrome's non-specific symptoms. With the query set of the
+  reference run, `bfd9536a31fe`, Table 2 reaches the evaluator through the
+  context retrieved for the section; with `e0c31c90d6ce` only section 5.2.7,
+  which names it, does.
 - **Do not add schema-level "none of the above" options** for A3_2 or B1_2: the
   printed questionnaire does not have them.
 - **B1.1 and B1.2 record the presumed diagnosis of a specific syndrome**, DVT of
@@ -209,9 +211,13 @@ same signature. Runs before 2026-09-08 lack it and are told apart by their date.
 
 `_run_config.section_queries_fingerprint` does the same for `SECTION_QUERIES`,
 which is both the brief Agent 1 works from and the key that retrieves the
-guideline context. The current set, rewritten on 2026-09-26 from the printed
-questionnaire with the Brighton paper's terms where they name the same thing,
-digests to `e0c31c90d6ce` and is not yet measured; every run from 2026-09-20 to
+guideline context. The current set, `2efa960f3bdd`, is mixed and not yet
+measured: the questionnaire-based queries for A2, A3_2, B1_2, B2, C, F and X,
+the earlier ones for A1, A3_1 and B1_1, whose record vocabulary the rewrite had
+replaced with words about the question. The all-questionnaire set
+`e0c31c90d6ce` was measured in `output_queries_v3` (395/399) and
+`output_queries_v3_small` (393/400) and not adopted; the reference still
+carries `bfd9536a31fe`; every run from 2026-09-20 to
 2026-09-26 used `bfd9536a31fe`, the runs before 2026-09-20 `39a5a3504655`, and
 runs before 2026-09-19 lack the field.
 
@@ -381,9 +387,9 @@ not say which governs, which is what the clinician question below is asking.
   B2's query rewrite, they move 385 to 386 of 400: five sections corrected, four
   broken, and A2 on SYN_23 fails outright with no parseable answer after three
   attempts. A2 is where the model is least stable under any intervention.
-- **Twenty-seven configurations measured on the same base**, each varying one
+- **Twenty-nine configurations measured on the same base**, each varying one
   component. `docs/RISULTATI_SPERIMENTALI.md` section 8 has the full per-section
-  table. The first five rows carry the revised hints `0d4a00c11404`, the rest
+  table. The first seven rows carry the revised hints `0d4a00c11404`, the rest
   `ab63b8e5f5af` or none.
 
   ```
@@ -393,6 +399,8 @@ not say which governs, which is what the clinician question below is asking.
   revised hints, section headings  392/399    98.2%      0.944
   revised hints, 200/40/3          390/400    97.5%      0.946
   revised hints, Table 3 anchors   391/400    97.75%     0.950
+  questionnaire queries, 800/150/5 395/399    99.0%      0.983
+  questionnaire queries, 200/40/3  393/400    98.25%     0.974
   previous reference, old hints    398/400    99.5%      0.982
   same, 8B agent and old B2 query  398/400    99.5%      0.982
   agentic without the context      395/400    98.75%     0.970
@@ -789,6 +797,24 @@ not say which governs, which is what the clinician question below is asking.
   and ends at exactly 4096; the third attempt is logged at 2050, truncated, and
   its reasoning says the text describes no patient. Earlier sections that failed
   after three attempts may have done the same, unverifiable without the counts.
+- **Queries rewritten from the questionnaire cost 4 at the reference
+  parameters and gain 3 at 200/40/3.** `e0c31c90d6ce`, all ten queries naming
+  the question and its options. At 800/150/5, where only the guideline context
+  changes, 399 falls to 395/399: B2 on SYN_07 fails after three 1024-token
+  attempts, B2 on SYN_18 and SYN_38 adds option 4 on a literal reading of "or
+  pain", B1_2 on SYN_40 fills again. X keeps 40 of 40 but no longer receives
+  Table 2 itself, only section 5.2.7 that names it; B2 still does. At 200/40/3,
+  390 to 393 with fifteen sections moving: X gains SYN_02, 11 and 38 because the
+  query now names the alternative diagnosis and the fragments carry it, A3_1
+  and A3_2 gain SYN_13, B2 gains the absent pulses on SYN_27 and 38, A3_2 SYN_04
+  and B1_1 SYN_10; B2 loses SYN_07, 25 and 26, A3_2 the compression-Doppler
+  pairing on SYN_12 and 23, A3_1 SYN_20. **B1_1's 40 of 40 there is the B2
+  rule's**: it rewrites B1_1 on seven records against two in the old-query arm,
+  and on six of them Agent 2 had answered correctly with the old query, the new
+  one retrieving fragments without the symptoms. First runs with the retry fix:
+  a retry adds 74 tokens, four sections retried in the reference arm, none
+  filled the window. 1744 sections above 0.99 of confidence across seven
+  revised-hint arms, none wrong.
 - Read the metrics in this order: majority baseline and gain, then kappa, then
   accuracy with its interval. Accuracy alone ranked F above A3_2 under the 8B
   model, where F gained nothing over a constant answer and A3_2 gained 13
@@ -936,11 +962,13 @@ not say which governs, which is what the clinician question below is asking.
   in `rag` the gate overrode SYN_36 and SYN_39, whose keywords ARE in the list,
   because the lossy extractor had already dropped the text containing them —
   **the gate's reliability depends on the extractor's output**.
-- **Three section queries named only part of their section's options; all ten
-  are now rewritten from the questionnaire (`e0c31c90d6ce`), not yet measured.**
-  `run_queries.sh` runs the reference and the 200/40/3 arm with them, and prints
-  which guideline passages each query retrieves, which decides whether X still
-  receives section 5.2.7 and Table 2. The audit below led to it. Audited
+- **Which query set to keep is open.** `pipeline.py` carries the mixed set
+  `2efa960f3bdd`, which `run_queries.sh` measures in `output_queries_v4` and
+  `output_queries_v4_small`; the all-questionnaire set `e0c31c90d6ce` measured
+  -4 at the reference parameters and +3 at 200/40/3, and the reference run was
+  produced with `bfd9536a31fe`. With the
+  new set X no longer receives Table 2, which the domain constraint on X
+  assumes. The audit that preceded the rewrite follows. Audited
   by comparing each query in `SECTION_QUERIES` against the options of its
   section. A2's query is `thrombectomy, surgical procedure related to DVT` and
   covers one of the two positive branches: `Other procedure done that confirmed
@@ -976,8 +1004,8 @@ not say which governs, which is what the clinician question below is asking.
   stays open is the coverage errors of the 200/40/3 arm, scored 0.75 to 0.965
   because Agent 3 reads the same fragments as Agent 2. Scoring against the
   whole record instead of the evidence is one way to reach them, not measured.
-- **Retries no longer carry the failed response; the fix is not yet measured
-  on a run.** The error a missing `FINAL_ANSWER` raised used to quote the whole
+- **Retries no longer carry the failed response; measured in the two
+  query runs, where a retry adds 74 tokens and no call fills the window.** The error a missing `FINAL_ANSWER` raised used to quote the whole
   response, and `evaluate_section` appends the error to the prompt before
   retrying, so a retry after a 1024-token answer started about 1100 tokens
   longer and could leave the window, as SYN_36 B2 did in the Table 3 anchors

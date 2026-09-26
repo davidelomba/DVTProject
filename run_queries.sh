@@ -1,9 +1,9 @@
 #!/bin/bash
-# Two agentic_graph runs with the section queries rewritten from the printed
-# questionnaire (section_queries_fingerprint e0c31c90d6ce), Agent 3 on, one
+# Two agentic_graph runs with the mixed section query set
+# (section_queries_fingerprint 2efa960f3bdd), Agent 3 on, one
 # after the other, each in its own directory:
-#   1. output_queries_v3         the reference configuration, chunks 800/150/5
-#   2. output_queries_v3_small   EHR chunks 200/40, retriever k 3
+#   1. output_queries_v4         the reference configuration, chunks 800/150/5
+#   2. output_queries_v4_small   EHR chunks 200/40, retriever k 3
 # Before the runs, the guideline passages each query retrieves are printed.
 # After each run, the calls that filled or overflowed LLM_NUM_CTX are listed
 # from agent2_tokens.
@@ -38,7 +38,7 @@ checks = {
     "LLM_NUM_CTX": (config.LLM_NUM_CTX, 4096),
     "CONFIDENCE_ENABLED": (config.CONFIDENCE_ENABLED, True),
     "hint fingerprint": (pipeline._hint_fingerprint()["all"], "0d4a00c11404"),
-    "query fingerprint": (pipeline._query_fingerprint()["all"], "e0c31c90d6ce"),
+    "query fingerprint": (pipeline._query_fingerprint()["all"], "2efa960f3bdd"),
 }
 bad = [f"{k}: {got!r}, expected {want!r}" for k, (got, want) in checks.items() if got != want]
 print("pre-flight:", "OK" if not bad else "FAILED")
@@ -107,14 +107,14 @@ print(f"{run_dir}: {calls} calls, {retried} sections retried, "
 PYAFTER
 }
 
-echo "=== run 1: output_queries_v3 ==="
-$PY run_synthetic_records.py --output-dir ./output_queries_v3
-token_check output_queries_v3
+echo "=== run 1: output_queries_v4 ==="
+$PY run_synthetic_records.py --output-dir ./output_queries_v4
+token_check output_queries_v4
 
-echo "=== run 2: output_queries_v3_small ==="
+echo "=== run 2: output_queries_v4_small ==="
 sed -i -e 's/^EHR_CHUNK_SIZE = 800/EHR_CHUNK_SIZE = 200/' \
        -e 's/^EHR_CHUNK_OVERLAP = 150/EHR_CHUNK_OVERLAP = 40/' \
        -e 's/^EHR_RETRIEVER_K = 5/EHR_RETRIEVER_K = 3/' config.py
 grep -nE '^EHR_(CHUNK_SIZE|CHUNK_OVERLAP|RETRIEVER_K)' config.py
-$PY run_synthetic_records.py --output-dir ./output_queries_v3_small
-token_check output_queries_v3_small
+$PY run_synthetic_records.py --output-dir ./output_queries_v4_small
+token_check output_queries_v4_small

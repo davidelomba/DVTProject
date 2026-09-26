@@ -653,10 +653,10 @@ modulo.
 
 **`SECTION_QUERIES`** associa a ogni sezione la query che dice ad Agent 1 cosa
 cercare, e che serve anche a recuperare il contesto dalla linea guida. Ogni
-query è scritta dal questionario stampato: nomina l'oggetto della domanda e il
-contenuto delle sue opzioni, con i termini della definizione di caso Brighton
-solo dove nominano la stessa cosa (per esempio *histopathologic findings* per
-A1, *DVT of lower or upper limbs* per B1.2, *alternate etiology* per X). Sono in
+query nomina il contenuto delle opzioni della sezione con parole che compaiono
+nei referti, con i termini della definizione di caso Brighton solo dove nominano
+la stessa cosa (per esempio *DVT of lower or upper limbs* per B1.2, *alternate
+etiology* per X). Sono in
 inglese; il modello di embedding multilingue le confronta con referti in
 italiano.
 
