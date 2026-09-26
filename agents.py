@@ -473,7 +473,7 @@ def _extract_final_answer_line(text: str) -> str:
     """
     matches = re.findall(r"FINAL_ANSWER:\s*(.+)", text)
     if not matches:
-        raise ValueError(f"No FINAL_ANSWER line found in response: {text!r}")
+        raise ValueError("No FINAL_ANSWER line found in the response")
     return matches[-1].strip()
 
 

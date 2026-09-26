@@ -379,9 +379,9 @@ not say which governs, which is what the clinician question below is asking.
   B2's query rewrite, they move 385 to 386 of 400: five sections corrected, four
   broken, and A2 on SYN_23 fails outright with no parseable answer after three
   attempts. A2 is where the model is least stable under any intervention.
-- **Twenty-six configurations measured on the same base**, each varying one
+- **Twenty-seven configurations measured on the same base**, each varying one
   component. `docs/RISULTATI_SPERIMENTALI.md` section 8 has the full per-section
-  table. The first four rows carry the revised hints `0d4a00c11404`, the rest
+  table. The first five rows carry the revised hints `0d4a00c11404`, the rest
   `ab63b8e5f5af` or none.
 
   ```
@@ -390,6 +390,7 @@ not say which governs, which is what the clinician question below is asking.
   revised hints, raw_record        396/400    99.0%      0.959
   revised hints, section headings  392/399    98.2%      0.944
   revised hints, 200/40/3          390/400    97.5%      0.946
+  revised hints, Table 3 anchors   391/400    97.75%     0.950
   previous reference, old hints    398/400    99.5%      0.982
   same, 8B agent and old B2 query  398/400    99.5%      0.982
   agentic without the context      395/400    98.75%     0.970
@@ -760,6 +761,32 @@ not say which governs, which is what the clinician question below is asking.
   also carries B2's query rewrite, which moves SYN_07 and SYN_18 on B2 through
   the guideline context. 272 sections above 0.99 of confidence, none wrong,
   1035 across the four revised-hint arms.
+- **Anchoring by principle costs what anchoring by content cost.**
+  `output_hints_v2_anchors_t3`, the reference with anchors on and the map
+  chosen from the case definition (Table 3 plus its 5.2.x rationale and the
+  tables it cites, C and F unanchored), scores 391/400, micro 97.75%, macro
+  kappa 0.950, the same total as the content-chosen anchors of 2026-09-22.
+  Eight sections lost, three of them by applying a Table 3 criterion the option
+  does not ask for: SYN_28's plethysmography rejected because Table 1 does not
+  list it (A3_1, and A3_2 through the rule), SYN_38's absent pulses dropped
+  because Level 2 requires no alternative diagnosis, SYN_40's B1_2 filled from
+  Level 2's presumed diagnosis. The others are A2 on SYN_23, B1_1 on SYN_31
+  (no objective findings received read as a report of absence), B2 on SYN_07
+  as in both earlier arms, and B2 on SYN_36, which is the retry defect below.
+  C and F stay at 40, as predicted. `GUIDELINE_ANCHORS_ENABLED` stays False. 250 sections above
+  0.99 of confidence, none wrong, 1285 across the five revised-hint arms; 181
+  seconds a record.
+- **A retry can overflow the context window.** First run with `agent2_tokens`.
+  First attempts are counted in full: SYN_01 differs from the pre-run check by
+  6 tokens on every section, the line added to the check, so no cached prefix is
+  hidden; none exceeds 4096, the largest being SYN_01 A3_2 at 3159 + 367; the
+  median output is 135 tokens over 403 calls. SYN_36 B2 is the exception. Its
+  first attempt hits the 1024-token cap with no `FINAL_ANSWER`; the retry starts
+  at 3611 tokens because the error appended to the prompt carries the whole
+  failed response (`_extract_final_answer_line` puts `text!r` in the message),
+  and ends at exactly 4096; the third attempt is logged at 2050, truncated, and
+  its reasoning says the text describes no patient. Earlier sections that failed
+  after three attempts may have done the same, unverifiable without the counts.
 - Read the metrics in this order: majority baseline and gain, then kappa, then
   accuracy with its interval. Accuracy alone ranked F above A3_2 under the 8B
   model, where F gained nothing over a constant answer and A3_2 gained 13
@@ -768,7 +795,7 @@ not say which governs, which is what the clinician question below is asking.
 ## Open items
 
 - **The guideline retrieval selects hard and is keyed on the wrong string. The
-  anchors that replace it are measured and cost 7 sections.** The paper is 48,467 characters
+  anchors that replace it are measured twice and cost 7 and 8 sections.** The paper is 48,467 characters
   in 76 chunks and `BRIGHTON_RETRIEVER_K` is 5, so each section reads 6.6% of
   it, chosen by that section's `SECTION_QUERIES` entry — a string written to
   find findings in a clinical record. The two retrieval paths are therefore in
@@ -779,32 +806,17 @@ not say which governs, which is what the clinician question below is asking.
   preamble. X, C and A3_2 do receive their passage on all 40.
   `config.GUIDELINE_ANCHORS` names the passage per section instead of searching
   for it, and `GUIDELINE_ANCHORS_ENABLED` stays False: the arm scores 391
-  against 398. **What the measurement leaves open is not whether the anchors
-  help but what to anchor to.** Every loss comes from the same place, a passage
-  that states a criterion the section's options do not ask about, so an anchor
-  is only as good as the match between the paper's definition and the
-  questionnaire's wording — and on A2, A3_1 and B2 that match is exactly what
-  the clinician questions are about. The variant not yet run anchors by
-  principle rather than by content: Table 3, the case definition the
-  questionnaire follows, plus its rationale in 5.2.x and the tables it cites —
-  A1 Table 3 and 5.2.2, A2 Table 3, A3_1 and A3_2 Table 3 and Table 1, B1_1,
-  B1_2 and B2 Table 3 and 5.2.1, X Table 3, 5.2.7 and Table 2, C and F without
-  an anchor. Section 4 is background and 5.2.3's modality list contradicts
-  A3.2's options. The resolved Table 3 lacks Level 3, which the PDF extraction
-  moves past section 6, and A3_2's prompt would reach about 11,400 characters
-  with the longest record, so the token count must be checked against
-  `LLM_NUM_CTX` first. Measured on mari with the nonce-prefixed request
-  in `run_next.sh`, on SYN_01: A3_2 3165 tokens, A3_1 2969, X 2943, B sections
-  2512 to 2561, A1 and A2 about 2150, so only A3_2 exceeds `LLM_NUM_CTX` minus
-  `LLM_NUM_PREDICT`, 3072, and the first launch skipped the arm for it. Whether a
-  call actually overflows depends on the output, typically about 200 tokens on
-  A3_2 but up to about 1100 on the longest answers seen, so the check now warns
-  and the arm runs; `agent2_tokens` in the audit log, Ollama's
-  `prompt_eval_count` and `eval_count` per attempt, tells afterwards whether any
-  call exceeded the window. `prompt_eval_count` may count only the tokens Ollama
-  evaluated rather than those it reused from a cached prefix; the script
-  compares SYN_01's logged counts with the pre-run ones to show whether it
-  does.
+  against 398. Every loss comes from the same place, a passage that states a
+  criterion the section's options do not ask about. Choosing the passage by
+  principle instead, Table 3, the case definition the questionnaire follows,
+  plus its rationale in 5.2.x and the tables it cites (A1 Table 3 and 5.2.2,
+  A2 Table 3, A3_1 and A3_2 Table 3 and Table 1, the B sections Table 3 and
+  5.2.1, X Table 3, 5.2.7 and Table 2, C and F unanchored), scores 391 against
+  399 with the revised hints, and three of its eight losses apply a Table 3
+  criterion. **Changing the passage does not help: any passage of the paper
+  brings criteria the form does not ask section by section.** The
+  resolved Table 3 lacks Level 3, which the PDF extraction moves past section
+  6, and its A3_2 prompt is 3165 tokens on the longest record.
   Text resolves with hyphenated line breaks
   (`Dop-\npler`) in both paths, which de-hyphenating would change for both at
   once and is therefore its own experiment.
@@ -958,6 +970,15 @@ not say which governs, which is what the clinician question below is asking.
   stays open is the coverage errors of the 200/40/3 arm, scored 0.75 to 0.965
   because Agent 3 reads the same fragments as Agent 2. Scoring against the
   whole record instead of the evidence is one way to reach them, not measured.
+- **Retries no longer carry the failed response; the fix is not yet measured
+  on a run.** The error a missing `FINAL_ANSWER` raised used to quote the whole
+  response, and `evaluate_section` appends the error to the prompt before
+  retrying, so a retry after a 1024-token answer started about 1100 tokens
+  longer and could leave the window, as SYN_36 B2 did in the Table 3 anchors
+  arm. `_extract_final_answer_line` now raises a message without the response,
+  which stays in `last_response`; a retry grows by the fixed reminder alone,
+  about 320 characters. Every run before 2026-09-26 retried with the response
+  in the prompt.
 - Test whether the TRANSCRIPTION RULE in `AGENTIC_EXTRACTOR_SYSTEM_PROMPT` does
   anything: it governs a string the code discards.
 - **The extractor prompt never says a negation is evidence**, while the

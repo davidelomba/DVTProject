@@ -75,8 +75,8 @@ $PY - <<'PYTOKENS' || exit 1
 # evidence the reference run stored for it. Each request carries a distinct
 # first line, so Ollama cannot reuse a cached prefix and prompt_eval_count
 # counts the whole prompt; the check therefore overestimates by a few tokens.
-# A prompt above the limit is reported, not blocking: the check after the run
-# says whether any call actually exceeded the window. The counts are saved to
+# A prompt above the limit is reported and the run still starts; the check
+# after the run says whether any call actually exceeded the window. The counts are saved to
 # /tmp/token_check.json for that comparison.
 import glob
 import json

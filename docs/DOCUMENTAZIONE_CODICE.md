@@ -445,7 +445,11 @@ tenendo i reperti, perché lasciar passare l'errore costerebbe l'intera sezione
 una volta esauriti i tentativi.
 
 In caso di fallimento del parsing, il prompt viene **esteso** con il testo
-dell'errore e la sezione ritentata, fino a `max_retries + 1` tentativi. Se
+dell'errore e la sezione ritentata, fino a `max_retries + 1` tentativi. Il
+messaggio d'errore non contiene la risposta fallita: quello di
+`_extract_final_answer_line` dice solo che manca la riga `FINAL_ANSWER`, quindi
+ogni tentativo aggiunge al prompt circa 320 caratteri e non l'intera risposta
+precedente. Se
 falliscono tutti, la funzione solleva un `RuntimeError` a cui **allega l'ultima
 risposta del modello** come attributo `last_response`: una sezione fallita è
 l'unico caso in cui il chiamante non ha altra copia di ciò che il modello ha
