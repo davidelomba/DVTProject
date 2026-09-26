@@ -34,26 +34,36 @@ from agentic_graph import build_agentic_llm, run_agentic_graph_pipeline
 from confidence import score_record
 
 
-# Retrieval/extraction query for each section: tells Agent 1 what to look
-# for in the clinical record. Refine based on the language and terminology
-# of the EHRs actually used (e.g. Italian abbreviations).
+# One query per section, written from the printed questionnaire, with the
+# Brighton case definition's own terms where it defines the same criterion.
+# Each is used twice: as Agent 1's search brief in the record (the retrieval key
+# in rag) and as the key that retrieves the guideline context for Agent 2 in
+# every mode. Written in English; the multilingual embedding model matches them
+# against Italian records.
 SECTION_QUERIES = {
-    "A1": "autopsy report, necropsy, post-mortem examination, autoptic findings",
-    "A2": "thrombectomy, surgical procedure related to DVT",
-    "A3_1": "ultrasound, CT, MRI, venography: imaging outcome for deep vein thrombosis",
-    "A3_2": "type of imaging study performed: compression ultrasonography, doppler, venography",
-    "B1_1": "reported symptoms or signs of deep vein thrombosis",
-    "B1_2": "deep vein thrombosis lower extremity or upper extremity",
-    "B2": "calf pain or tenderness, leg swelling or pitting oedema, redness, "
-          "warmth or pain in any extremity, absent pulses in legs or arms",
-    "C": "D-dimer value, test date, laboratory upper limit of normal",
-    "F": "diagnosis of deep vein thrombosis reported by specialist",
-    # Worded after Table 2 of the guideline, which lists these conditions under
-    # the symptoms they mimic. The earlier wording sent that table to B2, whose
-    # query names the same symptoms.
-    "X": "possible alternative etiologies; clinical syndromes to be differentiated "
-         "from thrombosis; conditions explaining calf pain, redness, warmth or "
-         "ankle edema other than DVT",
+    "A1": "autopsy or post-mortem examination: pathologic or histopathologic "
+          "findings of deep vein thrombosis",
+    "A2": "thrombectomy or other surgical procedure that confirmed the presence "
+          "of a deep vein thrombus",
+    "A3_1": "imaging study findings consistent with deep vein thrombosis: whether "
+            "an imaging study confirmed DVT or did not confirm it",
+    "A3_2": "imaging study that confirmed deep vein thrombosis: compression "
+            "ultrasonography, Doppler or duplex ultrasound, CT or MR venography, "
+            "contrast venography, other imaging modality",
+    "B1_1": "clinical presentation consistent with deep vein thrombosis: reported "
+            "signs or symptoms, or a recognized or presumed DVT syndrome",
+    "B1_2": "specific type of deep vein thrombosis: DVT of lower or upper limbs, "
+            "lower extremity or upper extremity",
+    "B2": "new onset non-specific clinical signs or symptoms suggesting DVT: calf "
+          "pain or tenderness, leg swelling or pitting oedema, absent pulses in "
+          "legs or arms, redness, warmth or pain in one or more extremities",
+    "C": "D-dimer test: highest measured value within two weeks of the event, "
+         "above or within the test lab's upper limit of normal",
+    "F": "case of deep vein thrombosis reported by a specialist, with or without "
+         "supporting clinical, imaging or laboratory details",
+    "X": "alternative diagnosis or alternate etiology, other than deep vein "
+         "thrombosis, that explained the acute clinical illness; disorders to be "
+         "differentiated from thrombosis",
 }
 
 # Key under which run_pipeline records the settings a run was produced with.

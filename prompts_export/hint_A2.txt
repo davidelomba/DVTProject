@@ -1,0 +1,1 @@
+CRITICAL FOR A2: Pay extreme attention to ANY negations preceding surgical terms. If the clinical record explicitly states that a surgical procedure was not performed, was refused, or is absent, you MUST NOT select options 1 or 2. An imaging study done on its own, such as an ultrasound or a CT or MR venography, is not a procedure and does not count here.

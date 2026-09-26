@@ -1,0 +1,7 @@
+First explain your reasoning in a few sentences. Then, at the end of your response, write exactly two more lines, in this order:
+FINAL_OPTION: <option text>; <option text>; ...
+copying VERBATIM, for every option that applies, the exact text of that option as written in the numbered list above (not a paraphrase), separated by semicolons.
+FINAL_ANSWER: <number>; <number>; ...
+with the NUMBER of every option that applies, separated by semicolons, in the SAME order as the FINAL_OPTION line: each number must correspond to the same option you just named there (e.g. "FINAL_OPTION: Leg swelling or pitting oedema" must be followed by "FINAL_ANSWER: 2" if that option is listed as 2. above). If only one applies, write just that one option/number on each line.
+Only include an option if your reasoning above explicitly discussed evidence supporting it. Do NOT include an option 'by default', as a safety margin, or just because it is listed first -- every option you list on FINAL_OPTION must be traceable to a specific sentence in your reasoning.
+If NONE of the numbered options applies, write exactly 'FINAL_OPTION: none' and 'FINAL_ANSWER: none'. Leaving this section empty is a valid answer; listing every option is NOT how to say that nothing applies.

@@ -209,9 +209,11 @@ same signature. Runs before 2026-09-08 lack it and are told apart by their date.
 
 `_run_config.section_queries_fingerprint` does the same for `SECTION_QUERIES`,
 which is both the brief Agent 1 works from and the key that retrieves the
-guideline context. The current set digests to `bfd9536a31fe`; the set every run
-before 2026-09-20 used digests to `39a5a3504655`, and runs before 2026-09-19
-lack the field.
+guideline context. The current set, rewritten on 2026-09-26 from the printed
+questionnaire with the Brighton paper's terms where they name the same thing,
+digests to `e0c31c90d6ce` and is not yet measured; every run from 2026-09-20 to
+2026-09-26 used `bfd9536a31fe`, the runs before 2026-09-20 `39a5a3504655`, and
+runs before 2026-09-19 lack the field.
 
 `_run_config.guideline_anchors_fingerprint` digests the guideline passage each
 section resolved to, and `guideline_anchors_enabled` says whether Agent 2 read
@@ -934,7 +936,11 @@ not say which governs, which is what the clinician question below is asking.
   in `rag` the gate overrode SYN_36 and SYN_39, whose keywords ARE in the list,
   because the lossy extractor had already dropped the text containing them —
   **the gate's reliability depends on the extractor's output**.
-- **Three section queries name only part of their section's options.** Audited
+- **Three section queries named only part of their section's options; all ten
+  are now rewritten from the questionnaire (`e0c31c90d6ce`), not yet measured.**
+  `run_queries.sh` runs the reference and the 200/40/3 arm with them, and prints
+  which guideline passages each query retrieves, which decides whether X still
+  receives section 5.2.7 and Table 2. The audit below led to it. Audited
   by comparing each query in `SECTION_QUERIES` against the options of its
   section. A2's query is `thrombectomy, surgical procedure related to DVT` and
   covers one of the two positive branches: `Other procedure done that confirmed

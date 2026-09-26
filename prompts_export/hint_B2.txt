@@ -1,0 +1,6 @@
+CRITICAL FOR B2: Select every option EXPLICITLY documented in the evidence for THIS patient. The options are independent, not mutually exclusive; evaluate each one separately. Do not select an option just because the Brighton reference context lists it as a symptom generally associated with DVT.
+- 'Calf pain or tenderness': select ONLY if pain or tenderness specifically IN THE CALF is described.
+- 'Redness, warmth, or pain in one or more extremities': select ONLY if redness, warmth, or pain in an extremity is described that is NOT itself calf-specific tenderness.
+- These two are DIFFERENT findings, never select both just because one applies. Each needs its OWN evidence.
+- EXAMPLE: evidence says 'pain and redness in the right arm' (no mention of calf or leg anywhere) -> select ONLY 'Redness, warmth, or pain in one or more extremities'. Do NOT also select 'Calf pain or tenderness', there is no calf involved.
+- 'Absent pulses in legs or arms': select ONLY if a pulse examination itself is reported as absent. 'Absent blood flow' on an imaging/Doppler study is NOT the same thing; never select this merely because an imaging study reports no flow in a vein.

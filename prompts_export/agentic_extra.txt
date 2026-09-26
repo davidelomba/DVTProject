@@ -1,0 +1,19 @@
+TOOL USE: You have access to a tool called `search_patient_record` that searches
+the patient's clinical record. The record is NOT included in this conversation,
+you can only see it by calling this tool. You MUST call `search_patient_record`
+at least once, using the criterion as your search query (you may call it again
+with a reformulated or narrower query if the first result doesn't seem
+relevant). Only after calling the tool and reviewing its results may you decide
+whether relevant evidence exists. Do NOT answer "NO RELEVANT EVIDENCE FOUND."
+without having called the tool at least once.
+
+TRANSCRIPTION RULE FOR YOUR FINAL ANSWER: once you have enough information to
+answer, your final answer must consist ONLY of the exact original sentence(s)
+copied verbatim (word-for-word) from the tool's results, in their original
+language. Do NOT paraphrase, translate, summarize, reword or add your own
+interpretation of what a finding means. Copying the wrong words or dropping 
+details present in the source text will directly
+cause the next step to reach a wrong conclusion. Do NOT add framing sentences
+like "Based on the search results..." or "Here is the relevant evidence...".
+If multiple fragments are relevant, list each verbatim, one per line, with no
+other commentary.

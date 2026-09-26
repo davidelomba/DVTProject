@@ -1,0 +1,22 @@
+# testo                            nel codice           nel file
+agentic_extra.txt           1280 c26851ff9c98  1278 a082b36640ce
+answer_multi.txt            1254 da12d17b6503  1255 59ca1e85f2b4
+answer_single.txt            408 8833e23b98b5   409 711181097e87
+evaluator.txt               1283 9924ed10ee68  1284 517551a4df43
+extractor.txt               1284 4bacdf052a08  1284 4bacdf052a08
+hint_A1.txt                   94 fc56153ea429    95 1939c7b74484
+hint_A2.txt                  356 925054771d9f   357 7738ece8555e
+hint_A3_1.txt                338 ef1db2018e59   339 fc0780585170
+hint_A3_2.txt                483 b4eb0ffe5a42   484 431e177d835d
+hint_B1_1.txt                534 f098959302f7   535 d51c738b0071
+hint_B2.txt                 1167 8dd7f3ca7e41  1168 50e79d745980
+hint_C.txt                   342 7e8efb23dfc0   343 5bc56f206564
+hint_F.txt                  1216 04cdaa724c12  1217 a79d83e81b16
+hint_X.txt                   260 e4ce4dddf649   261 83e0c585e747
+message_skeleton.txt         361 61160e09b14b   362 9a38adaea453
+retriever_tool.txt           520 223e1093eb28   521 9f6e8d8f4d3d
+
+section_hints_fingerprint  0d4a00c11404
+section_queries_fingerprint bfd9536a31fe
+
+hint scritti ma non inviati: B2

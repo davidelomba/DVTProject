@@ -1,0 +1,5 @@
+First explain your reasoning in a few sentences. Then, at the end of your response, write exactly two more lines, in this order:
+FINAL_OPTION: <option text>
+copying VERBATIM the exact text of the one option that applies, as written in the numbered list above (not a paraphrase).
+FINAL_ANSWER: <number>
+with the NUMBER of that SAME option (e.g. if FINAL_OPTION copies option 2's text, FINAL_ANSWER must be 2).

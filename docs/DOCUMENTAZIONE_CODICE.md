@@ -652,11 +652,13 @@ dal grafo di `agentic_graph.py`, le altre tre dal ciclo per sezione di questo
 modulo.
 
 **`SECTION_QUERIES`** associa a ogni sezione la query che dice ad Agent 1 cosa
-cercare, e che serve anche a recuperare il contesto dalla linea guida. La query
-di `X` è formulata seguendo il linguaggio della Tabella 2 del paper: la
-formulazione precedente non recuperava mai quella tabella, che finiva a B2 perché
-la riga della TVP è scritta in parole di sintomo che corrispondono quasi
-esattamente alla query di B2.
+cercare, e che serve anche a recuperare il contesto dalla linea guida. Ogni
+query è scritta dal questionario stampato: nomina l'oggetto della domanda e il
+contenuto delle sue opzioni, con i termini della definizione di caso Brighton
+solo dove nominano la stessa cosa (per esempio *histopathologic findings* per
+A1, *DVT of lower or upper limbs* per B1.2, *alternate etiology* per X). Sono in
+inglese; il modello di embedding multilingue le confronta con referti in
+italiano.
 
 **`_ollama_version()`** legge la versione del binario Ollama. È registrata perché
 due versioni di Ollama portano due versioni di llama.cpp, e con esse kernel di
