@@ -1,0 +1,47 @@
+{
+  "record_id": "SYN_20_autopsy_negative_trauma_v2",
+  "a1": {
+    "answer": "Autopsy done but showed no evidence of DVT"
+  },
+  "a2": {
+    "answer": "No surgical procedure done; or, done but either did not confirm presence of DVT or findings unknown; or unknown if done"
+  },
+  "a3_1": {
+    "answer": "No imaging studies done, unknown if done, or done but results unknown"
+  },
+  "a3_2": {
+    "studies": []
+  },
+  "b1_1": {
+    "answer": "There was no report of a recognized DVT syndrome"
+  },
+  "b1_2": {
+    "types": []
+  },
+  "b2": {
+    "symptoms": [
+      "None of the above were present or it is unknown if any of 1-4 were present"
+    ]
+  },
+  "c": {
+    "answer": "D-dimer not tested, or tested but results unknown or not available"
+  },
+  "f": {
+    "answer": "No"
+  },
+  "x": {
+    "answer": "An alternative diagnosis was found that explained the acute illness"
+  },
+  "_confidence": {
+    "A1": 0.9999,
+    "A2": 0.9997,
+    "A3_1": 0.9438,
+    "A3_2": 0.9953,
+    "B1_1": 0.9994,
+    "B1_2": 0.9998,
+    "B2": 0.9975,
+    "C": 0.9999,
+    "F": null,
+    "X": 0.9465
+  }
+}

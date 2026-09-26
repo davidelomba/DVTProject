@@ -1,0 +1,47 @@
+{
+  "record_id": "SYN_16_no_dvt_syndrome_reported_v2",
+  "a1": {
+    "answer": "No autopsy done, unknown if done, or done but results unavailable"
+  },
+  "a2": {
+    "answer": "No surgical procedure done; or, done but either did not confirm presence of DVT or findings unknown; or unknown if done"
+  },
+  "a3_1": {
+    "answer": "No imaging studies done, unknown if done, or done but results unknown"
+  },
+  "a3_2": {
+    "studies": []
+  },
+  "b1_1": {
+    "answer": "There was no report of a recognized DVT syndrome"
+  },
+  "b1_2": {
+    "types": []
+  },
+  "b2": {
+    "symptoms": [
+      "None of the above were present or it is unknown if any of 1-4 were present"
+    ]
+  },
+  "c": {
+    "answer": "D-dimer not tested, or tested but results unknown or not available"
+  },
+  "f": {
+    "answer": "No"
+  },
+  "x": {
+    "answer": "An alternative diagnosis was found that explained the acute illness"
+  },
+  "_confidence": {
+    "A1": 0.9986,
+    "A2": 0.9999,
+    "A3_1": 0.9996,
+    "A3_2": 0.9997,
+    "B1_1": 0.9992,
+    "B1_2": 1.0,
+    "B2": 0.9959,
+    "C": 1.0,
+    "F": null,
+    "X": 0.9998
+  }
+}

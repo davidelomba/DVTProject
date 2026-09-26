@@ -1,0 +1,112 @@
+{
+  "records_compared": 40,
+  "sections": {
+    "A1": {
+      "compared": 40,
+      "changed": 0,
+      "correct_a": 40,
+      "correct_b": 40,
+      "stability": 1.0
+    },
+    "A2": {
+      "compared": 40,
+      "changed": 2,
+      "correct_a": 40,
+      "correct_b": 38,
+      "stability": 0.95
+    },
+    "A3_1": {
+      "compared": 40,
+      "changed": 0,
+      "correct_a": 40,
+      "correct_b": 40,
+      "stability": 1.0
+    },
+    "A3_2": {
+      "compared": 40,
+      "changed": 0,
+      "correct_a": 40,
+      "correct_b": 40,
+      "stability": 1.0
+    },
+    "B1_1": {
+      "compared": 40,
+      "changed": 0,
+      "correct_a": 39,
+      "correct_b": 39,
+      "stability": 1.0
+    },
+    "B1_2": {
+      "compared": 40,
+      "changed": 1,
+      "correct_a": 40,
+      "correct_b": 39,
+      "stability": 0.975
+    },
+    "B2": {
+      "compared": 40,
+      "changed": 0,
+      "correct_a": 40,
+      "correct_b": 40,
+      "stability": 1.0
+    },
+    "C": {
+      "compared": 40,
+      "changed": 0,
+      "correct_a": 40,
+      "correct_b": 40,
+      "stability": 1.0
+    },
+    "F": {
+      "compared": 40,
+      "changed": 0,
+      "correct_a": 40,
+      "correct_b": 40,
+      "stability": 1.0
+    },
+    "X": {
+      "compared": 40,
+      "changed": 0,
+      "correct_a": 40,
+      "correct_b": 40,
+      "stability": 1.0
+    }
+  },
+  "differences": [
+    {
+      "record_id": "SYN_12_other_procedure_positive_v2",
+      "section": "A2",
+      "run_a": [
+        "Other procedure done that confirmed presence of DVT"
+      ],
+      "run_b": [
+        "Thrombectomy related to DVT performed"
+      ]
+    },
+    {
+      "record_id": "SYN_23_other_procedure_ivc_filter_v2",
+      "section": "A2",
+      "run_a": [
+        "Other procedure done that confirmed presence of DVT"
+      ],
+      "run_b": [
+        "No surgical procedure done; or, done but either did not confirm presence of DVT or findings unknown; or unknown if done"
+      ]
+    },
+    {
+      "record_id": "SYN_40_imaging_report_pending_v2",
+      "section": "B1_2",
+      "run_a": [],
+      "run_b": [
+        "Lower extremity DVT"
+      ]
+    }
+  ],
+  "overall": {
+    "compared": 400,
+    "changed": 3,
+    "correct_a": 399,
+    "correct_b": 396,
+    "stability": 0.9925
+  }
+}
