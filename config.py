@@ -80,7 +80,13 @@ EHR_KB_PERSIST_DIR = str(PROJECT_ROOT / "vectorstores" / "chroma_ehr_kb")
 BRIGHTON_CHUNK_SIZE = 800
 BRIGHTON_CHUNK_OVERLAP = 150
 BRIGHTON_RETRIEVER_K = 5
-BRIGHTON_KB_PERSIST_DIR = str(PROJECT_ROOT / "vectorstores" / "chroma_brighton_kb")  # static KB, rarely changes
+# The guideline store is reloaded from disk when present, so its directory
+# carries the embedding model's name: a store built with one model is never
+# queried with another.
+BRIGHTON_KB_PERSIST_DIR = str(
+    PROJECT_ROOT / "vectorstores"
+    / f"chroma_brighton_kb_{EMBEDDING_MODEL_NAME.split('/')[-1]}"
+)
 
 # Questionnaire sections, in execution order
 SECTION_ORDER = [

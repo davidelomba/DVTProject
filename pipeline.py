@@ -50,11 +50,9 @@ SECTION_QUERIES = {
             "ultrasonography, Doppler or duplex ultrasound, CT or MR venography, "
             "contrast venography, other imaging modality",
     "B1_1": "reported symptoms or signs of deep vein thrombosis",
-    "B1_2": "specific type of deep vein thrombosis: DVT of lower or upper limbs, "
-            "lower extremity or upper extremity",
-    "B2": "new onset non-specific clinical signs or symptoms suggesting DVT: calf "
-          "pain or tenderness, leg swelling or pitting oedema, absent pulses in "
-          "legs or arms, redness, warmth or pain in one or more extremities",
+    "B1_2": "deep vein thrombosis lower extremity or upper extremity",
+    "B2": "calf pain or tenderness, leg swelling or pitting oedema, redness, "
+          "warmth or pain in any extremity, absent pulses in legs or arms",
     "C": "D-dimer test: highest measured value within two weeks of the event, "
          "above or within the test lab's upper limit of normal",
     "F": "case of deep vein thrombosis reported by a specialist, with or without "

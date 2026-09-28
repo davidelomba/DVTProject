@@ -114,7 +114,12 @@ cioè il titolo che la sezione ha nel questionario cartaceo.
 referto; `BRIGHTON_CHUNK_SIZE`, `BRIGHTON_CHUNK_OVERLAP`, `BRIGHTON_RETRIEVER_K`
 con gli stessi valori per il paper. Le dimensioni sono in caratteri.
 `EHR_KB_PERSIST_DIR` e `BRIGHTON_KB_PERSIST_DIR` sono le cartelle di Chroma,
-sotto `PROJECT_ROOT`, la cartella che contiene `config.py`.
+sotto `PROJECT_ROOT`, la cartella che contiene `config.py`. Quella del paper
+porta nel nome il modello di embedding (per esempio
+`chroma_brighton_kb_multilingual-e5-small`), perché `build_brighton_kb` la
+ricarica da disco quando esiste: un indice costruito con un modello non viene
+mai interrogato con un altro. Quella dei referti non ne ha bisogno, perché
+`build_ehr_kb` la ricostruisce a ogni chiamata.
 
 ### `GUIDELINE_ANCHORS` e il suo interruttore
 

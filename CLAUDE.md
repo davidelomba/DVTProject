@@ -27,6 +27,9 @@ When something is unverified, say so.
   `FINAL_OPTION` / `FINAL_ANSWER` lines; the prompt and output token counts
   Ollama reports for each of its attempts go to the audit log under
   `agent2_tokens`.
+- The guideline store is persisted under a directory named after
+  `EMBEDDING_MODEL_NAME`, so changing the embedding model builds a new store
+  instead of reloading one built with another model.
 - `config.EXTRACTOR_MODE` selects `full_text`, `rag` (baselines),
   `agentic_graph` (reference mode, a LangGraph state machine) or `raw_record`
   (no Agent 1 at all).
@@ -211,10 +214,14 @@ same signature. Runs before 2026-09-08 lack it and are told apart by their date.
 
 `_run_config.section_queries_fingerprint` does the same for `SECTION_QUERIES`,
 which is both the brief Agent 1 works from and the key that retrieves the
-guideline context. The current set, `2efa960f3bdd`, is mixed and not yet
-measured: the questionnaire-based queries for A2, A3_2, B1_2, B2, C, F and X,
-the earlier ones for A1, A3_1 and B1_1, whose record vocabulary the rewrite had
-replaced with words about the question. The all-questionnaire set
+guideline context. The current set, `f7ed731f7e7d`, takes the
+questionnaire-based queries for A2, A3_2, C, F and X and the earlier ones for
+A1, A3_1, B1_1, B1_2 and B2, chosen for covering every option in words that
+appear in records; not yet measured, `run_embeddings.sh` runs it with
+`multilingual-e5-small` and `multilingual-e5-large` at 800/150/5 and 200/40/3.
+The mixed set `2efa960f3bdd`, which also took B1_2's and B2's new queries, was
+measured in `output_queries_v4` (395/399) and `output_queries_v4_small`
+(391/400). The all-questionnaire set
 `e0c31c90d6ce` was measured in `output_queries_v3` (395/399) and
 `output_queries_v3_small` (393/400) and not adopted; the reference still
 carries `bfd9536a31fe`; every run from 2026-09-20 to
@@ -387,9 +394,9 @@ not say which governs, which is what the clinician question below is asking.
   B2's query rewrite, they move 385 to 386 of 400: five sections corrected, four
   broken, and A2 on SYN_23 fails outright with no parseable answer after three
   attempts. A2 is where the model is least stable under any intervention.
-- **Twenty-nine configurations measured on the same base**, each varying one
+- **Thirty-one configurations measured on the same base**, each varying one
   component. `docs/RISULTATI_SPERIMENTALI.md` section 8 has the full per-section
-  table. The first seven rows carry the revised hints `0d4a00c11404`, the rest
+  table. The first nine rows carry the revised hints `0d4a00c11404`, the rest
   `ab63b8e5f5af` or none.
 
   ```
@@ -401,6 +408,8 @@ not say which governs, which is what the clinician question below is asking.
   revised hints, Table 3 anchors   391/400    97.75%     0.950
   questionnaire queries, 800/150/5 395/399    99.0%      0.983
   questionnaire queries, 200/40/3  393/400    98.25%     0.974
+  mixed queries, 800/150/5         395/399    99.0%      0.983
+  mixed queries, 200/40/3          391/400    97.75%     0.963
   previous reference, old hints    398/400    99.5%      0.982
   same, 8B agent and old B2 query  398/400    99.5%      0.982
   agentic without the context      395/400    98.75%     0.970
@@ -815,6 +824,19 @@ not say which governs, which is what the clinician question below is asking.
   a retry adds 74 tokens, four sections retried in the reference arm, none
   filled the window. 1744 sections above 0.99 of confidence across seven
   revised-hint arms, none wrong.
+- **Per query, only X's rewrite is measured positive, and only where retrieval
+  selects.** The mixed set `2efa960f3bdd` puts A1, A3_1 and B1_1 back to their
+  earlier queries. At 800/150/5 it changes **0 of 399** answers against the
+  all-questionnaire arm, so those three are inert there and the -4 comes from
+  B2's and B1_2's new queries. At 200/40/3 it scores 391: B1_1 is back to
+  answering on its own, the B2 rule rewriting it on two records as in the
+  old-query arm instead of seven, while SYN_13's venography result leaves A3_1's
+  fragments again and SYN_10 returns to its usual error. Against the old-query
+  200/40/3 arm (390) each change traces to one new query: X +3 (SYN_02, 11,
+  38), B2 -1 (absent pulses gained on SYN_27 and 38, SYN_07, 25 and 26 lost),
+  A3_2 -1 (SYN_04 gained, the compression-Doppler pairing on SYN_12 and 23
+  lost); at 800 B2 is -3 and B1_2 -1 (SYN_40); A2, C and F are 0 in both. 2219
+  sections above 0.99 of confidence across nine revised-hint arms, none wrong.
 - Read the metrics in this order: majority baseline and gain, then kappa, then
   accuracy with its interval. Accuracy alone ranked F above A3_2 under the 8B
   model, where F gained nothing over a constant answer and A3_2 gained 13
@@ -962,11 +984,14 @@ not say which governs, which is what the clinician question below is asking.
   in `rag` the gate overrode SYN_36 and SYN_39, whose keywords ARE in the list,
   because the lossy extractor had already dropped the text containing them —
   **the gate's reliability depends on the extractor's output**.
-- **Which query set to keep is open.** `pipeline.py` carries the mixed set
-  `2efa960f3bdd`, which `run_queries.sh` measures in `output_queries_v4` and
-  `output_queries_v4_small`; the all-questionnaire set `e0c31c90d6ce` measured
-  -4 at the reference parameters and +3 at 200/40/3, and the reference run was
-  produced with `bfd9536a31fe`. With the
+- **Which query set to keep is open.** `pipeline.py` carries `f7ed731f7e7d`,
+  not yet measured; the mixed set `2efa960f3bdd` measured -4 at the reference
+  parameters and +1 at 200/40/3;
+  the all-questionnaire set `e0c31c90d6ce` measured -4 and +3; the reference
+  run was produced with `bfd9536a31fe`. The per-query breakdown credits X's new
+  query and debits B2's, A3_2's and B1_2's, but on synthetic records written by
+  the evaluator of the pipeline; the dummy records being prepared by domain
+  experts, of realistic length, are the test that decides it. With the
   new set X no longer receives Table 2, which the domain constraint on X
   assumes. The audit that preceded the rewrite follows. Audited
   by comparing each query in `SECTION_QUERIES` against the options of its
