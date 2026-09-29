@@ -1,0 +1,157 @@
+{
+  "A1": {
+    "query": "autopsy report, necropsy, post-mortem examination, autoptic findings",
+    "evidence": null,
+    "agent1_seconds": 26.8,
+    "error": "Agent 1 (agentic) produced no evidence.",
+    "confidence": null,
+    "confidence_method": "no_answer"
+  },
+  "A2": {
+    "query": "thrombectomy or other surgical procedure that confirmed the presence of a deep vein thrombus",
+    "evidence": null,
+    "agent1_seconds": 26.5,
+    "error": "Agent 1 (agentic) produced no evidence.",
+    "confidence": null,
+    "confidence_method": "no_answer"
+  },
+  "A3_1": {
+    "query": "ultrasound, CT, MRI, venography: imaging outcome for deep vein thrombosis",
+    "evidence": null,
+    "agent1_seconds": 26.4,
+    "error": "Agent 1 (agentic) produced no evidence.",
+    "confidence": null,
+    "confidence_method": "no_answer"
+  },
+  "A3_2": {
+    "query": "imaging study that confirmed deep vein thrombosis: compression ultrasonography, Doppler or duplex ultrasound, CT or MR venography, contrast venography, other imaging modality",
+    "evidence": null,
+    "agent1_seconds": 26.5,
+    "error": "Agent 1 (agentic) produced no evidence.",
+    "confidence": null,
+    "confidence_method": "no_answer"
+  },
+  "B1_1": {
+    "query": "reported symptoms or signs of deep vein thrombosis",
+    "evidence": null,
+    "agent1_seconds": 26.3,
+    "error": "Agent 1 (agentic) produced no evidence.",
+    "confidence": null,
+    "confidence_method": "no_answer"
+  },
+  "B1_2": {
+    "query": "deep vein thrombosis lower extremity or upper extremity",
+    "evidence": null,
+    "agent1_seconds": 26.4,
+    "error": "Agent 1 (agentic) produced no evidence.",
+    "confidence": null,
+    "confidence_method": "no_answer"
+  },
+  "B2": {
+    "query": "calf pain or tenderness, leg swelling or pitting oedema, redness, warmth or pain in any extremity, absent pulses in legs or arms",
+    "evidence": null,
+    "agent1_seconds": 26.2,
+    "error": "Agent 1 (agentic) produced no evidence.",
+    "confidence": null,
+    "confidence_method": "no_answer"
+  },
+  "C": {
+    "query": "D-dimer test: highest measured value within two weeks of the event, above or within the test lab's upper limit of normal",
+    "evidence": null,
+    "agent1_seconds": 26.4,
+    "error": "Agent 1 (agentic) produced no evidence.",
+    "confidence": null,
+    "confidence_method": "no_answer"
+  },
+  "F": {
+    "query": "case of deep vein thrombosis reported by a specialist, with or without supporting clinical, imaging or laboratory details",
+    "evidence": null,
+    "agent1_seconds": 26.5,
+    "error": "Agent 1 (agentic) produced no evidence.",
+    "confidence": null,
+    "confidence_method": "skipped"
+  },
+  "X": {
+    "query": "alternative diagnosis or alternate etiology, other than deep vein thrombosis, that explained the acute clinical illness; disorders to be differentiated from thrombosis",
+    "evidence": null,
+    "agent1_seconds": 26.3,
+    "error": "Agent 1 (agentic) produced no evidence.",
+    "confidence": null,
+    "confidence_method": "no_answer"
+  },
+  "_run_config": {
+    "extractor_mode": "agentic_graph",
+    "brighton_context_enabled": true,
+    "section_descriptions_enabled": false,
+    "section_hints_enabled": true,
+    "section_hints_disabled": [
+      "B2"
+    ],
+    "section_hints_fingerprint": {
+      "A1": "94 fc56153ea429",
+      "A2": "356 925054771d9f",
+      "A3_1": "338 ef1db2018e59",
+      "A3_2": "483 b4eb0ffe5a42",
+      "B1_1": "534 f098959302f7",
+      "C": "342 7e8efb23dfc0",
+      "F": "1216 04cdaa724c12",
+      "X": "260 e4ce4dddf649",
+      "all": "0d4a00c11404"
+    },
+    "section_queries_fingerprint": {
+      "A1": "68 f31cb52cc7a2",
+      "A2": "92 7a214a86ca53",
+      "A3_1": "73 dea0b36a509c",
+      "A3_2": "174 45928c71f313",
+      "B1_1": "50 6cda81bb9be8",
+      "B1_2": "55 9136dd6530fb",
+      "B2": "128 618aaee6579e",
+      "C": "120 9d43085713e6",
+      "F": "121 8f40197be951",
+      "X": "167 14baf325008f",
+      "all": "f7ed731f7e7d"
+    },
+    "guideline_anchors_enabled": false,
+    "guideline_anchors_fingerprint": {
+      "A1": "699 6fa2837f0bf8",
+      "A2": "699 6fa2837f0bf8",
+      "A3_1": "1616 0d73c0d46674",
+      "A3_2": "3566 841cc2dbfd90",
+      "B1_1": "4230 4af7e1ebd4a3",
+      "B1_2": "4230 4af7e1ebd4a3",
+      "B2": "4230 4af7e1ebd4a3",
+      "C": "977 fcf102e0a775",
+      "X": "2770 c66190553aeb",
+      "all": "4bc8810e170a"
+    },
+    "cross_section_rules_applied": true,
+    "confidence": {
+      "enabled": true,
+      "skipped_sections": [
+        "F"
+      ]
+    },
+    "models": {
+      "extractor": "qwen3.6:27b",
+      "evaluator": "qwen3.6:27b",
+      "embeddings": "intfloat/multilingual-e5-large"
+    },
+    "environment": {
+      "hostname": "mari",
+      "ollama_version": "ollama version is 0.32.1"
+    },
+    "generation": {
+      "temperature": 0.0,
+      "num_predict": 1024,
+      "num_gpu": 999,
+      "num_ctx": 4096,
+      "reasoning": false
+    },
+    "retrieval": {
+      "ehr_chunk_size": 200,
+      "ehr_chunk_overlap": 40,
+      "ehr_retriever_k": 3,
+      "brighton_retriever_k": 5
+    }
+  }
+}
