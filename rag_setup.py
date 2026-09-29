@@ -33,6 +33,8 @@ def get_embeddings():
     Multilingual by necessity: the retrieval queries are in English while the
     records are in Italian.
 
+    The model runs on config.EMBEDDING_DEVICE.
+
     intfloat/multilingual-e5-small expects a role prefix on each input
     ("query: " for a search query, "passage: " for a stored chunk) and its
     model card reports degraded retrieval without it. langchain-huggingface
@@ -43,6 +45,7 @@ def get_embeddings():
 
     return HuggingFaceEmbeddings(
         model_name=config.EMBEDDING_MODEL_NAME,
+        model_kwargs={"device": config.EMBEDDING_DEVICE},
         # Applied when embedding stored chunks (embed_documents()).
         encode_kwargs={"prompt": "passage: "},
         # Applied when embedding a search query (embed_query()).

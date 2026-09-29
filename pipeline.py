@@ -213,6 +213,7 @@ def _run_config_snapshot(guideline_anchors: dict = None) -> dict:
             "extractor": extractor_model,
             "evaluator": config.EVALUATOR_LLM_MODEL_NAME,
             "embeddings": config.EMBEDDING_MODEL_NAME,
+            "embeddings_device": config.EMBEDDING_DEVICE,
         },
         # Two runs of the same records on different machines have been observed
         # to differ, so a result is only comparable to another produced here.

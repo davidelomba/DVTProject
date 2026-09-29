@@ -29,7 +29,11 @@ When something is unverified, say so.
   `agent2_tokens`.
 - The guideline store is persisted under a directory named after
   `EMBEDDING_MODEL_NAME`, so changing the embedding model builds a new store
-  instead of reloading one built with another model.
+  instead of reloading one built with another model. The embedding model runs
+  on `config.EMBEDDING_DEVICE`, the CPU, recorded as
+  `_run_config.models.embeddings_device`: loading `multilingual-e5-large` on the
+  GPU next to qwen3.6:27b ran out of memory, and every run before 2026-09-29
+  computed its embeddings on the GPU.
 - `config.EXTRACTOR_MODE` selects `full_text`, `rag` (baselines),
   `agentic_graph` (reference mode, a LangGraph state machine) or `raw_record`
   (no Agent 1 at all).

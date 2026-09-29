@@ -89,6 +89,10 @@ necessità, dato che le query di retrieval sono in inglese e i referti in
 italiano, e i referti non vengono tradotti automaticamente per non rischiare che
 una traduzione distorca negazioni o terminologia in modo non verificabile.
 
+`EMBEDDING_DEVICE = "cpu"`: il dispositivo su cui gira il modello di embedding.
+La CPU lascia le GPU ai modelli di Ollama; indicizzare i frammenti di un referto
+e cercare una query per sezione richiede pochi secondi.
+
 `EXTRACTOR_MODE = "agentic_graph"` seleziona la strategia di Agent 1:
 
 - `"full_text"` — passa l'intero referto nel prompt. Nessun rischio di retrieval
@@ -255,7 +259,9 @@ il tool che l'estrattore agentico chiama.
 prefissi di ruolo che `multilingual-e5-small` richiede: `"passage: "` per i
 chunk indicizzati (`encode_kwargs`, usato da `embed_documents`) e `"query: "` per
 le query (`query_encode_kwargs`, usato da `embed_query`). Senza i prefissi la
-scheda del modello riporta un retrieval degradato.
+scheda del modello riporta un retrieval degradato. Il modello gira su
+`config.EMBEDDING_DEVICE`, passato come `model_kwargs`; `_run_config.models`
+registra nome e dispositivo (`embeddings`, `embeddings_device`).
 
 **`build_brighton_kb(...)`** costruisce o ricarica l'indice del paper. Il
 documento è identico per ogni paziente, quindi un indice già su disco viene

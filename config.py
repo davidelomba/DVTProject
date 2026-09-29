@@ -56,6 +56,10 @@ CONFIDENCE_SKIP = {"F"}
 # always built, the EHR one only for rag and agentic_graph.
 EMBEDDING_MODEL_NAME = "intfloat/multilingual-e5-small"
 
+# Device the embedding model runs on. The CPU leaves the GPUs to the Ollama
+# models; embedding a record's chunks and one query per section takes seconds.
+EMBEDDING_DEVICE = "cpu"
+
 # Extractor mode (Agent 1):
 # "full_text": sends the entire clinical record to the LLM
 # "rag": chunked/embedded retrieval. Needed for clinical records too long to pass whole
