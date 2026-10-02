@@ -17,6 +17,6 @@ message_skeleton.txt         361 61160e09b14b   362 9a38adaea453
 retriever_tool.txt           520 223e1093eb28   521 9f6e8d8f4d3d
 
 section_hints_fingerprint  0d4a00c11404
-section_queries_fingerprint bfd9536a31fe
+section_queries_fingerprint f7ed731f7e7d
 
 hint scritti ma non inviati: B2

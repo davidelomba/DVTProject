@@ -221,8 +221,9 @@ which is both the brief Agent 1 works from and the key that retrieves the
 guideline context. The current set, `f7ed731f7e7d`, takes the
 questionnaire-based queries for A2, A3_2, C, F and X and the earlier ones for
 A1, A3_1, B1_1, B1_2 and B2, chosen for covering every option in words that
-appear in records; not yet measured, `run_embeddings.sh` runs it with
-`multilingual-e5-small` and `multilingual-e5-large` at 800/150/5 and 200/40/3.
+appear in records; measured in `output_queries_v5` (399/400, the reference's
+answers on all 400 sections) and `output_queries_v5_small` (392/400), and with
+`multilingual-e5-large` in `output_e5large_cpu` and `output_e5large_cpu_small`.
 The mixed set `2efa960f3bdd`, which also took B1_2's and B2's new queries, was
 measured in `output_queries_v4` (395/399) and `output_queries_v4_small`
 (391/400). The all-questionnaire set
@@ -398,14 +399,16 @@ not say which governs, which is what the clinician question below is asking.
   B2's query rewrite, they move 385 to 386 of 400: five sections corrected, four
   broken, and A2 on SYN_23 fails outright with no parseable answer after three
   attempts. A2 is where the model is least stable under any intervention.
-- **Thirty-one configurations measured on the same base**, each varying one
+- **Thirty-five configurations measured on the same base**, each varying one
   component. `docs/RISULTATI_SPERIMENTALI.md` section 8 has the full per-section
-  table. The first nine rows carry the revised hints `0d4a00c11404`, the rest
+  table. The first thirteen rows carry the revised hints `0d4a00c11404`, the rest
   `ab63b8e5f5af` or none.
 
   ```
                                     exact     micro    macro kappa
   agentic_graph (reference)        399/400    99.75%     0.994
+  queries f7ed731f7e7d, 800/150/5  399/400    99.75%     0.994
+  e5-large on CPU, 800/150/5       397/399    99.5%      0.990
   revised hints, raw_record        396/400    99.0%      0.959
   revised hints, section headings  392/399    98.2%      0.944
   revised hints, 200/40/3          390/400    97.5%      0.946
@@ -414,6 +417,8 @@ not say which governs, which is what the clinician question below is asking.
   questionnaire queries, 200/40/3  393/400    98.25%     0.974
   mixed queries, 800/150/5         395/399    99.0%      0.983
   mixed queries, 200/40/3          391/400    97.75%     0.963
+  queries f7ed731f7e7d, 200/40/3   392/400    98.0%      0.966
+  e5-large on CPU, 200/40/3        383/400    95.75%     0.916
   previous reference, old hints    398/400    99.5%      0.982
   same, 8B agent and old B2 query  398/400    99.5%      0.982
   agentic without the context      395/400    98.75%     0.970
@@ -839,8 +844,31 @@ not say which governs, which is what the clinician question below is asking.
   200/40/3 arm (390) each change traces to one new query: X +3 (SYN_02, 11,
   38), B2 -1 (absent pulses gained on SYN_27 and 38, SYN_07, 25 and 26 lost),
   A3_2 -1 (SYN_04 gained, the compression-Doppler pairing on SYN_12 and 23
-  lost); at 800 B2 is -3 and B1_2 -1 (SYN_40); A2, C and F are 0 in both. 2219
-  sections above 0.99 of confidence across nine revised-hint arms, none wrong.
+  lost); at 800 B2 is -3 and B1_2 -1 (SYN_40); A2, C and F are 0 in both.
+- **The set in `pipeline.py`, `f7ed731f7e7d`, keeps X's gain and drops B2's and
+  B1_2's losses.** At 800/150/5 it changes 0 of 400 answers against the
+  reference; at 200/40/3 it scores 392 against 390, exactly the sum of the
+  per-query effects: X +3 (SYN_02, 11, 38), A3_2 +1 and -2 (SYN_04 gained,
+  SYN_12 and 23 lost).
+- **A three times larger embedding model buys nothing on this corpus.**
+  `multilingual-e5-large`, on the CPU because next to the 27B on the GPU it runs
+  out of memory, against `multilingual-e5-small` with everything else identical:
+  399 to 397/399 at 800/150/5 and 392 to 383 at 200/40/3. At 800 the record
+  fragments are the same set on all 400 sections, so only the guideline context
+  and the fragment order change: SYN_07 B2 fails after three 1024-token attempts,
+  as in the two earlier query arms, and SYN_09 A3_2 adds compression
+  ultrasonography, the compression-Doppler pairing. X receives Table 2's body
+  again. At 200 the fragment set differs on 214 sections of 400 while the
+  coverage stays at 59%; of the eleven sections lost, **eight are coverage**, six
+  direct and two propagated by a rule (a fragment ending before the Doppler
+  result on SYN_09, a fragment starting inside a negation on SYN_16, whose B2
+  then rewrites B1_1), and three are the known unstable readings. **The device
+  is not a factor**: the e5-small arms embedded on the GPU, but the check that
+  opens `run_e5large_cpu.sh` found e5-small on the GPU and on the CPU retrieving
+  the same top k in 810 retrievals of 810, largest vector difference 1.3e-7, so
+  the difference is the model's. Time is unchanged, 184 and
+  180 seconds a record against 183 and 177. 3194 sections above 0.99 of
+  confidence across thirteen revised-hint arms, none wrong.
 - Read the metrics in this order: majority baseline and gain, then kappa, then
   accuracy with its interval. Accuracy alone ranked F above A3_2 under the 8B
   model, where F gained nothing over a constant answer and A3_2 gained 13
@@ -989,15 +1017,16 @@ not say which governs, which is what the clinician question below is asking.
   because the lossy extractor had already dropped the text containing them —
   **the gate's reliability depends on the extractor's output**.
 - **Which query set to keep is open.** `pipeline.py` carries `f7ed731f7e7d`,
-  not yet measured; the mixed set `2efa960f3bdd` measured -4 at the reference
-  parameters and +1 at 200/40/3;
+  measured 0 at the reference parameters and +2 at 200/40/3; the mixed set
+  `2efa960f3bdd` measured -4 at the reference parameters and +1 at 200/40/3;
   the all-questionnaire set `e0c31c90d6ce` measured -4 and +3; the reference
   run was produced with `bfd9536a31fe`. The per-query breakdown credits X's new
   query and debits B2's, A3_2's and B1_2's, but on synthetic records written by
   the evaluator of the pipeline; the dummy records being prepared by domain
   experts, of realistic length, are the test that decides it. With the
-  new set X no longer receives Table 2, which the domain constraint on X
-  assumes. The audit that preceded the rewrite follows. Audited
+  new X query and `multilingual-e5-small` X no longer receives Table 2, which
+  the domain constraint on X assumes; with `multilingual-e5-large` it does. The
+  audit that preceded the rewrite follows. Audited
   by comparing each query in `SECTION_QUERIES` against the options of its
   section. A2's query is `thrombectomy, surgical procedure related to DVT` and
   covers one of the two positive branches: `Other procedure done that confirmed
@@ -1028,6 +1057,20 @@ not say which governs, which is what the clinician question below is asking.
   indexed into two stores. A `guideline_source` field holding the PDF name and a
   digest of the extracted text would make the context traceable the way the
   hints and the queries already are.
+- **Which embedding model to keep is open.** `multilingual-e5-large` measured
+  -2 and -9 against `multilingual-e5-small`, the device having been checked
+  inert (810 retrievals of 810 identical on GPU and CPU). On this corpus the fragments that matter are cut by
+  the 200-character boundary whatever the model, so the realistic-length records
+  from the clinicians are where the choice is decided.
+- **Revisit `LLM_NUM_PREDICT` and `LLM_NUM_CTX` together when the clinicians'
+  dummy records arrive.** Kept at 1024 and 4096 on this corpus by decision of
+  2026-09-30. The constraint is longest prompt plus cap within `num_ctx`, since
+  past it Ollama drops the start of the context, the record (SYN_36 B2). The
+  longest first-attempt prompt measured is about 3240 tokens, so 1024 already
+  exceeds the budget on the longest prompts; 58 of 3656 calls reached the cap,
+  3 sections lost. Realistic-length records will lengthen the prompt by several
+  hundred tokens (an estimate): run a token check on the first batch, then set
+  the window (likely 8192) and the cap by that rule and measure them as one arm.
 - **Agent 3 cannot flag an answer wrong for lack of evidence.** Settled with
   hints on: no section above 0.99 is wrong in the three revised-hint arms. What
   stays open is the coverage errors of the 200/40/3 arm, scored 0.75 to 0.965
