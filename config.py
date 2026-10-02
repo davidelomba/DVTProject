@@ -182,11 +182,8 @@ SECTION_HINTS = {
     "A3_2": (
         "Select only the studies that CONFIRMED DVT: a study that was done and did not "
         "confirm it is not selected, and if no study confirmed DVT, answer none as "
-        "described below. A venography performed during an interventional procedure "
-        "is part of that procedure and is not selected here. An imaging test that is "
-        "none of the four named modalities is 'Other': for example an impedance "
-        "plethysmography, or a CT scan that is not a venography and shows the thrombus "
-        "while done for another purpose."
+        "described below. An imaging test that is none of the four named modalities "
+        "is 'Other'."
     ),
     "B1_1": (
         "The difference between the last two options is what you know about the "
