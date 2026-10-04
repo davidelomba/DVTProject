@@ -185,9 +185,9 @@ Contenuto attuale, in sintesi:
 | sezione | cosa dice |
 |---|---|
 | A1 | contano solo i reperti post-mortem; l'imaging su vivente non è un'autopsia |
-| A2 | attenzione estrema alle negazioni prima di termini chirurgici |
-| A3_1 | un risultato negativo è comunque un risultato; «result not reported» vuol dire referto mancante; un'autopsia non è un esame di imaging |
-| A3_2 | un esame che non è nessuna delle quattro modalità nominate è "Other" |
+| A2 | attenzione estrema alle negazioni prima di termini chirurgici; un esame di imaging eseguito da solo non è una procedura |
+| A3_1 | un esame che non ha trovato la TVP ha comunque un risultato (opzione 2); «results unknown» vuol dire referto mancante o non ancora disponibile; un'autopsia non è un esame di imaging |
+| A3_2 | si selezionano solo gli esami che hanno confermato la TVP; un esame che non è nessuna delle quattro modalità nominate è "Other" |
 | B1_1 | la differenza tra seconda e terza opzione riguarda ciò che sai del paziente, non del documento: l'assenza di un referto non è un referto di assenza |
 | B2 | *disattivato* |
 | C | usa il limite del laboratorio se il referto lo indica, altrimenti 500 ng/mL; vale solo per un risultato chiamato D-dimero, e basta un'affermazione qualitativa |

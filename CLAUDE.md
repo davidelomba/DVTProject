@@ -153,10 +153,18 @@ SECTION_HINTS_DISABLED   = {"B2"}
 CONFIDENCE_ENABLED       = True
 ```
 
-The reference run is `output_hints_v2`, 2026-09-25: hints revised against the
-printed questionnaire (A2, A3_1, A3_2, B1_1 and F), fingerprint `0d4a00c11404`,
-no per-section gates, Agent 3 on. Agent 3 changes no answer, so the answers do
-not depend on `CONFIDENCE_ENABLED`. Every arm measured before that date carries
+The reference run is `output_a32_ref`, 2026-10-02: hints revised against the
+printed questionnaire, with A3_2's hint reduced to what the questionnaire states
+(no intraprocedural-venography convention, no examples of `Other`), fingerprint
+`a78dc29e962f`, query set `bfd9536a31fe`, no per-section gates, Agent 3 on,
+398/400 against the ground truth corrected on 2026-10-04 (396 against the
+earlier one). The previous reference, `output_hints_v2` (2026-09-25, fingerprint
+`0d4a00c11404`, 397/400 now, 399 before the correction), differs from it on A3_2
+alone, on SYN_12, SYN_23 and SYN_14; every arm with fingerprint `0d4a00c11404`
+is compared against it, and
+`run_hints_a32.sh` repeated ten of them with the new hint (`output_a32_*`).
+Agent 3 changes no answer, so the answers do
+not depend on `CONFIDENCE_ENABLED`. Every arm measured before 2026-09-25 carries
 hint fingerprint `ab63b8e5f5af` and is compared against `output_new_reference`,
 the previous reference, 398/400; the arms that ran with the keyword and details
 gates off and `absent_pulses` on are unaffected by the gates' removal, since
@@ -223,7 +231,9 @@ questionnaire-based queries for A2, A3_2, C, F and X and the earlier ones for
 A1, A3_1, B1_1, B1_2 and B2, chosen for covering every option in words that
 appear in records; measured in `output_queries_v5` (399/400, the reference's
 answers on all 400 sections) and `output_queries_v5_small` (392/400), and with
-`multilingual-e5-large` in `output_e5large_cpu` and `output_e5large_cpu_small`.
+`multilingual-e5-large` in `output_e5large_cpu` and `output_e5large_cpu_small`;
+with the current hints, `output_a32_queries_mix` (396/400, the reference's
+answers on all 400 sections) and `output_a32_small_queries_mix` (391/400).
 The mixed set `2efa960f3bdd`, which also took B1_2's and B2's new queries, was
 measured in `output_queries_v4` (395/399) and `output_queries_v4_small`
 (391/400). The all-questionnaire set
@@ -248,9 +258,20 @@ belongs to the machine that produced it.
 
 ## What the measurements say
 
-On the 40-record corpus, the reference scores micro 99.75%, macro kappa 0.994,
-one wrong section out of 400, Wilson interval [98.6, 99.96]. Nine sections of
-ten are at 100%; B1.1 misses one record. The ten scenarios added in September
+On the 40-record corpus, the reference scores micro 99.5%, macro kappa 0.990,
+two wrong sections out of 400, Wilson interval [98.2, 99.86]. Eight sections of
+ten are at 100%; B1.1 and A3.2 miss one record each. Both are readings the
+ground truth disagrees with: SYN_10 below, and SYN_14, an incidental staging CT
+the model reads as `CT or MR venography` where the ground truth says `Other`.
+**The ground truth was corrected on 2026-10-04**: A3_2 of SYN_12 and SYN_23 now
+includes the intraprocedural venography, which A3.2's own question («which
+studies confirmed DVT?») covers and which had been excluded by a no-double-
+counting convention the questionnaire does not state. Every run shifts by -2, 0
+or +2; `docs/RISULTATI_SPERIMENTALI.md` section 3 has the table and section 8
+the rescored figures. **Figures quoted in the bullets below that predate
+2026-10-04 are against the earlier ground truth.** The ground truth was
+generated with the records and has not been reviewed by a clinician.
+The ten scenarios added in September
 score at the same rate as the original thirty, so the sections that had been
 unmeasurable hold up.
 
@@ -399,43 +420,56 @@ not say which governs, which is what the clinician question below is asking.
   B2's query rewrite, they move 385 to 386 of 400: five sections corrected, four
   broken, and A2 on SYN_23 fails outright with no parseable answer after three
   attempts. A2 is where the model is least stable under any intervention.
-- **Thirty-five configurations measured on the same base**, each varying one
+- **Forty-five configurations measured on the same base**, each varying one
   component. `docs/RISULTATI_SPERIMENTALI.md` section 8 has the full per-section
-  table. The first thirteen rows carry the revised hints `0d4a00c11404`, the rest
-  `ab63b8e5f5af` or none.
+  table. The first ten rows carry the current hints `a78dc29e962f`, the next
+  thirteen the revised hints `0d4a00c11404`, the rest `ab63b8e5f5af` or none. All rescored against the ground truth
+  corrected on 2026-10-04; `*` kappa of the reconstruction without the
+  `keyword` gate, not recomputed; `**` medgemma's run is no longer on disk and
+  stays scored against the earlier ground truth.
 
   ```
                                     exact     micro    macro kappa
-  agentic_graph (reference)        399/400    99.75%     0.994
-  queries f7ed731f7e7d, 800/150/5  399/400    99.75%     0.994
+  agentic_graph (reference)        398/400    99.5%      0.990
+  queries f7ed731f7e7d, 800/150/5  398/400    99.5%      0.990
   e5-large on CPU, 800/150/5       397/399    99.5%      0.990
-  revised hints, raw_record        396/400    99.0%      0.959
-  revised hints, section headings  392/399    98.2%      0.944
-  revised hints, 200/40/3          390/400    97.5%      0.946
-  revised hints, Table 3 anchors   391/400    97.75%     0.950
-  questionnaire queries, 800/150/5 395/399    99.0%      0.983
+  raw_record                       395/400    98.75%     0.955
+  questionnaire queries, 800/150/5 394/399    98.75%     0.979
+  questionnaire queries, 200/40/3  394/400    98.5%      0.978
+  queries f7ed731f7e7d, 200/40/3   393/400    98.25%     0.970
+  section headings                 392/399    98.25%     0.944
+  200/40/3                         389/400    97.25%     0.942
+  e5-large on CPU, 200/40/3        382/400    95.5%      0.912
+  previous reference, hints 0d4a   397/400    99.25%     0.986
+  queries f7ed731f7e7d, 800/150/5  397/400    99.25%     0.986
+  e5-large on CPU, 800/150/5       395/399    99.0%      0.982
+  revised hints, raw_record        394/400    98.5%      0.951
+  revised hints, section headings  390/399    97.74%     0.936
+  revised hints, 200/40/3          388/400    97.0%      0.938
+  revised hints, Table 3 anchors   389/400    97.25%     0.942
+  questionnaire queries, 800/150/5 393/399    98.5%      0.975
   questionnaire queries, 200/40/3  393/400    98.25%     0.974
-  mixed queries, 800/150/5         395/399    99.0%      0.983
+  mixed queries, 800/150/5         393/399    98.5%      0.975
   mixed queries, 200/40/3          391/400    97.75%     0.963
   queries f7ed731f7e7d, 200/40/3   392/400    98.0%      0.966
-  e5-large on CPU, 200/40/3        383/400    95.75%     0.916
-  previous reference, old hints    398/400    99.5%      0.982
-  same, 8B agent and old B2 query  398/400    99.5%      0.982
-  agentic without the context      395/400    98.75%     0.970
-  raw_record                       392/400    98.0%      0.966
-  agentic with section headings    392/400    98.0%      0.940
-  agentic with guideline anchors   391/400    97.75%     0.935
-  agentic 200/40/3, anchors        386/399    96.7%      0.917
-  agentic 200/40/3, control        385/400    96.25%     0.911
-  agentic 200/40/3, 27B agent      383/400    95.8%      0.905
-  agentic 200/40/3, new queries    383/400    95.8%      0.902
-  agentic, chunks 200/40, k 3      382/400    95.5%      0.895
-  full_text + 27B extractor        379/399    95.0%      0.816
-  rag 200/40/3, 27B, new queries   374/399    93.7%      0.797
-  medgemma as evaluator            371/398    93.2%      0.837
-  rag 200/40/3, 27B extractor      369/400    92.2%      0.781
-  qwen without the hints           365/399    91.5%      0.780
-  rag                              341/400    85.3%      0.607
+  e5-large on CPU, 200/40/3        381/400    95.25%     0.907
+  previous reference, old hints    396/400    99.0%      0.974
+  same, 8B agent and old B2 query  396/400    99.0%      0.974
+  agentic without the context      393/400    98.25%     0.970*
+  raw_record                       394/400    98.5%      0.966*
+  agentic with section headings    394/400    98.5%      0.948
+  agentic with guideline anchors   393/400    98.25%     0.943
+  agentic 200/40/3, anchors        388/399    97.24%     0.925
+  agentic 200/40/3, control        387/400    96.75%     0.920
+  agentic 200/40/3, 27B agent      385/400    96.25%     0.913
+  agentic 200/40/3, new queries    385/400    96.25%     0.911
+  agentic, chunks 200/40, k 3      384/400    96.0%      0.904
+  full_text + 27B extractor        381/399    95.49%     0.816*
+  rag 200/40/3, 27B, new queries   372/399    93.23%     0.789
+  medgemma as evaluator            371/398    93.2%      0.837**
+  rag 200/40/3, 27B extractor      371/400    92.75%     0.790
+  qwen without the hints           367/399    91.98%     0.788
+  rag                              343/400    85.75%     0.607*
   full_text                        338/399    84.7%      0.580
   rag, chunks 200/40, k 3          337/399    84.5%      0.583
   llama3:8b evaluator, gates on    316/400    79.0%      0.497
@@ -869,6 +903,28 @@ not say which governs, which is what the clinician question below is asking.
   the difference is the model's. Time is unchanged, 184 and
   180 seconds a record against 183 and 177. 3194 sections above 0.99 of
   confidence across thirteen revised-hint arms, none wrong.
+- **Part of the 399 was the ground truth's conventions, taught through the
+  hint.** Checked sentence by sentence against the printed questionnaire and the
+  paper, A3_2's hint carried one sentence the questionnaire states (select only
+  the studies that confirmed DVT), one convention neither document states (an
+  intraprocedural venography is part of the procedure and not selected) and a
+  rule with two examples taken from corpus scenarios (impedance plethysmography,
+  SYN_28; a CT done for another purpose, SYN_14). Dropping the convention and the
+  examples, hint fingerprint `a78dc29e962f`, and repeating ten arms
+  (`run_hints_a32.sh`): **-1 to -3 in every arm, all on A3_2, always SYN_12,
+  SYN_23 and SYN_14**. SYN_12 and SYN_23 add `Contrast venography`, the
+  intraprocedural venography having confirmed the thrombus, which is literally
+  what A3_2 asks; SYN_14 reads the incidental staging CT as `CT or MR
+  venography`, the paper listing CT among the accepted techniques. In eight arms
+  nothing else changes. The shortened hint stays and the reference is 396.
+  **First wrong sections above 0.99 with hints on**: SYN_14 A3_2 at 0.9914 in the
+  reference and the headings arm, 2 of 2402 above the threshold across the ten
+  arms; with the old hint the then-correct `Other` scored 0.0005, so without
+  reasoning the model reads the CT as a venography even with the example in its
+  prompt. Times and token counts unchanged. **After the ground-truth correction
+  of 2026-10-04 the comparison reverses**: SYN_12 and SYN_23 are right with the
+  shortened hint and wrong with the old one, so the shortened hint scores 398
+  against 397 and is +1 or +2 in every pair of arms; only SYN_14 remains.
 - Read the metrics in this order: majority baseline and gain, then kappa, then
   accuracy with its interval. Accuracy alone ranked F above A3_2 under the 8B
   model, where F gained nothing over a constant answer and A3_2 gained 13
@@ -979,7 +1035,15 @@ not say which governs, which is what the clinician question below is asking.
     it: the ground truth counts it in A2 and not in A3_2, which avoids counting
     one event twice but is a convention the form does not state. The answer
     also decides whether A3_2 should carry its heading, which fixes eight
-    records without the cross-section rule and adds this venography.
+    records without the cross-section rule and adds this venography. On
+    2026-10-04 the ground truth was changed to count it in both A2 and A3_2,
+    on the questionnaire's wording; the question stays open, and the
+    correction is reverted if the clinicians answer otherwise.
+  - Is a CT done for another purpose that shows the thrombus, such as a
+    staging total-body CT, A3.2's `CT or MR venography` or `Other`? SYN_14
+    turns on it: the ground truth says `Other`, the model without the old
+    hint's example says `CT or MR venography`, and the paper lists CT among
+    the accepted techniques.
   - Does B2 option 4 apply when only calf pain is documented? With the section
     headings on, the model selects it on SYN_07, SYN_25 and SYN_27, reading
     "or pain" literally; the ground truth does not.
@@ -1102,8 +1166,16 @@ not say which governs, which is what the clinician question below is asking.
   back empty, and `_run_config`; those keep provenance and the reliability
   flags, and lose the ability to reconstruct why an answer is wrong. The reduced
   form has not been designed.
-- **One wrong section in 400 is past what 40 records can resolve.** Each record
-  is worth 0.25 points and the 95% interval on the total is [98.6, 99.96], so a
+- **`generate_synthetic_records.py` still carries the earlier A3_2 ground truth
+  of SYN_12 and SYN_23** (`Doppler/Duplex Ultrasound` alone) in its scenario
+  definitions; the `_ground_truth.json` files are the corrected ones.
+- **The other hints have not been checked against the questionnaire and the
+  paper sentence by sentence.** A3_2's carried a ground-truth convention and two
+  examples from corpus scenarios. A2, A3_1, B1_1, C, F and X
+  may carry the same, for instance the outcomes listed in A3_1's hint
+  (compressible veins, DVT ruled out, inconclusive finding).
+- **Two wrong sections in 400 are past what 40 records can resolve.** Each record
+  is worth 0.25 points and the 95% interval on the total is [98.2, 99.86], so a
   one-section change is not a measurable difference. What is still worth reading
   is which category an error falls into, not the total. Further tuning on this
   corpus is fitting 40 records written by their own evaluator.
