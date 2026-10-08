@@ -7,8 +7,8 @@ and the terms naming the condition in the prompts. The cross-section rules are
 off, not translated: they encode the DVT form, and a myocarditis run measures
 the architecture without them.
 
-models_myo is installed as `models` before pipeline is imported, because
-pipeline and criteria_rules bind SECTION_MODELS at import time.
+myo_schema, imported first, installs models_myo as `models`, because pipeline
+and criteria_rules bind SECTION_MODELS at import time.
 
 The guideline context is off unless --guideline asks for it, so the two arms
 differ in one setting. The paper is indexed either way, because run_pipeline
@@ -25,27 +25,22 @@ Usage:
 
 import argparse
 import json
-import sys
 import time
 import traceback
-import agents
-import rag_setup
-import pipeline
-import config                                        # noqa: E402
-import prompts_myo                                   # noqa: E402
-import models_myo                                    # noqa: E402
 from datetime import datetime
 from pathlib import Path
+
+import myo_schema  # noqa: F401  # isort: skip -- must precede the project imports
+
+import agents
+import config
+import pipeline
+import prompts_myo
+import rag_setup
 from aggregation import form_to_json_summary
 from langchain_core.tools.retriever import create_retriever_tool
 
-
 MYO_DIR = Path(__file__).resolve().parent
-PROJECT_ROOT = MYO_DIR.parent
-sys.path.insert(0, str(MYO_DIR))
-sys.path.insert(0, str(PROJECT_ROOT))
-
-sys.modules["models"] = models_myo
 
 # One query per section, written from the option list rather than from the
 # finding expected: on the DVT form the queries written the other way covered

@@ -967,6 +967,15 @@ e asterischi compresi. `MYO_CriteriaForm` è il contenitore, esportato anche col
 nome `DVT_CriteriaForm` perché `pipeline.py` importa quel nome, e
 `SECTION_MODELS` ha le chiavi `E` e `F`.
 
+**`project_path.py`** aggiunge la cartella del progetto a `sys.path`, così gli
+script di `myo/`, lanciati come `python myo/<script>.py`, trovano i moduli
+condivisi. **`myo_schema.py`** lo importa e registra `models_myo` come modulo
+`models`: `pipeline`, `agentic_graph`, `criteria_rules`, `confidence` ed
+`evaluate_predictions` leggono lo schema al momento dell'importazione, quindi la
+sostituzione deve avvenire prima. Entrambi si importano per il loro effetto, come
+primo import di progetto, marcati `# isort: skip` perché un riordino automatico
+degli import non li sposti dopo gli altri.
+
 **`prompts_myo.py`** contiene i prompt con i termini della miocardite:
 `EXTRACTOR_SYSTEM_PROMPT_TEMPLATE` e `AGENTIC_EXTRACTOR_SUFFIX_TEMPLATE`, che
 portano il segnaposto `{no_evidence}`, `EVALUATOR_SYSTEM_PROMPT` e
@@ -980,10 +989,10 @@ riconosce ogni pezzo come opzione dello schema, direttamente o tramite
 `OPTION_ALIASES`, dopo che **`_collapse(text)`** ha uniformato spazi e
 maiuscole. Un pezzo che non corrisponde a nessuna opzione ferma la conversione,
 invece di essere scartato. **`_valid_options(section_key)`** legge le opzioni
-dallo schema.
+dallo schema. Richiede `openpyxl`, che non è in `requirements.txt`.
 
-**`run_myo.py`** esegue la pipeline sui casi. Installa `models_myo` come modulo
-`models` prima di importare `pipeline`, che lega lo schema all'importazione.
+**`run_myo.py`** esegue la pipeline sui casi. Importa `myo_schema` prima dei
+moduli di progetto.
 **`apply_domain(guideline=False)`** imposta sezioni `E` ed `F`, modalità
 `agentic_graph`, svuota hint e regole cross-section, sostituisce i tre
 prompt degli agenti, le query di sezione (`SECTION_QUERIES`, scritte a partire
@@ -994,11 +1003,12 @@ Da riga di comando: `--guideline` accende il contesto della linea guida,
 `--num-ctx` sostituisce `LLM_NUM_CTX`, `--brighton-pdf` indica il paper
 (`myo/main.pdf` di default), più `--records-dir`, `--output-dir` e `--only`.
 
-**`evaluate_myo.py`** valuta una run con `evaluate_predictions`, dopo aver
-installato `models_myo` come `models` e puntato le cartelle di default su
+**`evaluate_myo.py`** valuta una run con `evaluate_predictions`: importa
+`myo_schema` prima dei moduli di progetto e punta le cartelle di default su
 `myo/data/records` e `myo/output_myo`.
 
-**`run_dvt_stripped.py`** è il termine di confronto: esegue il corpus TVP con
+**`run_dvt_stripped.py`** è il termine di confronto. Importa `project_path`, non
+`myo_schema`, perché lavora sullo schema della TVP; esegue il corpus TVP con
 **`strip()`**, che spegne in memoria hint, contesto, intestazioni di
 sezione e regole cross-section, gli stessi componenti che il
 braccio della miocardite non ha. Poi chiama `run_synthetic_records.main()`, di

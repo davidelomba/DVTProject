@@ -21,13 +21,10 @@ Usage:
     python myo/run_dvt_stripped.py --output-dir ./output_stripped
 """
 
-import sys
-from pathlib import Path
+import project_path  # noqa: F401  # isort: skip -- must precede the project imports
 
-PROJECT_ROOT = Path(__file__).resolve().parent.parent
-sys.path.insert(0, str(PROJECT_ROOT))
-
-import config                                        # noqa: E402
+import config
+import run_synthetic_records
 
 
 def strip():
@@ -42,8 +39,6 @@ def strip():
 
 if __name__ == "__main__":
     strip()
-    import run_synthetic_records
-
     print(f"hints {config.SECTION_HINTS_ENABLED}, guideline context "
           f"{config.BRIGHTON_CONTEXT_ENABLED}, "
           f"cross-section rules {len(config.CROSS_SECTION_RULES)}\n", flush=True)

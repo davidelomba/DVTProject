@@ -19,13 +19,12 @@ Usage:
 import argparse
 import json
 import re
-import sys
 from pathlib import Path
+from typing import get_args
 
-sys.path.insert(0, str(Path(__file__).resolve().parent))
-sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
+import openpyxl
 
-from models_myo import SECTION_MODELS  # noqa: E402
+from models_myo import SECTION_MODELS
 
 
 RECORDS_DIR = Path(__file__).resolve().parent / "data" / "records"
@@ -60,7 +59,6 @@ ANSWER_COLUMNS = {"E": "E_ECG", "F": "F_echocardiogram"}
 def _valid_options(section_key: str) -> list:
     """The options models_myo accepts for one section, in schema order."""
 
-    from typing import get_args
     model = SECTION_MODELS[section_key]
     annotation = model.model_fields[next(iter(model.model_fields))].annotation
     return list(get_args(get_args(annotation)[0]))
@@ -111,7 +109,6 @@ def main():
     parser.add_argument("--output-dir", type=Path, default=RECORDS_DIR)
     args = parser.parse_args()
 
-    import openpyxl
     sheet = openpyxl.load_workbook(args.workbook)["Cases"]
     rows = list(sheet.iter_rows(min_row=2, values_only=True))
     header = rows[0]

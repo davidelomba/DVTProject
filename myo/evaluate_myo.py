@@ -3,7 +3,7 @@ Scores a myocarditis run with evaluate_predictions.
 
 Same scoring code as the DVT runs: evaluate_predictions introspects the schema
 rather than repeating the options, so pointing it at models_myo is all a second
-domain needs. The shim has to run before the import, because the module binds
+domain needs. myo_schema is imported first, because evaluate_predictions binds
 the schema at import time.
 
 Usage:
@@ -11,20 +11,16 @@ Usage:
     python myo/evaluate_myo.py ./myo/output_myo --no-matrices
 """
 
-import sys
 from pathlib import Path
 
+import myo_schema  # noqa: F401  # isort: skip -- must precede the project imports
+
+import config
+import evaluate_predictions
+
 MYO_DIR = Path(__file__).resolve().parent
-sys.path.insert(0, str(MYO_DIR))
-sys.path.insert(0, str(MYO_DIR.parent))
 
-import models_myo                                    # noqa: E402
-sys.modules["models"] = models_myo
-
-import config                                        # noqa: E402
 config.SECTION_ORDER = ["E", "F"]
-
-import evaluate_predictions                          # noqa: E402
 
 # The records and their reference answers live beside this file, not in
 # data/synthetic_records.
