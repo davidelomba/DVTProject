@@ -30,9 +30,6 @@ import config
 def get_embeddings():
     """Builds the embedding model shared by every vector store.
 
-    Multilingual by necessity: the retrieval queries are in English while the
-    records are in Italian.
-
     The model runs on config.EMBEDDING_DEVICE.
 
     intfloat/multilingual-e5-small expects a role prefix on each input
@@ -175,6 +172,7 @@ def clean_brighton_context(context: str) -> str:
         all references still yields something rather than an empty context.
     """
 
+    # Keeps only the lines without bibliography pattern
     kept = [ln for ln in context.splitlines() if not _BIBLIOGRAPHY_LINE.search(ln)]
     cleaned = "\n".join(kept).strip()
     return cleaned if cleaned else context

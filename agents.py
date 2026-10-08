@@ -139,7 +139,7 @@ def extract_evidence_full_text(llm: ChatOllama, full_ehr_text: str, criterion_qu
 # two ways that the base prompt does not cover.
 #
 # TOOL USE: the base prompt assumes the record is already in the human message.
-# Here it is only reachable through search_patient_record, and without an
+# Here it is only reachable through search_patient_record and without an
 # explicit instruction to call it the model reports no evidence on every
 # section without ever searching.
 #
