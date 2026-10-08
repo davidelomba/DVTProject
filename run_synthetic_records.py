@@ -3,8 +3,9 @@ Runs the pipeline over every synthetic record in data/synthetic_records/,
 writing each result and audit log under the same names main.py uses, so
 evaluate_predictions.py finds them with its default paths. The destination is
 ./output unless --output-dir names another one, which is how two extraction
-modes are kept apart: both commands select the newest file per record, so two
-arms sharing a directory would overwrite each other's results.
+modes are kept apart: evaluate_predictions and export_redcap_csv select the
+newest file per record, so two arms sharing a directory would be scored and
+exported as one.
 
 record_id is the file name without .txt, which is also the record_id inside
 the matching *_ground_truth.json -- that pairing is what lets the evaluation

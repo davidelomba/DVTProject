@@ -378,10 +378,10 @@ def _build_reasoning_prompt(
             "be traceable to a specific sentence in your reasoning."
         )
         # Sections with no "none of the above" option among their choices (A3.2,
-        # B1.2) still accept an empty answer in the schema, but the numbered list
-        # gives the model no way to express one and when nothing applied it was
-        # observed selecting every option instead. Spelled out only where the
-        # section actually needs it, so B2 keeps using its own option 5.
+        # B1.2) accept an empty answer in the schema, but the numbered list
+        # gives the model no way to express one, and without this clause it
+        # selects every option when nothing applies. Added only to those
+        # sections, so B2 keeps using its own option 5.
         if not _has_none_option(options):
             prompt += (
                 "\nIf NONE of the numbered options applies, write exactly "

@@ -12,9 +12,9 @@ record has several files, the most recent one wins.
 
 METRICS, per section and overall:
   - Exact-match accuracy: the predicted answer equals the reference, with a
-    95% Wilson confidence interval. On a corpus this size the interval is wide,
-    which is the point: it says how much of a difference between two runs the
-    sample can carry.
+    95% Wilson confidence interval. On a corpus this size the interval is
+    wide, and it says how much of a difference between two runs the sample
+    can carry.
   - Majority baseline: the accuracy of always answering the section's most
     frequent reference answer, and the gain over it. Sections where one answer
     dominates score high on accuracy alone.

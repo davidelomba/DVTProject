@@ -29,12 +29,12 @@ LLM_NUM_GPU = 999
 # nothing to Ollama, leaving the model's own default.
 LLM_REASONING = False
 
-# Size of the context window Ollama allocates for a request, in tokens. Named
-# here because Ollama's own default reaches no audit log, leaving the window a
-# run was produced under unknown once the machine has moved on. 4096 is the
-# figure `ollama ps` reports for qwen3.6:27b on mari, so this value is the one
-# already in force and every earlier run stays comparable. What Ollama does
-# with a prompt longer than the window has not been tested here.
+# Size of the context window Ollama allocates for a request, in tokens. Set
+# here so _run_config records it: Ollama's own default reaches no audit log.
+# 4096 is the window `ollama ps` reports for qwen3.6:27b on mari when none is
+# set. A prompt plus response longer than the window loses the start of the
+# prompt, which holds the evidence, so the longest prompt plus LLM_NUM_PREDICT
+# has to fit in it.
 LLM_NUM_CTX = 4096
 LLM_REQUEST_TIMEOUT = 180  # seconds; allows time for reasoning on slower hardware
 
@@ -108,7 +108,7 @@ BRIGHTON_CONTEXT_ENABLED = True
 # The heading is the description carried by each field in models.py, naming the
 # section as the printed questionnaire does. False sends the options alone, so
 # the only statement of what a section covers is the wording of the options
-# themselves, and is what every run recorded so far was produced with.
+# themselves.
 SECTION_DESCRIPTIONS_ENABLED = False
 
 # Master switch for SECTION_HINTS. The hint for F asks for the DETAILS_PRESENT

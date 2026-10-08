@@ -8,7 +8,7 @@ STORES
    built once and reloaded from disk unless force_rebuild.
 2. EHR KB: one patient's clinical record, wiped and rebuilt on every run.
    Built only for the "rag" and "agentic_graph" extraction modes; "full_text"
-   passes the record in the prompt instead.
+   and "raw_record" pass the record in the prompt instead.
 
 Both source texts are cleaned before reaching Agent 2: the paper's reference
 list is dropped at load time, and bibliography lines surviving into a
@@ -98,8 +98,8 @@ def build_ehr_kb(patient_record_text: str, patient_id: str, embeddings=None) -> 
 
     Only needed when config.EXTRACTOR_MODE is "rag" (agents.extract_evidence)
     or "agentic_graph" (agents.extract_evidence_agentic, via the retriever tool
-    built by make_ehr_retriever_tool below); not used when EXTRACTOR_MODE is
-    "full_text", which passes the record directly instead.
+    built by make_ehr_retriever_tool below); not used by "full_text" and
+    "raw_record", which pass the record directly instead.
 
     Args:
         patient_record_text: the complete clinical record.
@@ -125,8 +125,8 @@ def build_ehr_kb(patient_record_text: str, patient_id: str, embeddings=None) -> 
     # This KB is meant to be rebuilt fresh on every run (see module docstring).
     # Without removing the old directory first, Chroma.from_texts() appends
     # to whatever is already persisted there, so re-running the pipeline on
-    # the same patient_id (e.g. during debugging) silently accumulates
-    # duplicate chunks across runs, diluting retrieval relevance over time.
+    # the same patient_id silently accumulates duplicate chunks across runs,
+    # which then crowd the top k of every search.
     if os.path.isdir(persist_dir):
         shutil.rmtree(persist_dir)
 
@@ -144,8 +144,8 @@ def build_ehr_kb(patient_record_text: str, patient_id: str, embeddings=None) -> 
 # reach Agent 2 as if they were reference terminology.
 _BIBLIOGRAPHY_LINE = re.compile(
     # A citation marker starting the line counts only when an author name
-    # follows it. Without that condition the pattern also matched body text
-    # wrapped after a closing citation ("[69]. TTS is characterized by
+    # follows it. Without that condition the pattern would also match body
+    # text wrapped after a closing citation ("[69]. TTS is characterized by
     # thrombosis..."), deleting a clinically meaningful line.
     r"^\s*\[\d+\]\s+[A-Z]"  # "[83] Goodman LR, Stein PD, ..."
     r"|https?://"           # bare URLs

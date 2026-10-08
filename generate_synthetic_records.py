@@ -29,11 +29,10 @@ INTERPRETIVE ASSUMPTIONS, worth re-checking against the Brighton paper:
     "Leg swelling or pitting oedema".
 
 COVERAGE: the scenarios are chosen so that every option of every section
-appears in at least two of them. SYN_30 is there for a different reason: it breaks a
-correlation rather than covering an option. Before it, an elevated D-dimer
-co-occurred with a confirmed DVT in every record, which per-option coverage
-cannot detect and which lets a model answer section C without reading the
-value.
+appears in at least two of them. SYN_30 breaks a correlation instead of
+covering an option: without it an elevated D-dimer would co-occur with a
+confirmed DVT in every record, which per-option coverage cannot detect and
+which would let a model answer section C without reading the value.
 
 KNOWN LIMITATION: records run 317 to 1185 characters, median 970, so with
 config.EHR_CHUNK_SIZE at 800 each splits into one or two chunks while
@@ -62,9 +61,9 @@ STYLE_VARIANTS = [
 
 
 # Scenarios: each case's clinical facts plus its correct answers. The facts
-# are what check_record verifies the record against; the
-# ground truth is written out here, never inferred from the text. Its values
-# must match models.py's Literal strings EXACTLY (copy them, don't retype).
+# are what check_record verifies the record against; the ground truth is
+# written out here, never inferred from the text. Its values must match
+# models.py's Literal strings EXACTLY (copy them, don't retype).
 
 SCENARIOS = [
     {

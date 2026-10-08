@@ -4,8 +4,8 @@ Entry point for the clinical extraction pipeline.
 Usage:
     python main.py
 
-Edit the three variables below to point to the actual clinical record,
-the reference guidelines PDF and the desired patient/record identifier.
+Edit the three variables at the top of main() to point to the clinical
+record, the reference guideline PDF and the record identifier.
 """
 
 import json

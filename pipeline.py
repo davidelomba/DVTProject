@@ -1,12 +1,11 @@
 """
-Main pipeline.
-For each section of the form:
-  1. Agent 1 extracts the relevant evidence from the clinical record (full text by default)
-  2. Agent 2 reasons over the evidence and fills in the checkbox
-Independent per-section results are then merged, cross-section dependency
-rules are applied and, when config.CONFIDENCE_ENABLED is set, Agent 3 scores
-the confidence of each final answer. The final DVT_CriteriaForm is returned
-together with a full audit log.
+Main pipeline. For each section of the form:
+  1. Agent 1 extracts the relevant evidence from the clinical record, in the
+     way config.EXTRACTOR_MODE selects (none in "raw_record");
+  2. Agent 2 reasons over the evidence and fills in the section.
+The per-section results are then merged, the cross-section rules are applied
+and, when config.CONFIDENCE_ENABLED is set, Agent 3 scores the confidence of
+each final answer. The DVT_CriteriaForm is returned together with an audit log.
 """
 
 import hashlib

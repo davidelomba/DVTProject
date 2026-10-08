@@ -238,9 +238,9 @@ def _make_answer_node(llm, brighton_kb, section_queries: dict):
 def _finalize(state: GraphState) -> GraphState:
     """Terminal node: returns the state unchanged.
 
-    Deliberately a passthrough. Cross-section rules are applied once by
-    pipeline.run_pipeline after this graph returns, so every execution mode
-    goes through the same code rather than a copy of it.
+    Cross-section rules are not applied here: pipeline.run_pipeline applies
+    them once after this graph returns, so every execution mode goes through
+    the same code rather than a copy of it.
     """
     return state
 
@@ -326,9 +326,9 @@ def run_agentic_graph_pipeline(
         "done": False,
     }
 
-    # The graph is recursive, so the recursion limit must be high enough to
-    # accommodate the number of sections. Each section takes 3 nodes (select, search, answer) plus finalize at the end, plus a few extra for the
-    # initial call and the final return. This is a conservative estimate to avoid hitting Python's recursion limit.
+    # LangGraph stops a run after recursion_limit steps. Each section takes
+    # three (select_next, search_record, answer_criterion), the last
+    # select_next and finalize add two more, and the remaining 8 are margin.
     recursion_limit = len(config.SECTION_ORDER) * 3 + 10
     final_state = app.invoke(initial_state, config={"recursion_limit": recursion_limit})
 
