@@ -29,27 +29,22 @@ LLM_NUM_GPU = 999
 # nothing to Ollama, leaving the model's own default.
 LLM_REASONING = False
 
-# Size of the context window Ollama allocates for a request, in tokens. Set
-# here so _run_config records it: Ollama's own default reaches no audit log.
-# 4096 is the window `ollama ps` reports for qwen3.6:27b on mari when none is
-# set. A prompt plus response longer than the window loses the start of the
-# prompt, which holds the evidence, so the longest prompt plus LLM_NUM_PREDICT
-# has to fit in it.
+# Size of the context window (prompt + answer) in tokens: 4096 is the default value on mari. 
+# If this threshold is exceeded, Ollama drops the start of the prompt
 LLM_NUM_CTX = 4096
 LLM_REQUEST_TIMEOUT = 180  # seconds; allows time for reasoning on slower hardware
 
 # Agent 3 (confidence.py). After the cross-section rules, Agent 3 asks the
 # evaluator model for each section's answer again, without reasoning and
-# without Agent 2's answer, and reads from the token probabilities how much
+# without Agent 2's answer and reads from the token probabilities how much
 # probability goes to the answer the form holds. The value, from 0 to 1, is
 # stored in the section's audit log entry under "confidence". When False, the
 # pipeline sends no extra request.
 CONFIDENCE_ENABLED = True
 
-# Sections left without a confidence value. F's answer rests on an inverted
-# question and on whether a diagnosis was reported, and Agent 3 judges both
-# without reasoning. Removing "F" scores it through its DETAILS_PRESENT line
-# (confidence.score_details).
+# Sections Agent 3 does not score. F's "Yes" means a diagnosis reported WITHOUT
+# details, and an unreasoned request misreads that inversion, so F's confidence
+# does not separate right answers from wrong ones.
 CONFIDENCE_SKIP = {"F"}
 
 # Multilingual embedding model. Used in every mode: the Brighton store is
@@ -84,6 +79,7 @@ EHR_KB_PERSIST_DIR = str(PROJECT_ROOT / "vectorstores" / "chroma_ehr_kb")
 BRIGHTON_CHUNK_SIZE = 800
 BRIGHTON_CHUNK_OVERLAP = 150
 BRIGHTON_RETRIEVER_K = 5
+
 # The guideline store is reloaded from disk when present, so its directory
 # carries the embedding model's name: a store built with one model is never
 # queried with another.
@@ -131,8 +127,6 @@ SECTION_HINTS = {
         "Only post-mortem findings count here. Imaging performed on a living patient "
         "is not an autopsy."
     ),
-    # Without the capitals and the repetition the model stops treating an
-    # explicit negation as binding.
     "A2": (
         "CRITICAL FOR A2: Pay extreme attention to ANY negations preceding surgical terms. "
         "If the clinical record explicitly states that a surgical procedure was not "
@@ -268,7 +262,7 @@ CROSS_SECTION_RULES = [
 
 
 def section_hint(section_key: str) -> str:
-    """The hint to send with a section, honouring both ablation switches.
+    """The hint to send with a section, considering both ablation switches.
 
     Args:
         section_key: section identifier, e.g. "B2".
