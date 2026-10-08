@@ -125,36 +125,6 @@ ricarica da disco quando esiste: un indice costruito con un modello non viene
 mai interrogato con un altro. Quella dei referti non ne ha bisogno, perché
 `build_ehr_kb` la ricostruisce a ogni chiamata.
 
-### `GUIDELINE_ANCHORS` e il suo interruttore
-
-`GUIDELINE_ANCHORS` associa a ogni sezione le etichette del passaggio del paper
-che ne definisce il criterio: un'intestazione numerata, che vale fino alla
-successiva che non sia una sua sottosezione, o una didascalia di tabella, che
-vale fino alla prossima intestazione. `GUIDELINE_ANCHORS_ENABLED`, spento,
-lascia il recupero per somiglianza.
-
-Il recupero usa come chiave la query di sezione, cioè una stringa scritta per
-nominare un reperto dentro una cartella clinica e non un criterio dentro un
-articolo; `RISULTATI_SPERIMENTALI.md` riporta quali passaggi raggiungono di
-fatto Agente 2 per questa via.
-
-Le etichette seguono la struttura del questionario. A1 e A2 puntano alla 4.1 e
-alla 5.2.2, che definiscono la diagnosi patologica e nominano insieme la
-procedura chirurgica e quella per cateterismo. B1.1, B1.2 e B2 puntano alla
-Table 3, la case definition da cui il questionario deriva: il suo livello 2
-enuncia la presumed diagnosis di una sindrome, TVP degli arti inferiori o
-superiori, che è ciò che B1.1 e B1.2 registrano, e i segni aspecifici
-dell'estremità che sono le opzioni di B2. A3.2 punta alla Table 1, che elenca le
-tecniche per sede ed è la sua lista di opzioni.
-
-Le ancore stanno dentro la finestra di contesto: il prompt più lungo è quello di
-B1.2, e `RISULTATI_SPERIMENTALI.md` riporta la misura e il margine.
-
-`F` non compare nella mappa: il suo criterio chiede se una diagnosi è stata
-riportata da uno specialista e se è accompagnata da dettagli, e il paper non ha
-un passaggio che lo definisca. Quella sezione ripiega sul recupero anche a
-interruttore acceso.
-
 ### `SECTION_ORDER`
 
 `["A1", "A2", "A3_1", "A3_2", "B1_1", "B1_2", "B2", "C", "F", "X"]`. Determina
@@ -295,28 +265,11 @@ un nome, URL, DOI, citazioni di volume). Se il filtro rimuoverebbe tutto,
 restituisce l'originale, così un chunk fatto di soli riferimenti produce
 comunque qualcosa e non un contesto vuoto.
 
-**`retrieve_brighton_context(...)`** produce il contesto che Agente 2 riceve per
-una sezione. Con `config.GUIDELINE_ANCHORS_ENABLED` a `False` interroga l'indice
-del paper con la query di sezione e restituisce i primi `BRIGHTON_RETRIEVER_K`
-chunk; a `True` restituisce il passaggio ancorato, e ripiega sul recupero per le
-sezioni che un'ancora non ce l'hanno.
-
-**`section_is_anchored(...)`** dice se una sezione legge un'ancora. La leggono
-sia `retrieve_brighton_context`, per scegliere il percorso, sia i suoi
-chiamanti, per annunciare il blocco ad Agente 2: l'espressione sta in un posto
-solo e le due decisioni non possono divergere.
-
-**`_paper_outline(...)`**, **`_anchor_span(...)`** e
-**`resolve_guideline_anchors(...)`** risolvono le etichette di
-`config.GUIDELINE_ANCHORS` in testo. `_paper_outline` individua le intestazioni
-numerate e tiene solo quelle il cui numero supera l'ultimo tenuto: le righe
-delle tabelle delle tecniche sono numerate allo stesso modo, e il confronto
-monotono le scarta. `_anchor_span` fa terminare un'intestazione alla prima
-successiva che non sia una sua sottosezione, e una didascalia di tabella, che
-l'outline non copre, alla prima intestazione successiva di qualunque livello.
-`resolve_guideline_anchors` concatena i passaggi di una sezione nell'ordine in
-cui sono elencati e li passa per `clean_brighton_context`; una sezione le cui
-etichette il paper non contiene resta fuori dalla mappa.
+**`retrieve_brighton_context(brighton_kb, query)`** produce il contesto che
+Agente 2 riceve per una sezione: interroga l'indice del paper con la query di
+sezione e restituisce i primi `BRIGHTON_RETRIEVER_K` chunk, passati per
+`clean_brighton_context`. Con `config.BRIGHTON_CONTEXT_ENABLED` a `False`
+restituisce la stringa vuota.
 
 **`load_ehr_text(...)`** legge il referto da un `.txt` in UTF-8.
 
@@ -401,12 +354,8 @@ tracciabile a una frase del ragionamento, e non inclusa per default o per
 margine di sicurezza. Con `config.SECTION_DESCRIPTIONS_ENABLED` acceso, il titolo
 della sezione viene inserito sopra le opzioni.
 
-Il blocco della linea guida è annunciato da un'intestazione che dipende da cosa
-contiene: i chunk recuperati sono vocabolario da consultare e restano
-`Reference synonyms/terminology (Brighton)`, un passaggio ancorato enuncia il
-criterio e diventa `Guideline passage defining this criterion (Brighton)`.
-L'intestazione dice al modello cosa farne, e annunciare come sinonimi una
-definizione la fa trattare da glossario.
+Il blocco della linea guida è annunciato dall'intestazione
+`Reference synonyms/terminology (Brighton)`.
 
 Per le sezioni multi-scelta prive di un'opzione "nessuna delle precedenti", cioè
 A3.2 e B1.2, il prompt aggiunge come dire che nulla si applica: `FINAL_OPTION:
@@ -537,7 +486,7 @@ nodi diretti, perché un nodo LangGraph riceve solo lo stato mentre questi due
 passi hanno bisogno anche del modello, del tool e delle query. Il nodo di
 ricerca cronometra anche i fallimenti, così una sezione lenta perché ha
 continuato a ritentare resta visibile nel log. Il nodo di risposta recupera il
-contesto della linea guida, ancore comprese se accese, e chiama Agent 2.
+contesto della linea guida e chiama Agent 2.
 
 **`build_graph(...)`** collega i quattro nodi e compila la macchina a stati. Il
 modello di ricerca e quello di risposta sono due parametri distinti, perché
@@ -690,14 +639,9 @@ linea guida. Nessun altro campo dello snapshot ne registra il testo, quindi
 senza questo due run le cui query sono state riscritte in mezzo porterebbero la
 stessa firma.
 
-**`_anchor_fingerprint(...)`** fa lo stesso per le ancore, digerendo però il
-testo risolto e non le etichette: le etichette nominano intestazioni, e il testo
-a cui arrivano dipende da come il PDF si è estratto, quindi da sole non dicono
-cosa Agente 2 abbia letto. Le sezioni senza ancora non compaiono.
-
 **`_run_config_snapshot(...)`** cattura tutto ciò che determina cosa una run
 produce: modalità, contesto della linea guida, intestazioni di sezione,
-hint, query e ancore con i rispettivi fingerprint, le impostazioni dell'Agent 3
+hint e query con i rispettivi fingerprint, le impostazioni dell'Agent 3
 (`confidence.enabled` e `confidence.skipped_sections`), modelli per ruolo (con
 l'estrattore **effettivo**: `AGENTIC_LLM_MODEL_NAME` in modalità agentica,
 nessuno in `raw_record`), ambiente, parametri di generazione compreso
@@ -707,8 +651,7 @@ sezione, così un file di risultati è auto-descrittivo mesi dopo.
 
 **`run_pipeline(record_id, patient_ehr_path, brighton_pdf_path)`** costruisce una
 sola volta embedding e valutatore, carica i due testi, costruisce la KB Brighton
-sempre e quella del referto solo dove serve. Risolve le ancore della linea guida
-dal testo del paper. Il modello di Agent 1 viene costruito **dentro** il ramo che
+sempre e quella del referto solo dove serve. Il modello di Agent 1 viene costruito **dentro** il ramo che
 lo usa, così una modalità che non lo interroga, come `raw_record`, non lo carica
 in VRAM.
 
@@ -776,62 +719,38 @@ la durata varia con quante chiamate al tool l'estrattore agentico decide di fare
 
 ## 11. `generate_synthetic_records.py`
 
-Genera i referti sintetici in italiano con la ground truth corrispondente.
-`SCENARIOS` contiene i 40 scenari, `OUTPUT_DIR` è `data/synthetic_records/`.
-Il modello scrittore è `WRITER_MODEL_NAME = "qwen2.5:7b-instruct"`, a
-`WRITER_TEMPERATURE = 0.8` e con `WRITER_NUM_PREDICT = 3072`, ben sopra la
-lunghezza richiesta perché un tetto raggiunto a metà tronca il referto;
-`WRITER_SYSTEM_PROMPT` gli chiede di scrivere come un medico di pronto soccorso.
+Definisce il corpus sintetico e ne ricava la ground truth. `SCENARIOS` contiene
+i 40 scenari, `OUTPUT_DIR` è `data/synthetic_records/`, `STYLE_VARIANTS` contiene
+solo l'identificativo `v2`, il suffisso di ogni identificativo di referto. Lo
+script non chiama alcun modello.
 
-Le funzioni, nell'ordine in cui lavorano:
+Le funzioni:
 
-- **`directive_for(scenario, style)`** sceglie la direttiva di stile: quella
-  ricca di dettagli, o quella senza dettagli per gli scenari con `F = "Yes"`;
-- **`facts_to_prompt(scenario, style)`** compone il messaggio per lo scrittore:
-  direttiva, fatti clinici e le eventuali `writer_notes` dello scenario;
 - **`build_ground_truth(record_id, scenario)`** costruisce le risposte di
   riferimento salvate accanto al referto;
-- **`generate_record(llm, scenario, style)`** chiede un referto allo scrittore,
-  senza controllarlo;
-- **`generate_checked_record(...)`**, **`_expected_markers(...)`**,
-  **`check_record(...)`** e **`check_existing_records()`** sono il controllo di
-  fedeltà descritto sotto, e `_FACT_MARKERS` ne contiene i marcatori;
-- **`main()`** riscrive sempre la ground truth; scrive i referti mancanti solo con
-  `--generate` (sovrascrive gli esistenti solo con `--force`), controlla il
-  corpus su disco con `--check`, e `--only` restringe il lavoro agli scenari
-  nominati.
+- **`_expected_markers(...)`**, **`check_record(...)`** e
+  **`check_existing_records()`** sono il controllo di fedeltà descritto sotto, e
+  `_FACT_MARKERS` ne contiene i marcatori;
+- **`main()`** riscrive la ground truth di tutti gli scenari, o solo di quelli
+  nominati con `--only`, e con `--check` controlla il corpus su disco senza
+  scrivere nulla.
 
 **Ground truth per costruzione.** Ogni scenario porta sia i fatti clinici sia le
 risposte corrette per tutte e dieci le sezioni, scritte a mano con le stringhe
 esatte di `models.py`. Nessun modello indovina mai il riferimento, ed è questo a
-renderlo utilizzabile come tale. I JSON di ground truth vengono sempre riscritti,
-dato che produrli non coinvolge alcun modello.
+renderlo utilizzabile come tale. I JSON di ground truth vengono riscritti a ogni
+esecuzione senza `--check`.
 
-**I referti.** Quelli attualmente su disco non sono stati prodotti dal modello
-scrittore: sono stati redatti da un modello generalista esterno a ogni ruolo
-della pipeline, a partire dai fatti di ogni scenario e rivisti contro di essi,
-dopo che quelli generati erano stati ripetutamente trovati in contraddizione con
-la propria ground truth. Lo scrittore resta disponibile per nuovi scenari, a
-temperatura non nulla per variazione lessicale. I referti vengono scritti solo se
-mancanti, salvo `--force`, quindi un run normale non può sovrascriverli.
-
-**Gli stili.** `STYLE_VARIANTS` chiede le caratteristiche strutturali che i
-referti ospedalieri italiani condividono, mai le etichette o le formulazioni
-esatte: uno scrittore copia gli esempi che riceve, quindi prescriverle
-produrrebbe varianti quasi identiche di un unico documento, sovradattate a un
-solo clinico. Esiste una direttiva separata per gli scenari la cui ground truth
-è `F = "Yes"`, cioè diagnosi riportata **senza** dettagli: un solo parametro
-vitale o reperto renderebbe il referto dettagliato e ribalterebbe la risposta
-corretta di F.
+**I referti.** Sono redatti fuori dallo script, a partire dai fatti di ogni
+scenario, e controllati contro di essi prima di entrare nel corpus. Le
+`writer_notes` di uno scenario indicano vincoli che il referto rispetta (cosa
+non deve dire) e non sono fatti da ritrovare nel testo.
 
 **Il controllo di fedeltà.** `_expected_markers(scenario)` ricava dai fatti
 dello scenario quali marcatori il referto deve contenere; `check_record(text,
 scenario)` verifica il testo contro quella lista e restituisce l'elenco dei
-problemi; `generate_checked_record(...)` rigenera finché il controllo rifiuta,
-fino a `WRITER_MAX_ATTEMPTS`, e ogni tentativo è un vero ricampionamento grazie
-alla temperatura non nulla. `check_existing_records()` esegue gli stessi
-controlli su un corpus già su disco senza chiamare alcun modello
-(`--check`).
+problemi; `check_existing_records()` esegue il controllo su tutto il corpus su
+disco (`--check`).
 
 **Il limite noto.** Il controllo è deterministico e intercetta la troncatura e i
 fatti mancanti, non la violazione semantica: un referto può contenere il valore
@@ -1080,7 +999,7 @@ installato `models_myo` come `models` e puntato le cartelle di default su
 `myo/data/records` e `myo/output_myo`.
 
 **`run_dvt_stripped.py`** è il termine di confronto: esegue il corpus TVP con
-**`strip()`**, che spegne in memoria hint, contesto, ancore, intestazioni di
+**`strip()`**, che spegne in memoria hint, contesto, intestazioni di
 sezione e regole cross-section, gli stessi componenti che il
 braccio della miocardite non ha. Poi chiama `run_synthetic_records.main()`, di
 cui accetta gli argomenti.

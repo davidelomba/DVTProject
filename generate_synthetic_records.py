@@ -1,27 +1,21 @@
 """
-Data-augmentation script: generates synthetic Italian clinical records paired
-with matching ground-truth JSON (same shape as models.DVT_CriteriaForm), so the
-pipeline can be validated on more than the single real record it was originally
-tuned against.
+Defines the synthetic corpus: one scenario per record, holding its clinical
+facts and its correct answers, and derives from it the ground-truth JSON (same
+shape as models.DVT_CriteriaForm) that the evaluation scores against.
 
 GROUND TRUTH BY CONSTRUCTION: every scenario below carries both its clinical
 facts and its correct answer for all 10 sections, written by hand with
 models.py's exact Literal strings. No model ever guesses the reference, which
-is what makes it usable as one. The ground-truth JSONs are always rewritten,
-since producing them involves no LLM.
+is what makes it usable as one. A plain run rewrites every ground-truth JSON
+from SCENARIOS; it never writes a record.
 
-RECORDS: the records in data/synthetic_records/ are not the writer's output.
-They are drafted from each scenario's facts with a general-purpose model
-outside every pipeline role, and checked against those facts before entering
-the corpus. The writer model (WRITER_MODEL_NAME, a literal rather than a config
-import so it stays outside every pipeline role too) remains available for new
-scenarios, at a non-zero temperature for lexical variation. Writing records is
-opt-in, behind --generate, and even then only the missing ones unless --force:
-a plain run refreshes the ground truth and writes no record.
+RECORDS: the records in data/synthetic_records/ are written from each
+scenario's facts outside this script and checked against those facts before
+entering the corpus. A scenario's writer_notes state constraints its record
+respects (what it must not say), and are not facts to be found in the text.
 
-FIDELITY CHECK: a record is verified against its scenario's facts before being
-saved and regenerated if it fails; see check_record. The same checks run over
-an existing corpus without calling any LLM:
+FIDELITY CHECK: check_record verifies a record against its scenario's facts
+without calling any LLM:
     python generate_synthetic_records.py --check
 
 INTERPRETIVE ASSUMPTIONS, worth re-checking against the Brighton paper:
@@ -48,10 +42,8 @@ time and the section query selects nothing. What the extraction modes differ
 in is therefore whether a model rewrites that text, not which part of it
 Agent 2 sees.
 
-Usage: python generate_synthetic_records.py [--check] [--generate] [--force]
-                                            [--only ID...]
-Output: data/synthetic_records/<scenario_id>_<style_id>.txt and the matching
-        _ground_truth.json.
+Usage: python generate_synthetic_records.py [--check] [--only ID...]
+Output: data/synthetic_records/<scenario_id>_<style_id>_ground_truth.json.
 """
 
 import argparse
@@ -60,122 +52,17 @@ import re
 import sys
 from pathlib import Path
 
-from agents import build_llm
-
-# A literal, not a config import: the writer must stay independent of whichever
-# model the pipeline roles use, now or after a config change.
-WRITER_MODEL_NAME = "qwen2.5:7b-instruct"
-WRITER_TEMPERATURE = 0.8
-
-# Well above the length the prompt asks for: a cap reached mid-record
-# truncates it without raising anything.
-WRITER_NUM_PREDICT = 3072
-
-# Regeneration attempts when check_record() rejects the output. Each is a real
-# resample thanks to the non-zero temperature.
-WRITER_MAX_ATTEMPTS = 3
-
 OUTPUT_DIR = Path(__file__).parent / "data" / "synthetic_records"
 
-WRITER_SYSTEM_PROMPT = """Sei un medico di pronto soccorso che scrive cartelle
-cliniche in ITALIANO per un paziente con sospetta trombosi venosa profonda (TVP).
-
-REGOLE FERREE:
-1. Usa SOLO ED ESCLUSIVAMENTE i fatti clinici elencati dall'utente. Non
-   aggiungere reperti, esami, sintomi, valori di laboratorio o diagnosi che
-   non siano stati esplicitamente forniti.
-2. Non omettere nessuno dei fatti forniti: devono comparire tutti nel testo.
-3. Non aggiungere una frase di sintesi diagnostica esplicita (es. "Si conferma
-   diagnosi di TVP") a meno che non sia uno dei fatti forniti.
-4. Segui la direttiva di stile indicata, ma il CONTENUTO CLINICO deve restare
-   identico indipendentemente dallo stile.
-5. Output SOLO il testo della cartella clinica, nessun commento, nessuna nota,
-   nessuna intestazione tipo "Ecco la cartella clinica:".
-6. Scrivi come un medico che documenta un paziente, MAI come qualcuno che
-   compila o commenta un questionario: non scrivere frasi del tipo "non sono
-   state menzionate diagnosi alternative", "non e' stato riportato X" o "questo
-   e' solo un fattore di rischio". Se un elemento non fa parte dei fatti,
-   semplicemente non compare nel referto: non dichiararne l'assenza.
-7. La direttiva di stile puo' chiederti di aggiungere elementi di contorno
-   realistici (parametri vitali, terapia domiciliare, negazioni pertinenti):
-   questi sono l'UNICA eccezione consentita alla regola 1, e non devono mai
-   contraddire i fatti clinici forniti ne' riguardare gli stessi sintomi,
-   esami o procedure di cui i fatti parlano.
-"""
-
-# Modelled on the one real record available (data/patient_001.txt), not copied
-# from it. Left to itself a writer produces something far thinner: no section
-# labels, no vitals, no home medications, no pertinent negatives. Measuring the
-# pipeline on clean, signal-dense text would overstate how it does on real ones.
-#
-# Generic on purpose: it asks for the structural features Italian hospital
-# records share, never for the exact labels, drug names or negation wording. A
-# writer copies whatever examples it is given, so prescribing those would
-# produce near-identical variants of a single document, overfitted to one
-# clinician. Left free, the variation comes from the temperature instead.
+# One entry per version of the corpus; its id is the suffix of every record id,
+# "<scenario id>_<style id>".
 STYLE_VARIANTS = [
-    {
-        "id": "v2",
-        "directive": (
-            "Scrivi il documento come un referto ospedaliero italiano reale, in "
-            "prosa continua (nessun elenco puntato). Organizza il contenuto nelle "
-            "sezioni tipiche di un referto italiano (anamnesi remota, anamnesi "
-            "prossima, esame obiettivo, esami di laboratorio e strumentali) "
-            "introducendole con una breve etichetta in linea nel testo; scegli tu "
-            "la formulazione esatta delle etichette e l'ordine piu' naturale. "
-            "Riporta i parametri vitali con le abbreviazioni cliniche italiane "
-            "d'uso comune e valori plausibili nella norma, salvo diversa "
-            "indicazione nei fatti. "
-            "Includi elementi anamnestici di contorno realistici e non correlati "
-            "al quesito diagnostico: una breve terapia domiciliare, lo stato "
-            "allergologico, e alcune negazioni pertinenti su sintomi NON gia' "
-            "citati nei fatti. Varia il lessico e non riutilizzare formule fisse. "
-            "Non negare MAI qualcosa che i fatti riportano come presente. "
-            "Lunghezza complessiva indicativa: 1300-1600 caratteri."
-        ),
-        # Scenarios whose ground truth is F="Yes" ("diagnosis reported WITHOUT
-        # details") cannot use the directive above: a single vital sign, lab
-        # value or examination finding would make the record detailed and flip
-        # F's correct answer to "No". They get this instead -- which is also
-        # what such a document looks like in reality, since a bare referral or
-        # inter-hospital transfer note genuinely is short and finding-free.
-        "directive_no_details": (
-            "Scrivi il documento come una breve nota di segnalazione o di "
-            "trasferimento ospedaliera italiana reale, in prosa continua. "
-            "Riporta i dati anagrafici, la provenienza della segnalazione e la "
-            "diagnosi riferita, e indica che non e' disponibile altra "
-            "documentazione clinica. "
-            "NON inventare e NON riportare alcun parametro vitale, valore di "
-            "laboratorio, reperto di esame obiettivo o risultato strumentale: la "
-            "loro assenza e' il contenuto stesso del documento. "
-            "Puoi includere solo elementi anagrafici o amministrativi. "
-            "Lunghezza complessiva indicativa: 500-700 caratteri."
-        ),
-    },
+    {"id": "v2"},
 ]
 
 
-def directive_for(scenario: dict, style: dict) -> str:
-    """Picks the style directive appropriate to a scenario.
-
-    Args:
-        scenario: an entry of SCENARIOS.
-        style: an entry of STYLE_VARIANTS.
-
-    Returns:
-        The detail-rich house directive, or the detail-free one for scenarios
-        whose ground truth is F="Yes". Those are defined by the ABSENCE of
-        clinical detail, so a single vital sign or lab value written into them
-        would flip F's correct answer.
-    """
-
-    if scenario["ground_truth"]["f"]["answer"] == "Yes":
-        return style["directive_no_details"]
-    return style["directive"]
-
-
 # Scenarios: each case's clinical facts plus its correct answers. The facts
-# feed the writer and are what check_record verifies the record against; the
+# are what check_record verifies the record against; the
 # ground truth is written out here, never inferred from the text. Its values
 # must match models.py's Literal strings EXACTLY (copy them, don't retype).
 
@@ -1178,40 +1065,8 @@ SCENARIOS = [
 ]
 
 
-def facts_to_prompt(scenario: dict, style: dict) -> str:
-    """Assembles the human message sent to the writer for one record.
-
-    Args:
-        scenario: an entry of SCENARIOS.
-        style: an entry of STYLE_VARIANTS.
-
-    Returns:
-        The prompt: style directive, clinical facts, and the scenario's
-        writer_notes if it has any.
-    """
-
-    facts_block = "\n".join(f"- {fact}" for fact in scenario["facts"])
-    prompt = (
-        f"Direttiva di stile: {directive_for(scenario, style)}\n\n"
-        f"Fatti clinici da includere (tutti, nessuno escluso, nessuno aggiunto):\n{facts_block}"
-    )
-
-    # writer_notes are constraints ABOUT the writing, kept in their own block
-    # and marked as not-to-be-written. Inside "facts" they get copied verbatim
-    # into the record, which both breaks the illusion of a clinical document
-    # and can hand the evaluator an answer it should have had to infer.
-    notes = scenario.get("writer_notes")
-    if notes:
-        notes_block = "\n".join(f"- {n}" for n in notes)
-        prompt += (
-            f"\n\nVincoli di scrittura (istruzioni per te, NON scriverle nel "
-            f"referto e non parafrasarle):\n{notes_block}"
-        )
-    return prompt
-
-
 def build_ground_truth(record_id: str, scenario: dict) -> dict:
-    """Builds the reference answers saved alongside a generated record.
+    """Builds the reference answers saved alongside a record.
 
     Args:
         record_id: "<scenario id>_<style id>", the key the evaluation uses to
@@ -1231,9 +1086,9 @@ def build_ground_truth(record_id: str, scenario: dict) -> dict:
 # Fidelity check
 
 # A record can silently contradict its own scenario: facts get dropped, a limb
-# flipped, a named imaging modality genericised. Nothing between writing and
-# evaluation inspects the text, so such defects reach the pipeline looking like
-# pipeline errors.
+# flipped, a named imaging modality genericised. Apart from this check nothing
+# between writing and evaluation inspects the text, so such defects would reach
+# the pipeline looking like pipeline errors.
 #
 # SCOPE: verifies that decisive facts are textually PRESENT and the record is
 # structurally complete. It cannot judge whether a fact is used correctly (a
@@ -1247,7 +1102,7 @@ def build_ground_truth(record_id: str, scenario: dict) -> dict:
 _FACT_MARKERS = {
     "d-dimero": ["d-dimero", "d dimero", "ddimero"],
 
-    # "doppler" on its own is accepted: the writer misspells the compound
+    # "doppler" on its own is accepted: records misspell the compound
     # ("ecocoloredoppler") often enough that requiring a full spelling rejects
     # records where the study is plainly reported.
     "ecocolordoppler": ["doppler", "ecodoppler"],
@@ -1270,7 +1125,7 @@ _FACT_MARKERS = {
 
 
 def _expected_markers(scenario: dict) -> list[tuple[str, list[str]]]:
-    """Works out which facts a generated record must mention.
+    """Works out which facts a record must mention.
 
     Args:
         scenario: an entry of SCENARIOS. A "must_contain" key overrides the
@@ -1278,7 +1133,7 @@ def _expected_markers(scenario: dict) -> list[tuple[str, list[str]]]:
 
     Returns:
         (label, accepted_variants) pairs, including any lab value found in the
-        facts: a number is the one token the writer cannot paraphrase.
+        facts: a number is the one token a record cannot paraphrase.
     """
 
     if "must_contain" in scenario:
@@ -1304,17 +1159,17 @@ def _expected_markers(scenario: dict) -> list[tuple[str, list[str]]]:
 
     for number in re.findall(r"\b\d{1,3}(?:[.,]\d{3})*\s*ng/mL", " ".join(scenario["facts"])):
         digits = re.sub(r"\s*ng/mL", "", number)
-        # Accept either separator: the writer freely switches "2.100"/"2,100".
+        # Accept either separator: records switch freely between "2.100" and "2,100".
         markers.append((number, [digits, digits.replace(".", ","), digits.replace(",", ".")]))
 
     return markers
 
 
 def check_record(text: str, scenario: dict) -> list[str]:
-    """Checks a generated record against the scenario it was written from.
+    """Checks a record against the scenario it was written from.
 
     Args:
-        text: the generated record.
+        text: the record.
         scenario: an entry of SCENARIOS.
 
     Returns:
@@ -1339,70 +1194,8 @@ def check_record(text: str, scenario: dict) -> list[str]:
     return problems
 
 
-def generate_record(llm, scenario: dict, style: dict) -> str:
-    """Asks the writer for one record, without checking the result.
-
-    Args:
-        llm: the writer model.
-        scenario: an entry of SCENARIOS.
-        style: an entry of STYLE_VARIANTS.
-
-    Returns:
-        The generated record text.
-    """
-
-    messages = [
-        ("system", WRITER_SYSTEM_PROMPT),
-        ("human", facts_to_prompt(scenario, style)),
-    ]
-    response = llm.invoke(messages)
-    return response.content.strip()
-
-
-def generate_checked_record(llm, scenario: dict, style: dict, record_id: str) -> tuple[str, list[str]]:
-    """Generates a record, regenerating while check_record rejects it.
-
-    Args:
-        llm: the writer model.
-        scenario: an entry of SCENARIOS.
-        style: an entry of STYLE_VARIANTS.
-        record_id: used for progress output only.
-
-    Returns:
-        (text, problems). Problems is empty when an attempt passed; otherwise
-        the least-bad attempt is returned along with what is still wrong with
-        it. Returning rather than raising keeps one stubborn scenario from
-        aborting a whole generation run, while main() makes sure the failure
-        is reported instead of saved silently.
-    """
-    
-    best_text, best_problems = None, None
-
-    for attempt in range(1, WRITER_MAX_ATTEMPTS + 1):
-        text = generate_record(llm, scenario, style)
-        problems = check_record(text, scenario)
-
-        if not problems:
-            return text, []
-
-        if best_problems is None or len(problems) < len(best_problems):
-            best_text, best_problems = text, problems
-
-        print(
-            f"[{record_id}] attempt {attempt}/{WRITER_MAX_ATTEMPTS} rejected: "
-            f"{'; '.join(problems)}",
-            flush=True,
-        )
-
-    return best_text, best_problems
-
-
 def check_existing_records() -> int:
-    """Audits the records already on disk, regenerating nothing.
-
-    Same checks as the inline ones, exposed separately so a corpus can be
-    inspected (or re-inspected after a manual fix) without spending an
-    Ollama run.
+    """Audits the records already on disk against their scenarios.
 
     Returns:
         The number of records that are missing or defective.
@@ -1430,13 +1223,8 @@ def check_existing_records() -> int:
 
 
 def main():
-    """Refreshes every scenario's ground truth, writes the missing records when
-    called with --generate, and audits an existing corpus when called with
-    --check.
-
-    Records that still fail the fidelity check after WRITER_MAX_ATTEMPTS are
-    saved anyway (a partial record is still worth inspecting) but are
-    listed at the end so none of them reaches the evaluation unnoticed.
+    """Rewrites every scenario's ground truth, or audits the existing corpus
+    when called with --check.
     """
 
     parser = argparse.ArgumentParser(
@@ -1444,28 +1232,14 @@ def main():
     )
     parser.add_argument(
         "--check", action="store_true",
-        help="Only re-check the records already in data/synthetic_records/ "
-             "against check_record(); generate nothing and call no LLM.",
+        help="Only check the records already in data/synthetic_records/ "
+             "against check_record(); write nothing and call no LLM.",
     )
     parser.add_argument(
         "--only", nargs="+", metavar="ID",
         help="Restrict the run to the scenarios whose id contains one of these "
-             "strings (e.g. --only SYN_20 SYN_30). Every other record is left "
-             "untouched, so a single defective one can be re-rolled without "
-             "spending a full generation run or disturbing the rest of the set.",
-    )
-    parser.add_argument(
-        "--generate", action="store_true",
-        help="Write the records that are missing, calling the writer model. "
-             "Without it the run only refreshes the ground truth, so adding a "
-             "scenario cannot put a generated record into the corpus by "
-             "accident.",
-    )
-    parser.add_argument(
-        "--force", action="store_true",
-        help="With --generate, overwrite records that already exist. Without "
-             "it only missing ones are written, so an accidental run cannot "
-             "destroy records that were authored elsewhere.",
+             "strings (e.g. --only SYN_20 SYN_30). Every other ground-truth "
+             "file is left untouched.",
     )
     args = parser.parse_args()
 
@@ -1484,7 +1258,7 @@ def main():
 
     # Ground truth is derived from SCENARIOS with no model involved, so it is
     # always rewritten: that keeps the reference answers in step with the
-    # scenarios even when no record is regenerated.
+    # scenarios.
     for scenario in scenarios:
         for style in STYLE_VARIANTS:
             record_id = f"{scenario['id']}_{style['id']}"
@@ -1492,75 +1266,7 @@ def main():
                 json.dumps(build_ground_truth(record_id, scenario), indent=2, ensure_ascii=False),
                 encoding="utf-8",
             )
-
-    # Writing records is opt-in. A record authored elsewhere is
-    # indistinguishable from a generated one on disk, so a scenario added
-    # without its record would otherwise get one from the writer on the next
-    # run that only meant to refresh the ground truth.
-    if not args.generate:
-        print(f"Ground truth refreshed for {len(scenarios)} scenario(s). "
-              f"Pass --generate to write the records that are missing.",
-              flush=True)
-        return
-
-    # Records are only written when missing, unless --force. Regenerating one
-    # silently replaces work that took real effort to get right.
-    pending = [
-        (scenario, style)
-        for scenario in scenarios
-        for style in STYLE_VARIANTS
-        if args.force or not (OUTPUT_DIR / f"{scenario['id']}_{style['id']}.txt").exists()
-    ]
-    skipped = len(scenarios) * len(STYLE_VARIANTS) - len(pending)
-    if skipped:
-        print(f"{skipped} record(s) already exist and are left untouched "
-              f"(use --force to regenerate them).", flush=True)
-    if not pending:
-        print("Nothing to generate. Ground truth files refreshed.", flush=True)
-        return
-
-    llm = build_llm(
-        WRITER_MODEL_NAME,
-        temperature=WRITER_TEMPERATURE,
-        num_predict=WRITER_NUM_PREDICT,
-    )
-
-    still_defective = []
-    for scenario, style in pending:
-        record_id = f"{scenario['id']}_{style['id']}"
-        print(f"[{record_id}] generating ({scenario['description']})...", flush=True)
-
-        record_text, problems = generate_checked_record(llm, scenario, style, record_id)
-
-        txt_path = OUTPUT_DIR / f"{record_id}.txt"
-        txt_path.write_text(record_text, encoding="utf-8")
-
-        if problems:
-            still_defective.append((record_id, problems))
-            print(f"[{record_id}] SAVED WITH PROBLEMS -> {txt_path.name}", flush=True)
-        else:
-            print(f"[{record_id}] saved -> {txt_path.name}", flush=True)
-
-    if still_defective:
-        print(
-            f"\n!! {len(still_defective)} record(s) still failed the fidelity check "
-            f"after {WRITER_MAX_ATTEMPTS} attempts:",
-            flush=True,
-        )
-        for record_id, problems in still_defective:
-            print(f"  {record_id}: {'; '.join(problems)}", flush=True)
-        print(
-            "Review them (and fix them by hand if needed) BEFORE running the "
-            "pipeline on this set.",
-            flush=True,
-        )
-
-    written = len(pending) - len(still_defective)
-    print(
-        f"\nDone: {written} record(s) written, {len(still_defective)} saved with "
-        f"problems, {skipped} left untouched -- in {OUTPUT_DIR}",
-        flush=True,
-    )
+    print(f"Ground truth written for {len(scenarios)} scenario(s).", flush=True)
 
 
 if __name__ == "__main__":

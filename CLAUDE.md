@@ -88,9 +88,8 @@ but performs no evidence selection.
 - **Cross-section rules are always on**, with no switch: they encode the form's
   structure, not a workaround for a model weakness.
 - **Keep the pipeline language-agnostic.** Do not hardcode Italian-only queries
-  or logic; rely on the multilingual embedding model. The bilingual stems in
-  `SECTION_KEYWORD_GATES` and the Italian synthetic corpus are accepted
-  exceptions.
+  or logic; rely on the multilingual embedding model. The Italian synthetic
+  corpus is the accepted exception.
 
 ## Documentation standards
 
@@ -249,11 +248,14 @@ carries `bfd9536a31fe`; every run from 2026-09-20 to
 2026-09-26 used `bfd9536a31fe`, the runs before 2026-09-20 `39a5a3504655`, and
 runs before 2026-09-19 lack the field.
 
-`_run_config.guideline_anchors_fingerprint` digests the guideline passage each
-section resolved to, and `guideline_anchors_enabled` says whether Agent 2 read
-it. The labels are digested through their resolved text, since what a heading
-resolves to depends on how the PDF extracted. On mari the set digests to
-`4bc8810e170a`. Runs before 2026-09-22 lack both fields.
+The guideline anchors were removed from the code on 2026-10-08; commit
+`4e5b1d7` is the last that has them, and the anchored arms can be rerun from
+it. Runs from 2026-09-22 to 2026-10-08 carry
+`_run_config.guideline_anchors_fingerprint`, which digests the guideline
+passage each section resolved to, and `guideline_anchors_enabled`, which says
+whether Agent 2 read it. The labels were digested through their resolved text,
+since what a heading resolves to depends on how the PDF extracted. On mari the
+set digests to `4bc8810e170a`.
 
 **The anchors resolve to different text on different machines**, which is what
 the fingerprint was added for. Nine of the ten are identical between mari and a
@@ -420,7 +422,7 @@ not say which governs, which is what the clinician question below is asking.
   of accepted modalities, the model rejects an impedance plethysmography and
   answers that no imaging was done, though A3.1 asks nothing about modality; the
   cross-section rule then clears A3_2, two wrong sections from one error.
-  `GUIDELINE_ANCHORS_ENABLED` stays False.
+  The anchors stayed off, and were removed from the code on 2026-10-08.
 - **At 200/40/3 the anchors are noise.** Against a control run in the same
   regime, produced for the purpose because the earlier 200/40/3 arms predate
   B2's query rewrite, they move 385 to 386 of 400: five sections corrected, four
@@ -845,7 +847,7 @@ not say which governs, which is what the clinician question below is asking.
   Level 2's presumed diagnosis. The others are A2 on SYN_23, B1_1 on SYN_31
   (no objective findings received read as a report of absence), B2 on SYN_07
   as in both earlier arms, and B2 on SYN_36, which is the retry defect below.
-  C and F stay at 40, as predicted. `GUIDELINE_ANCHORS_ENABLED` stays False. 250 sections above
+  C and F stay at 40, as predicted. The anchors stayed off. 250 sections above
   0.99 of confidence, none wrong, 1285 across the five revised-hint arms; 181
   seconds a record.
 - **A retry can overflow the context window.** First run with `agent2_tokens`.
@@ -945,7 +947,8 @@ not say which governs, which is what the clinician question below is asking.
 ## Open items
 
 - **The guideline retrieval selects hard and is keyed on the wrong string. The
-  anchors that replace it are measured twice and cost 7 and 8 sections.** The paper is 48,467 characters
+  anchors that replaced it were measured twice, cost 7 and 8 sections, and are
+  removed from the code.** The paper is 48,467 characters
   in 76 chunks and `BRIGHTON_RETRIEVER_K` is 5, so each section reads 6.6% of
   it, chosen by that section's `SECTION_QUERIES` entry — a string written to
   find findings in a clinical record. The two retrieval paths are therefore in
@@ -954,9 +957,8 @@ not say which governs, which is what the clinician question below is asking.
   corpus, section 4.1, which states the criterion A1 and A2 rest on, reaches
   Agent 2 on **0 records out of 40**, while A2's context opens on the paper's
   preamble. X, C and A3_2 do receive their passage on all 40.
-  `config.GUIDELINE_ANCHORS` names the passage per section instead of searching
-  for it, and `GUIDELINE_ANCHORS_ENABLED` stays False: the arm scores 391
-  against 398. Every loss comes from the same place, a passage that states a
+  `config.GUIDELINE_ANCHORS` named the passage per section instead of searching
+  for it, and the arm scored 391 against 398. Every loss comes from the same place, a passage that states a
   criterion the section's options do not ask about. Choosing the passage by
   principle instead, Table 3, the case definition the questionnaire follows,
   plus its rationale in 5.2.x and the tables it cites (A1 Table 3 and 5.2.2,
@@ -1130,8 +1132,7 @@ not say which governs, which is what the clinician question below is asking.
   matches no record ends in a TypeError instead of an empty report. `_pct` and
   `_num` already print `n/a`; the subtraction is the one place that does not.
 - **The audit log does not record which guideline was read.** `_run_config`
-  carries `brighton_context_enabled` and `guideline_anchors_fingerprint` but not
-  the paper, and there are two: the DVT case definition and the myocarditis one,
+  carries `brighton_context_enabled` but not the paper, and there are two: the DVT case definition and the myocarditis one,
   indexed into two stores. A `guideline_source` field holding the PDF name and a
   digest of the extracted text would make the context traceable the way the
   hints and the queries already are.

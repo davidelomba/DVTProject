@@ -77,8 +77,6 @@ def apply_domain(guideline: bool = False):
     # Its own store: build_brighton_kb reloads an index already on disk without
     # reading the text it was handed, so the two papers need two directories.
     config.BRIGHTON_KB_PERSIST_DIR = str(MYO_DIR / "vectorstores" / "chroma_brighton_myo")
-    config.GUIDELINE_ANCHORS_ENABLED = False
-    config.GUIDELINE_ANCHORS = {}
     config.SECTION_DESCRIPTIONS_ENABLED = False
     config.SECTION_HINTS = {}
     config.SECTION_HINTS_DISABLED = set()

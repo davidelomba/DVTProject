@@ -36,7 +36,6 @@ def strip():
     config.SECTION_HINTS_ENABLED = False
     config.SECTION_HINTS_DISABLED = set()
     config.BRIGHTON_CONTEXT_ENABLED = False
-    config.GUIDELINE_ANCHORS_ENABLED = False
     config.SECTION_DESCRIPTIONS_ENABLED = False
     config.CROSS_SECTION_RULES = []
 

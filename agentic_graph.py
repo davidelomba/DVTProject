@@ -33,7 +33,7 @@ from langchain_ollama import ChatOllama
 import config
 from models import SECTION_MODELS
 from agents import extract_evidence_agentic, evaluate_section
-from rag_setup import retrieve_brighton_context, section_is_anchored
+from rag_setup import retrieve_brighton_context
 
 
 def build_agentic_llm() -> ChatOllama:
@@ -157,7 +157,7 @@ def _make_search_node(llm, ehr_tool, ehr_vectorstore, section_queries: dict):
     return search_record
 
 
-def _make_answer_node(llm, brighton_kb, section_queries: dict, guideline_anchors: dict = None):
+def _make_answer_node(llm, brighton_kb, section_queries: dict):
     """Builds the answer_criterion node, closing over its dependencies.
 
     Args:
@@ -165,9 +165,6 @@ def _make_answer_node(llm, brighton_kb, section_queries: dict, guideline_anchors
         brighton_kb: vector store of the reference guideline.
         section_queries: section key -> retrieval query, reused here to fetch
             the guideline context for the section.
-        guideline_anchors: section key -> the passage of the paper naming that
-            section's criterion, used instead of retrieval when
-            config.GUIDELINE_ANCHORS_ENABLED is True.
 
     Returns:
         The node function, which runs Agent 2 for the current section.
@@ -200,9 +197,7 @@ def _make_answer_node(llm, brighton_kb, section_queries: dict, guideline_anchors
         # Agent 2's token counts, one entry per attempt.
         token_counts = []
         try:
-            brighton_context = retrieve_brighton_context(
-                brighton_kb, query, section_key, guideline_anchors
-            )
+            brighton_context = retrieve_brighton_context(brighton_kb, query)
             section_log["brighton_context"] = brighton_context
 
             print(f"[{section_key}] Agent 2 (evaluator) filling in the schema...", flush=True)
@@ -210,7 +205,6 @@ def _make_answer_node(llm, brighton_kb, section_queries: dict, guideline_anchors
             extra_instructions = config.section_hint(section_key)
             section_result, reasoning_text, answer_conflict = evaluate_section(
                 llm, section_model, evidence, brighton_context, extra_instructions,
-                context_is_anchored=section_is_anchored(section_key, guideline_anchors),
                 token_counts=token_counts,
             )
             elapsed = time.time() - t0
@@ -254,7 +248,7 @@ def _finalize(state: GraphState) -> GraphState:
 # Graph assembly
 
 def build_graph(search_llm, answer_llm, ehr_tool, ehr_vectorstore, brighton_kb,
-                section_queries: dict, guideline_anchors: dict = None):
+                section_queries: dict):
     """Wires the four nodes into the state machine and compiles it.
 
     Args:
@@ -265,8 +259,6 @@ def build_graph(search_llm, answer_llm, ehr_tool, ehr_vectorstore, brighton_kb,
             agents.extract_evidence_agentic takes it as its own argument.
         brighton_kb: vector store of the reference guideline.
         section_queries: section key -> retrieval query.
-        guideline_anchors: section key -> the passage of the paper naming that
-            section's criterion.
 
     Returns:
         The compiled graph, ready to invoke with an initial GraphState.
@@ -275,7 +267,7 @@ def build_graph(search_llm, answer_llm, ehr_tool, ehr_vectorstore, brighton_kb,
 
     graph.add_node("select_next", _select_next)
     graph.add_node("search_record", _make_search_node(search_llm, ehr_tool, ehr_vectorstore, section_queries))
-    graph.add_node("answer_criterion", _make_answer_node(answer_llm, brighton_kb, section_queries, guideline_anchors))
+    graph.add_node("answer_criterion", _make_answer_node(answer_llm, brighton_kb, section_queries))
     graph.add_node("finalize", _finalize)
 
     # select_next -> {search_record, finalize} -> answer_criterion -> select_next (loop)
@@ -302,7 +294,6 @@ def run_agentic_graph_pipeline(
     ehr_vectorstore,
     brighton_kb,
     section_queries: dict,
-    guideline_anchors: dict = None,
 ):
     """Runs every section of config.SECTION_ORDER through the graph.
 
@@ -314,8 +305,6 @@ def run_agentic_graph_pipeline(
         ehr_vectorstore: the store ehr_tool wraps.
         brighton_kb: vector store of the reference guideline.
         section_queries: section key -> retrieval query.
-        guideline_anchors: section key -> the passage of the paper naming that
-            section's criterion.
 
     Returns:
         (form_data, audit_log), shaped exactly like the plain per-section loop
@@ -325,7 +314,7 @@ def run_agentic_graph_pipeline(
         for whichever mode produced the data.
     """
     app = build_graph(search_llm, evaluator_llm, ehr_tool, ehr_vectorstore, brighton_kb,
-                      section_queries, guideline_anchors)
+                      section_queries)
 
     # Every section starts unfilled; the queue drives select_next's loop.
     initial_state: GraphState = {

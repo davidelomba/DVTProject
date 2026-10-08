@@ -103,7 +103,7 @@ def main():
     record_paths = sorted(RECORDS_DIR.glob("*.txt"))
 
     if not record_paths:
-        print(f"No .txt records found in {RECORDS_DIR} -- run generate_synthetic_records.py first.", flush=True)
+        print(f"No .txt records found in {RECORDS_DIR}.", flush=True)
         return
 
     if args.only:
