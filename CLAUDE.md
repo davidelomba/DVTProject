@@ -113,14 +113,20 @@ python export_redcap_csv.py                       # results -> REDCap import CSV
 
 `evaluate_predictions` and `compare_runs` save their JSON reports in `reports/`.
 
-Measured from the audit-log timestamps on mari (2 x RTX 2080 Ti), median per
-record: the reference costs 174 seconds, so a full run over the 40 records is
-1h56. What sets the cost is how many model tags a run loads. `raw_record` loads
-one and costs 105, 1h10 for the corpus; the arms whose Agent 1 and Agent 2 share
-a tag, the reference among them, cost 165 to 175 and run in 1h50 to 1h56; every
-arm running two different tags costs 250 to 310, close to three hours for the
-corpus. Under the 8B evaluator a record costs 51 seconds, 0h34 for the corpus,
-and took 715 on the laptop.
+Measured from the audit-log timestamps on mari (2 x RTX 2080 Ti), median of the
+gaps between consecutive records: the reference costs 165 seconds a record
+without Agent 3 and 185 with it, and a full run over the 40 records takes 1h56.
+What sets the cost is how many model tags a run loads. `raw_record` loads one
+and costs 96, 1h10 for the corpus; the arms whose Agent 1 and Agent 2 share a
+tag, the reference among them, cost 157 to 190; every arm running two different
+tags costs 250 to 280, close to three hours for the corpus. Under the 8B
+evaluator a record costs 51 seconds, 0h34 for the corpus, and took 715 on the
+laptop. Per-record figures written before 2026-10-05, in the bullets below and
+in `docs/RISULTATI_SPERIMENTALI.md`, are the run's duration divided by 39, a
+mean: 174 for the reference, 270 for the previous one with the 8B agent, 105
+for `raw_record`, 166, 285 and 281 for `full_text` with the 27B, `rag` and
+`full_text` with the 8B, whose medians are 165, 260, 96, 170, 277 and 260. The
+two differ by up to 21 seconds and leave every ordering unchanged.
 
 A partial run is not a run: `evaluate_predictions` keeps the newest file per
 record, so scoring after `--only` mixes runs. Fine for a targeted check, not a
@@ -171,9 +177,9 @@ gates off and `absent_pulses` on are unaffected by the gates' removal, since
 `absent_pulses` never fired under qwen3.6:27b. The cross-section rules have no
 switch and encode the form's structure rather than a model weakness.
 
-Agent 1 and Agent 2 run the same model tag, which is why the reference costs 174
-seconds a record without Agent 3 and 184 with it, against the 250 to 310 an arm
-with two tags pays. They stay two
+Agent 1 and Agent 2 run the same model tag, which is why the reference costs 165
+seconds a record without Agent 3 and 185 with it, medians, against the 250 to 280
+an arm with two tags pays. They stay two
 separate settings: change `AGENTIC_LLM_MODEL_NAME` alone to vary the agent and
 `EVALUATOR_LLM_MODEL_NAME` alone to vary the evaluator. `LLM_MODEL_NAME` is the
 extractor of the `rag` and `full_text` baselines and the reference mode does not
@@ -424,8 +430,12 @@ not say which governs, which is what the clinician question below is asking.
   component. `docs/RISULTATI_SPERIMENTALI.md` section 8 has the full per-section
   table. The first ten rows carry the current hints `a78dc29e962f`, the next
   thirteen the revised hints `0d4a00c11404`, the rest `ab63b8e5f5af` or none. All rescored against the ground truth
-  corrected on 2026-10-04; `*` kappa of the reconstruction without the
-  `keyword` gate, not recomputed; `**` medgemma's run is no longer on disk and
+  corrected on 2026-10-04; the arms that carried the `keyword` gate are
+  reconstructed by restoring on X the answer the model wrote in its reasoning's
+  `FINAL_OPTION` line before the override, which reproduces the published totals
+  and, against the earlier ground truth, the published kappas except `rag`
+  (0.627 against 0.607) and `full_text` (0.577 against 0.580), unexplained;
+  `**` medgemma's run is no longer on disk and
   stays scored against the earlier ground truth.
 
   ```
@@ -455,8 +465,8 @@ not say which governs, which is what the clinician question below is asking.
   e5-large on CPU, 200/40/3        381/400    95.25%     0.907
   previous reference, old hints    396/400    99.0%      0.974
   same, 8B agent and old B2 query  396/400    99.0%      0.974
-  agentic without the context      393/400    98.25%     0.970*
-  raw_record                       394/400    98.5%      0.966*
+  agentic without the context      393/400    98.25%     0.962
+  raw_record                       394/400    98.5%      0.975
   agentic with section headings    394/400    98.5%      0.948
   agentic with guideline anchors   393/400    98.25%     0.943
   agentic 200/40/3, anchors        388/399    97.24%     0.925
@@ -464,12 +474,12 @@ not say which governs, which is what the clinician question below is asking.
   agentic 200/40/3, 27B agent      385/400    96.25%     0.913
   agentic 200/40/3, new queries    385/400    96.25%     0.911
   agentic, chunks 200/40, k 3      384/400    96.0%      0.904
-  full_text + 27B extractor        381/399    95.49%     0.816*
+  full_text + 27B extractor        381/399    95.49%     0.825
   rag 200/40/3, 27B, new queries   372/399    93.23%     0.789
   medgemma as evaluator            371/398    93.2%      0.837**
   rag 200/40/3, 27B extractor      371/400    92.75%     0.790
   qwen without the hints           367/399    91.98%     0.788
-  rag                              343/400    85.75%     0.607*
+  rag                              343/400    85.75%     0.636
   full_text                        338/399    84.7%      0.580
   rag, chunks 200/40, k 3          337/399    84.5%      0.583
   llama3:8b evaluator, gates on    316/400    79.0%      0.497
@@ -915,7 +925,9 @@ not say which governs, which is what the clinician question below is asking.
   SYN_23 and SYN_14**. SYN_12 and SYN_23 add `Contrast venography`, the
   intraprocedural venography having confirmed the thrombus, which is literally
   what A3_2 asks; SYN_14 reads the incidental staging CT as `CT or MR
-  venography`, the paper listing CT among the accepted techniques. In eight arms
+  venography`, writing that the paper accepts CT; the paper's Table 1 lists CT
+  venography, not CT in general, so the staging CT is not a venography in the
+  strict sense and the ground truth's `Other` is defensible. In eight arms
   nothing else changes. The shortened hint stays and the reference is 396.
   **First wrong sections above 0.99 with hints on**: SYN_14 A3_2 at 0.9914 in the
   reference and the headings arm, 2 of 2402 above the threshold across the ten
@@ -1042,8 +1054,10 @@ not say which governs, which is what the clinician question below is asking.
   - Is a CT done for another purpose that shows the thrombus, such as a
     staging total-body CT, A3.2's `CT or MR venography` or `Other`? SYN_14
     turns on it: the ground truth says `Other`, the model without the old
-    hint's example says `CT or MR venography`, and the paper lists CT among
-    the accepted techniques.
+    hint's example says `CT or MR venography`. The paper's Table 1 lists CT
+    venography, not CT in general, and the questionnaire does not say where
+    an imaging study that shows the thrombus while done for another purpose
+    belongs.
   - Does B2 option 4 apply when only calf pain is documented? With the section
     headings on, the model selects it on SYN_07, SYN_25 and SYN_27, reading
     "or pain" literally; the ground truth does not.
@@ -1166,9 +1180,6 @@ not say which governs, which is what the clinician question below is asking.
   back empty, and `_run_config`; those keep provenance and the reliability
   flags, and lose the ability to reconstruct why an answer is wrong. The reduced
   form has not been designed.
-- **`generate_synthetic_records.py` still carries the earlier A3_2 ground truth
-  of SYN_12 and SYN_23** (`Doppler/Duplex Ultrasound` alone) in its scenario
-  definitions; the `_ground_truth.json` files are the corrected ones.
 - **The other hints have not been checked against the questionnaire and the
   paper sentence by sentence.** A3_2's carried a ground-truth convention and two
   examples from corpus scenarios. A2, A3_1, B1_1, C, F and X
