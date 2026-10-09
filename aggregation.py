@@ -8,7 +8,7 @@ import config
 
 # Key under which the result file holds Agent 3's confidence values. The
 # leading underscore keeps it apart from the section keys, which are what
-# evaluate_predictions, compare_runs and export_redcap_csv read.
+# evaluate_predictions, compare_runs and export_redcap_csv read
 CONFIDENCE_KEY = "_confidence"
 
 

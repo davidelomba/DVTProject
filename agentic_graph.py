@@ -106,6 +106,7 @@ def _select_next(state: GraphState) -> GraphState:
 
 def _route_after_select(state: GraphState) -> str:
     """Routes to the next node after _select_next: another section or the end."""
+
     return "finalize" if state["done"] else "search_record"
 
 
@@ -127,6 +128,7 @@ def _make_search_node(llm, ehr_tool, ehr_vectorstore, section_queries: dict):
 
     def search_record(state: GraphState) -> GraphState:
         """Runs Agent 1 for the current section and records what it found."""
+
         section_key = state["current_section"]
         query = section_queries[section_key]
 
@@ -137,10 +139,12 @@ def _make_search_node(llm, ehr_tool, ehr_vectorstore, section_queries: dict):
                 llm, ehr_tool, ehr_vectorstore, query, max_iterations=config.AGENTIC_MAX_ITERATIONS
             )
         except Exception as exc:
+
             # A failed search must not crash the graph: the next node treats
             # a missing evidence value as "no evidence found".
             print(f"[{section_key}] Agent 1 FAILED: {exc}", flush=True)
             evidence = None
+
         # Timed even on failure, so a section that is slow because it kept
         # retrying is still visible in the log.
         elapsed = time.time() - t0
@@ -176,6 +180,7 @@ def _make_answer_node(llm, brighton_kb, section_queries: dict):
         A section that fails is left as None and its error recorded, so one bad
         section does not lose the work already done on the others.
         """
+
         section_key = state["current_section"]
         section_model = SECTION_MODELS[section_key]
         query = section_queries[section_key]
@@ -210,6 +215,7 @@ def _make_answer_node(llm, brighton_kb, section_queries: dict):
             elapsed = time.time() - t0
             print(f"[{section_key}] Agent 2 done in {elapsed:.1f}s", flush=True)
             section_log["agent2_seconds"] = round(elapsed, 1)
+
             # None unless the model's two answer lines disagreed; kept as a
             # review flag for this section (see agents.evaluate_section).
             section_log["answer_conflict"] = answer_conflict
@@ -223,6 +229,7 @@ def _make_answer_node(llm, brighton_kb, section_queries: dict):
             print(f"[{section_key}] Agent 2 FAILED -- leaving field as None: {exc}", flush=True)
             form_data[section_key.lower()] = None
             section_log["error"] = str(exc)
+
             # Kept so the answer that could not be parsed stays readable.
             section_log["reasoning"] = getattr(exc, "last_response", None)
 
@@ -242,6 +249,7 @@ def _finalize(state: GraphState) -> GraphState:
     them once after this graph returns, so every execution mode goes through
     the same code rather than a copy of it.
     """
+
     return state
 
 
@@ -263,6 +271,7 @@ def build_graph(search_llm, answer_llm, ehr_tool, ehr_vectorstore, brighton_kb,
     Returns:
         The compiled graph, ready to invoke with an initial GraphState.
     """
+
     graph = StateGraph(GraphState)
 
     graph.add_node("select_next", _select_next)
@@ -313,6 +322,7 @@ def run_agentic_graph_pipeline(
         DVT_CriteriaForm are applied here; pipeline.run_pipeline does both once
         for whichever mode produced the data.
     """
+    
     app = build_graph(search_llm, evaluator_llm, ehr_tool, ehr_vectorstore, brighton_kb,
                       section_queries)
 

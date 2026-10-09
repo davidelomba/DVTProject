@@ -37,7 +37,7 @@ from confidence import score_record
 # Each is used twice: as Agent 1's search brief in the record (the retrieval key
 # in rag) and as the key that retrieves the guideline context for Agent 2 in
 # every mode. Written in English; the multilingual embedding model matches them
-# against Italian records.
+# against Italian records
 SECTION_QUERIES = {
     "A1": "autopsy report, necropsy, post-mortem examination, autoptic findings",
     "A2": "thrombectomy or other surgical procedure that confirmed the presence "
@@ -61,7 +61,7 @@ SECTION_QUERIES = {
 
 # Key under which run_pipeline records the settings a run was produced with.
 # Chosen so it cannot collide with a section name (config.SECTION_ORDER holds
-# A1, A2, A3_1, ...), since the audit log is otherwise keyed by section.
+# A1, A2, A3_1, ...), since the audit log is otherwise keyed by section
 RUN_CONFIG_KEY = "_run_config"
 
 
@@ -149,7 +149,7 @@ def _run_config_snapshot() -> dict:
     """
 
     # Which model reads the record, by mode. "raw_record" loads none, since the
-    # record reaches Agent 2 unfiltered.
+    # record reaches Agent 2 unfiltered
     if config.EXTRACTOR_MODE == "agentic_graph":
         extractor_model = config.AGENTIC_LLM_MODEL_NAME
     elif config.EXTRACTOR_MODE == "raw_record":
@@ -165,8 +165,9 @@ def _run_config_snapshot() -> dict:
         "section_hints_disabled": sorted(config.SECTION_HINTS_DISABLED),
         "section_hints_fingerprint": _hint_fingerprint(),
         "section_queries_fingerprint": _query_fingerprint(),
+
         # Always applied, never switchable: recorded so a reader does not have
-        # to know that to interpret the run.
+        # to know that to interpret the run
         "cross_section_rules_applied": True,
         "confidence": {
             "enabled": config.CONFIDENCE_ENABLED,
@@ -178,8 +179,6 @@ def _run_config_snapshot() -> dict:
             "embeddings": config.EMBEDDING_MODEL_NAME,
             "embeddings_device": config.EMBEDDING_DEVICE,
         },
-        # Two runs of the same records on different machines have been observed
-        # to differ, so a result is only comparable to another produced here.
         "environment": {
             "hostname": socket.gethostname(),
             "ollama_version": _ollama_version(),
@@ -215,25 +214,23 @@ def run_pipeline(record_id: str, patient_ehr_path: str, brighton_pdf_path: str):
         diagnosable without re-running. It also carries a RUN_CONFIG_KEY entry
         describing the settings the run was produced with.
     """
-    # Built once and reused across every section, not per loop iteration.
-    # Each role reads its own constant, so any one can be swapped from
-    # config.py alone. Agent 1's model is built in the branch that uses it, so
-    # a mode that never queries it does not load it into VRAM.
+
+    # Built once and reused across every section
     embeddings = get_embeddings()
     evaluator_llm = build_llm(config.EVALUATOR_LLM_MODEL_NAME)
 
     # Load both source texts once: the static Brighton reference paper and
-    # this run's patient record.
+    # this run's patient record
     brighton_text = load_brighton_pdf_text(brighton_pdf_path)
     patient_ehr_text = load_ehr_text(patient_ehr_path)
 
-    # Brighton KB is always needed (every mode consults it for synonyms/context).
+    # Brighton KB is always needed (every mode consults it for synonyms/context)
     brighton_kb = build_brighton_kb(brighton_text, embeddings=embeddings)
 
     # "rag" and "agentic_graph" both need the EHR chunked/embedded into a
     # vector store; "full_text" passes the raw record directly per section.
     # Only "agentic_graph" additionally needs the retriever wrapped as a
-    # tool the LLM can call autonomously.
+    # tool the LLM can call autonomously
     ehr_kb = None
     ehr_tool = None
     if config.EXTRACTOR_MODE in ("rag", "agentic_graph"):
@@ -242,48 +239,53 @@ def run_pipeline(record_id: str, patient_ehr_path: str, brighton_pdf_path: str):
             ehr_tool = make_ehr_retriever_tool(ehr_kb)
 
     if config.EXTRACTOR_MODE == "agentic_graph":
+
         # Separate tool-calling-capable model, used only for Agent 1's
-        # autonomous search step (see config.AGENTIC_LLM_MODEL_NAME).
+        # autonomous search step (see config.AGENTIC_LLM_MODEL_NAME)
         search_llm = build_agentic_llm()
 
         # Delegates the whole per-section loop to the LangGraph state
         # machine; returns the same (form_data, audit_log) shape as the
         # plain loop below, just not yet passed through the cross-section
-        # rules (applied once, uniformly, further down).
+        # rules (applied once, uniformly, further down)
         form_data, audit_log = run_agentic_graph_pipeline(
             record_id, evaluator_llm=evaluator_llm, search_llm=search_llm,
             ehr_tool=ehr_tool, ehr_vectorstore=ehr_kb, brighton_kb=brighton_kb,
             section_queries=SECTION_QUERIES,
         )
     else:
+
         # Built only by the modes that call Agent 1, so "raw_record" keeps the
         # extractor out of VRAM.
         llm = build_llm() if config.EXTRACTOR_MODE in ("rag", "full_text") else None
 
         form_data = {"record_id": record_id}
         audit_log = {}
+
         # Section keys map to DVT_CriteriaForm fields via lower-casing
-        # (e.g. "A3_1" -> "a3_1").
+        # (e.g. "A3_1" -> "a3_1")
 
         # Sequentially fill in every section of the questionnaire, in the
-        # fixed order defined by config.SECTION_ORDER.
+        # fixed order defined by config.SECTION_ORDER
         for section_key in config.SECTION_ORDER:
             section_model = SECTION_MODELS[section_key]
             query = SECTION_QUERIES[section_key]
 
             print(f"\n=== Section {section_key} ===", flush=True)
             section_log = {"query": query}
-            # Agent 2's token counts, one entry per attempt.
+
+            # Agent 2's token counts, one entry per attempt
             token_counts = []
 
             try:
+
                 # Agent 1: extraction mode per config.EXTRACTOR_MODE
                 print(f"[{section_key}] Agent 1 (extractor, mode={config.EXTRACTOR_MODE}) searching the clinical record...", flush=True)
                 t0 = time.time()
 
                 # "agentic_graph" is dispatched separately, above, so only the
                 # other three reach this loop. "raw_record" passes the record
-                # unchanged, so every section receives the same text.
+                # unchanged, so every section receives the same text
                 if config.EXTRACTOR_MODE == "rag":
                     evidence = extract_evidence(llm, ehr_kb, query)
                 elif config.EXTRACTOR_MODE == "full_text":
@@ -311,7 +313,7 @@ def run_pipeline(record_id: str, patient_ehr_path: str, brighton_pdf_path: str):
                 section_log["agent2_seconds"] = round(elapsed, 1)
 
                 # None unless the model's two answer lines disagreed; kept as a
-                # review flag for this section (see agents.evaluate_section).
+                # review flag for this section (see agents.evaluate_section)
                 section_log["answer_conflict"] = answer_conflict
 
                 section_log["reasoning"] = reasoning_text
@@ -322,29 +324,29 @@ def run_pipeline(record_id: str, patient_ehr_path: str, brighton_pdf_path: str):
 
             except Exception as exc:
 
-                # One section failing shouldn't lose work already done on others.
+                # One section failing shouldn't lose work already done on others
                 print(f"[{section_key}] FAILED -> leaving this field as None. Traceback:", flush=True)
                 traceback.print_exc()
                 form_data[section_key.lower()] = None
                 section_log["error"] = str(exc)
-                # Kept so the answer that could not be parsed stays readable.
+                # Kept so the answer that could not be parsed stays readable
                 section_log["reasoning"] = getattr(exc, "last_response", None)
 
             # Written on failure too, since a truncated prompt is one way a
-            # section ends up with no parseable answer.
+            # section ends up with no parseable answer
             section_log["agent2_tokens"] = token_counts
             audit_log[section_key] = section_log
 
     # Cross-section dependency rules (see config.CROSS_SECTION_RULES), applied
     # once here regardless of which EXTRACTOR_MODE produced form_data;
-    # shared with agentic_graph.py via criteria_rules.py.
+    # shared with agentic_graph.py via criteria_rules.py
     form_data = apply_cross_section_rules(form_data, audit_log)
 
-    # Agent 3, on the final answers, so after the rules above.
+    # Agent 3, on the final answers, so after the rules above
     if config.CONFIDENCE_ENABLED:
         score_record(form_data, audit_log)
 
-    # Added last, so it cannot be mistaken for a section by the loops above.
+    # Added last, so it cannot be mistaken for a section by the loops above
     audit_log[RUN_CONFIG_KEY] = _run_config_snapshot()
 
     form = DVT_CriteriaForm(**form_data)
