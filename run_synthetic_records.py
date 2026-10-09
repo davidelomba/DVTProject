@@ -8,8 +8,8 @@ newest file per record, so two arms sharing a directory would be scored and
 exported as one.
 
 record_id is the file name without .txt, which is also the record_id inside
-the matching *_ground_truth.json -- that pairing is what lets the evaluation
-match predictions to reference answers.
+the matching *_ground_truth.json (that pairing is what lets the evaluation
+match predictions to reference answers).
 
 Uses whatever config.EXTRACTOR_MODE is set to. Filenames are timestamped, so
 runs of different modes accumulate in ./output instead of overwriting.
@@ -17,7 +17,7 @@ runs of different modes accumulate in ./output instead of overwriting.
 A record that fails is reported and the batch continues.
 
 Note: run_pipeline() is called once per record, so its setup repeats every
-time -- the Brighton PDF is re-parsed and the EHR vector store rebuilt (the
+time; the Brighton PDF is re-parsed and the EHR vector store rebuilt (the
 Brighton store is reloaded from disk, not re-embedded).
 
 Usage:
@@ -66,7 +66,7 @@ def run_one(record_id: str, record_path: Path, output_dir: Path) -> Path:
     summary = form_to_json_summary(form, audit_log)
 
     # Same shared-timestamp-per-run convention as main.py, so a JSON and its
-    # audit log always pair up and re-running never overwrites a prior run.
+    # audit log always pair up and re-running never overwrites a prior run
     timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
     output_path = output_dir / f"{record_id}_{timestamp}.json"
     audit_path = output_dir / f"{record_id}_{timestamp}_audit_log.json"
@@ -110,8 +110,9 @@ def main():
     if args.only:
         total = len(record_paths)
         record_paths = [p for p in record_paths if any(frag in p.stem for frag in args.only)]
+
         # Exit instead of running nothing: a mistyped id would otherwise look
-        # like a successful run that scored zero records.
+        # like a successful run that scored zero records
         if not record_paths:
             print(f"No record id matches {args.only}.", flush=True)
             return
@@ -130,7 +131,7 @@ def main():
         record_id = record_path.stem
 
         # Non-blocking sanity check: flags a stray .txt with no matching
-        # ground truth, which would silently go unscored later.
+        # ground truth, which would silently go unscored later
         gt_path = RECORDS_DIR / f"{record_id}_ground_truth.json"
         if not gt_path.exists():
             print(f"[{i}/{len(record_paths)}] {record_id}: [WARNING] no matching "
@@ -147,7 +148,7 @@ def main():
             
             # Remaining time estimated from the mean so far rather than the
             # last record: per-record duration varies with how many tool calls
-            # the agentic extractor decides to make.
+            # the agentic extractor decides to make
             remaining = (len(record_paths) - i) * (sum(durations) / len(durations))
             print(f"  -> saved {output_path.name} in {elapsed / 60:.1f} min "
                   f"(ETA {remaining / 60:.0f} min for the remaining "

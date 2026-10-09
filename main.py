@@ -17,14 +17,14 @@ from pipeline import run_pipeline
 from aggregation import form_to_json_summary
 
 # Anchored to this file's location, so the paths below do not depend on the
-# directory the script is launched from.
+# directory the script is launched from
 PROJECT_ROOT = Path(__file__).resolve().parent
 
 
 def main():
     """Runs the pipeline on one record and writes its output and audit log."""
 
-    # Replace these with the actual locations of your files.
+    # Replace these with the actual locations of your files
     record_id = "PATIENT_001"
     patient_ehr_path = str(PROJECT_ROOT / "data" / "patient_001.txt")                                   # Plain .txt clinical record
     brighton_pdf_path = str(PROJECT_ROOT / "data" / "reference" / "1-s2.0-S0264410X22010854-main.pdf")  # Brighton guidelines PDF
@@ -40,7 +40,7 @@ def main():
 
     # Timestamp shared by both files of this run, so a JSON and its matching
     # audit log can always be paired up and re-running never overwrites a
-    # previous run's output.
+    # previous run's output
     timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
 
     output_path = os.path.join(output_dir, f"{record_id}_{timestamp}.json")
@@ -51,7 +51,7 @@ def main():
     # every section (including failed ones). Kept as a separate file (not merged
     # into the clean output JSON) so it doesn't need to be shared downstream,
     # but remains available whenever a specific answer needs manual verification
-    # without re-running the pipeline.
+    # without re-running the pipeline
     audit_path = os.path.join(output_dir, f"{record_id}_{timestamp}_audit_log.json")
     with open(audit_path, "w", encoding="utf-8") as f:
         json.dump(audit_log, f, indent=2, ensure_ascii=False)
