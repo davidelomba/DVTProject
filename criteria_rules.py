@@ -3,7 +3,7 @@ Cross-section dependency rules, applied on top of Agent 2's answers once every
 section has been filled in.
 
 No function here calls a model. A rule replaces a section's answer with a value
-derived from another section's answer, and edits form_data and audit_log in
+derived from another section's answer and edits form_data and audit_log in
 place. Each override carries a "[SYSTEM OVERRIDE]" note in the reasoning text,
 so a forced answer is never indistinguishable from one the model produced on
 its own.

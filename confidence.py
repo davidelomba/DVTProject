@@ -56,6 +56,7 @@ def _chat(user_prompt: str, num_predict: int) -> dict:
 
     Same model and generation settings as Agent 2, apart from the token cap.
     """
+
     options = {
         "temperature": config.LLM_TEMPERATURE,
         "num_predict": num_predict,
@@ -105,6 +106,7 @@ def _build_prompt(evidence: str, context: str, hint: str, options: list, multi: 
 
 def _mass(token: dict, accept) -> float:
     """Probability of the alternatives at one position that accept() keeps."""
+
     alternatives = token.get("top_logprobs") or [token]
     return sum(math.exp(a["logprob"]) for a in alternatives if accept(a["token"]))
 
@@ -114,6 +116,7 @@ def _number_distribution(token: dict, n: int) -> dict:
 
     Empty when no valid number is among the alternatives.
     """
+
     masses = {k: _mass(token, lambda t, k=k: t.strip() == str(k)) for k in range(1, n + 1)}
     total = sum(masses.values())
     return {k: m / total for k, m in masses.items()} if total else {}
@@ -124,12 +127,13 @@ def score_single(logprobs: list, n: int, chosen: int):
 
     Read at the first generated token that is a valid option number. When the
     model wrote something before it, the probability is conditioned on that
-    text, and the method says so.
+    text and the method says so.
 
     Returns:
         (confidence, method), with confidence None when no valid number was
         generated.
     """
+
     after_text = False
     for token in logprobs:
         word = token["token"].strip()
@@ -151,17 +155,23 @@ def score_multi(logprobs: list, n: int, chosen: set):
         (confidence, method), with confidence None unless all n options got a
         YES or NO.
     """
+
+    # text: what the model has written so far; p_yes: option_number --> P(YES)
     text, p_yes = "", {}
     for token in logprobs:
         word = token["token"].strip().upper()
         if word.startswith("YES") or word.startswith("NO"):
             numbers = re.findall(r"(\d+)\s*:\s*$", text)
             if numbers and 1 <= int(numbers[-1]) <= n:
+
+                # P(YES) normalised over YES and NO alone, at this position
                 yes = _mass(token, lambda t: t.strip().upper().startswith("YES"))
                 no = _mass(token, lambda t: t.strip().upper().startswith("NO"))
                 if yes + no > 0:
                     p_yes[int(numbers[-1])] = yes / (yes + no)
         text += token["token"]
+
+    # Every option needs its own line or the set's probability is undefined
     if len(p_yes) != n:
         return None, "incomplete_lines"
     confidence = 1.0
@@ -189,6 +199,7 @@ def score_details(logprobs: list, options: list, chosen: int):
         (confidence, method), with confidence None when the DETAILS_PRESENT
         token or the number after it is missing.
     """
+
     if "Yes" not in options or "No" not in options:
         return None, "no_details"
     number = {"Yes": options.index("Yes") + 1, "No": options.index("No") + 1}
@@ -241,12 +252,14 @@ def score_section(section_key: str, answer, evidence: str, context: str) -> dict
         A dict with "confidence" (0 to 1, or None), "confidence_method" and
         "agent3_seconds".
     """
+
     _, options, multi, _ = _get_field_info(SECTION_MODELS[section_key])
     prompt = _build_prompt(evidence, context, config.section_hint(section_key), options, multi)
 
     started = time.time()
+
     # A single-choice answer is one token, but F's hint makes the model write a
-    # DETAILS_PRESENT line first, which takes several.
+    # DETAILS_PRESENT line first, which takes several
     reply = _chat(prompt, 8 * len(options) + 8 if multi else 32)
     seconds = round(time.time() - started, 1)
     logprobs = reply.get("logprobs") or []
@@ -288,6 +301,7 @@ def score_record(form_data: dict, audit_log: dict) -> None:
             returned by the cross-section rules.
         audit_log: section key -> that section's log entry, updated in place.
     """
+
     inherited = []
     for section_key in config.SECTION_ORDER:
         entry = audit_log.get(section_key)
@@ -303,6 +317,11 @@ def score_record(form_data: dict, audit_log: dict) -> None:
             inherited.append(section_key)
             continue
         else:
+
+            # The section's answer, read from its single field: a string for a
+            # single-choice section, a list of strings for a multiple-choice one.
+            # result is a Pydantic instance; model_dump() transform it in 
+            # a dict()
             values = result.model_dump() if hasattr(result, "model_dump") else dict(result)
             answer = next(iter(values.values()))
             try:
