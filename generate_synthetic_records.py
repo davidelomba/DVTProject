@@ -3,11 +3,13 @@ Defines the synthetic corpus: one scenario per record, holding its clinical
 facts and its correct answers, and derives from it the ground-truth JSON (same
 shape as models.DVT_CriteriaForm) that the evaluation scores against.
 
-GROUND TRUTH BY CONSTRUCTION: every scenario below carries both its clinical
-facts and its correct answer for all 10 sections, written by hand with
-models.py's exact Literal strings. No model ever guesses the reference, which
-is what makes it usable as one. A plain run rewrites every ground-truth JSON
-from SCENARIOS; it never writes a record.
+GROUND TRUTH BY CONSTRUCTION: every scenario carries both its clinical facts
+and its correct answer for all 10 sections, written with models.py's exact
+Literal strings before the record text exists. The scenarios were authored by
+Claude in interactive sessions; the answers are part of the scenario, never
+inferred from the record, and no pipeline model takes part. They have not been
+reviewed by a clinician. A plain run rewrites every ground-truth JSON from
+SCENARIOS; it never writes a record.
 
 RECORDS: the records in data/synthetic_records/ are written from each
 scenario's facts outside this script and checked against those facts before
@@ -1073,8 +1075,8 @@ def build_ground_truth(record_id: str, scenario: dict) -> dict:
         scenario: an entry of SCENARIOS.
 
     Returns:
-        The scenario's hand-authored answers, with record_id added. No model is
-        involved at any point, which is what makes this usable as a reference.
+        The scenario's answers, with record_id added. They are copied from
+        SCENARIOS, so no model is called here.
     """
     gt = {"record_id": record_id}
     gt.update(scenario["ground_truth"])
