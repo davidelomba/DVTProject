@@ -10,7 +10,6 @@ as a conflict.
 
 import difflib
 import re
-from typing import get_args, get_origin
 from langchain_classic.agents import (
     AgentExecutor,
     create_tool_calling_agent,
@@ -18,6 +17,7 @@ from langchain_classic.agents import (
 from langchain_core.prompts import ChatPromptTemplate
 from langchain_ollama import ChatOllama
 import config
+from schema_fields import field_info
 
 # Constant string the extractor model is asked to output when it finds no relevant evidence
 NO_EVIDENCE = "NO RELEVANT EVIDENCE FOUND."
@@ -279,36 +279,6 @@ if the evidence EXPLICITLY NEGATES the procedure (e.g., states no surgery
 was performed), or does not mention that specific method at all, the correct 
 answer is the "not done / unknown" option for that method, even if DVT was
 confirmed by other means."""
-
-
-def _get_field_info(section_model):
-    """Introspects a section's schema to find its field, options and heading.
-
-    Args:
-        section_model: a Pydantic class from models.SECTION_MODELS.
-
-    Returns:
-        (field_name, valid_options, is_multi_select, description). Multi-select
-        sections are typed List[Literal[...]], single-choice ones Literal[...]
-        directly. description is the field's own description in models.py, the
-        section heading as the printed questionnaire words it, or "" when the
-        field carries none.
-    """
-    # Every section schema has exactly one field, read generically rather than
-    # hardcoding "answer" vs "studies" vs "symptoms".
-    field_name = next(iter(section_model.model_fields.keys()))
-    field = section_model.model_fields[field_name]
-    annotation = field.annotation
-    description = field.description or ""
-
-    if get_origin(annotation) is list:
-        inner = get_args(annotation)[0]
-        options = list(get_args(inner))
-        return field_name, options, True, description
-
-    # Single-choice fields are typed Literal[...] directly.
-    options = list(get_args(annotation))
-    return field_name, options, False, description
 
 
 def _build_reasoning_prompt(
@@ -574,7 +544,7 @@ def evaluate_section(
         RuntimeError: if no attempt produced a parseable, valid answer.
     """
     # Introspection and prompt built once, outside the retry loop.
-    field_name, options, multi_select, description = _get_field_info(section_model)
+    field_name, options, multi_select, description = field_info(section_model)
     section_description = description if config.SECTION_DESCRIPTIONS_ENABLED else ""
     prompt = _build_reasoning_prompt(
         evidence_text, brighton_context, options, multi_select, extra_instructions,

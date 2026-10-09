@@ -52,7 +52,6 @@ import sys
 from collections import Counter
 from datetime import datetime
 from pathlib import Path
-from typing import get_args, get_origin
 
 from sklearn.metrics import (
     cohen_kappa_score,
@@ -61,27 +60,12 @@ from sklearn.metrics import (
 )
 
 from models import SECTION_MODELS
+from schema_fields import field_info
 
 DEFAULT_GROUND_TRUTH_DIR = Path(__file__).parent / "data" / "synthetic_records"
 DEFAULT_PREDICTIONS_DIR = Path(__file__).parent / "output"
 # Where the saved reports go, shared with compare_runs.py.
 REPORTS_DIR = Path(__file__).parent / "reports"
-
-
-def _field_info(section_name: str):
-    """(field_name, valid_options, is_multi_select) for a section.
-
-    Re-implemented here rather than imported from agents.py, which would pull
-    in langchain; it only needs to introspect models.py's Pydantic schema.
-    """
-
-    model = SECTION_MODELS[section_name]
-    field_name = next(iter(model.model_fields.keys()))
-    annotation = model.model_fields[field_name].annotation
-    if get_origin(annotation) is list:
-        inner = get_args(annotation)[0]
-        return field_name, list(get_args(inner)), True
-    return field_name, list(get_args(annotation)), False
 
 
 def load_ground_truth(directory: Path) -> dict:
@@ -248,7 +232,7 @@ def evaluate(ground_truth: dict, predictions: dict) -> dict:
     overall = {"compared": 0, "exact_matches": 0, "tp": 0, "tn": 0, "fp": 0, "fn": 0}
 
     for section_name in section_names:
-        _, options, _ = _field_info(section_name)
+        _, options, _, _ = field_info(SECTION_MODELS[section_name])
         pairs = collected[section_name]
         sec = {
             "compared": len(pairs),

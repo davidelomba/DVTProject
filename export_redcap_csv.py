@@ -32,9 +32,9 @@ import re
 import sys
 from collections import defaultdict
 from pathlib import Path
-from typing import get_args, get_origin
 
 from models import SECTION_MODELS
+from schema_fields import field_info
 
 # Output naming convention: "<record_id>_<YYYYMMDD>_
 # <HHMMSS>.json", with the timestamp anchored to the END because record_id
@@ -105,14 +105,7 @@ def _section_options(section_key: str) -> list[str]:
         The option strings, in schema order.
     """
 
-    field = next(iter(SECTION_MODELS[section_key].model_fields.values()))
-    annotation = field.annotation
-
-    # Multi-select sections are list[Literal[...]], single-choice ones are a
-    # bare Literal[...]; unwrap the list before reading the literal's values.
-    if get_origin(annotation) is list:
-        annotation = get_args(annotation)[0]
-    return [value for value in get_args(annotation) if isinstance(value, str)]
+    return field_info(SECTION_MODELS[section_key])[1]
 
 
 def _option_code(section_key: str, answer: str) -> str:

@@ -33,8 +33,8 @@ import time
 import urllib.request
 
 import config
-from agents import _get_field_info
 from models import SECTION_MODELS
+from schema_fields import field_info
 
 
 OLLAMA_URL = os.environ.get("OLLAMA_HOST", "http://localhost:11434")
@@ -253,7 +253,7 @@ def score_section(section_key: str, answer, evidence: str, context: str) -> dict
         "agent3_seconds".
     """
 
-    _, options, multi, _ = _get_field_info(SECTION_MODELS[section_key])
+    _, options, multi, _ = field_info(SECTION_MODELS[section_key])
     prompt = _build_prompt(evidence, context, config.section_hint(section_key), options, multi)
 
     started = time.time()

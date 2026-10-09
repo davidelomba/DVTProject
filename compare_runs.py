@@ -41,7 +41,6 @@ import sys
 from collections import defaultdict
 from datetime import datetime
 from pathlib import Path
-from typing import get_args, get_origin
 
 from models import SECTION_MODELS
 

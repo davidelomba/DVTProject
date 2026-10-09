@@ -38,8 +38,10 @@ When something is unverified, say so.
   `agentic_graph` (reference mode, a LangGraph state machine) or `raw_record`
   (no Agent 1 at all).
 - `models.py` holds the Pydantic schema and is the single source of truth for
-  section options and their order. Other modules introspect it rather than
-  repeating the options.
+  section options and their order. Other modules read it through
+  `schema_fields.field_info` rather than repeating the options; that module
+  imports only the standard library, so the evaluation tools run without
+  langchain.
 - `criteria_rules.py` holds the cross-section rules, the only deterministic
   post-processing. The per-section gates (keyword, details, absent_pulses) were
   removed on 2026-09-25: under qwen3.6:27b none of them ever made a correct

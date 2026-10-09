@@ -14,6 +14,7 @@ dice **cosa fa** il codice, quello dice **cosa è stato misurato**.
 |---|---|
 | `config.py` | costanti, prompt hint, regole cross-section |
 | `models.py` | schema Pydantic delle 10 sezioni, unica fonte di verità sulle opzioni |
+| `schema_fields.py` | lettura di campo, opzioni e titolo di una sezione dallo schema |
 | `rag_setup.py` | embedding, vector store, loader, tool di ricerca |
 | `agents.py` | i due agenti e il parsing delle risposte |
 | `criteria_rules.py` | regole cross-section |
@@ -218,6 +219,16 @@ compilare resta `None` invece di bloccare l'intero form.
 
 `SECTION_MODELS` mappa la chiave testuale della sezione alla classe Pydantic.
 
+**`schema_fields.py`** contiene l'unica funzione che legge gli schemi,
+**`field_info(section_model)`**, che restituisce `(field_name, options,
+is_multi_select, description)`: il nome dell'unico campo, le opzioni nell'ordine
+dello schema, se la sezione è a scelta multipla e il titolo della sezione. La
+usano `agents.py`, `confidence.py`, `evaluate_predictions.py`,
+`export_redcap_csv.py` ed `export_prompts.py`. Importa solo la libreria
+standard, così gli strumenti di valutazione non dipendono dallo stack della
+pipeline, e riceve la classe come argomento, così funziona anche con lo schema
+della miocardite installato come `models`.
+
 ---
 
 ## 3. `rag_setup.py`
@@ -340,10 +351,9 @@ ciò che è esplicitamente negato, e non assumere assente ciò che semplicemente
 vieta di inferire che quel metodo sia stato eseguito solo perché la DVT è stata
 confermata da un metodo diverso.
 
-**`_get_field_info(section_model)`** introspeziona lo schema e restituisce
-`(field_name, options, is_multi_select, description)`, dove `description` è il
-titolo della sezione. È ciò che rende `evaluate_section` generica per tutte e
-dieci le sezioni senza un ramo per ciascuna; la usa anche `confidence.py`.
+`evaluate_section` legge campo, opzioni, tipo e titolo della sezione con
+`schema_fields.field_info`: è ciò che la rende generica per tutte e dieci le
+sezioni senza un ramo per ciascuna.
 
 **`_build_reasoning_prompt(...)`** compone il prompt. Le opzioni sono numerate e
 il modello risponde **due volte**: il testo dell'opzione su `FINAL_OPTION` e il
@@ -797,8 +807,8 @@ tenere presente leggendo i numeri: un modello che fallisce molte sezioni ottiene
 un punteggio ottimisticamente alto.
 
 Dipende da scikit-learn e da `models.py`, ma non da langchain o Ollama: gira
-senza lo stack della pipeline installato. Per questo **`_field_info(section)`**
-reintroduce qui l'introspezione dello schema invece di importarla da `agents.py`.
+senza lo stack della pipeline installato: le opzioni delle sezioni vengono da
+`schema_fields.field_info`, che importa solo la libreria standard.
 
 Le funzioni:
 
@@ -901,7 +911,8 @@ Ollama.
 
 Le funzioni:
 
-- **`_section_options(section_key)`** legge le opzioni nell'ordine dello schema, e
+- **`_section_options(section_key)`** restituisce le opzioni nell'ordine dello
+  schema, lette con `schema_fields.field_info`, e
   **`_option_code(section_key, answer)`** restituisce la posizione 1-based di
   un'opzione come codice;
 - **`build_column_order(skip_empty_fields)`** produce le colonne nell'ordine
