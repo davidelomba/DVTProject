@@ -11,10 +11,6 @@ JSON rather than by filename, so timestamped outputs need no renaming; when a
 record has several files, the most recent one wins.
 
 METRICS, per section and overall:
-  - Exact-match accuracy: the predicted answer equals the reference, with a
-    95% Wilson confidence interval. On a corpus this size the interval is
-    wide, and it says how much of a difference between two runs the sample
-    can carry.
   - Majority baseline: the accuracy of always answering the section's most
     frequent reference answer, and the gain over it. Sections where one answer
     dominates score high on accuracy alone.
@@ -25,11 +21,6 @@ METRICS, per section and overall:
     section: every option of every section is scored as selected or not, in
     the prediction and in the reference. Without this, a multi-select section
     answered half right would count as simply wrong.
-  - Confusion matrix, for single-choice sections only: which reference option
-    was answered with which predicted option. It shows WHICH options get
-    mistaken for each other, something the aggregate numbers hide. Not produced
-    for multi-select sections, where a prediction is a set rather than a class
-    and the matrix is not defined.
 
 Precision, recall and F1 deliberately ignore true negatives (the options
 correctly left unselected). They are the majority of every count, since most
@@ -44,7 +35,7 @@ A section the pipeline left as None or a record with no output at all, is
 reported as "missing" and left out of the metrics instead of being counted as
 an error.
 
-Needs scikit-learn (metrics and confusion matrix) and models.py, but not
+Needs scikit-learn (metrics) and models.py, but not
 langchain or Ollama: it runs without the pipeline's own stack installed.
 
 Usage:
@@ -65,7 +56,6 @@ from typing import get_args, get_origin
 
 from sklearn.metrics import (
     cohen_kappa_score,
-    confusion_matrix,
     multilabel_confusion_matrix,
     precision_recall_fscore_support,
 )
@@ -157,31 +147,6 @@ def _binary_rows(pairs, options):
     return y_true, y_pred
 
 
-def _wilson_interval(successes: int, total: int, z: float = 1.96) -> tuple:
-    """A 95% confidence interval for an observed proportion.
-
-    Wilson rather than the textbook normal interval: on a sample this size the
-    normal one runs past 1.0 on the sections scoring near-perfect, and collapses
-    to zero width at exactly 1.0.
-
-    Args:
-        successes: how many records were answered correctly.
-        total: how many were compared.
-        z: normal quantile; 1.96 gives 95%.
-
-    Returns:
-        (low, high), or (None, None) when nothing was compared.
-    """
-
-    if total == 0:
-        return None, None
-    p = successes / total
-    denominator = 1 + z * z / total
-    centre = (p + z * z / (2 * total)) / denominator
-    spread = z * math.sqrt(p * (1 - p) / total + z * z / (4 * total * total)) / denominator
-    return centre - spread, centre + spread
-
-
 def _majority_baseline(pairs) -> float:
     """The accuracy of always answering the most frequent reference answer.
 
@@ -203,18 +168,15 @@ def _majority_baseline(pairs) -> float:
     return counts.most_common(1)[0][1] / len(pairs)
 
 
-def _score_section(pairs, options, is_multi_select) -> dict:
+def _score_section(pairs, options) -> dict:
     """Computes every metric for one section from its collected answer pairs.
 
     Args:
         pairs: list of (gt_set, pred_set), one per compared record.
         options: the section's options, in schema order.
-        is_multi_select: whether several options may apply, which decides
-            whether a confusion matrix is meaningful.
 
     Returns:
-        A dict of counts and metrics, with "confusion_matrix" present only for
-        single-choice sections.
+        A dict of counts and metrics.
     """
 
     y_true, y_pred = _binary_rows(pairs, options)
@@ -240,13 +202,6 @@ def _score_section(pairs, options, is_multi_select) -> dict:
     pred_labels = [repr(sorted(pred)) for _, pred in pairs]
     kappa = cohen_kappa_score(gt_labels, pred_labels)
     scored["cohens_kappa"] = None if math.isnan(kappa) else float(kappa)
-
-    if not is_multi_select:
-        # Every answer is exactly one option, so it can be treated as a class
-        labels = list(range(len(options)))
-        true_idx = [options.index(next(iter(gt))) for gt, _ in pairs]
-        pred_idx = [options.index(next(iter(pred))) for _, pred in pairs]
-        scored["confusion_matrix"] = confusion_matrix(true_idx, pred_idx, labels=labels).tolist()
 
     return scored
 
@@ -293,7 +248,7 @@ def evaluate(ground_truth: dict, predictions: dict) -> dict:
     overall = {"compared": 0, "exact_matches": 0, "tp": 0, "tn": 0, "fp": 0, "fn": 0}
 
     for section_name in section_names:
-        _, options, is_multi_select = _field_info(section_name)
+        _, options, _ = _field_info(section_name)
         pairs = collected[section_name]
         sec = {
             "compared": len(pairs),
@@ -303,11 +258,9 @@ def evaluate(ground_truth: dict, predictions: dict) -> dict:
         }
         sec["accuracy"] = sec["exact_matches"] / len(pairs) if pairs else None
         sec["majority_baseline"] = _majority_baseline(pairs)
-        low, high = _wilson_interval(sec["exact_matches"], len(pairs))
-        sec["accuracy_ci95"] = [low, high]
 
         if pairs:
-            sec.update(_score_section(pairs, options, is_multi_select))
+            sec.update(_score_section(pairs, options))
         else:
             sec.update({"tp": 0, "tn": 0, "fp": 0, "fn": 0,
                         "precision": None, "recall": None, "f1": None,
@@ -318,8 +271,6 @@ def evaluate(ground_truth: dict, predictions: dict) -> dict:
             overall[key] += sec[key]
 
     overall["accuracy"] = overall["exact_matches"] / overall["compared"] if overall["compared"] else None
-    low, high = _wilson_interval(overall["exact_matches"], overall["compared"])
-    overall["accuracy_ci95"] = [low, high]
 
     # Recomputed from the pooled totals rather than averaged across sections,
     # so a section with more options does not weigh the same as a smaller one.
@@ -360,15 +311,6 @@ def _num(value):
     return f"{value:.3f}" if value is not None else "n/a"
 
 
-def _ci(bounds):
-    """A confidence interval as [low, high] percentages."""
-
-    low, high = bounds
-    if low is None:
-        return "n/a"
-    return f"[{low*100:.0f}, {high*100:.0f}]"
-
-
 def _gain(section):
     """Accuracy minus the majority baseline, signed."""
 
@@ -378,13 +320,11 @@ def _gain(section):
     return f"{(accuracy - baseline)*100:+.1f}"
 
 
-def print_report(report: dict, show_matrices: bool = True):
+def print_report(report: dict):
     """Prints the report from evaluate() as a per-section table.
 
     Args:
         report: as returned by evaluate().
-        show_matrices: also print one confusion matrix per single-choice
-            section, under the table.
     """
 
     print(f"\nRecords compared: {report['records_compared']}")
@@ -392,23 +332,23 @@ def print_report(report: dict, show_matrices: bool = True):
     if missing:
         print(f"Records with NO prediction found ({len(missing)}): {', '.join(missing)}")
 
-    header = (f"{'Section':<8} {'Acc':>7} {'CI95':>14} {'Base':>7} {'Gain':>7} {'Kappa':>7} "
+    header = (f"{'Section':<8} {'Acc':>7} {'Base':>7} {'Gain':>7} {'Kappa':>7} "
               f"{'TP':>5} {'TN':>5} {'FP':>5} {'FN':>5} {'Prec':>7} {'Rec':>7} {'F1':>7}")
     print("\n" + header)
     print("-" * len(header))
     for name, sec in report["sections"].items():
-        print(f"{name:<8} {_pct(sec['accuracy']):>7} {_ci(sec['accuracy_ci95']):>14} "
+        print(f"{name:<8} {_pct(sec['accuracy']):>7} "
               f"{_pct(sec['majority_baseline']):>7} {_gain(sec):>7} {_num(sec['cohens_kappa']):>7} "
               f"{sec['tp']:>5} {sec['tn']:>5} {sec['fp']:>5} {sec['fn']:>5} "
               f"{_pct(sec['precision']):>7} {_pct(sec['recall']):>7} {_pct(sec['f1']):>7}")
 
     o = report["overall"]
     print("-" * len(header))
-    print(f"{'MICRO':<8} {_pct(o['accuracy']):>7} {_ci(o['accuracy_ci95']):>14} "
+    print(f"{'MICRO':<8} {_pct(o['accuracy']):>7} "
           f"{'':>7} {'':>7} {'':>7} "
           f"{o['tp']:>5} {o['tn']:>5} {o['fp']:>5} {o['fn']:>5} "
           f"{_pct(o['precision']):>7} {_pct(o['recall']):>7} {_pct(o['f1']):>7}")
-    print(f"{'MACRO':<8} {_pct(o['macro_accuracy']):>7} {'':>14} "
+    print(f"{'MACRO':<8} {_pct(o['macro_accuracy']):>7} "
           f"{_pct(o['macro_majority_baseline']):>7} "
           f"{_pct(o['macro_accuracy'] - o['macro_majority_baseline']):>7} "
           f"{_num(o['macro_kappa']):>7} {'':>5} {'':>5} {'':>5} {'':>5} "
@@ -417,25 +357,6 @@ def print_report(report: dict, show_matrices: bool = True):
     print("\nBase: accuracy of always answering the most frequent reference answer.")
     print("Gain: accuracy minus that baseline. Kappa: agreement above chance, 0 = none.")
     print("MICRO pools every option of every section; MACRO counts each section once.")
-
-    if show_matrices:
-        print_confusion_matrices(report)
-
-
-def print_confusion_matrices(report: dict):
-    """Prints one reference-vs-predicted matrix per single-choice section."""
-
-    for name, sec in report["sections"].items():
-        matrix = sec.get("confusion_matrix")
-        if not matrix:
-            continue
-        options = sec["options"]
-        print(f"\n{name} -- rows: reference, columns: predicted")
-        for i, option in enumerate(options, start=1):
-            print(f"   {i}. {option[:70]}")
-        print("        " + "".join(f"{j:>6}" for j in range(1, len(options) + 1)))
-        for i, row in enumerate(matrix, start=1):
-            print(f"   {i:<5} " + "".join(f"{count:>6}" for count in row))
 
 
 def main():
@@ -447,8 +368,6 @@ def main():
     parser.add_argument("--ground-truth", default=str(DEFAULT_GROUND_TRUTH_DIR),
                         help="directory of *_ground_truth.json reference files "
                              "(default: ./data/synthetic_records)")
-    parser.add_argument("--no-matrices", action="store_true",
-                        help="skip the per-section confusion matrices")
     args = parser.parse_args()
 
     ground_truth_dir = Path(args.ground_truth)
@@ -464,7 +383,7 @@ def main():
     report = evaluate(ground_truth, predictions)
     report["ground_truth_dir"] = str(ground_truth_dir)
     report["predictions_dir"] = str(Path(args.predictions_dir))
-    print_report(report, show_matrices=not args.no_matrices)
+    print_report(report)
 
     timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
     REPORTS_DIR.mkdir(exist_ok=True)

@@ -20,15 +20,6 @@ FIDELITY CHECK: check_record verifies a record against its scenario's facts
 without calling any LLM:
     python generate_synthetic_records.py --check
 
-INTERPRETIVE ASSUMPTIONS, worth re-checking against the Brighton paper:
-  - B1_1/B1_2 record what was REPORTED as a DVT syndrome, whether or not
-    A3_1/X later confirm or rule it out.
-  - F follows the convention stated in models.F_ReportedBySpecialist: "No"
-    covers both "reported WITH details" and "not reported at all"; "Yes" only
-    "reported WITHOUT details".
-  - B2 offers no generic swelling option for arms, so upper-extremity
-    scenarios count arm swelling toward no option rather than stretching
-    "Leg swelling or pitting oedema".
 
 COVERAGE: the scenarios are chosen so that every option of every section
 appears in at least two of them. SYN_30 breaks a correlation instead of
@@ -56,7 +47,7 @@ from pathlib import Path
 OUTPUT_DIR = Path(__file__).parent / "data" / "synthetic_records"
 
 # One entry per version of the corpus; its id is the suffix of every record id,
-# "<scenario id>_<style id>".
+# "<scenario id>_<style id>"
 STYLE_VARIANTS = [
     {"id": "v2"},
 ]
@@ -65,7 +56,7 @@ STYLE_VARIANTS = [
 # Scenarios: each case's clinical facts plus its correct answers. The facts
 # are what check_record verifies the record against; the ground truth is
 # written out here, never inferred from the text. Its values must match
-# models.py's Literal strings EXACTLY (copy them, don't retype).
+# models.py's Literal strings EXACTLY (copy them, don't retype)
 
 SCENARIOS = [
     {
@@ -1259,7 +1250,7 @@ def main():
 
     # Ground truth is derived from SCENARIOS with no model involved, so it is
     # always rewritten: that keeps the reference answers in step with the
-    # scenarios.
+    # scenarios
     for scenario in scenarios:
         for style in STYLE_VARIANTS:
             record_id = f"{scenario['id']}_{style['id']}"

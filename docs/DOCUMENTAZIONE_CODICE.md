@@ -775,9 +775,8 @@ nome del file; quando un referto ha più file, vince il più recente.
 
 Metriche, per sezione e complessive:
 
-- **Accuratezza exact-match** con intervallo di Wilson al 95%. Wilson e non
-  l'intervallo normale, che su una sezione quasi perfetta esce oltre 1.0 e
-  collassa a larghezza zero esattamente a 1.0.
+- **Accuratezza exact-match**: la risposta è giusta solo se coincide con il
+  riferimento.
 - **Baseline di maggioranza** e guadagno su di essa: è il pavimento che una
   sezione deve superare per portare informazione.
 - **Kappa di Cohen**, con la risposta intera trattata come una sola etichetta,
@@ -787,8 +786,6 @@ Metriche, per sezione e complessive:
   semplicemente sbagliata. Precisione e richiamo ignorano deliberatamente i veri
   negativi, che sono la maggioranza di ogni conteggio dato che la maggior parte
   delle opzioni non si applica alla maggior parte dei referti.
-- **Matrice di confusione**, solo per le sezioni a scelta singola, dove una
-  predizione è una classe. Mostra **quali** opzioni vengono scambiate tra loro.
 
 La riga complessiva è riportata due volte: **micro** mette in comune ogni opzione
 di ogni sezione, quindi una sezione con più opzioni pesa di più; **macro** media
@@ -814,12 +811,11 @@ Le funzioni:
   scelta singola e multipla si confrontano allo stesso modo;
 - **`_binary_rows(pairs, options)`** trasforma le coppie in due matrici 0/1, una
   colonna per opzione, la forma che scikit-learn si aspetta;
-- **`_wilson_interval(...)`**, **`_majority_baseline(pairs)`** e
-  **`_score_section(...)`** calcolano le metriche di una sezione;
+- **`_majority_baseline(pairs)`** e **`_score_section(pairs, options)`**
+  calcolano le metriche di una sezione;
 - **`evaluate(ground_truth, predictions)`** produce il report completo;
-- **`print_report(report, show_matrices)`** e **`print_confusion_matrices(report)`**
-  lo stampano, con `_pct`, `_num`, `_ci` e `_gain` per la formattazione;
-  `--no-matrices` omette le matrici;
+- **`print_report(report)`** lo stampa, con `_pct`, `_num` e `_gain` per la
+  formattazione;
 - **`main()`** salva il report in `reports/evaluation_<timestamp>.json`
   (`REPORTS_DIR`, creata se manca).
 

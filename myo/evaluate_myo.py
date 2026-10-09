@@ -8,7 +8,6 @@ the schema at import time.
 
 Usage:
     python myo/evaluate_myo.py ./myo/output_myo
-    python myo/evaluate_myo.py ./myo/output_myo --no-matrices
 """
 
 from pathlib import Path
