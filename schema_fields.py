@@ -28,7 +28,7 @@ def field_info(section_model):
     """
 
     # Every section schema has exactly one field, read generically rather than
-    # hardcoding "answer" vs "studies" vs "symptoms".
+    # hardcoding "answer" vs "studies" vs "symptoms"
     field_name = next(iter(section_model.model_fields.keys()))
     field = section_model.model_fields[field_name]
     annotation = field.annotation

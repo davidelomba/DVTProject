@@ -149,6 +149,7 @@ def _majority_baseline(pairs) -> float:
     if not pairs:
         return None
     counts = Counter(frozenset(gt) for gt, _ in pairs)
+
     return counts.most_common(1)[0][1] / len(pairs)
 
 
@@ -257,7 +258,7 @@ def evaluate(ground_truth: dict, predictions: dict) -> dict:
     overall["accuracy"] = overall["exact_matches"] / overall["compared"] if overall["compared"] else None
 
     # Recomputed from the pooled totals rather than averaged across sections,
-    # so a section with more options does not weigh the same as a smaller one.
+    # so a section with more options does not weigh the same as a smaller one
     tp, fp, fn = overall["tp"], overall["fp"], overall["fn"]
     overall["precision"] = tp / (tp + fp) if (tp + fp) else None
     overall["recall"] = tp / (tp + fn) if (tp + fn) else None
@@ -267,7 +268,7 @@ def evaluate(ground_truth: dict, predictions: dict) -> dict:
     # Macro averages: every section counts once, whatever its number of options
     # or records. Reported next to the micro figures above because the two
     # answer different questions, and they diverge here: the micro ones are
-    # dominated by the sections with the most options.
+    # dominated by the sections with the most options
     def _macro(key):
         values = [s[key] for s in report["sections"].values() if s.get(key) is not None]
         return sum(values) / len(values) if values else None
