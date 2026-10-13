@@ -34,18 +34,19 @@ LLM_REASONING = False
 LLM_NUM_CTX = 4096
 LLM_REQUEST_TIMEOUT = 180  # seconds; allows time for reasoning on slower hardware
 
-# Agent 3 (confidence.py). After the cross-section rules, Agent 3 asks the
-# evaluator model for each section's answer again, without reasoning and
-# without Agent 2's answer and reads from the token probabilities how much
-# probability goes to the answer the form holds. The value, from 0 to 1, is
-# stored in the section's audit log entry under "confidence". When False, the
-# pipeline sends no extra request.
-CONFIDENCE_ENABLED = True
+# Agent 3 as a verifier (verifier.py). After the cross-section rules, asks the
+# evaluator model whether each section's final answer is correct given the
+# evidence, YES or NO, and records the verdict and P(YES) in the section's audit
+# log entry under "verifier". One request per section and per input variant:
+# "answer" sends evidence, options and answer; "reasoning" adds Agent 2's
+# reasoning. Never changes an answer. When False, no extra request is sent.
+VERIFIER_ENABLED = True
+VERIFIER_INPUTS = ("answer", "reasoning")
+VERIFIER_TEMPERATURE = 0.0
 
-# Sections Agent 3 does not score. F's "Yes" means a diagnosis reported WITHOUT
-# details, and an unreasoned request misreads that inversion, so F's confidence
-# does not separate right answers from wrong ones.
-CONFIDENCE_SKIP = {"F"}
+# Larger than LLM_NUM_CTX: the "reasoning" variant adds up to LLM_NUM_PREDICT
+# tokens to a prompt that already reaches about 3200.
+VERIFIER_NUM_CTX = 8192
 
 # Multilingual embedding model. Used in every mode: the Brighton store is
 # always built, the EHR one only for rag and agentic_graph.
@@ -107,9 +108,7 @@ BRIGHTON_CONTEXT_ENABLED = True
 # themselves.
 SECTION_DESCRIPTIONS_ENABLED = False
 
-# Master switch for SECTION_HINTS. The hint for F asks for the DETAILS_PRESENT
-# line that confidence.score_details reads, so with hints off Agent 3 scores F
-# as any other single-choice section.
+# Master switch for SECTION_HINTS.
 SECTION_HINTS_ENABLED = True
 
 # Sections whose hint is suppressed while SECTION_HINTS_ENABLED is True, so one

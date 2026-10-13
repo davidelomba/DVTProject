@@ -4,8 +4,7 @@ Main pipeline. For each section of the form:
      way config.EXTRACTOR_MODE selects (none in "raw_record");
   2. Agent 2 reasons over the evidence and fills in the section.
 The per-section results are then merged, the cross-section rules are applied
-and, when config.CONFIDENCE_ENABLED is set, Agent 3 scores the confidence of
-each final answer. The DVT_CriteriaForm is returned together with an audit log.
+and, when config.VERIFIER_ENABLED is set, Agent 3 checks each final answer. The DVT_CriteriaForm is returned together with an audit log.
 """
 
 import hashlib
@@ -28,7 +27,7 @@ from rag_setup import (
 from agents import build_llm, evaluate_section, extract_evidence, extract_evidence_full_text
 from criteria_rules import apply_cross_section_rules
 from agentic_graph import build_agentic_llm, run_agentic_graph_pipeline
-from confidence import score_record
+from verifier import verify_record
 
 
 # One query per section, naming the content of the section's options in words
@@ -169,9 +168,11 @@ def _run_config_snapshot() -> dict:
         # Always applied, never switchable: recorded so a reader does not have
         # to know that to interpret the run
         "cross_section_rules_applied": True,
-        "confidence": {
-            "enabled": config.CONFIDENCE_ENABLED,
-            "skipped_sections": sorted(config.CONFIDENCE_SKIP),
+        "verifier": {
+            "enabled": config.VERIFIER_ENABLED,
+            "inputs": list(config.VERIFIER_INPUTS),
+            "temperature": config.VERIFIER_TEMPERATURE,
+            "num_ctx": config.VERIFIER_NUM_CTX,
         },
         "models": {
             "extractor": extractor_model,
@@ -343,8 +344,8 @@ def run_pipeline(record_id: str, patient_ehr_path: str, brighton_pdf_path: str):
     form_data = apply_cross_section_rules(form_data, audit_log)
 
     # Agent 3, on the final answers, so after the rules above
-    if config.CONFIDENCE_ENABLED:
-        score_record(form_data, audit_log)
+    if config.VERIFIER_ENABLED:
+        verify_record(form_data, audit_log)
 
     # Added last, so it cannot be mistaken for a section by the loops above
     audit_log[RUN_CONFIG_KEY] = _run_config_snapshot()

@@ -2,7 +2,7 @@
 Reads a section's field, options and heading from its Pydantic schema.
 
 The one place where the section schemas are introspected, shared by the
-pipeline (agents, confidence) and by the evaluation tools (evaluate_predictions,
+pipeline (agents, verifier) and by the evaluation tools (evaluate_predictions,
 export_redcap_csv, export_prompts). It imports nothing but the standard library,
 so the evaluation tools stay runnable without langchain or Ollama, and it takes
 the schema class as an argument, so it serves whichever module is installed as
