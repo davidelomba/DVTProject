@@ -1202,11 +1202,6 @@ not say which governs, which is what the clinician question below is asking.
   runs differ from the earlier myocarditis arms in sections, queries, hints and
   temperature at once, so a change on E or F is not attributable to one of
   them; a run at temperature 0 would separate the temperature.
-- **The myocarditis search tool still describes two sections.**
-  `prompts_myo.RETRIEVER_TOOL_DESCRIPTION` names ECG and echocardiogram findings
-  only, written when the arm had E and F; it does not name symptoms, physical
-  examination or inflammatory markers. On records of this length retrieval
-  returns the whole record, so the effect is likely small, not measured.
 - **Questions for the authors of the myocarditis ground truth**, from the
   dummy cases read against the form and the sources:
   - Is a decreased ejection fraction option 2 or option 4 of F?

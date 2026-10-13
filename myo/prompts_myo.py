@@ -182,17 +182,23 @@ _SECTION_HINT_TEXTS = {
 SECTION_HINTS = {key: HINT_PREAMBLE + "\n" + text for key, text in _SECTION_HINT_TEXTS.items()}
 
 
-# rag_setup.make_ehr_retriever_tool's description, naming the domains the two
-# sections cover instead of the ten DVT criteria.
+# rag_setup.make_ehr_retriever_tool's description, naming the five sections'
+# domains, with their findings in the words of the criteria form, instead of
+# the ten DVT criteria.
 RETRIEVER_TOOL_DESCRIPTION = (
     "Use this tool to search the patient's clinical record for any "
     "information relevant to a myocarditis or pericarditis diagnosis: "
-    "electrocardiogram findings (rhythm, arrhythmias, atrial fibrillation, "
-    "tachycardia, AV block, bundle branch block, conduction delay, ST segment "
-    "or T wave changes, Q waves, low voltage, premature beats, ambulatory "
+    "cardiac symptoms (acute chest pain or pressure, palpitation, dyspnea at "
+    "rest, with exercise or lying down, diaphoresis, sudden death), physical "
+    "exam features (pericardial friction rub, pulsus paradoxus, distant heart "
+    "sounds), inflammatory markers (ESR, CRP, high sensitivity CRP, D-dimer), "
+    "electrocardiogram findings (atrial or ventricular arrhythmias, "
+    "tachycardia, atrial fibrillation, AV block, bundle branch block, "
+    "conduction delays, ST segment or T wave abnormalities, q waves, low "
+    "voltage, premature atrial or ventricular contractions, ambulatory ECG "
     "monitoring), echocardiogram findings (ejection fraction, ventricular "
     "function, segmental wall motion, global systolic or diastolic function, "
-    "ventricular dilation, wall thickness, pericardial effusion or "
-    "inflammation), whether either study was performed at all, and any "
-    "statement that a study was normal."
+    "ventricular dilation, wall thickness, pericardial fluid collection or "
+    "inflammation), whether each test or examination was done at all, and any "
+    "statement that it was normal."
 )
