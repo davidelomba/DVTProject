@@ -46,15 +46,29 @@ When something is unverified, say so.
   post-processing. The per-section gates (keyword, details, absent_pulses) were
   removed on 2026-09-25: under qwen3.6:27b none of them ever made a correct
   change, and the 8B they were built for is no longer used.
-- Agent 3 (`confidence.py`) scores each final answer after the cross-section
-  rules, when `config.CONFIDENCE_ENABLED` is set. One short request per section
-  to the evaluator model, without reasoning and without Agent 2's answer, sent
-  straight to Ollama's local `/api/chat` for the logprobs; the confidence is
-  the probability the model puts on the form's answer. It never changes an
-  answer. The value goes to the audit log and to the result file under
-  `_confidence`. F is in `CONFIDENCE_SKIP`. A section a cross-section rule
-  rewrote, marked `overridden_by` in the audit log, sends no request and takes
-  its source section's confidence (`confidence_method` `rule:<source>`).
+- Agent 3 (`verifier.py`) checks each final answer after the cross-section
+  rules, when `config.VERIFIER_ENABLED` is set. For each section and each
+  variant in `config.VERIFIER_INPUTS` it sends the evaluator model one request,
+  straight to Ollama's `/api/chat` for the logprobs, asking whether the answer
+  is correct given the evidence, YES or NO: the `answer` variant sends evidence,
+  options and answer, the `reasoning` variant adds Agent 2's reasoning; neither
+  gets the guideline context or the hint. It records the verdict and P(YES),
+  normalised over YES and NO, under `verifier` in the audit log and `_verifier`
+  in the result file, at `VERIFIER_TEMPERATURE` 0 and `VERIFIER_NUM_CTX` 8192.
+  It never changes an answer. A section a cross-section rule rewrote, marked
+  `overridden_by`, sends no request and takes its source section's verdict
+  (method `rule:<source>`). `evaluate_verifier.py` scores it against the ground
+  truth. It replaced, on 2026-10-13, the confidence Agent 3 (`confidence.py`,
+  deleted, still in the git history) that the measurements below call Agent 3.
+- `myo/` runs the same pipeline on sections A1, B, C, E and F of the Brighton
+  myocarditis questionnaire (17 dummy cases, ground truth by two authors outside
+  the project), replacing schema, prompts, queries and hints in memory.
+  `run_myo.apply_domain` sets Agents 1 and 2 to `MYO_TEMPERATURE` 0.5 with no
+  seed, queries made of each section's name and options in the form's words,
+  and hints from the earlier myocarditis prompts (`MYO_prompts_EN.pdf`) plus a
+  few sentences from the case definition and the SPEAC companion guide, sourced
+  sentence by sentence in `docs/DOCUMENTAZIONE_CODICE.md` section 16.
+  `agreement_runs.py` measures agreement between repeated runs.
 - `docs/DOCUMENTAZIONE_CODICE.md` describes the code module by module,
   `docs/RISULTATI_SPERIMENTALI.md` holds every measurement with the
   configuration that produced it, and `docs/SCALETTA_TESI.md` the thesis
@@ -110,13 +124,22 @@ python evaluate_predictions.py                    # score ./output against the c
 python compare_runs.py                            # two runs against each other
 python generate_synthetic_records.py --check      # fidelity audit, no LLM call
 python export_redcap_csv.py                       # results -> REDCap import CSV
+python evaluate_verifier.py ./output_x            # Agent 3 against the ground truth
+python agreement_runs.py ./out_r1 ./out_r2 ./out_r3   # agreement between repeated runs
+python export_prompts.py                          # DVT prompts, queries, hints -> prompts_export/
+python myo/run_myo.py --guideline --output-dir ./myo/output_x   # myocarditis, five sections
+python myo/evaluate_myo.py ./myo/output_x
+python myo/export_prompts_myo.py                  # myocarditis texts -> myo/prompts_export/
 ```
 
-`evaluate_predictions` and `compare_runs` save their JSON reports in `reports/`.
+`evaluate_verifier` and `agreement_runs` take `--ground-truth ./myo/data/records`
+for a myocarditis run. `evaluate_predictions`, `compare_runs`,
+`evaluate_verifier` and `agreement_runs` save their JSON reports in `reports/`.
 
 Measured from the audit-log timestamps on mari (2 x RTX 2080 Ti), median of the
 gaps between consecutive records: the reference costs 165 seconds a record
-without Agent 3 and 185 with it, and a full run over the 40 records takes 1h56.
+without Agent 3 and 185 with the confidence Agent 3, and a full run over the 40
+records takes 1h56. The verifier's cost has not been measured.
 What sets the cost is how many model tags a run loads. `raw_record` loads one
 and costs 96, 1h10 for the corpus; the arms whose Agent 1 and Agent 2 share a
 tag, the reference among them, cost 157 to 190; every arm running two different
@@ -157,8 +180,11 @@ BRIGHTON_CONTEXT_ENABLED = True
 SECTION_DESCRIPTIONS_ENABLED = False
 SECTION_HINTS_ENABLED    = True
 SECTION_HINTS_DISABLED   = {"B2"}
-CONFIDENCE_ENABLED       = True
+VERIFIER_ENABLED         = True
 ```
+
+The reference run itself ran the confidence Agent 3 in place of the verifier;
+Agent 3 changes no answer either way.
 
 The reference run is `output_a32_ref`, 2026-10-02: hints revised against the
 printed questionnaire, with A3_2's hint reduced to what the questionnaire states
@@ -171,7 +197,7 @@ alone, on SYN_12, SYN_23 and SYN_14; every arm with fingerprint `0d4a00c11404`
 is compared against it, and
 `run_hints_a32.sh` repeated ten of them with the new hint (`output_a32_*`).
 Agent 3 changes no answer, so the answers do
-not depend on `CONFIDENCE_ENABLED`. Every arm measured before 2026-09-25 carries
+not depend on whether it ran or on which version. Every arm measured before 2026-09-25 carries
 hint fingerprint `ab63b8e5f5af` and is compared against `output_new_reference`,
 the previous reference, 398/400; the arms that ran with the keyword and details
 gates off and `absent_pulses` on are unaffected by the gates' removal, since
@@ -179,7 +205,7 @@ gates off and `absent_pulses` on are unaffected by the gates' removal, since
 switch and encode the form's structure rather than a model weakness.
 
 Agent 1 and Agent 2 run the same model tag, which is why the reference costs 165
-seconds a record without Agent 3 and 185 with it, medians, against the 250 to 280
+seconds a record without Agent 3 and 185 with the confidence Agent 3, medians, against the 250 to 280
 an arm with two tags pays. They stay two
 separate settings: change `AGENTIC_LLM_MODEL_NAME` alone to vary the agent and
 `EVALUATOR_LLM_MODEL_NAME` alone to vary the evaluator. `LLM_MODEL_NAME` is the
@@ -754,7 +780,9 @@ not say which governs, which is what the clinician question below is asking.
   `_run_config.generation`. At 8192 one section per arm fails outright, always
   on F, with no parseable answer after three attempts; at 4096 none does.
 - **Agent 3 inside the pipeline changes no answer, and a rule-written answer
-  needs the rule's confidence.** `output_confidence`, the reference with
+  needs the rule's confidence.** This bullet and the Agent 3 bullets after it
+  measure the confidence Agent 3, deleted on 2026-10-13; the figures hold for
+  the runs they name. `output_confidence`, the reference with
   `CONFIDENCE_ENABLED` True: 0 of 400 sections changed against
   `output_new_reference`, 185 seconds a record against 174, SYN_03 A2 and
   SYN_10 B1_1 at the probe's values to the fourth digit. On SYN_02, 21, 24, 36,
@@ -1001,7 +1029,14 @@ not say which governs, which is what the clinician question below is asking.
   limiti inferiori della norma* should be coded, and whether C0001_0_0's
   echocardiogram is to be read as normal when the record describes hypokinesia.
   Third time the project reaches the same conclusion from a different direction,
-  after A2 and SYN_10.
+  after A2 and SYN_10. Read again on 2026-10-13, neither the case definition nor
+  the SPEAC companion guide nor the VAC4EU paper defines options 2 to 4 of F; the
+  companion guide merges options 1 to 5 into one criterion, F-1, for the level
+  of certainty. On the ejection fraction the sources disagree: the earlier
+  prompts and Table 6 of the paper put a decreased ejection fraction under
+  option 2, section 4.5.2.2 pairs it with global dysfunction, the wording of
+  option 4, and the dummy-case ground truth codes it as option 4 on every case
+  but C002. The hint follows option 2.
 - **Agreement with an independent reviewer is not measurable yet on DVT.** Every
   number on that corpus is scored against a ground truth written alongside the
   pipeline, so the two are not independent and their agreement is not evidence.
@@ -1152,11 +1187,39 @@ not say which governs, which is what the clinician question below is asking.
   3 sections lost. Realistic-length records will lengthen the prompt by several
   hundred tokens (an estimate): run a token check on the first batch, then set
   the window (likely 8192) and the cap by that rule and measure them as one arm.
-- **Agent 3 cannot flag an answer wrong for lack of evidence.** Settled with
-  hints on: no section above 0.99 is wrong in the three revised-hint arms. What
-  stays open is the coverage errors of the 200/40/3 arm, scored 0.75 to 0.965
-  because Agent 3 reads the same fragments as Agent 2. Scoring against the
-  whole record instead of the evidence is one way to reach them, not measured.
+- **The verifier has not been run on real models.** Checked with fake chat
+  models, fake embeddings and a fake Ollama endpoint: a full myocarditis run of
+  17 records, three times, and one DVT record, where both rule-written sections
+  took their source's verdict. What it is worth, answer variant against
+  reasoning variant, and what it costs per record, is the first measurement to
+  take. The myocarditis corpus is likely to have few errors to score it on;
+  `myo/run_dvt_stripped.py` gives 46 on DVT. The confidence Agent 3 could not
+  flag an answer wrong for lack of evidence, because it read the same fragments
+  as Agent 2; the verifier reads them too.
+- **The myocarditis arm with five sections, temperature 0.5 and hints is not
+  measured yet.** The plan is three runs with every setting fixed, scored with
+  `myo/evaluate_myo.py`, `evaluate_verifier.py` and `agreement_runs.py`. The
+  runs differ from the earlier myocarditis arms in sections, queries, hints and
+  temperature at once, so a change on E or F is not attributable to one of
+  them; a run at temperature 0 would separate the temperature.
+- **The myocarditis search tool still describes two sections.**
+  `prompts_myo.RETRIEVER_TOOL_DESCRIPTION` names ECG and echocardiogram findings
+  only, written when the arm had E and F; it does not name symptoms, physical
+  examination or inflammatory markers. On records of this length retrieval
+  returns the whole record, so the effect is likely small, not measured.
+- **Questions for the authors of the myocarditis ground truth**, from the
+  dummy cases read against the form and the sources:
+  - Is a decreased ejection fraction option 2 or option 4 of F?
+  - When is A1 or B `none of the above` and when `unknown`? C003 is coded `none`
+    with no cardiac symptom or examination documented, C0001_1c and C005
+    `unknown`.
+  - In C, with no inflammatory marker in the record (C002, C003, where the only
+    PCR is a viral test), the form's option 5 says it is for markers tested and
+    normal, and the ground truth codes option 5. Which applies?
+  - Does a mild pericardial effusion count as an abnormal fluid collection?
+    Does posterior pericardial hyperechogenicity, or a reduced strain, count?
+  - Why is the same echocardiogram `No abnormalities` in C0001_0_0 and 1a and
+    `Global systolic … depression` in 1c to 1f?
 - **Retries no longer carry the failed response; measured in the two
   query runs, where a retry adds 74 tokens and no call fills the window.** The error a missing `FINAL_ANSWER` raised used to quote the whole
   response, and `evaluate_section` appends the error to the prompt before
