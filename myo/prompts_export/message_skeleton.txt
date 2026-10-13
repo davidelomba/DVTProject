@@ -1,0 +1,14 @@
+Evidence: <EVIDENCE: what Agent 1 extracted for this section>
+
+Reference synonyms/terminology (Brighton):
+<GUIDELINE CONTEXT: sent only when the context is enabled>
+
+<SECTION HINT: sent only when the section has an active one>
+
+<SECTION HEADING: sent only when the descriptions are enabled>
+
+Options:
+1. <first option>
+2. <second option>
+
+<CLOSING INSTRUCTIONS>
