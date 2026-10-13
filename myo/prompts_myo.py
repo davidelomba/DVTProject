@@ -1,10 +1,13 @@
 """
-The prompts of agents.py with the disease terms changed, and the description of
-the search tool.
+The prompts of agents.py with the disease terms changed, the description of the
+search tool, and the section hints.
 
 Same wording and same structure as the DVT prompts: only the terms naming the
 condition and its methods differ, so a difference between the two domains is not
-a difference between two prompt designs.
+a difference between two prompt designs. The section hints are this domain's
+own: they carry the rules of the earlier myocarditis prompts
+(MYO_prompts_EN.pdf), from both the zero-shot instructions and the Reasoning
+Guidelines of the chain-of-thought version, without their output format.
 
 The two extractor prompts carry `{no_evidence}`, which run_myo fills with
 agents.NO_EVIDENCE, so the sentinel string stays defined in one place. The
@@ -82,6 +85,92 @@ anything). Furthermore, if the evidence EXPLICITLY NEGATES the procedure (e.g.,
 states no echocardiogram was performed), or does not mention that specific method
 at all, the correct answer is the "not done / unknown" option for that method,
 even if myocarditis was confirmed by other means."""
+
+
+# Prepended to every section hint: instructions 1 and 2 of the earlier prompts,
+# independent evaluation and no inference. "Exact terms" is not carried over,
+# since the records are in Italian and the options in English.
+HINT_PREAMBLE = (
+    "Evaluate each option independently, on what the evidence states for this "
+    "patient, in whatever language the record is written. Do not infer, assume "
+    "or add any finding the evidence does not state."
+)
+
+_SECTION_HINT_TEXTS = {
+    "A1": (
+        "Do not assume that similar terms or related conditions are equivalent "
+        "unless the record says so: an arrhythmia seen on an ECG is not "
+        "palpitation, and abdominal, shoulder or back pain is not chest pain. A "
+        "symptom the evidence does not mention is unknown, not absent. Choose "
+        "'none of the above' only when the record explicitly states that the "
+        "patient did not have these symptoms; when it says nothing about them, "
+        "choose 'unknown if any of 1-5 present or absent'. Do not select sudden "
+        "death unless the record reports it."
+    ),
+    "B": (
+        "Select a feature only if the physical examination in the evidence "
+        "reports it: if a pericardial friction rub is mentioned, select that "
+        "feature alone. If no examination findings are reported at all, choose "
+        "'unknown if any of 1-3 present or absent'. Choose 'none of the above' "
+        "only when the evidence states that these features were looked for and "
+        "not found, for example 'no pericardial friction rub'. If the record "
+        "states that the examination confirmed pericarditis without listing the "
+        "findings, select only '*Confirmed physical exam conforming Pericarditis, "
+        "without details'."
+    ),
+    "C": (
+        "Thresholds: ESR is elevated at or above 15 mm/hr for men under 50, 20 "
+        "for men over 50 and for women under 50, 30 for women over 50, and above "
+        "2 for newborns, using the patient's age and sex; CRP is elevated above "
+        "10 mg/L; hsCRP above 3 mg/L; D-dimer above the laboratory's upper limit. "
+        "If several values are reported, use the highest. Convert units before "
+        "comparing: 1 g/L = 1000 mg/L; for D-dimer 1 µg/mL = 1 mg/L = 1000 ng/mL. "
+        "Do not infer elevation or absence from symptoms alone. 'None of the "
+        "above' requires that at least one of these four markers was measured and "
+        "every measured one was within range; if none of them is mentioned, "
+        "choose 'None tested, or tested but no results or unknown if tested'. "
+        "Other tests are not inflammatory markers: troponin, CK-MB, white cell "
+        "count, procalcitonin, and a PCR test for viruses (polymerase chain "
+        "reaction), which is not CRP. Select '*confirmed positive inflammatory "
+        "marker conforming myocarditis without details.' only if the record "
+        "states that, or an equivalent, explicitly."
+    ),
+    "E": (
+        "Consider only direct mentions of ECG features or results. If the ECG "
+        "was not done or its result is not reported, choose only the first "
+        "option. If a specific pattern is described (for example PACs, ST "
+        "elevation, PR-segment depression), select only the option that names "
+        "that pattern. Sinus tachycardia, SVT, atrial fibrillation, PVCs, VT and "
+        "VF belong to 'Paroxysmal or sustained atrial or ventricular "
+        "arrhythmias', as its examples say. Choose 'No abnormalities seen on ECG' "
+        "only when the report states the ECG was normal or showed no "
+        "abnormalities. Choose '*Nonspecific abnormalities other than those "
+        "listed above' only for abnormalities the record explicitly calls "
+        "nonspecific, such as 'nonspecific ST changes' or 'borderline low "
+        "voltage'."
+    ),
+    "F": (
+        "Pay close attention to these distinctions:\n"
+        "- 'New focal or diffuse left or right ventricular function "
+        "abnormalities' refers to functional abnormalities, such as hypokinesia, "
+        "akinesia, or reduced ejection fraction.\n"
+        "- 'Segmental wall motion abnormalities' refers to regional wall motion "
+        "abnormalities, for example akinesia of the anterior wall.\n"
+        "- 'Ventricular dilation' refers to structural enlargement of the "
+        "ventricles, typically indicated by terms like 'dilated ventricle', "
+        "increased end-diastolic diameter (EDD) or chamber enlargement. Do not "
+        "consider functional findings like reduced ejection fraction under this "
+        "category.\n"
+        "- Pericardial effusion, pericardial fluid or pericardial inflammation is "
+        "'Evidence of abnormal fluid collection or pericardial inflammation'.\n"
+        "If the echocardiogram was not done or its result is not reported, "
+        "choose only the first option. Choose 'No abnormalities seen on ECHO' "
+        "only when the report says the echocardiogram was normal."
+    ),
+}
+
+# config.SECTION_HINTS for this domain: the preamble, then the section's text.
+SECTION_HINTS = {key: HINT_PREAMBLE + "\n" + text for key, text in _SECTION_HINT_TEXTS.items()}
 
 
 # rag_setup.make_ehr_retriever_tool's description, naming the domains the two

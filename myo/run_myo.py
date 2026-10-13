@@ -102,7 +102,7 @@ def apply_domain(guideline: bool = False, temperature: float = MYO_TEMPERATURE):
     # reading the text it was handed, so the two papers need two directories.
     config.BRIGHTON_KB_PERSIST_DIR = str(MYO_DIR / "vectorstores" / "chroma_brighton_myo")
     config.SECTION_DESCRIPTIONS_ENABLED = False
-    config.SECTION_HINTS = {}
+    config.SECTION_HINTS = prompts_myo.SECTION_HINTS
     config.SECTION_HINTS_DISABLED = set()
     config.CROSS_SECTION_RULES = []
 
