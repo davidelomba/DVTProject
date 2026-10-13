@@ -13,6 +13,11 @@ Reported for each input variant, overall and per section:
   - rejected right answers: right answers it disagreed with, over the right
     answers.
 
+When a run carries both the "answer" and the "reasoning" variant, the sections
+on which the two verdicts differ are listed, split by whether the answer was
+right or wrong. A wrong answer approved with the reasoning and rejected without
+it is the case where Agent 2's reasoning talked the verifier into agreeing.
+
 Sections whose verdict a cross-section rule copied (method "rule:<source>")
 are counted, since that verdict is the one the form carries; sections without
 a verdict are listed apart.
@@ -111,18 +116,45 @@ def summarise(rows: list) -> dict:
     }
 
 
+def compare_variants(rows: list, first: str = "answer", second: str = "reasoning") -> dict:
+    """The sections on which two variants gave different verdicts.
+
+    Returns:
+        A dict with one list per combination of correctness and verdicts, e.g.
+        "wrong_approved_only_by_reasoning"; empty when either variant is absent.
+    """
+
+    by_key = {}
+    for r in rows:
+        by_key.setdefault((r["record_id"], r["section"]), {})[r["variant"]] = r
+    out = {}
+    for (record_id, section), variants in sorted(by_key.items()):
+        a, b = variants.get(first), variants.get(second)
+        if a is None or b is None or a["agree"] is None or b["agree"] is None:
+            continue
+        if a["agree"] == b["agree"]:
+            continue
+        status = "right" if a["correct"] else "wrong"
+        verdict = "approved" if b["agree"] else "rejected"
+        key = f"{status}_{verdict}_only_by_{second}"
+        out.setdefault(key, []).append({"record_id": record_id, "section": section,
+                                        f"p_agree_{first}": a["p_agree"],
+                                        f"p_agree_{second}": b["p_agree"]})
+    return out
+
+
 def evaluate(rows: list) -> dict:
-    report = {}
+    variants = {}
     for variant in sorted({r["variant"] for r in rows}):
         variant_rows = [r for r in rows if r["variant"] == variant]
-        report[variant] = {
+        variants[variant] = {
             "overall": summarise(variant_rows),
             "per_section": {s: summarise([r for r in variant_rows if r["section"] == s])
                             for s in sorted({r["section"] for r in variant_rows})},
             "errors": [{k: r[k] for k in ("record_id", "section", "agree", "p_agree")}
                        for r in variant_rows if not r["correct"]],
         }
-    return report
+    return {"variants": variants, "variant_disagreements": compare_variants(rows)}
 
 
 def _fmt(value, digits=3):
@@ -130,7 +162,7 @@ def _fmt(value, digits=3):
 
 
 def print_report(report: dict) -> None:
-    for variant, data in report.items():
+    for variant, data in report["variants"].items():
         o = data["overall"]
         print(f"\n=== variant: {variant} ===")
         print(f"sections {o['sections']}  right {o['right']}  wrong {o['wrong']}  "
@@ -142,6 +174,13 @@ def print_report(report: dict) -> None:
         for section, s in data["per_section"].items():
             print(f"{section:<8} {s['right']:>5} {s['wrong']:>5} {_fmt(s['auroc_verifier'], 2):>6} "
                   f"{s['approved_errors']:>8} {s['rejected_right']:>9}")
+
+    disagreements = report["variant_disagreements"]
+    if disagreements:
+        print("\n=== sections where the two variants disagree ===")
+        for key, items in disagreements.items():
+            shown = ", ".join(f"{i['record_id']} {i['section']}" for i in items)
+            print(f"{key}: {len(items)}  ({shown})")
 
 
 def main():
