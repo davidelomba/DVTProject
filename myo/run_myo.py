@@ -50,31 +50,38 @@ SECTION_ORDER = ["A1", "B", "C", "E", "F"]
 # seed is set, so each run samples independently.
 MYO_TEMPERATURE = 0.5
 
-# One query per section, written from the option list rather than from the
-# finding expected: on the DVT form the queries written the other way covered
-# only part of their section and failed on every `other` branch. Each names the
-# section's options in the questionnaire's terms, the words a record uses for
-# them, and the no-result branch.
+# One query per section: the section's name and its options, every one of
+# them, in the words of CriteriaForm_SEVALIDMYOCARDITIS and no others, so no
+# query carries vocabulary taken from the records it is run on.
 SECTION_QUERIES = {
-    "A1": "cardiac symptoms reported by the patient: acute chest pain or chest "
-          "pressure, palpitations, dyspnea or shortness of breath at rest, on "
-          "exertion or lying down, diaphoresis or sweating, sudden death or "
-          "cardiac arrest, no cardiac symptoms, symptoms not reported",
-    "B": "physical examination of the heart: pericardial friction rub, pulsus "
-         "paradoxus, distant or muffled heart sounds, cardiac auscultation, "
-         "physical exam consistent with pericarditis, examination not reported",
-    "C": "inflammatory markers in blood tests: erythrocyte sedimentation rate "
-         "ESR, C-reactive protein CRP, high-sensitivity CRP, D-dimer, values "
-         "above or within the normal range, inflammatory markers not tested",
-    "E": "electrocardiogram ECG findings: rhythm, atrial or ventricular "
-         "arrhythmia, tachycardia, atrial fibrillation, AV block, bundle branch "
-         "block, conduction delay, ST segment or T wave abnormality, Q waves, "
-         "low voltage, premature atrial or ventricular contractions, ambulatory "
-         "monitoring, normal ECG, ECG not performed",
-    "F": "echocardiogram ECHO findings: ejection fraction, left or right "
-         "ventricular function, segmental wall motion, global systolic or "
-         "diastolic function, ventricular dilation, wall thickness, pericardial "
-         "effusion or inflammation, normal echocardiogram, ECHO not performed",
+    "A1": "cardiac symptoms: acute chest pain or pressure, palpitation, dyspnea "
+          "at rest, with exercise or lying down, diaphoresis, sudden death, none "
+          "of the above, unknown if present or absent",
+    "B": "physical exam features: pericardial friction rub, pulsus paradoxus, "
+         "distant heart sounds, none of the above, unknown if present or absent, "
+         "physical exam conforming pericarditis",
+    "C": "inflammatory markers: ESR elevated, CRP elevated, high sensitivity CRP "
+         "elevated, D-dimer elevated, none tested or no results, within normal "
+         "range, positive inflammatory marker conforming myocarditis",
+    "E": "electrocardiogram: ECG not done or no results, paroxysmal or sustained "
+         "atrial or ventricular arrhythmias, supraventricular or ventricular "
+         "tachycardia, sinus tachycardia, atrial fibrillation, AV nodal "
+         "conduction delays, intraventricular conduction defects, AV block, new "
+         "bundle branch block, continuous ambulatory ECG monitoring with frequent "
+         "atrial or ventricular ectopy, ST segment or T wave abnormalities, "
+         "elevation or inversion, newly reduced r wave height, low voltage, "
+         "abnormal q waves, premature atrial and premature ventricular "
+         "contractions, diffuse concave upward ST segment elevation, ST segment "
+         "depression in aVR, PR depression without reciprocal ST segment changes, "
+         "nonspecific abnormalities, no abnormalities seen on ECG, ECG "
+         "abnormality conforming myocarditis or pericarditis",
+    "F": "echocardiogram: ECHO not done or no results, new focal or diffuse left "
+         "or right ventricular function abnormalities, decreased ejection "
+         "fraction, segmental wall motion abnormalities, global systolic or "
+         "diastolic function depression, decreased longitudinal and "
+         "circumferential strain, ventricular dilation, wall thickness change, "
+         "abnormal fluid collection or pericardial inflammation, no abnormalities "
+         "seen on ECHO, echocardiogram conforming myocarditis or pericarditis",
 }
 
 
