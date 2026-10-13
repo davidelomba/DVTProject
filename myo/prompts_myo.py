@@ -87,6 +87,10 @@ at all, the correct answer is the "not done / unknown" option for that method,
 even if myocarditis was confirmed by other means."""
 
 
+# agents.MULTI_SELECT_EXAMPLE: None, so the answer instructions show the
+# number-text correspondence without naming an option of this questionnaire.
+MULTI_SELECT_EXAMPLE = None
+
 # Prepended to every section hint: instructions 1 and 2 of the earlier prompts,
 # independent evaluation and no inference. "Exact terms" is not carried over,
 # since the records are in Italian and the options in English.

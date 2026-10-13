@@ -281,6 +281,22 @@ answer is the "not done / unknown" option for that method, even if DVT was
 confirmed by other means."""
 
 
+# The option named in the multi-select answer instructions to show that the
+# number must follow the text: option 2 of B2. None replaces it with an example
+# that names no option, so no section's option is singled out.
+MULTI_SELECT_EXAMPLE = "Leg swelling or pitting oedema"
+
+
+def _multi_select_example() -> str:
+    """The parenthesised example of the multi-select answer instructions."""
+
+    if MULTI_SELECT_EXAMPLE is None:
+        return ("e.g. if the second option you name is listed as 4. above, the "
+                "second number must be 4")
+    return (f"e.g. \"FINAL_OPTION: {MULTI_SELECT_EXAMPLE}\" must be followed by "
+            "\"FINAL_ANSWER: 2\" if that option is listed as 2. above")
+
+
 def _build_reasoning_prompt(
     evidence_text: str,
     brighton_context: str,
@@ -338,10 +354,8 @@ def _build_reasoning_prompt(
             "FINAL_ANSWER: <number>; <number>; ...\n"
             "with the NUMBER of every option that applies, separated by semicolons, in "
             "the SAME order as the FINAL_OPTION line: each number must correspond to "
-            "the same option you just named there (e.g. \"FINAL_OPTION: Leg swelling or "
-            "pitting oedema\" must be followed by \"FINAL_ANSWER: 2\" if that option is "
-            "listed as 2. above). If only one applies, write just that one option/number "
-            "on each line.\n"
+            f"the same option you just named there ({_multi_select_example()}). "
+            "If only one applies, write just that one option/number on each line.\n"
             "Only include an option if your reasoning above explicitly discussed evidence "
             "supporting it. Do NOT include an option 'by default', as a safety margin, or "
             "just because it is listed first -- every option you list on FINAL_OPTION must "

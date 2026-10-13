@@ -116,6 +116,7 @@ def apply_domain(guideline: bool = False, temperature: float = MYO_TEMPERATURE):
         prompts_myo.AGENTIC_EXTRACTOR_SUFFIX_TEMPLATE.format(no_evidence=agents.NO_EVIDENCE)
     )
     agents.EVALUATOR_SYSTEM_PROMPT = prompts_myo.EVALUATOR_SYSTEM_PROMPT
+    agents.MULTI_SELECT_EXAMPLE = prompts_myo.MULTI_SELECT_EXAMPLE
     pipeline.SECTION_QUERIES = SECTION_QUERIES
 
 
