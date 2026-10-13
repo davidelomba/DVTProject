@@ -19,7 +19,9 @@ import evaluate_predictions
 
 MYO_DIR = Path(__file__).resolve().parent
 
-config.SECTION_ORDER = ["E", "F"]
+# Same list as run_myo.SECTION_ORDER, repeated so scoring does not import the
+# pipeline and its langchain dependencies.
+config.SECTION_ORDER = ["A1", "B", "C", "E", "F"]
 
 # The records and their reference answers live beside this file, not in
 # data/synthetic_records.

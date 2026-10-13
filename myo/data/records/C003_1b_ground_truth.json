@@ -1,5 +1,20 @@
 {
   "record_id": "C003_1b",
+  "a1": {
+    "symptoms": [
+      "none of the above"
+    ]
+  },
+  "b": {
+    "features": [
+      "none of the above"
+    ]
+  },
+  "c": {
+    "markers": [
+      "None of the above (choose this option if whichever ones were tested, were within normal range)"
+    ]
+  },
   "e": {
     "findings": [
       "Paroxysmal or sustained atrial or ventricular arrhythmias (premature atrial or ventricular beats, and/or supraventricular or ventricular tachycardia, interventricular conduction delay, abnormal Q waves, low voltages): :e.g (Sinus tachycardia, SVT, atrial fibrillation, PVCs, VT, VF)"

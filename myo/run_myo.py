@@ -2,8 +2,9 @@
 Runs the pipeline over the myocarditis cases, in agentic_graph mode.
 
 Same code as the DVT runs: pipeline.run_pipeline, both agents, the verbatim
-evidence of agentic_graph. What differs is the schema, the two section queries
-and the terms naming the condition in the prompts. The cross-section rules are
+evidence of agentic_graph. What differs is the schema, the section queries, the
+terms naming the condition in the prompts and the temperature of Agents 1 and 2,
+MYO_TEMPERATURE unless --temperature overrides it. The cross-section rules are
 off, not translated: they encode the DVT form, and a myocarditis run measures
 the architecture without them.
 
@@ -42,10 +43,29 @@ from langchain_core.tools.retriever import create_retriever_tool
 
 MYO_DIR = Path(__file__).resolve().parent
 
+# Sections in the order of the printed questionnaire.
+SECTION_ORDER = ["A1", "B", "C", "E", "F"]
+
+# Temperature of Agents 1 and 2. Agent 3 keeps config.VERIFIER_TEMPERATURE. No
+# seed is set, so each run samples independently.
+MYO_TEMPERATURE = 0.5
+
 # One query per section, written from the option list rather than from the
 # finding expected: on the DVT form the queries written the other way covered
-# only part of their section and failed on every `other` branch.
+# only part of their section and failed on every `other` branch. Each names the
+# section's options in the questionnaire's terms, the words a record uses for
+# them, and the no-result branch.
 SECTION_QUERIES = {
+    "A1": "cardiac symptoms reported by the patient: acute chest pain or chest "
+          "pressure, palpitations, dyspnea or shortness of breath at rest, on "
+          "exertion or lying down, diaphoresis or sweating, sudden death or "
+          "cardiac arrest, no cardiac symptoms, symptoms not reported",
+    "B": "physical examination of the heart: pericardial friction rub, pulsus "
+         "paradoxus, distant or muffled heart sounds, cardiac auscultation, "
+         "physical exam consistent with pericarditis, examination not reported",
+    "C": "inflammatory markers in blood tests: erythrocyte sedimentation rate "
+         "ESR, C-reactive protein CRP, high-sensitivity CRP, D-dimer, values "
+         "above or within the normal range, inflammatory markers not tested",
     "E": "electrocardiogram ECG findings: rhythm, atrial or ventricular "
          "arrhythmia, tachycardia, atrial fibrillation, AV block, bundle branch "
          "block, conduction delay, ST segment or T wave abnormality, Q waves, "
@@ -58,15 +78,17 @@ SECTION_QUERIES = {
 }
 
 
-def apply_domain(guideline: bool = False):
+def apply_domain(guideline: bool = False, temperature: float = MYO_TEMPERATURE):
     """Points the shared modules at the myocarditis sections and prompts.
 
     Args:
         guideline: whether Agent 2 receives the context retrieved from the
             myocarditis paper.
+        temperature: temperature of Agents 1 and 2.
     """
 
-    config.SECTION_ORDER = ["E", "F"]
+    config.SECTION_ORDER = SECTION_ORDER
+    config.LLM_TEMPERATURE = temperature
     config.EXTRACTOR_MODE = "agentic_graph"
     config.BRIGHTON_CONTEXT_ENABLED = guideline
     # Its own store: build_brighton_kb reloads an index already on disk without
@@ -123,13 +145,17 @@ def main():
              "which on the longest records puts the total near 4096 tokens",
     )
     parser.add_argument(
+        "--temperature", type=float, default=MYO_TEMPERATURE,
+        help=f"temperature of Agents 1 and 2 (default {MYO_TEMPERATURE})",
+    )
+    parser.add_argument(
         "--brighton-pdf", type=Path, default=MYO_DIR / "main.pdf",
         help="the myocarditis case definition; indexed even when the context "
              "is off, and into myo/vectorstores rather than the shared store",
     )
     args = parser.parse_args()
 
-    pipeline = apply_domain(guideline=args.guideline)
+    pipeline = apply_domain(guideline=args.guideline, temperature=args.temperature)
     if args.num_ctx is not None:
         config.LLM_NUM_CTX = args.num_ctx
 
@@ -148,7 +174,8 @@ def main():
           f"{config.EVALUATOR_LLM_MODEL_NAME}\nguideline context "
           f"{config.BRIGHTON_CONTEXT_ENABLED} from {args.brighton_pdf.name}, "
           f"index in {config.BRIGHTON_KB_PERSIST_DIR}\n"
-          f"context window {config.LLM_NUM_CTX} tokens\n"
+          f"context window {config.LLM_NUM_CTX} tokens, temperature "
+          f"{config.LLM_TEMPERATURE}\n"
           f"-> {args.output_dir}\n",
           flush=True)
 

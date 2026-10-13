@@ -1,5 +1,21 @@
 {
   "record_id": "C002_1a",
+  "a1": {
+    "symptoms": [
+      "acute chest pain or pressure",
+      "dyspnea at rest, with exercise or lying down"
+    ]
+  },
+  "b": {
+    "features": [
+      "none of the above"
+    ]
+  },
+  "c": {
+    "markers": [
+      "None of the above (choose this option if whichever ones were tested, were within normal range)"
+    ]
+  },
   "e": {
     "findings": [
       "ST, segment or T, wave abnormalities (elevation or inversion)"

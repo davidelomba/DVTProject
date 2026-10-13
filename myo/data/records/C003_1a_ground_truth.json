@@ -1,5 +1,20 @@
 {
   "record_id": "C003_1a",
+  "a1": {
+    "symptoms": [
+      "none of the above"
+    ]
+  },
+  "b": {
+    "features": [
+      "none of the above"
+    ]
+  },
+  "c": {
+    "markers": [
+      "None of the above (choose this option if whichever ones were tested, were within normal range)"
+    ]
+  },
   "e": {
     "findings": [
       "No abnormalities seen on ECG"

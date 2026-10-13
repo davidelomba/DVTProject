@@ -3,7 +3,8 @@ Turns MYO_dummy_cases.xlsx into the record and ground-truth files the pipeline
 and evaluate_predictions.py read.
 
 One .txt per row holding the text of the dummy case, and one
-<record_id>_ground_truth.json beside it holding the two answers, in the shape
+<record_id>_ground_truth.json beside it holding the answers of the sections in
+ANSWER_COLUMNS, in the shape
 models_myo produces. record_id is Case_id and Variation_id joined, so the rows
 of one base case stay distinguishable.
 
@@ -32,6 +33,24 @@ RECORDS_DIR = Path(__file__).resolve().parent / "data" / "records"
 # Spreadsheet wording -> the option as models_myo spells it. The keys are
 # compared after collapsing whitespace and lowercasing.
 OPTION_ALIASES = {
+    "A1": {
+        "acute chest pain": "acute chest pain or pressure",
+        "chest pain": "acute chest pain or pressure",
+        "dyspnea": "dyspnea at rest, with exercise or lying down",
+        "dyspenea": "dyspnea at rest, with exercise or lying down",
+        "none": "none of the above",
+        "unknown if any of the above are present or absent":
+            "unknown if any of 1-5 present or absent",
+    },
+    "B": {
+        "none": "none of the above",
+    },
+    "C": {
+        "none": "None of the above (choose this option if whichever ones were "
+                "tested, were within normal range)",
+        "none of the above": "None of the above (choose this option if whichever "
+                             "ones were tested, were within normal range)",
+    },
     "E": {
         "paroxysmal or sustained atrial or ventricular arrhythmias":
             "Paroxysmal or sustained atrial or ventricular arrhythmias (premature "
@@ -53,7 +72,13 @@ OPTION_ALIASES = {
 }
 
 # Spreadsheet column -> section key.
-ANSWER_COLUMNS = {"E": "E_ECG", "F": "F_echocardiogram"}
+ANSWER_COLUMNS = {
+    "A1": "A1",
+    "B": "B_Physical exam",
+    "C": "C_Inflammatory_markers",
+    "E": "E_ECG",
+    "F": "F_echocardiogram",
+}
 
 
 def _valid_options(section_key: str) -> list:
@@ -74,7 +99,7 @@ def parse_answer(section_key: str, raw: str) -> list:
     """The options one spreadsheet cell names.
 
     Args:
-        section_key: E or F.
+        section_key: a key of ANSWER_COLUMNS.
         raw: the cell, one or more options joined by +.
 
     Returns:
@@ -134,8 +159,9 @@ def main():
                   encoding="utf-8") as handle:
             json.dump(answers, handle, indent=2, ensure_ascii=False)
         written += 1
-        print(f"{record_id:12s} {len(text):5d} characters   "
-              f"E {len(answers['e']['findings'])}   F {len(answers['f']['findings'])}")
+        counts = "   ".join(f"{key} {len(next(iter(answers[key.lower()].values())))}"
+                            for key in ANSWER_COLUMNS)
+        print(f"{record_id:12s} {len(text):5d} characters   {counts}")
 
     print(f"\n{written} records written to {args.output_dir}")
 
