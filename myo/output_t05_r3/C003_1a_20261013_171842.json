@@ -1,0 +1,82 @@
+{
+  "record_id": "C003_1a",
+  "a1": {
+    "symptoms": [
+      "unknown if any of 1-5 present or absent"
+    ]
+  },
+  "b": {
+    "features": [
+      "unknown if any of 1-3 present or absent"
+    ]
+  },
+  "c": {
+    "markers": [
+      "None tested, or tested but no results or unknown if tested"
+    ]
+  },
+  "e": {
+    "findings": [
+      "No abnormalities seen on ECG"
+    ]
+  },
+  "f": {
+    "findings": [
+      "New focal or diffuse left or right ventricular function abnormalities (e.g. decreased ejection fraction)",
+      "Global systolic or diastolic function depression/abnormality - (*Decreased longitudinal and circumferential strain and strain rates on tissue Doppler)",
+      "Evidence of abnormal fluid collection or pericardial inflammation"
+    ]
+  },
+  "_verifier": {
+    "A1": {
+      "answer": {
+        "agree": false,
+        "p_agree": 0.3191
+      },
+      "reasoning": {
+        "agree": true,
+        "p_agree": 0.6635
+      }
+    },
+    "B": {
+      "answer": {
+        "agree": true,
+        "p_agree": 0.9709
+      },
+      "reasoning": {
+        "agree": true,
+        "p_agree": 0.9978
+      }
+    },
+    "C": {
+      "answer": {
+        "agree": true,
+        "p_agree": 0.5975
+      },
+      "reasoning": {
+        "agree": true,
+        "p_agree": 0.9984
+      }
+    },
+    "E": {
+      "answer": {
+        "agree": true,
+        "p_agree": 0.9963
+      },
+      "reasoning": {
+        "agree": false,
+        "p_agree": 0.3037
+      }
+    },
+    "F": {
+      "answer": {
+        "agree": true,
+        "p_agree": 0.9157
+      },
+      "reasoning": {
+        "agree": true,
+        "p_agree": 0.9858
+      }
+    }
+  }
+}

@@ -1,0 +1,83 @@
+{
+  "record_id": "C002_1a",
+  "a1": {
+    "symptoms": [
+      "acute chest pain or pressure",
+      "dyspnea at rest, with exercise or lying down"
+    ]
+  },
+  "b": {
+    "features": [
+      "none of the above"
+    ]
+  },
+  "c": {
+    "markers": [
+      "None tested, or tested but no results or unknown if tested"
+    ]
+  },
+  "e": {
+    "findings": [
+      "ST, segment or T, wave abnormalities (elevation or inversion)"
+    ]
+  },
+  "f": {
+    "findings": [
+      "New focal or diffuse left or right ventricular function abnormalities (e.g. decreased ejection fraction)",
+      "Segmental wall motion abnormalities",
+      "Global systolic or diastolic function depression/abnormality - (*Decreased longitudinal and circumferential strain and strain rates on tissue Doppler)"
+    ]
+  },
+  "_verifier": {
+    "A1": {
+      "answer": {
+        "agree": true,
+        "p_agree": 0.9759
+      },
+      "reasoning": {
+        "agree": true,
+        "p_agree": 0.9945
+      }
+    },
+    "B": {
+      "answer": {
+        "agree": true,
+        "p_agree": 0.9955
+      },
+      "reasoning": {
+        "agree": true,
+        "p_agree": 0.9798
+      }
+    },
+    "C": {
+      "answer": {
+        "agree": false,
+        "p_agree": 0.3332
+      },
+      "reasoning": {
+        "agree": true,
+        "p_agree": 0.995
+      }
+    },
+    "E": {
+      "answer": {
+        "agree": true,
+        "p_agree": 0.9496
+      },
+      "reasoning": {
+        "agree": true,
+        "p_agree": 0.985
+      }
+    },
+    "F": {
+      "answer": {
+        "agree": true,
+        "p_agree": 0.9405
+      },
+      "reasoning": {
+        "agree": true,
+        "p_agree": 0.9985
+      }
+    }
+  }
+}
