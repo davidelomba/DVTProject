@@ -15,6 +15,8 @@
 #   STRIPPED=1   also the DVT corpus stripped of hints, context, headings and
 #                rules (myo/run_dvt_stripped.py), 46 errors to score the
 #                verifier on
+#   RUN_TAG=...  names the output directories myo/output_<RUN_TAG>_r1 to _r3
+#                and myo/output_<RUN_TAG>_t0; t05 by default
 #   EVAL_ONLY=1  skip the runs and score the directories already on disk
 #   FORCE=1      run into an output directory that already holds files
 #   PYTHON=...   the interpreter, python by default
@@ -37,8 +39,9 @@ fi
 EXPECTED_HINTS="1545bbe30d9a"
 EXPECTED_QUERIES="45a59c4e6d03"
 GT="./myo/data/records"
-RUNS=(./myo/output_t05_r1 ./myo/output_t05_r2 ./myo/output_t05_r3)
-T0_DIR=./myo/output_t0
+RUN_TAG="${RUN_TAG:-t05}"
+RUNS=(./myo/output_${RUN_TAG}_r1 ./myo/output_${RUN_TAG}_r2 ./myo/output_${RUN_TAG}_r3)
+T0_DIR=./myo/output_${RUN_TAG}_t0
 STRIPPED_DIR=./output_stripped_verifier
 
 stamp() { date '+%Y-%m-%d %H:%M:%S'; }
@@ -63,7 +66,7 @@ preflight() {
     fi
 
     echo "config.py:"
-    grep -E '^(LLM_MODEL_NAME|EVALUATOR_LLM_MODEL_NAME|AGENTIC_LLM_MODEL_NAME|LLM_REASONING|LLM_NUM_CTX|EXTRACTOR_MODE|VERIFIER_ENABLED|VERIFIER_INPUTS|VERIFIER_TEMPERATURE|VERIFIER_NUM_CTX)' config.py
+    grep -E '^(LLM_MODEL_NAME|EVALUATOR_LLM_MODEL_NAME|AGENTIC_LLM_MODEL_NAME|LLM_REASONING|LLM_NUM_PREDICT|LLM_NUM_CTX|EXTRACTOR_MODE|VERIFIER_ENABLED|VERIFIER_INPUTS|VERIFIER_TEMPERATURE|VERIFIER_NUM_CTX)' config.py
 
     # What a myocarditis run will send, read through the same code it runs
     EXPECTED_HINTS="$EXPECTED_HINTS" EXPECTED_QUERIES="$EXPECTED_QUERIES" "$PYTHON" - <<'EOF'
@@ -114,11 +117,13 @@ logs = sorted(Path(sys.argv[1]).glob("*_audit_log.json"))
 if not logs:
     print(f"no audit log in {sys.argv[1]}")
     sys.exit(1)
-temps, hints, queries, methods, errors, overflow, seconds = set(), set(), set(), Counter(), [], 0, []
+temps, caps, hints, queries, methods, errors, overflow, seconds = set(), set(), set(), set(), Counter(), [], 0, []
 for path in logs:
     audit = json.loads(path.read_text(encoding="utf-8"))
     rc = audit.get("_run_config", {})
-    temps.add(rc.get("generation", {}).get("temperature"))
+    generation = rc.get("generation", {})
+    temps.add(generation.get("temperature"))
+    caps.add((generation.get("num_predict"), generation.get("num_ctx")))
     hints.add(rc.get("section_hints_fingerprint", {}).get("all"))
     queries.add(rc.get("section_queries_fingerprint", {}).get("all"))
     for key, entry in audit.items():
@@ -131,7 +136,8 @@ for path in logs:
             overflow += bool(outcome.get("overflow"))
             if outcome.get("seconds") is not None:
                 seconds.append(outcome["seconds"])
-print(f"{len(logs)} audit logs; temperature {temps}; hints {hints}; queries {queries}")
+print(f"{len(logs)} audit logs; temperature {temps}; (num_predict, num_ctx) {caps}; "
+      f"hints {hints}; queries {queries}")
 print(f"verifier methods {dict(methods)}; overflow {overflow}; "
       f"seconds per request median {sorted(seconds)[len(seconds) // 2] if seconds else 'n/a'}")
 print(f"failed sections: {', '.join(errors) if errors else 'none'}")
