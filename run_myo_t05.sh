@@ -36,7 +36,7 @@ if [ -f .venv/bin/activate ]; then
     source .venv/bin/activate
 fi
 
-EXPECTED_HINTS="c65a9e1960da"
+EXPECTED_HINTS="9029b6f01738"
 EXPECTED_QUERIES="45a59c4e6d03"
 GT="./myo/data/records"
 RUN_TAG="${RUN_TAG:-t05}"

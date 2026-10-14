@@ -1263,10 +1263,18 @@ not say which governs, which is what the clinician question below is asking.
   counterpart in a checkbox form. The empty-answer clause goes only to the
   sections in `agents.EMPTY_ANSWER_SECTIONS`, A3_2 and B1_2 on DVT and none on
   myocarditis, where E and F reached it only for lacking a none-of-the-above
-  option; DVT prompts are byte-identical. Hints `c65a9e1960da`; the run to
-  compare is `RUN_TAG=t05_np2048_v2`.
-- **C's warning that a viral PCR is not CRP** sits next to Italian records where
-  PCR is CRP, and C0001_1f was read that way once.
+  option; DVT prompts are byte-identical. The other hints were then checked
+  sentence by sentence against the earlier prompts: A1 lost `Do not select
+  sudden death unless the record reports it`, which turned note 2 (do not
+  answer No to an unmentioned sudden death) into a rule against Yes; B now says
+  to select a mentioned friction rub without inferring the other features; C
+  lost the viral-PCR clause; E no longer lists PVCs under the arrhythmia option,
+  which contradicted its own rule sending a named pattern to the option naming
+  it (option 7), and admits abnormalities typically considered nonspecific, as
+  E.2 does; F says that a report calling the echocardiogram normal gives `No
+  abnormalities seen on ECHO`, a sufficient condition where it had read only
+  when. The C passage on None tested is corrupted in the PDF itself. Hints
+  `9029b6f01738`; the run to compare is `RUN_TAG=t05_np2048_v2`.
 - **Questions for the authors of the myocarditis ground truth**, from the
   dummy cases read against the form and the sources:
   - Is a decreased ejection fraction option 2 or option 4 of F?

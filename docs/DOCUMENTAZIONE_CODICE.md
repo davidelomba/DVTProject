@@ -1022,8 +1022,7 @@ frase per frase:
 | A1 | termini simili non sono equivalenti; un'aritmia all'ECG non è palpitazione | prompt precedenti, A1, nota 1 |
 | A1 | dolore addominale, alla spalla o alla schiena sono sintomi di A2, non dolore toracico | prompt precedenti, A2, note 1 e 5, e il modulo; riformulata perché il paper (§4.4) li chiama varianti del dolore toracico |
 | A1 | sintomo non menzionato = unknown; «none of the above» solo con assenza esplicita | prompt precedenti, A1, regole 3-4; la regola su «none» è una scelta di formulazione |
-| A1 | sudden death solo se riportata | prompt precedenti, A1, nota 2 |
-| B | se c'è lo sfregamento, solo quello; «confirmed … without details» solo se l'esame conferma la pericardite senza reperti | prompt precedenti, B, note e Reasoning Guidelines |
+| B | se c'è lo sfregamento, selezionarlo senza dedurne gli altri segni; «confirmed … without details» solo se l'esame conferma la pericardite senza reperti | prompt precedenti, B, note e Reasoning Guidelines |
 | B | nessun reperto riportato = unknown | prompt precedenti, B, Reasoning Guidelines |
 | B | «none of the above» solo se i segni sono stati cercati e non trovati | formulazione nuova |
 | B | i toni attenuati comprendono i toni ovattati (*muffled*) | Companion Guide, Tabella 4.3.B |
@@ -1031,13 +1030,13 @@ frase per frase:
 | C | valore più alto; conversioni di unità | prompt precedenti, C.1-C.4; Companion Guide, §4.5 |
 | C | non dedurre aumento o assenza dai sintomi; «confirmed …» solo se dichiarato | prompt precedenti, C, Reasoning Guidelines |
 | C | «None of the above» richiede almeno un marcatore dosato e tutti normali; nessuno citato = «None tested» | testo dell'opzione 5 del modulo e prompt precedenti, C |
-| C | troponina, CK-MB, leucociti, procalcitonina e PCR virale non sono marcatori di questa sezione | formulazione nuova; il paper (Tabella 4) elenca i leucociti fra gli esami dell'infiammazione |
+| C | troponina, CK-MB, leucociti e procalcitonina non sono marcatori di questa sezione | formulazione nuova; il paper (Tabella 4) elenca i leucociti fra gli esami dell'infiammazione |
 | E | solo menzioni dirette; ECG non eseguito = solo la prima opzione; un pattern specifico va alla sua opzione | prompt precedenti, E, Reasoning Guidelines; la regola su «No abnormalities» delle Reasoning Guidelines riguarda il «No» sulle singole righe del formato sì/no/sconosciuto e non ha un corrispettivo nel formato a caselle |
-| E | tachicardia sinusale, SVT, FA, PVC, TV, FV appartengono a «Paroxysmal …» | esempi nel testo dell'opzione (dal paper, Tabella 5) |
-| E | «Nonspecific …» solo se il referto le chiama aspecifiche | prompt precedenti, E.2 |
+| E | tachicardia sinusale, SVT, FA, TV, FV appartengono a «Paroxysmal …» | esempi nel testo dell'opzione (dal paper, Tabella 5); i PVC no, perché l'opzione 7 li nomina e la regola sul pattern specifico li porta lì |
+| E | «Nonspecific …» solo se il referto le chiama aspecifiche o se sono considerate tipicamente aspecifiche | prompt precedenti, E.2 |
 | F | definizione dell'opzione 2 (ipocinesia, acinesia, FE ridotta) e della dilatazione | prompt precedenti, F, istruzione 4, quasi alla lettera; *chamber enlargement* dalle Reasoning Guidelines |
 | F | definizione delle anomalie segmentali; versamento o infiammazione pericardica = opzione 8 | prompt precedenti, F, Reasoning Guidelines, riformulate |
-| F | ECO non eseguito = solo la prima opzione; «No abnormalities» solo se il referto dice normale | prompt precedenti, F, Reasoning Guidelines; della seconda regola solo la metà che non contraddice le istruzioni 2-3 |
+| F | ECO non eseguito = solo la prima opzione; referto che dice l'ECO normale = «No abnormalities» | prompt precedenti, F, Reasoning Guidelines; della seconda regola solo la metà che non contraddice le istruzioni 2-3, come condizione sufficiente |
 | F | «New»: senza un esame precedente, nuova se migliora o peggiora ai controlli | paper, Tabella 1, nota c (definizione CDC 2003), riformulata |
 | F | raccolta anomala di liquido pericardico: versamento anteriore e posteriore, o ampio versamento posteriore isolato | paper, Tabella 1 (CDC, pericardite confermata), riformulata |
 

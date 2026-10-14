@@ -115,13 +115,12 @@ _SECTION_HINT_TEXTS = {
         "symptom the evidence does not mention is unknown, not absent. Choose "
         "'none of the above' only when the record explicitly states that the "
         "patient did not have these symptoms; when it says nothing about them, "
-        "choose 'unknown if any of 1-5 present or absent'. Do not select sudden "
-        "death unless the record reports it."
+        "choose 'unknown if any of 1-5 present or absent'."
     ),
     "B": (
         "Select a feature only if the physical examination in the evidence "
-        "reports it: if a pericardial friction rub is mentioned, select that "
-        "feature alone. Distant heart sounds include muffled heart sounds. If no examination findings are reported at all, choose "
+        "reports it: if a pericardial friction rub is mentioned, select it, and do "
+        "not infer the other features from it. Distant heart sounds include muffled heart sounds. If no examination findings are reported at all, choose "
         "'unknown if any of 1-3 present or absent'. Choose 'none of the above' "
         "only when the evidence states that these features were looked for and "
         "not found, for example 'no pericardial friction rub'. If the record "
@@ -141,8 +140,7 @@ _SECTION_HINT_TEXTS = {
         "every measured one was within range; if none of them is mentioned, "
         "choose 'None tested, or tested but no results or unknown if tested'. "
         "Other tests are not among the markers of this section: troponin, CK-MB, "
-        "white cell count, procalcitonin, and a PCR test for viruses (polymerase "
-        "chain reaction), which is not CRP. Select '*confirmed positive inflammatory "
+        "white cell count and procalcitonin. Select '*confirmed positive inflammatory "
         "marker conforming myocarditis without details.' only if the record "
         "states that, or an equivalent, explicitly."
     ),
@@ -151,11 +149,11 @@ _SECTION_HINT_TEXTS = {
         "was not done or its result is not reported, choose only the first "
         "option. If a specific pattern is described (for example PACs, ST "
         "elevation, PR-segment depression), select only the option that names "
-        "that pattern. Sinus tachycardia, SVT, atrial fibrillation, PVCs, VT and "
+        "that pattern. Sinus tachycardia, SVT, atrial fibrillation, VT and "
         "VF belong to 'Paroxysmal or sustained atrial or ventricular "
         "arrhythmias', as its examples say. Choose '*Nonspecific abnormalities other than those "
         "listed above' only for abnormalities the record explicitly calls "
-        "nonspecific, such as 'nonspecific ST changes' or 'borderline low "
+        "nonspecific or that are typically considered nonspecific, such as 'nonspecific ST changes' or 'borderline low "
         "voltage'."
     ),
     "F": (
@@ -177,8 +175,8 @@ _SECTION_HINT_TEXTS = {
         "abnormal collection of pericardial fluid is, for example, an anterior "
         "and posterior effusion, or a large posterior effusion alone.\n"
         "If the echocardiogram was not done or its result is not reported, "
-        "choose only the first option. Choose 'No abnormalities seen on ECHO' "
-        "only when the report says the echocardiogram was normal."
+        "choose only the first option. If the report says the echocardiogram was "
+        "normal, choose 'No abnormalities seen on ECHO'."
     ),
 }
 
