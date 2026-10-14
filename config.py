@@ -14,7 +14,7 @@ LLM_MODEL_NAME = "llama3:8b-instruct-q4_0"  # Agent 1 (extractor), "rag" and "fu
 EVALUATOR_LLM_MODEL_NAME = "qwen3.6:27b"  # Agent 2 (evaluator), all modes
 AGENTIC_LLM_MODEL_NAME = "qwen3.6:27b"  # Agent 1's search step, "agentic_graph" mode only
 LLM_TEMPERATURE = 0.0  # deterministic output for all agents
-LLM_NUM_PREDICT = 1024  # token cap: prevents runaway generation. The two
+LLM_NUM_PREDICT = 2048  # token cap: prevents runaway generation. The two
                         # answer lines close the response, so a cap the model
                         # reaches first costs the whole section.
 
@@ -29,9 +29,10 @@ LLM_NUM_GPU = 999
 # nothing to Ollama, leaving the model's own default.
 LLM_REASONING = False
 
-# Size of the context window (prompt + answer) in tokens: 4096 is the default value on mari. 
-# If this threshold is exceeded, Ollama drops the start of the prompt
-LLM_NUM_CTX = 4096
+# Size of the context window (prompt + answer) in tokens. If this threshold is
+# exceeded, Ollama drops the start of the prompt. It has to hold the longest
+# prompt plus LLM_NUM_PREDICT.
+LLM_NUM_CTX = 8192
 LLM_REQUEST_TIMEOUT = 180  # seconds; allows time for reasoning on slower hardware
 
 # Agent 3 as a verifier (verifier.py). After the cross-section rules, asks the
@@ -44,8 +45,8 @@ VERIFIER_ENABLED = True
 VERIFIER_INPUTS = ("answer", "reasoning")
 VERIFIER_TEMPERATURE = 0.0
 
-# Larger than LLM_NUM_CTX: the "reasoning" variant adds up to LLM_NUM_PREDICT
-# tokens to a prompt that already reaches about 3200.
+# Has to hold the "reasoning" variant, which adds up to LLM_NUM_PREDICT tokens
+# of Agent 2's reasoning to a prompt that already reaches about 3200.
 VERIFIER_NUM_CTX = 8192
 
 # Multilingual embedding model. Used in every mode: the Brighton store is

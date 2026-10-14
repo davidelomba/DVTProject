@@ -130,6 +130,7 @@ python export_prompts.py                          # DVT prompts, queries, hints 
 python myo/run_myo.py --guideline --output-dir ./myo/output_x   # myocarditis, five sections
 python myo/evaluate_myo.py ./myo/output_x
 python myo/export_prompts_myo.py                  # myocarditis texts -> myo/prompts_export/
+bash run_myo_t05.sh                               # the three runs at 0.5, checks and scoring, on mari
 ```
 
 `evaluate_verifier` and `agreement_runs` take `--ground-truth ./myo/data/records`
@@ -139,7 +140,8 @@ for a myocarditis run. `evaluate_predictions`, `compare_runs`,
 Measured from the audit-log timestamps on mari (2 x RTX 2080 Ti), median of the
 gaps between consecutive records: the reference costs 165 seconds a record
 without Agent 3 and 185 with the confidence Agent 3, and a full run over the 40
-records takes 1h56. The verifier's cost has not been measured.
+records takes 1h56. The verifier costs about 28 seconds a record on the
+myocarditis runs, two requests for each of five sections; not measured on DVT.
 What sets the cost is how many model tags a run loads. `raw_record` loads one
 and costs 96, 1h10 for the corpus; the arms whose Agent 1 and Agent 2 share a
 tag, the reference among them, cost 157 to 190; every arm running two different
@@ -185,6 +187,11 @@ VERIFIER_ENABLED         = True
 
 The reference run itself ran the confidence Agent 3 in place of the verifier;
 Agent 3 changes no answer either way.
+
+`config.py` currently carries `LLM_NUM_PREDICT` 2048 and `LLM_NUM_CTX` 8192, set
+for the myocarditis check on the sections that failed at the 1024-token cap. The
+reference is 1024 and 4096: set them back before a DVT run meant to be compared
+with it.
 
 The reference run is `output_a32_ref`, 2026-10-02: hints revised against the
 printed questionnaire, with A3_2's hint reduced to what the questionnaire states
@@ -969,6 +976,35 @@ not say which governs, which is what the clinician question below is asking.
   of 2026-10-04 the comparison reverses**: SYN_12 and SYN_23 are right with the
   shortened hint and wrong with the old one, so the shortened hint scores 398
   against 397 and is +1 or +2 in every pair of arms; only SYN_14 remains.
+- **Five myocarditis sections at temperature 0.5: E holds, F does not move, and
+  the other errors are the ground truth's conventions.** Three runs on mari,
+  `myo/output_t05_r1` to `r3`, hints `1545bbe30d9a`, queries `45a59c4e6d03`,
+  identical `_run_config`; whether they carried the search-tool description
+  rewritten on 2026-10-13 is not recorded. Exact match on the sections answered:
+  A1 14/17 in every run, B 11/16, 10/15, 11/17, C 11/17 in every run, E 16/16,
+  17/17, 17/17, F 3/16, 4/17, 3/16; micro 67.1%, 67.5%, 66.7%, macro kappa
+  0.497, 0.496, 0.482. **Six sections of 255 failed**, three attempts each at the
+  1024-token cap; 44 of 293 Agent 2 calls reached the cap. Outside F every error,
+  14, 14 and 15 a run, is one of two conventions: `none of the above` against
+  `unknown` (A1 on C003 x3, B on C003 x3 and C002_1c one way, C005 the other) and
+  `None tested` against `None of the above` in C (C002 and C003, which carry no
+  marker; the model follows the wording of the form's option 5). C002 and C003
+  are coded by one author, C0001, C004 and C005 by the other. F keeps the option
+  distribution of the earlier arm, option 2 selected 11 to 13 times against 11,
+  option 4 4 to 6 against 5, so the hint from the earlier prompts does not move
+  the 2/3/4 distinction; C002_1a and 1b now add option 4 for the reduced global
+  strain the option's parenthesis names. **Agreement**: Fleiss kappa 1.000 on A1
+  and C, 0.938 on E, 0.670 on B and 0.609 on F, 0.893 overall, the B and E
+  divergences being almost all failed sections; unanimous answers are right 74%
+  of the time, split ones 14%, and the agreement share has AUROC 0.662.
+  **Verifier**: AUROC of P(YES) 0.537 for `answer` and 0.637 for `reasoning`
+  over the three runs. `reasoning` answers NO 2, 1 and 6 times in 82 to 84
+  verdicts, approving 25, 26 and 24 errors of 27 or 28; `answer` rejects every
+  correct `unknown` on A1 and approves every error of B and most of F. It costs
+  about 2 seconds a request and 9.5 for the first of each record, the first at
+  `num_ctx` 8192 after calls at 4096, consistent with a model reload, not
+  verified: about 28 seconds a record, the runs taking 169 to 189 seconds a
+  record and 49 to 53 minutes.
 - Read the metrics in this order: majority baseline and gain, then kappa, then
   accuracy with its interval. Accuracy alone ranked F above A3_2 under the 8B
   model, where F gained nothing over a constant answer and A3_2 gained 13
@@ -1187,21 +1223,20 @@ not say which governs, which is what the clinician question below is asking.
   3 sections lost. Realistic-length records will lengthen the prompt by several
   hundred tokens (an estimate): run a token check on the first batch, then set
   the window (likely 8192) and the cap by that rule and measure them as one arm.
-- **The verifier has not been run on real models.** Checked with fake chat
-  models, fake embeddings and a fake Ollama endpoint: a full myocarditis run of
-  17 records, three times, and one DVT record, where both rule-written sections
-  took their source's verdict. What it is worth, answer variant against
-  reasoning variant, and what it costs per record, is the first measurement to
-  take. The myocarditis corpus is likely to have few errors to score it on;
-  `myo/run_dvt_stripped.py` gives 46 on DVT. The confidence Agent 3 could not
-  flag an answer wrong for lack of evidence, because it read the same fragments
-  as Agent 2; the verifier reads them too.
-- **The myocarditis arm with five sections, temperature 0.5 and hints is not
-  measured yet.** The plan is three runs with every setting fixed, scored with
-  `myo/evaluate_myo.py`, `evaluate_verifier.py` and `agreement_runs.py`. The
-  runs differ from the earlier myocarditis arms in sections, queries, hints and
-  temperature at once, so a change on E or F is not attributable to one of
-  them; a run at temperature 0 would separate the temperature.
+- **The verifier needs a corpus with more errors.** On the myocarditis runs
+  the errors sit in two coding conventions and in F; `myo/run_dvt_stripped.py`
+  gives 46 errors on DVT and has not been run with the verifier. The confidence
+  Agent 3 could not flag an answer wrong for lack of evidence, because it read
+  the same fragments as Agent 2; the verifier reads them too.
+- **The temperature alone is not measured.** The three myocarditis runs differ
+  from the earlier arms in sections, queries, hints and temperature at once; a
+  run at temperature 0 would separate the temperature and say whether the six
+  failed sections and the 44 calls at the token cap come from sampling.
+- **Six myocarditis sections failed at the 1024-token cap.** On B the model
+  alternates between `none of the above` and `unknown`, citing the hint's rule
+  that `none` needs the signs to have been looked for, and does not conclude.
+  The constraint is the one in the `LLM_NUM_PREDICT` item above; at 4096 the
+  prompts leave room for a larger cap.
 - **Questions for the authors of the myocarditis ground truth**, from the
   dummy cases read against the form and the sources:
   - Is a decreased ejection fraction option 2 or option 4 of F?
