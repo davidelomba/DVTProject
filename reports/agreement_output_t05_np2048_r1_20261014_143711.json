@@ -1,0 +1,271 @@
+{
+  "overall": {
+    "records": 85,
+    "fleiss_kappa": 0.8759769228189045,
+    "gwet_ac1": 0.8817567792646641,
+    "unanimous": 0.8352941176470589,
+    "accuracy_per_run": [
+      0.6823529411764706,
+      0.6588235294117647,
+      0.6352941176470588
+    ],
+    "accuracy_majority": 0.6470588235294118,
+    "no_majority": 1,
+    "accuracy_when_unanimous": 0.7464788732394366,
+    "accuracy_when_split": 0.21428571428571427,
+    "auroc_agreement_share": 0.6606116584564861,
+    "auroc_verifier": {
+      "answer": 0.5432060755336617,
+      "reasoning": 0.6444649698960043
+    }
+  },
+  "per_section": {
+    "A1": {
+      "records": 17,
+      "fleiss_kappa": 1.0,
+      "gwet_ac1": 1.0,
+      "unanimous": 1.0,
+      "accuracy_per_run": [
+        0.8235294117647058,
+        0.8235294117647058,
+        0.8235294117647058
+      ],
+      "accuracy_majority": 0.8235294117647058,
+      "no_majority": 0,
+      "accuracy_when_unanimous": 0.8235294117647058,
+      "accuracy_when_split": null,
+      "auroc_agreement_share": 0.5,
+      "auroc_verifier": {
+        "answer": 0.8412698412698413,
+        "reasoning": 0.8544973544973545
+      }
+    },
+    "B": {
+      "records": 17,
+      "fleiss_kappa": 0.7512195121951217,
+      "gwet_ac1": 0.8854576080853452,
+      "unanimous": 0.8823529411764706,
+      "accuracy_per_run": [
+        0.7647058823529411,
+        0.6470588235294118,
+        0.6470588235294118
+      ],
+      "accuracy_majority": 0.6470588235294118,
+      "no_majority": 0,
+      "accuracy_when_unanimous": 0.7333333333333333,
+      "accuracy_when_split": 0.3333333333333333,
+      "auroc_agreement_share": 0.5892857142857143,
+      "auroc_verifier": {
+        "answer": 0.30178571428571427,
+        "reasoning": 0.5348214285714286
+      }
+    },
+    "C": {
+      "records": 17,
+      "fleiss_kappa": 0.9177419354838708,
+      "gwet_ac1": 0.9250551065393091,
+      "unanimous": 0.9411764705882353,
+      "accuracy_per_run": [
+        0.6470588235294118,
+        0.5882352941176471,
+        0.6470588235294118
+      ],
+      "accuracy_majority": 0.6470588235294118,
+      "no_majority": 0,
+      "accuracy_when_unanimous": 0.625,
+      "accuracy_when_split": 0.6666666666666666,
+      "auroc_agreement_share": 0.4967105263157895,
+      "auroc_verifier": {
+        "answer": 0.9095394736842105,
+        "reasoning": 0.41776315789473684
+      }
+    },
+    "E": {
+      "records": 17,
+      "fleiss_kappa": 0.9378806333739341,
+      "gwet_ac1": 0.9534352887468613,
+      "unanimous": 0.9411764705882353,
+      "accuracy_per_run": [
+        0.9411764705882353,
+        1.0,
+        0.9411764705882353
+      ],
+      "accuracy_majority": 0.9411764705882353,
+      "no_majority": 0,
+      "accuracy_when_unanimous": 1.0,
+      "accuracy_when_split": 0.3333333333333333,
+      "auroc_agreement_share": 0.9795918367346939,
+      "auroc_verifier": {
+        "answer": 0.9387755102040817,
+        "reasoning": 0.9897959183673469
+      }
+    },
+    "F": {
+      "records": 17,
+      "fleiss_kappa": 0.5197309417040359,
+      "gwet_ac1": 0.5534286039194876,
+      "unanimous": 0.4117647058823529,
+      "accuracy_per_run": [
+        0.23529411764705882,
+        0.23529411764705882,
+        0.11764705882352941
+      ],
+      "accuracy_majority": 0.17647058823529413,
+      "no_majority": 1,
+      "accuracy_when_unanimous": 0.2857142857142857,
+      "accuracy_when_split": 0.13333333333333333,
+      "auroc_agreement_share": 0.6024390243902439,
+      "auroc_verifier": {
+        "answer": 0.2682926829268293,
+        "reasoning": 0.6804878048780488
+      }
+    }
+  },
+  "split_records": [
+    {
+      "record_id": "C0001_0_0",
+      "section": "F",
+      "answers": [
+        "['Evidence of abnormal fluid collection or pericardial inflammation', 'New focal or diffuse left or right ventricular function abnormalities (e.g. decreased ejection fraction)', 'Segmental wall motion abnormalities']",
+        "['New focal or diffuse left or right ventricular function abnormalities (e.g. decreased ejection fraction)', 'Segmental wall motion abnormalities']",
+        "['New focal or diffuse left or right ventricular function abnormalities (e.g. decreased ejection fraction)', 'Segmental wall motion abnormalities']"
+      ],
+      "truth": "['No abnormalities seen on ECHO']"
+    },
+    {
+      "record_id": "C0001_1a",
+      "section": "F",
+      "answers": [
+        "['Segmental wall motion abnormalities']",
+        "['New focal or diffuse left or right ventricular function abnormalities (e.g. decreased ejection fraction)', 'Segmental wall motion abnormalities']",
+        "['Evidence of abnormal fluid collection or pericardial inflammation', 'New focal or diffuse left or right ventricular function abnormalities (e.g. decreased ejection fraction)', 'Segmental wall motion abnormalities']"
+      ],
+      "truth": "['No abnormalities seen on ECHO']"
+    },
+    {
+      "record_id": "C0001_1b",
+      "section": "F",
+      "answers": [
+        "['Segmental wall motion abnormalities']",
+        "['Global systolic or diastolic function depression/abnormality - (*Decreased longitudinal and circumferential strain and strain rates on tissue Doppler)']",
+        "['Segmental wall motion abnormalities']"
+      ],
+      "truth": "['Global systolic or diastolic function depression/abnormality - (*Decreased longitudinal and circumferential strain and strain rates on tissue Doppler)']"
+    },
+    {
+      "record_id": "C0001_1c",
+      "section": "F",
+      "answers": [
+        "['Evidence of abnormal fluid collection or pericardial inflammation', 'New focal or diffuse left or right ventricular function abnormalities (e.g. decreased ejection fraction)', 'Segmental wall motion abnormalities']",
+        "['New focal or diffuse left or right ventricular function abnormalities (e.g. decreased ejection fraction)', 'Segmental wall motion abnormalities']",
+        "['New focal or diffuse left or right ventricular function abnormalities (e.g. decreased ejection fraction)', 'Segmental wall motion abnormalities']"
+      ],
+      "truth": "['Global systolic or diastolic function depression/abnormality - (*Decreased longitudinal and circumferential strain and strain rates on tissue Doppler)']"
+    },
+    {
+      "record_id": "C0001_1e",
+      "section": "F",
+      "answers": [
+        "['Segmental wall motion abnormalities']",
+        "['New focal or diffuse left or right ventricular function abnormalities (e.g. decreased ejection fraction)', 'Segmental wall motion abnormalities']",
+        "['New focal or diffuse left or right ventricular function abnormalities (e.g. decreased ejection fraction)', 'Segmental wall motion abnormalities']"
+      ],
+      "truth": "['Global systolic or diastolic function depression/abnormality - (*Decreased longitudinal and circumferential strain and strain rates on tissue Doppler)']"
+    },
+    {
+      "record_id": "C0001_1f",
+      "section": "C",
+      "answers": [
+        "['None of the above (choose this option if whichever ones were tested, were within normal range)']",
+        "['None tested, or tested but no results or unknown if tested']",
+        "['None of the above (choose this option if whichever ones were tested, were within normal range)']"
+      ],
+      "truth": "['None of the above (choose this option if whichever ones were tested, were within normal range)']"
+    },
+    {
+      "record_id": "C0001_1f",
+      "section": "F",
+      "answers": [
+        "['New focal or diffuse left or right ventricular function abnormalities (e.g. decreased ejection fraction)', 'Segmental wall motion abnormalities']",
+        "['Segmental wall motion abnormalities']",
+        "['New focal or diffuse left or right ventricular function abnormalities (e.g. decreased ejection fraction)', 'Segmental wall motion abnormalities']"
+      ],
+      "truth": "['Global systolic or diastolic function depression/abnormality - (*Decreased longitudinal and circumferential strain and strain rates on tissue Doppler)']"
+    },
+    {
+      "record_id": "C002_1b",
+      "section": "F",
+      "answers": [
+        "['New focal or diffuse left or right ventricular function abnormalities (e.g. decreased ejection fraction)', 'Segmental wall motion abnormalities']",
+        "['Global systolic or diastolic function depression/abnormality - (*Decreased longitudinal and circumferential strain and strain rates on tissue Doppler)', 'New focal or diffuse left or right ventricular function abnormalities (e.g. decreased ejection fraction)', 'Segmental wall motion abnormalities']",
+        "['Global systolic or diastolic function depression/abnormality - (*Decreased longitudinal and circumferential strain and strain rates on tissue Doppler)', 'New focal or diffuse left or right ventricular function abnormalities (e.g. decreased ejection fraction)', 'Segmental wall motion abnormalities']"
+      ],
+      "truth": "['New focal or diffuse left or right ventricular function abnormalities (e.g. decreased ejection fraction)', 'Segmental wall motion abnormalities']"
+    },
+    {
+      "record_id": "C002_1c",
+      "section": "F",
+      "answers": [
+        "['New focal or diffuse left or right ventricular function abnormalities (e.g. decreased ejection fraction)', 'Segmental wall motion abnormalities']",
+        "['New focal or diffuse left or right ventricular function abnormalities (e.g. decreased ejection fraction)', 'Segmental wall motion abnormalities']",
+        "['Global systolic or diastolic function depression/abnormality - (*Decreased longitudinal and circumferential strain and strain rates on tissue Doppler)', 'Segmental wall motion abnormalities']"
+      ],
+      "truth": "['New focal or diffuse left or right ventricular function abnormalities (e.g. decreased ejection fraction)', 'Segmental wall motion abnormalities']"
+    },
+    {
+      "record_id": "C003_1a",
+      "section": "E",
+      "answers": [
+        "[]",
+        "['No abnormalities seen on ECG']",
+        "[]"
+      ],
+      "truth": "['No abnormalities seen on ECG']"
+    },
+    {
+      "record_id": "C003_1b",
+      "section": "F",
+      "answers": [
+        "['Evidence of abnormal fluid collection or pericardial inflammation', 'Global systolic or diastolic function depression/abnormality - (*Decreased longitudinal and circumferential strain and strain rates on tissue Doppler)', 'New focal or diffuse left or right ventricular function abnormalities (e.g. decreased ejection fraction)']",
+        "['Evidence of abnormal fluid collection or pericardial inflammation', 'New focal or diffuse left or right ventricular function abnormalities (e.g. decreased ejection fraction)']",
+        "['Evidence of abnormal fluid collection or pericardial inflammation', 'New focal or diffuse left or right ventricular function abnormalities (e.g. decreased ejection fraction)']"
+      ],
+      "truth": "['Evidence of abnormal fluid collection or pericardial inflammation', 'Global systolic or diastolic function depression/abnormality - (*Decreased longitudinal and circumferential strain and strain rates on tissue Doppler)', 'Segmental wall motion abnormalities']"
+    },
+    {
+      "record_id": "C005_1a",
+      "section": "B",
+      "answers": [
+        "['unknown if any of 1-3 present or absent']",
+        "['none of the above']",
+        "['none of the above']"
+      ],
+      "truth": "['unknown if any of 1-3 present or absent']"
+    },
+    {
+      "record_id": "C005_1a",
+      "section": "F",
+      "answers": [
+        "['Global systolic or diastolic function depression/abnormality - (*Decreased longitudinal and circumferential strain and strain rates on tissue Doppler)', 'New focal or diffuse left or right ventricular function abnormalities (e.g. decreased ejection fraction)', 'Segmental wall motion abnormalities', 'Wall thickness change']",
+        "['Global systolic or diastolic function depression/abnormality - (*Decreased longitudinal and circumferential strain and strain rates on tissue Doppler)', 'New focal or diffuse left or right ventricular function abnormalities (e.g. decreased ejection fraction)', 'Segmental wall motion abnormalities', 'Wall thickness change']",
+        "['New focal or diffuse left or right ventricular function abnormalities (e.g. decreased ejection fraction)', 'Segmental wall motion abnormalities', 'Wall thickness change']"
+      ],
+      "truth": "['Global systolic or diastolic function depression/abnormality - (*Decreased longitudinal and circumferential strain and strain rates on tissue Doppler)', 'Wall thickness change']"
+    },
+    {
+      "record_id": "C005_1b",
+      "section": "B",
+      "answers": [
+        "['unknown if any of 1-3 present or absent']",
+        "['none of the above']",
+        "['none of the above']"
+      ],
+      "truth": "['unknown if any of 1-3 present or absent']"
+    }
+  ],
+  "runs": [
+    "./myo/output_t05_np2048_r1",
+    "./myo/output_t05_np2048_r2",
+    "./myo/output_t05_np2048_r3"
+  ]
+}
