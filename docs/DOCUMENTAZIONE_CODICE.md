@@ -19,17 +19,20 @@ dice **cosa fa** il codice, quello dice **cosa è stato misurato**.
 | `agents.py` | i due agenti e il parsing delle risposte |
 | `criteria_rules.py` | regole cross-section |
 | `agentic_graph.py` | macchina a stati LangGraph della modalità agentica |
-| `confidence.py` | Agent 3, la confidenza di ogni risposta finale |
+| `verifier.py` | Agent 3, il verificatore di ogni risposta finale |
 | `pipeline.py` | orchestrazione di un referto |
 | `aggregation.py` | serializzazione del form |
 | `main.py` | entry point su un singolo referto |
 | `run_synthetic_records.py` | esecuzione batch sul corpus |
 | `generate_synthetic_records.py` | generazione e audit del corpus sintetico |
 | `evaluate_predictions.py` | valutazione contro la ground truth |
+| `evaluate_verifier.py` | valutazione del verificatore (Agent 3) contro la ground truth |
+| `agreement_runs.py` | concordanza fra run ripetute della stessa configurazione |
 | `compare_runs.py` | confronto tra due run, misura del rumore |
 | `export_redcap_csv.py` | conversione dei risultati in CSV per REDCap |
 | `export_prompts.py` | esportazione di prompt, query e hint in file per la tesi (non versionato) |
 | `myo/` | il braccio di trasferimento sul questionario della miocardite |
+| `run_myo_t05.sh` | le tre run della miocardite a temperatura 0,5 su mari, con controlli e valutazione |
 
 ---
 
@@ -55,8 +58,9 @@ Tre ruoli, tre costanti separate, così ognuno si cambia indipendentemente:
 
 Parametri di generazione:
 
-- `LLM_TEMPERATURE = 0.0` — output deterministico.
-- `LLM_NUM_PREDICT = 1024` — tetto di token. Le due righe di risposta chiudono
+- `LLM_TEMPERATURE = 0.0` — output deterministico. Vale per Agent 1 e Agent 2;
+  il braccio della miocardite la porta a 0,5 (sezione 16), l'Agent 3 ha la sua.
+- `LLM_NUM_PREDICT = 2048` — tetto di token. Le due righe di risposta chiudono
   la generazione, quindi un tetto raggiunto prima costa l'intera sezione.
 - `LLM_NUM_GPU = 999` — tutti i layer su GPU. La ripartizione automatica di
   Ollama lasciava parte del modello su CPU con VRAM ancora libera, e un layer su
@@ -67,21 +71,26 @@ Parametri di generazione:
   restituendo un `content` vuoto. `None` non invia nulla a Ollama e lascia il
   default del modello, che è la scelta corretta per un modello privo di quella
   modalità.
-- `LLM_NUM_CTX = 4096` — la finestra di contesto che Ollama alloca per ogni
-  richiesta, in token. È fissata qui perché il default di Ollama non compare in
-  nessun audit log; 4096 è il valore che `ollama ps` riporta per qwen3.6:27b su
-  mari, quindi quello già in vigore.
+- `LLM_NUM_CTX = 8192` — la finestra di contesto che Ollama alloca per ogni
+  richiesta, in token. Deve contenere il prompt più lungo più `LLM_NUM_PREDICT`:
+  oltre quel limite Ollama scarta l'inizio del prompt. La configurazione di
+  riferimento della TVP usa 1024 e 4096.
 - `LLM_REQUEST_TIMEOUT = 180` secondi.
 
-Due costanti governano l'Agent 3 (sezione 7):
+Quattro costanti governano l'Agent 3 (sezione 7):
 
-- `CONFIDENCE_ENABLED = False` — acceso, dopo le regole cross-section ogni
-  sezione riceve un valore di confidenza fra 0 e 1 nel proprio audit log. Spento,
-  la pipeline non fa alcuna richiesta in più.
-- `CONFIDENCE_SKIP = {"F"}` — sezioni lasciate senza valore. La risposta di F
-  dipende da una domanda invertita e dalla presenza di una diagnosi riportata, e
-  l'Agent 3 giudica entrambe senza ragionare. Togliendo `"F"` la sezione viene
-  valutata attraverso la sua riga `DETAILS_PRESENT`.
+- `VERIFIER_ENABLED = True` — acceso, dopo le regole cross-section ogni sezione
+  riceve nel proprio audit log il verdetto del verificatore e P(YES). Spento, la
+  pipeline non fa alcuna richiesta in più.
+- `VERIFIER_INPUTS = ("answer", "reasoning")` — le varianti, una richiesta per
+  sezione ciascuna: `answer` invia evidenza, opzioni e risposta; `reasoning`
+  aggiunge il ragionamento dell'Agent 2.
+- `VERIFIER_TEMPERATURE = 0.0` — separata da `LLM_TEMPERATURE`, perché il
+  punteggio è una probabilità letta dai logprob e il verdetto deve essere
+  ripetibile anche quando gli altri due agenti campionano.
+- `VERIFIER_NUM_CTX = 8192` — deve contenere la variante `reasoning`, che
+  aggiunge fino a `LLM_NUM_PREDICT` token di ragionamento a un prompt che arriva
+  già a circa 3200.
 
 ### Embedding e modalità di estrazione
 
@@ -141,9 +150,7 @@ opzioni e il contesto della linea guida.
 
 Due interruttori permettono l'ablazione senza toccare il codice:
 
-- `SECTION_HINTS_ENABLED = True` — interruttore generale. L'hint di F chiede
-  la riga `DETAILS_PRESENT` che `confidence.score_details` legge: con gli hint
-  spenti l'Agent 3 valuta F come ogni altra sezione a scelta singola.
+- `SECTION_HINTS_ENABLED = True` — interruttore generale.
 - `SECTION_HINTS_DISABLED = {"B2"}` — sezioni sospese individualmente. B2 è
   elencata perché il suo hint abbassa l'accuratezza di B2; il testo è conservato
   così l'ablazione è ripetibile.
@@ -210,8 +217,7 @@ ricostruiscono, non solo la prima risposta del modello.
 
 `F_ReportedBySpecialist` merita attenzione per l'inversione: `"Yes"` significa
 riportata **senza** dettagli, `"No"` significa che i dettagli c'erano **oppure**
-che la diagnosi non è stata riportata affatto. È la convenzione su cui poggia
-`confidence.score_details`.
+che la diagnosi non è stata riportata affatto.
 
 `DVT_CriteriaForm` è il contenitore: `record_id` obbligatorio più dieci campi
 opzionali, uno per sezione. Una sezione che la pipeline non è riuscita a
@@ -223,7 +229,7 @@ compilare resta `None` invece di bloccare l'intero form.
 **`field_info(section_model)`**, che restituisce `(field_name, options,
 is_multi_select, description)`: il nome dell'unico campo, le opzioni nell'ordine
 dello schema, se la sezione è a scelta multipla e il titolo della sezione. La
-usano `agents.py`, `confidence.py`, `evaluate_predictions.py`,
+usano `agents.py`, `verifier.py`, `evaluate_predictions.py`,
 `export_redcap_csv.py` ed `export_prompts.py`. Importa solo la libreria
 standard, così gli strumenti di valutazione non dipendono dallo stack della
 pipeline, e riceve la classe come argomento, così funziona anche con lo schema
@@ -364,6 +370,14 @@ tracciabile a una frase del ragionamento, e non inclusa per default o per
 margine di sicurezza. Con `config.SECTION_DESCRIPTIONS_ENABLED` acceso, il titolo
 della sezione viene inserito sopra le opzioni.
 
+Nelle sezioni multi-scelta le istruzioni mostrano con un esempio che i numeri
+seguono l'ordine dei testi. L'esempio lo costruisce `_multi_select_example()` da
+**`MULTI_SELECT_EXAMPLE`**: con il valore della TVP, `"Leg swelling or pitting
+oedema"` (l'opzione 2 di B2), l'esempio nomina quell'opzione; con `None` usa una
+frase che non nomina alcuna opzione («if the second option you name is listed as
+4. above, the second number must be 4»). Il braccio della miocardite imposta
+`None`, così nessuna opzione del suo questionario viene citata nelle istruzioni.
+
 Il blocco della linea guida è annunciato dall'intestazione
 `Reference synonyms/terminology (Brighton)`.
 
@@ -457,8 +471,8 @@ valutazione fallita aveva lasciato vuota. Sovrascrive solo quando il valore
 corrente differisce da quello forzato, per non riempire il log di voci in cui
 Agent 2 era già d'accordo. Quando sovrascrive, aggiunge alla voce della sezione
 nell'audit log la nota `[SYSTEM OVERRIDE]` e la chiave `overridden_by`, con il
-nome della sezione sorgente (`A3_1` o `B2`); `confidence.score_record` la usa per
-assegnare la confidenza.
+nome della sezione sorgente (`A3_1` o `B2`); `verifier.verify_record` la usa per
+assegnare alla sezione il verdetto della sorgente.
 
 ---
 
@@ -514,104 +528,76 @@ cross-section.
 
 ---
 
-## 7. `confidence.py`
+## 7. `verifier.py`
 
-L'Agent 3. Per ogni sezione calcola un numero fra 0 e 1, la **confidenza** della
-risposta finale del modulo, e lo scrive nell'audit log della sezione. Gira dopo
-le regole cross-section, quindi valuta la risposta che finisce nel CSV, ed è
-acceso da `config.CONFIDENCE_ENABLED`. Non cambia mai una risposta.
+L'Agent 3. Per ogni sezione chiede al modello del valutatore se la risposta finale
+del modulo è corretta data l'evidenza, e registra nell'audit log della sezione il
+verdetto (YES o NO) e la probabilità assegnata a YES. Gira dopo le regole
+cross-section, quindi giudica la risposta che finisce nel CSV, ed è acceso da
+`config.VERIFIER_ENABLED`. Non cambia mai una risposta.
 
-**Come si ottiene il numero.** Il modello di Agent 2 riceve di nuovo l'evidenza, il
-contesto della linea guida e l'hint della sezione, con le opzioni numerate, ma
-**non** la risposta di Agent 2, e deve rispondere subito, senza ragionare. Con
-`logprobs` attivo Ollama restituisce, per ogni token generato, la sua probabilità
-e quella delle `TOP_LOGPROBS = 10` alternative più probabili nella stessa
-posizione. La confidenza è la probabilità che il modello assegna alla risposta
-del modulo. La richiesta esclude il ragionamento perché, dopo un ragionamento, il
-numero finale è determinato dal testo che lo precede, e la sua probabilità dice
-quanto il modello è coerente con quel testo più che quanto l'evidenza sostiene la
-risposta.
+**Le due varianti.** Per ogni voce di `config.VERIFIER_INPUTS` la sezione riceve una
+richiesta separata:
+
+- `answer`: evidenza, opzioni numerate e risposta finale;
+- `reasoning`: le stesse cose più il ragionamento dell'Agent 2 come registrato
+  nell'audit log (campo `reasoning`).
+
+Nessuna delle due riceve il contesto della linea guida né l'hint della sezione.
+Le due varianti girano nella stessa run, quindi giudicano le stesse identiche
+risposte.
+
+**Il punteggio.** La richiesta chiede YES o NO senza spiegazioni, a
+`config.VERIFIER_TEMPERATURE`. Con `logprobs` attivo Ollama restituisce, per il
+token generato, la probabilità delle `TOP_LOGPROBS = 10` alternative più probabili.
+Il verdetto è la parola generata; il punteggio è p(YES) / (p(YES) + p(NO)) in
+quella posizione, il P(True) di Kadavath et al. (2022). Una sola richiesta dà
+quindi un verdetto binario e un punteggio continuo.
 
 **Costanti.** `OLLAMA_URL` è l'indirizzo del server, letto dalla variabile
 d'ambiente `OLLAMA_HOST` come fa Ollama stesso, con `http://localhost:11434` come
-default. `SYSTEM_PROMPT` è il messaggio di sistema della richiesta: chiede di
-rispondere dalla sola evidenza e senza spiegare.
+default. `NUM_PREDICT = 4` è il tetto di token: YES o NO più un margine per uno
+spazio o un segno di punteggiatura. `SYSTEM_PROMPT` presenta il compito: valutare
+la risposta data da un altro revisore, rispondendo solo YES o NO.
 
-**`_chat(user_prompt, num_predict)`** invia una richiesta a `/api/chat` di
-Ollama, non attraverso `ChatOllama`, perché servono i campi `logprobs` della
-risposta. Modello (`EVALUATOR_LLM_MODEL_NAME`), temperatura, `num_gpu`, `num_ctx`
-e ragionamento sono quelli di Agent 2; cambia solo il tetto di token. Usare lo
-stesso modello evita di caricarne un secondo sulla GPU.
+**`_chat(user_prompt)`** invia una richiesta a `/api/chat` di Ollama, non
+attraverso `ChatOllama`, perché servono i campi `logprobs`. Il modello è
+`EVALUATOR_LLM_MODEL_NAME`, così non se ne carica un secondo sulla GPU; temperatura
+e finestra di contesto sono quelle del verificatore (`VERIFIER_TEMPERATURE`,
+`VERIFIER_NUM_CTX`).
 
-**`_build_prompt(evidence, context, hint, options, multi)`** compone il messaggio:
-contesto della linea guida, hint con l'avvertenza di ignorarne le istruzioni di
-formato, evidenza, opzioni numerate, e l'istruzione finale. Per una sezione a
-scelta singola chiede il solo numero; per una a scelta multipla una riga
-`N: YES` o `N: NO` per ogni opzione.
+**`_format_answer(answer, options, multi)`** scrive la risposta come opzioni
+numerate: per una sezione multipla le opzioni selezionate, oppure «No option
+selected.».
 
-**`_mass(token, accept)`** somma la probabilità delle alternative di una posizione
-che soddisfano un criterio, così «2» e « 2», che sono token diversi, contano
-insieme. **`_number_distribution(token, n)`** usa `_mass` per ottenere la
-probabilità di ciascun numero di opzione valido, normalizzata sui soli numeri
-validi.
+**`build_prompt(evidence, options, multi, answer, reasoning=None)`** compone il
+messaggio: evidenza, opzioni, risposta, il ragionamento solo per la variante
+`reasoning`, per le sezioni multiple la precisazione che la risposta è corretta
+solo se seleziona tutte e sole le opzioni sostenute dall'evidenza, e la domanda
+finale.
 
-**`score_single(logprobs, n, chosen)`**: sezioni a scelta singola. Legge il primo
-token che è un numero di opzione valido e restituisce la quota di probabilità
-che cade sull'opzione scelta. Se il modello ha scritto altro prima del numero, il
-metodo diventa `single_after_text`, perché la probabilità è condizionata da quel
-testo.
+**`read_verdict(logprobs)`** cerca il primo token YES o NO e restituisce verdetto,
+P(YES) e metodo `verdict`; `no_verdict` quando nessuna delle due parole è stata
+generata.
 
-**`score_multi(logprobs, n, chosen)`**: sezioni a scelta multipla (A3_2, B1_2,
-B2). Per ogni opzione legge p(YES) sul token che segue `N:`, normalizzato su
-YES e NO. La confidenza è la probabilità dell'**insieme esatto** scelto: il
-prodotto di p(YES) per le opzioni selezionate e di p(NO) per le altre. È coerente
-con la valutazione a insieme esatto, ma tratta le opzioni come indipendenti, e
-un prodotto di più fattori è sistematicamente più basso del valore di una sezione
-a scelta singola.
+**`verify_section(section_key, answer, evidence, reasoning, variant)`** esegue una
+richiesta e restituisce `agree`, `p_agree` (quattro decimali), `method`,
+`prompt_tokens` (il `prompt_eval_count` di Ollama), `overflow` e `seconds`.
+`overflow` è vero quando prompt e tetto di token raggiungono `VERIFIER_NUM_CTX`:
+oltre quel limite Ollama scarta l'inizio del prompt, cioè l'evidenza.
 
-**`score_details(logprobs, options, chosen)`**: F, quando il suo hint fa scrivere
-prima la riga `DETAILS_PRESENT`. La risposta di F non si ricava dal solo yes/no
-di quella riga: dettagli presenti implicano No, ma dettagli assenti implicano Yes
-solo se una diagnosi è riportata, altrimenti No. La funzione legge p(yes) e p(no)
-sul token dopo `DETAILS_PRESENT:` e la distribuzione q del numero che segue, che
-tiene conto della diagnosi, ma solo per il ramo effettivamente scritto:
-
-| il modello scrive | risultato | metodo |
-|---|---|---|
-| `no` | P(Yes) = p(no)·q(Yes\|no); P(No) = p(yes) + p(no)·q(No\|no) | `details_exact`: il ramo `yes` è fissato dall'hint |
-| `yes` | P(risposta) ≥ p(yes)·q(risposta\|yes) | `details_lower_bound`: il ramo `no` non è stato generato |
-
-**`score_section(section_key, answer, evidence, context)`** esegue una sezione:
-costruisce il prompt con `config.section_hint`, chiama `_chat` con un tetto di 32
-token per le sezioni a scelta singola (la riga `DETAILS_PRESENT` di F ne occupa
-diversi) e di `8 × opzioni + 8` per quelle multiple, e sceglie il metodo di
-calcolo. Su F prova `score_details` se la risposta contiene `DETAILS_PRESENT`, e
-ripiega su `score_single` altrimenti. Restituisce `confidence` (arrotondata a
-quattro decimali, o `None`), `confidence_method` e `agent3_seconds`.
-
-**`score_record(form_data, audit_log)`** è il punto d'ingresso che
-`pipeline.run_pipeline` chiama. Scorre `config.SECTION_ORDER`, prende la risposta
-finale di ogni sezione da `form_data` e aggiunge i tre campi alla sua voce
-dell'audit log, stampando il valore a schermo con **`_report`**. Una sezione con
-la chiave `overridden_by`, cioè la cui risposta è stata scritta da una regola
-cross-section, non riceve una richiesta: prende la confidenza della sezione
-sorgente, con `confidence_method` `rule:<sorgente>`, per esempio `rule:A3_1`.
-Lo fa in un secondo passaggio, perché una sorgente può venire dopo la sezione
-che la regola cambia (B2 viene dopo B1_1). La ragione è che quella risposta non è
-di Agent 2 ma della regola, e dipende interamente dalla sorgente: interrogato
-sulla sola A3_2, il modello vede l'esame eseguito e non sa che A3.1 ha stabilito
-che non ha confermato la TVP. Assegna `confidence: None` con il
-motivo in `confidence_method` in tre casi: la sezione è in
-`config.CONFIDENCE_SKIP` (`skipped`), la sezione non ha risposta (`no_answer`),
-la richiesta fallisce (`error`, con il messaggio in `confidence_error`). Un
-fallimento dell'Agent 3 non interrompe la run.
-
-I valori possibili di `confidence_method` sono quindi `single`,
-`single_after_text`, `multi`, `details_exact`, `details_lower_bound`,
-`rule:<sorgente>`, e, quando
-il numero manca, `no_number`, `incomplete_lines`, `skipped`, `no_answer`,
-`error`. Su F, se `score_details` non trova la riga o il numero, il metodo
-registrato è quello del ripiego su `score_single`.
+**`verify_record(form_data, audit_log)`** è il punto d'ingresso che
+`pipeline.run_pipeline` chiama. Aggiunge a ogni voce dell'audit log la chiave
+`verifier`, un dizionario variante → risultato, e stampa ogni verdetto con
+**`_report`**. Una sezione con la chiave `overridden_by`, la cui risposta è stata
+scritta da una regola cross-section, non riceve richieste: il ragionamento
+dell'Agent 2 sostiene la risposta che la regola ha sostituito, quindi la sezione
+prende verdetto e P(YES) della sezione sorgente, con metodo `rule:<sorgente>`. Lo
+fa in un secondo passaggio, perché una sorgente può venire dopo la sezione che la
+regola cambia (B2 viene dopo B1_1). Una sezione senza risposta riceve il metodo
+`no_answer`, una senza ragionamento `no_reasoning` per la variante `reasoning`,
+una richiesta fallita `error` con il messaggio in `error`. Un fallimento
+dell'Agent 3 non interrompe la run.
 
 ---
 
@@ -652,7 +638,7 @@ stessa firma.
 **`_run_config_snapshot(...)`** cattura tutto ciò che determina cosa una run
 produce: modalità, contesto della linea guida, intestazioni di sezione,
 hint e query con i rispettivi fingerprint, le impostazioni dell'Agent 3
-(`confidence.enabled` e `confidence.skipped_sections`), modelli per ruolo (con
+(`verifier`: `enabled`, `inputs`, `temperature`, `num_ctx`), modelli per ruolo (con
 l'estrattore **effettivo**: `AGENTIC_LLM_MODEL_NAME` in modalità agentica,
 nessuno in `raw_record`), ambiente, parametri di generazione compreso
 `num_ctx`, parametri di retrieval. Viene scritto nell'audit log sotto la chiave
@@ -672,7 +658,7 @@ Il fallimento di una sezione non compromette le altre: il campo resta
 disponibile, in `section_log["reasoning"]`.
 
 Alla fine applica le regole cross-section una volta sola; se
-`config.CONFIDENCE_ENABLED` è acceso chiama `confidence.score_record` sulle
+`config.VERIFIER_ENABLED` è acceso chiama `verifier.verify_record` sulle
 risposte finali; poi aggiunge lo snapshot di configurazione e costruisce
 `DVT_CriteriaForm`.
 
@@ -684,9 +670,9 @@ risposte finali; poi aggiunge lo snapshot di configurazione e costruisce
 `exclude_none=True`: le sezioni lasciate `None` da una valutazione fallita
 vengono omesse invece che scritte come `null`, così una risposta mancante è
 assente e non somiglia a una risposta di "nessuno". Riceve anche l'audit log: se
-l'Agent 3 ha girato, copia la confidenza di ogni sezione sotto la chiave
-`CONFIDENCE_KEY = "_confidence"`, con `null` per le sezioni non valutate. Così il
-valore resta nel file dei risultati anche quando l'audit log non viene salvato.
+l'Agent 3 ha girato, copia verdetto e P(YES) di ogni sezione e variante sotto la
+chiave `VERIFIER_KEY = "_verifier"`. Così i valori restano nel file dei risultati
+anche quando l'audit log non viene salvato.
 Il trattino basso la tiene separata dalle chiavi delle sezioni, le sole che
 `evaluate_predictions`, `compare_runs` ed `export_redcap_csv` leggono. Con
 l'Agent 3 spento il riepilogo è identico a prima.
@@ -945,6 +931,12 @@ incluso nella tesi e quello che ricevono i modelli sono lo stesso oggetto.
 - **`_message_skeleton()`** e **`_answer_instructions(multi_select)`** passano da
   `agents._build_reasoning_prompt` con segnaposto al posto dei contenuti, così
   etichette, righe vuote e ordine sono quelli che il codice produce;
+- **`_example_section(multi_select)`** sceglie la sezione da cui costruire le
+  istruzioni finali: la prima a scelta singola di `config.SECTION_ORDER`, oppure
+  la prima a scelta multipla senza opzione «none of the above», l'unico tipo che
+  porta la clausola sulla risposta vuota (A3_2 nella TVP, E nella miocardite).
+  Quando il questionario non ha sezioni di un tipo, il file corrispondente non
+  viene scritto: la miocardite non ha `answer_single.txt`;
 - **`_retriever_description()`** legge la descrizione dal tool costruito, non dal
   sorgente;
 - **`_section_label(section_key)`** scrive la sezione come la nomina il
@@ -957,27 +949,36 @@ incluso nella tesi e quello che ricevono i modelli sono lo stesso oggetto.
   codice e quello del file su disco. `--tex-prefix`, `--tex-query-width` e
   `--tex-style` regolano i `.tex` generati.
 
+Tutto viene letto quando `main` gira, non all'importazione (`pipeline.SECTION_QUERIES`,
+`pipeline._hint_fingerprint`, `pipeline._query_fingerprint`), così
+`myo/export_prompts_myo.py` esporta i testi della miocardite installando lo schema
+e chiamando `run_myo.apply_domain` prima di `main`.
+
 ---
 
 ## 16. Il pacchetto `myo/`
 
-Il braccio di trasferimento: esegue la stessa pipeline sulle sezioni E ed F del
-questionario Brighton della miocardite, su 17 casi dummy con ground truth scritta
-da due autori esterni al progetto. Nessun modulo della pipeline viene modificato:
+Il braccio di trasferimento: esegue la stessa pipeline sulle sezioni A1, B, C, E
+ed F del questionario Brighton della miocardite (modulo
+CriteriaForm_SEVALIDMYOCARDITIS), su 17 casi dummy con ground truth scritta da due
+autori esterni al progetto. Nessun modulo della pipeline viene modificato:
 `myo/` sostituisce in memoria schema, sezioni, prompt e configurazione prima di
 chiamarla.
 
-**`models_myo.py`** contiene lo schema. `E_Electrocardiogram` (14 opzioni) e
-`F_Echocardiogram` (10 opzioni) sono entrambe a scelta multipla,
-`findings: List[Literal[...]]`, con le stringhe copiate dal questionario, virgole
-e asterischi compresi. `MYO_CriteriaForm` è il contenitore, esportato anche col
-nome `DVT_CriteriaForm` perché `pipeline.py` importa quel nome, e
-`SECTION_MODELS` ha le chiavi `E` e `F`.
+**`models_myo.py`** contiene lo schema. `A1_CardiacSymptoms` (7 opzioni),
+`B_PhysicalExam` (6), `C_InflammatoryMarkers` (7), `E_Electrocardiogram` (14) e
+`F_Echocardiogram` (10) sono tutte a scelta multipla, `List[Literal[...]]`, con le
+stringhe copiate dal modulo, virgole e asterischi compresi; le note del modulo che
+rimandano ai range di normalità e i campi «Highest measured value» di C non fanno
+parte delle opzioni. A1, B e C hanno un'opzione «none of the above», E ed F no.
+`MYO_CriteriaForm` è il contenitore, esportato anche col nome `DVT_CriteriaForm`
+perché `pipeline.py` importa quel nome, e `SECTION_MODELS` ha le chiavi `A1`, `B`,
+`C`, `E` ed `F`.
 
 **`project_path.py`** aggiunge la cartella del progetto a `sys.path`, così gli
 script di `myo/`, lanciati come `python myo/<script>.py`, trovano i moduli
 condivisi. **`myo_schema.py`** lo importa e registra `models_myo` come modulo
-`models`: `pipeline`, `agentic_graph`, `criteria_rules`, `confidence` ed
+`models`: `pipeline`, `agentic_graph`, `criteria_rules`, `verifier` ed
 `evaluate_predictions` leggono lo schema al momento dell'importazione, quindi la
 sostituzione deve avvenire prima. Entrambi si importano per il loro effetto, come
 primo import di progetto, marcati `# isort: skip` perché un riordino automatico
@@ -986,7 +987,47 @@ degli import non li sposti dopo gli altri.
 **`prompts_myo.py`** contiene i prompt con i termini della miocardite:
 `EXTRACTOR_SYSTEM_PROMPT_TEMPLATE` e `AGENTIC_EXTRACTOR_SUFFIX_TEMPLATE`, che
 portano il segnaposto `{no_evidence}`, `EVALUATOR_SYSTEM_PROMPT` e
-`RETRIEVER_TOOL_DESCRIPTION`.
+`RETRIEVER_TOOL_DESCRIPTION`. Quest'ultima nomina i domini delle cinque sezioni
+(sintomi cardiaci, esame obiettivo, marcatori di infiammazione, ECG,
+ecocardiogramma) con i reperti scritti nelle parole del modulo.
+`MULTI_SELECT_EXAMPLE = None` toglie dalle istruzioni di risposta l'opzione della
+TVP usata come esempio (sezione 4.3).
+
+Contiene anche gli hint di sezione: **`HINT_PREAMBLE`**, anteposto a ogni hint, e
+i testi di `_SECTION_HINT_TEXTS`, uniti in **`SECTION_HINTS`**. Riprendono le
+regole dei prompt usati in passato sulla miocardite (`MYO_prompts_EN.pdf`), dalle
+istruzioni zero-shot e dalle «Reasoning Guidelines» della versione chain of
+thought, senza il loro formato di risposta, più alcune frasi dalla definizione di
+caso (Sexson Tejtel et al. 2022) e dalla Companion Guide SPEAC. La provenienza,
+frase per frase:
+
+| sezione | frase dell'hint | fonte |
+|---|---|---|
+| tutte | valutare ogni opzione indipendentemente; non inferire né aggiungere reperti | prompt precedenti, istruzioni 1-2, riformulate senza «exact terms» perché i referti sono in italiano |
+| A1 | termini simili non sono equivalenti; un'aritmia all'ECG non è palpitazione | prompt precedenti, A1, nota 1 |
+| A1 | dolore addominale, alla spalla o alla schiena sono sintomi di A2, non dolore toracico | prompt precedenti, A2, note 1 e 5, e il modulo; riformulata perché il paper (§4.4) li chiama varianti del dolore toracico |
+| A1 | sintomo non menzionato = unknown; «none of the above» solo con assenza esplicita | prompt precedenti, A1, regole 3-4; la regola su «none» è una scelta di formulazione |
+| A1 | sudden death solo se riportata | prompt precedenti, A1, nota 2 |
+| B | se c'è lo sfregamento, solo quello; «confirmed … without details» solo se l'esame conferma la pericardite senza reperti | prompt precedenti, B, note e Reasoning Guidelines |
+| B | nessun reperto riportato = unknown | prompt precedenti, B, Reasoning Guidelines |
+| B | «none of the above» solo se i segni sono stati cercati e non trovati | formulazione nuova |
+| B | i toni attenuati comprendono i toni ovattati (*muffled*) | Companion Guide, Tabella 4.3.B |
+| C | soglie di VES, PCR, PCR-hs | prompt precedenti, C (le stesse note del modulo); per il D-dimero il limite del laboratorio, perché il modulo non dà soglia |
+| C | valore più alto; conversioni di unità | prompt precedenti, C.1-C.4; Companion Guide, §4.5 |
+| C | non dedurre aumento o assenza dai sintomi; «confirmed …» solo se dichiarato | prompt precedenti, C, Reasoning Guidelines |
+| C | «None of the above» richiede almeno un marcatore dosato e tutti normali; nessuno citato = «None tested» | testo dell'opzione 5 del modulo e prompt precedenti, C |
+| C | troponina, CK-MB, leucociti, procalcitonina e PCR virale non sono marcatori di questa sezione | formulazione nuova; il paper (Tabella 4) elenca i leucociti fra gli esami dell'infiammazione |
+| E | solo menzioni dirette; ECG non eseguito = solo la prima opzione; un pattern specifico va alla sua opzione; «No abnormalities» solo se dichiarato | prompt precedenti, E, Reasoning Guidelines |
+| E | tachicardia sinusale, SVT, FA, PVC, TV, FV appartengono a «Paroxysmal …» | esempi nel testo dell'opzione (dal paper, Tabella 5) |
+| E | «Nonspecific …» solo se il referto le chiama aspecifiche | prompt precedenti, E.2 |
+| F | definizione dell'opzione 2 (ipocinesia, acinesia, FE ridotta) e della dilatazione | prompt precedenti, F, istruzione 4, quasi alla lettera; *chamber enlargement* dalle Reasoning Guidelines |
+| F | definizione delle anomalie segmentali; versamento o infiammazione pericardica = opzione 8 | prompt precedenti, F, Reasoning Guidelines, riformulate |
+| F | ECO non eseguito = solo la prima opzione; «No abnormalities» solo se il referto dice normale | prompt precedenti, F, Reasoning Guidelines; della seconda regola solo la metà che non contraddice le istruzioni 2-3 |
+| F | «New»: senza un esame precedente, nuova se migliora o peggiora ai controlli | paper, Tabella 1, nota c (definizione CDC 2003), riformulata |
+| F | raccolta anomala di liquido pericardico: versamento anteriore e posteriore, o ampio versamento posteriore isolato | paper, Tabella 1 (CDC, pericardite confermata), riformulata |
+
+La riga delle Reasoning Guidelines di F che chiede di selezionare entrambe le
+opzioni sulla funzione non è inclusa.
 
 **`convert_cases.py`** trasforma `MYO_dummy_cases.xlsx` in un `.txt` e un
 `_ground_truth.json` per caso, in `RECORDS_DIR` (`myo/data/records/`).
@@ -999,20 +1040,30 @@ invece di essere scartato. **`_valid_options(section_key)`** legge le opzioni
 dallo schema. Richiede `openpyxl`, che non è in `requirements.txt`.
 
 **`run_myo.py`** esegue la pipeline sui casi. Importa `myo_schema` prima dei
-moduli di progetto.
-**`apply_domain(guideline=False)`** imposta sezioni `E` ed `F`, modalità
-`agentic_graph`, svuota hint e regole cross-section, sostituisce i tre
-prompt degli agenti, le query di sezione (`SECTION_QUERIES`, scritte a partire
-dalla lista delle opzioni) e il tool di ricerca, e indica per il paper un indice
-suo, `myo/vectorstores/chroma_brighton_myo`, perché `build_brighton_kb`
-ricaricherebbe l'indice del paper della TVP senza leggere il testo che riceve.
-Da riga di comando: `--guideline` accende il contesto della linea guida,
-`--num-ctx` sostituisce `LLM_NUM_CTX`, `--brighton-pdf` indica il paper
-(`myo/main.pdf` di default), più `--records-dir`, `--output-dir` e `--only`.
+moduli di progetto. `SECTION_ORDER = ["A1", "B", "C", "E", "F"]` segue l'ordine
+del modulo; `MYO_TEMPERATURE = 0.5` è la temperatura di Agent 1 e Agent 2, senza
+seme, così ogni run campiona in modo indipendente. `SECTION_QUERIES` ha una query
+per sezione composta dal nome della sezione e da tutte le sue opzioni, con le sole
+parole del modulo, così nessuna query porta lessico preso dai referti su cui gira.
+**`apply_domain(guideline=False, temperature=MYO_TEMPERATURE)`** imposta sezioni e
+temperatura, modalità `agentic_graph`, gli hint di `prompts_myo.SECTION_HINTS`,
+nessuna regola cross-section; sostituisce i tre prompt degli agenti,
+`agents.MULTI_SELECT_EXAMPLE`, le query di sezione e il tool di ricerca, e indica
+per il paper un indice suo, `myo/vectorstores/chroma_brighton_myo`, perché
+`build_brighton_kb` ricaricherebbe l'indice del paper della TVP senza leggere il
+testo che riceve. Da riga di comando: `--guideline` accende il contesto della
+linea guida, `--temperature` sostituisce `MYO_TEMPERATURE`, `--num-ctx`
+sostituisce `LLM_NUM_CTX`, `--brighton-pdf` indica il paper (`myo/main.pdf` di
+default), più `--records-dir`, `--output-dir` e `--only`. L'Agent 3 gira con le
+impostazioni di `config.py`.
 
-**`evaluate_myo.py`** valuta una run con `evaluate_predictions`: importa
-`myo_schema` prima dei moduli di progetto e punta le cartelle di default su
-`myo/data/records` e `myo/output_myo`.
+**`evaluate_myo.py`** valuta una run con `evaluate_predictions` sulle cinque
+sezioni: importa `myo_schema` prima dei moduli di progetto e punta le cartelle di
+default su `myo/data/records` e `myo/output_myo`. Ripete la lista delle sezioni di
+`run_myo` invece di importarla, così la valutazione non carica la pipeline.
+
+**`export_prompts_myo.py`** esporta prompt, query e hint della miocardite con
+`export_prompts.py`, in `myo/prompts_export/` di default (sezione 15).
 
 **`run_dvt_stripped.py`** è il termine di confronto. Importa `project_path`, non
 `myo_schema`, perché lavora sullo schema della TVP; esegue il corpus TVP con
@@ -1020,3 +1071,85 @@ Da riga di comando: `--guideline` accende il contesto della linea guida,
 sezione e regole cross-section, gli stessi componenti che il
 braccio della miocardite non ha. Poi chiama `run_synthetic_records.main()`, di
 cui accetta gli argomenti.
+
+---
+
+## 17. `evaluate_verifier.py`
+
+Valuta il verificatore (sezione 7) contro la ground truth. Per ogni sezione con un
+risultato del verificatore, la risposta è giusta o sbagliata rispetto al
+riferimento, e il verificatore l'ha approvata o no con un certo P(YES). Riporta,
+per variante, in totale e per sezione: l'AUROC di P(YES) fra risposte giuste e
+sbagliate (le parità contano mezzo punto), gli errori approvati e le risposte
+giuste respinte, più il numero di richieste senza verdetto e di quelle oltre la
+finestra di contesto. Le sezioni il cui verdetto è stato copiato da una regola
+(`rule:<sorgente>`) sono contate, perché è il verdetto che il modulo porta.
+
+- **`load_runs(run_dir)`** legge, per referto, il file più recente e il suo audit
+  log;
+- **`auroc(right, wrong)`** calcola l'AUROC dalla formula a coppie; `None` se uno
+  dei due gruppi è vuoto;
+- **`collect(runs, ground_truth)`** produce una riga per referto, sezione e
+  variante;
+- **`summarise(rows)`** calcola le metriche di un gruppo di righe;
+- **`compare_variants(rows)`** elenca le sezioni in cui le due varianti danno
+  verdetti diversi, divise per correttezza della risposta: un errore approvato
+  solo dalla variante `reasoning` è il caso in cui il ragionamento dell'Agent 2
+  ha convinto il verificatore;
+- **`evaluate(rows)`**, **`print_report(report)`** e **`main()`**: il report va in
+  `reports/verifier_<cartella>_<timestamp>.json`. `--ground-truth` indica i
+  riferimenti, `myo/data/records` per la miocardite.
+
+## 18. `agreement_runs.py`
+
+Misura la concordanza fra due o più run della stessa configurazione, prodotte a
+temperatura maggiore di 0. Le run fanno da valutatori e i referti da soggetti,
+come nell'analisi di concordanza fra abstractor del paper VAC4EU. Riporta per
+sezione e in totale:
+
+- la kappa di Fleiss fra le run, con l'insieme di opzioni come categoria (la
+  stessa convenzione a corrispondenza esatta di `evaluate_predictions`), non
+  pesata;
+- l'AC1 di Gwet, più stabile della kappa quando una risposta domina; il numero di
+  categorie è quello delle risposte distinte osservate nella sezione, perché una
+  sezione a scelta multipla non ha un elenco fisso di categorie;
+- la quota di referti su cui tutte le run danno la stessa risposta;
+- l'accuratezza di ogni run e quella del voto a maggioranza (una risposta data da
+  più di metà delle run; un referto senza maggioranza conta come errore ed è
+  contato a parte).
+
+La concordanza come segnale di confidenza: ogni risposta riceve la quota di run
+che hanno dato la stessa risposta (1/3, 2/3 o 1 con tre run), e l'AUROC di quella
+quota fra risposte giuste e sbagliate dice se una risposta stabile è più spesso
+giusta. Se le run portano il verificatore, accanto c'è l'AUROC di P(YES) sulle
+stesse risposte, per variante. Una sezione lasciata senza risposta conta come
+categoria `<missing>` e come errore.
+
+- **`fleiss_kappa(table)`** e **`gwet_ac1(table)`** ricevono un `Counter` per
+  soggetto; la kappa è `None` quando la concordanza attesa vale 1. La kappa è stata
+  confrontata con `statsmodels.stats.inter_rater.fleiss_kappa` su tabelle casuali,
+  con risultati identici alla sesta cifra;
+- **`collect(run_dirs, ground_truth)`** legge i referti presenti in tutte le run e
+  nella ground truth;
+- **`summarise(rows)`**, **`evaluate(rows, sections)`**, **`print_report`** e
+  **`main()`**: il report, con l'elenco dei referti su cui le run divergono, va in
+  `reports/agreement_<prima cartella>_<timestamp>.json`.
+
+## 19. `run_myo_t05.sh`
+
+Script bash per mari che esegue le tre run della miocardite a temperatura 0,5 e
+le valuta. Prima della prima run controlla che Ollama risponda, che il modello
+valutatore sia scaricato e, con lo stesso codice della run (`run_myo.apply_domain`
+e le funzioni di impronta di `pipeline.py`), che impronta degli hint, impronta
+delle query, temperatura e verificatore siano quelli attesi (`EXPECTED_HINTS`,
+`EXPECTED_QUERIES`); altrimenti si ferma. Esegue le run una dopo l'altra in
+`myo/output_<RUN_TAG>_r1`, `r2` e `r3` (`RUN_TAG` vale `t05` di default), con un
+log per run in `logs/`, e rifiuta una
+cartella che contiene già file salvo `FORCE=1`. Dopo ogni run **`check_run`**
+rilegge gli audit log e stampa temperatura, tetto di token e finestra, impronte, metodi del verificatore,
+richieste oltre la finestra, mediana dei secondi per richiesta e sezioni fallite.
+Alla fine lancia `myo/evaluate_myo.py` ed `evaluate_verifier.py` su ogni run e
+`agreement_runs.py` sulle tre. Variabili d'ambiente: `T0=1` aggiunge una run a
+temperatura 0 (`myo/output_<RUN_TAG>_t0`), `STRIPPED=1` la TVP senza hint
+(`output_stripped_verifier`), `EVAL_ONLY=1` salta le run, `PYTHON` indica
+l'interprete; attiva `.venv` se esiste.

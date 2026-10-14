@@ -141,7 +141,8 @@ Measured from the audit-log timestamps on mari (2 x RTX 2080 Ti), median of the
 gaps between consecutive records: the reference costs 165 seconds a record
 without Agent 3 and 185 with the confidence Agent 3, and a full run over the 40
 records takes 1h56. The verifier costs about 28 seconds a record on the
-myocarditis runs, two requests for each of five sections; not measured on DVT.
+myocarditis runs at 1024/4096 and about 20 at 2048/8192, two requests for each
+of five sections; not measured on DVT.
 What sets the cost is how many model tags a run loads. `raw_record` loads one
 and costs 96, 1h10 for the corpus; the arms whose Agent 1 and Agent 2 share a
 tag, the reference among them, cost 157 to 190; every arm running two different
@@ -1005,6 +1006,26 @@ not say which governs, which is what the clinician question below is asking.
   `num_ctx` 8192 after calls at 4096, consistent with a model reload, not
   verified: about 28 seconds a record, the runs taking 169 to 189 seconds a
   record and 49 to 53 minutes.
+- **At 2048 tokens no myocarditis section fails, and the total does not move.**
+  `myo/output_t05_np2048_r1` to `r3`, the same arm with `LLM_NUM_PREDICT` 2048 and
+  `LLM_NUM_CTX` 8192: A1 14/17 in every run, B 13, 11, 11, C 11, 10, 11, E 16,
+  17, 16, F 4, 4, 2 of 17; 58, 56 and 54 sections right of 85 against 55, 56 and
+  56 at 1024 counting failures as errors. Calls at the cap fall from 44 of 293 to
+  10 of 263, retried sections from 27 to 7; 26 sections take their final answer
+  from a response longer than 1024 tokens, 9 right and 17 wrong. Two new errors:
+  E on C003_1a, where the E hint keeps `No abnormalities seen on ECG` for a report
+  that says the ECG was normal and the model, reading `no ST/T abnormality`,
+  answers that no option applies; in r3 that empty answer was parsed from the
+  model quoting the instruction `write exactly 'FINAL_OPTION: none' and
+  'FINAL_ANSWER: none'` in a response cut at 2048 tokens. And C on C0001_1f in
+  r2, `pct e PCR negativi` read as procalcitonin or a viral test, PCR being the
+  Italian abbreviation of CRP. F keeps the same option distribution, 65 false
+  positives and 36 false negatives over 51 sections. Fleiss kappa 0.876 overall,
+  0.520 on F; verifier AUROC 0.543 for `answer` and 0.644 for `reasoning`, the
+  latter answering NO 2, 4 and 3 times in 85. The first verifier request of a
+  record now costs 2.0 seconds like the others, against 9.5, which fits the model
+  reload on a `num_ctx` change; the runs take 160 to 178 seconds a record and 46
+  to 51 minutes.
 - Read the metrics in this order: majority baseline and gain, then kappa, then
   accuracy with its interval. Accuracy alone ranked F above A3_2 under the 8B
   model, where F gained nothing over a constant answer and A3_2 gained 13
@@ -1232,11 +1253,15 @@ not say which governs, which is what the clinician question below is asking.
   from the earlier arms in sections, queries, hints and temperature at once; a
   run at temperature 0 would separate the temperature and say whether the six
   failed sections and the 44 calls at the token cap come from sampling.
-- **Six myocarditis sections failed at the 1024-token cap.** On B the model
-  alternates between `none of the above` and `unknown`, citing the hint's rule
-  that `none` needs the signs to have been looked for, and does not conclude.
-  The constraint is the one in the `LLM_NUM_PREDICT` item above; at 4096 the
-  prompts leave room for a larger cap.
+- **`_extract_final_answer_line` reads the line anywhere in the text.** In a
+  response cut at the cap the model may be quoting the instruction that contains
+  `FINAL_ANSWER: none`, and that quotation becomes the answer (E on C003_1a,
+  `myo/output_t05_np2048_r3`). Requiring the line at the start of a line is the
+  fix to consider; not tried.
+- **Two myocarditis hint sentences cost answers.** E's `No abnormalities seen on
+  ECG` only when the report states the ECG was normal turns `no ST/T abnormality`
+  into an empty answer on C003_1a; C's warning that a viral PCR is not CRP sits
+  next to Italian records where PCR is CRP, and C0001_1f was read that way once.
 - **Questions for the authors of the myocarditis ground truth**, from the
   dummy cases read against the form and the sources:
   - Is a decreased ejection fraction option 2 or option 4 of F?

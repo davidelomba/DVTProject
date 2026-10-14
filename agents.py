@@ -437,14 +437,16 @@ def _extract_final_answer_line(text: str) -> str:
         text: the model's full response.
 
     Returns:
-        The content after the LAST "FINAL_ANSWER:" occurrence. The last, not
-        the first, because the model sometimes echoes the instruction before
-        actually answering.
+        The content after the LAST "FINAL_ANSWER:" that opens a line, after
+        optional spaces or markdown markers (>, *, #, -). The last, not the
+        first, because the model sometimes echoes the instruction before
+        actually answering; at the start of a line, because a label quoted
+        inside a sentence is the model citing the prompt, not answering.
 
     Raises:
         ValueError: if no such line exists.
     """
-    matches = re.findall(r"FINAL_ANSWER:\s*(.+)", text)
+    matches = re.findall(r"^[ \t>*#-]*FINAL_ANSWER:\s*(.+)", text, re.MULTILINE)
     if not matches:
         raise ValueError("No FINAL_ANSWER line found in the response")
     return matches[-1].strip()
@@ -458,11 +460,12 @@ def _extract_labeled_line(text: str, label: str) -> str | None:
         label: the label to look for, without the colon.
 
     Returns:
-        The content after the last occurrence, or None if the label is absent.
-        Missing FINAL_OPTION only costs the cross-check, so the caller skips it
-        instead of failing the section, unlike a missing FINAL_ANSWER.
+        The content after the last occurrence that opens a line, as in
+        _extract_final_answer_line, or None if the label is absent. Missing
+        FINAL_OPTION only costs the cross-check, so the caller skips it instead
+        of failing the section, unlike a missing FINAL_ANSWER.
     """
-    matches = re.findall(rf"{re.escape(label)}:\s*(.+)", text)
+    matches = re.findall(rf"^[ \t>*#-]*{re.escape(label)}:\s*(.+)", text, re.MULTILINE)
     if not matches:
         return None
     return matches[-1].strip()
