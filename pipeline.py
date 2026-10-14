@@ -24,6 +24,7 @@ from rag_setup import (
     load_ehr_text,
     retrieve_brighton_context,
 )
+import agents
 from agents import build_llm, evaluate_section, extract_evidence, extract_evidence_full_text
 from criteria_rules import apply_cross_section_rules
 from agentic_graph import build_agentic_llm, run_agentic_graph_pipeline
@@ -164,6 +165,9 @@ def _run_config_snapshot() -> dict:
         "section_hints_disabled": sorted(config.SECTION_HINTS_DISABLED),
         "section_hints_fingerprint": _hint_fingerprint(),
         "section_queries_fingerprint": _query_fingerprint(),
+        # The sections told that an empty answer is valid; not part of the hint
+        # fingerprint, since the clause sits in the answer instructions
+        "empty_answer_sections": sorted(agents.EMPTY_ANSWER_SECTIONS),
 
         # Always applied, never switchable: recorded so a reader does not have
         # to know that to interpret the run

@@ -381,22 +381,32 @@ frase che non nomina alcuna opzione («if the second option you name is listed a
 Il blocco della linea guida è annunciato dall'intestazione
 `Reference synonyms/terminology (Brighton)`.
 
-Per le sezioni multi-scelta prive di un'opzione "nessuna delle precedenti", cioè
-A3.2 e B1.2, il prompt aggiunge come dire che nulla si applica: `FINAL_OPTION:
-none` e `FINAL_ANSWER: none`. Senza questa istruzione, non avendo modo di
-esprimere una risposta vuota, il modello selezionava tutte le opzioni. La cosa è
-esplicitata solo dove serve, così B2 continua a usare la propria opzione 5.
+Per le sezioni elencate in **`EMPTY_ANSWER_SECTIONS`**, per nome della classe
+dello schema, cioè A3.2 e B1.2 della TVP, il prompt aggiunge come dire che nulla
+si applica: `FINAL_OPTION: none` e `FINAL_ANSWER: none`. Il questionario stampato
+non ha per loro un'opzione "nessuna delle precedenti", e senza questa istruzione,
+non avendo modo di esprimere una risposta vuota, il modello selezionava tutte le
+opzioni. Solo queste sezioni accettano la risposta `none`; in ogni altra sezione
+`none` non corrisponde ad alcuna opzione e la sezione viene ritentata. Il braccio
+della miocardite imposta un insieme vuoto: in E ed F ogni referto ha un'opzione,
+quella dell'esame non eseguito o quella dell'esame senza anomalie.
 
 **`_has_none_option(options)`** dice se una sezione ha un'opzione esplicita
-«none of the above», riconosciuta dal prefisso `_NONE_OPTION_PREFIX`: è ciò che
-decide se il prompt aggiunge l'istruzione `none`. **`_is_no_selection(raw_value)`**
+«none of the above», riconosciuta dal prefisso `_NONE_OPTION_PREFIX`.
+**`_accepts_empty(section_model, options)`** è vera per le sezioni di
+`EMPTY_ANSWER_SECTIONS` senza un'opzione del genere: è ciò che decide sia
+l'istruzione `none` nel prompt sia l'accettazione della risposta vuota.
+**`_is_no_selection(raw_value)`**
 riconosce una riga di risposta che significa «nessuna opzione»: le parole
 accettate sono in `_NO_SELECTION_ANSWERS` (`none`, `nothing`, `nessuna`, `n/a` e
 simili).
 
 **`_extract_final_answer_line`** e **`_extract_labeled_line`** leggono le due
-righe. Entrambe prendono l'**ultima** occorrenza, non la prima, perché il modello
-a volte ripete l'istruzione prima di rispondere. La differenza sta nel
+righe. Entrambe considerano solo l'etichetta che apre una riga, dopo eventuali
+spazi o marcatori markdown (`>`, `*`, `#`, `-`): un'etichetta dentro una frase è il
+modello che cita il prompt, non che risponde. Fra quelle prendono l'**ultima**
+occorrenza, non la prima, perché il modello a volte ripete l'istruzione prima di
+rispondere. La differenza sta nel
 fallimento: `FINAL_ANSWER` mancante solleva un'eccezione, `FINAL_OPTION` mancante
 restituisce `None` e il chiamante rinuncia al solo controllo incrociato.
 
@@ -637,7 +647,9 @@ stessa firma.
 
 **`_run_config_snapshot(...)`** cattura tutto ciò che determina cosa una run
 produce: modalità, contesto della linea guida, intestazioni di sezione,
-hint e query con i rispettivi fingerprint, le impostazioni dell'Agent 3
+hint e query con i rispettivi fingerprint, le sezioni che ricevono la clausola
+sulla risposta vuota (`empty_answer_sections`, da `agents.EMPTY_ANSWER_SECTIONS`,
+che l'impronta degli hint non copre), le impostazioni dell'Agent 3
 (`verifier`: `enabled`, `inputs`, `temperature`, `num_ctx`), modelli per ruolo (con
 l'estrattore **effettivo**: `AGENTIC_LLM_MODEL_NAME` in modalità agentica,
 nessuno in `raw_record`), ambiente, parametri di generazione compreso
@@ -933,8 +945,10 @@ incluso nella tesi e quello che ricevono i modelli sono lo stesso oggetto.
   etichette, righe vuote e ordine sono quelli che il codice produce;
 - **`_example_section(multi_select)`** sceglie la sezione da cui costruire le
   istruzioni finali: la prima a scelta singola di `config.SECTION_ORDER`, oppure
-  la prima a scelta multipla senza opzione «none of the above», l'unico tipo che
-  porta la clausola sulla risposta vuota (A3_2 nella TVP, E nella miocardite).
+  la prima a scelta multipla che può restare vuota, l'unico tipo che porta la
+  clausola sulla risposta vuota (A3_2 nella TVP), o la prima a scelta multipla
+  quando nessuna può restarlo (la miocardite, dove il blocco esce senza
+  clausola).
   Quando il questionario non ha sezioni di un tipo, il file corrispondente non
   viene scritto: la miocardite non ha `answer_single.txt`;
 - **`_retriever_description()`** legge la descrizione dal tool costruito, non dal
@@ -991,7 +1005,8 @@ portano il segnaposto `{no_evidence}`, `EVALUATOR_SYSTEM_PROMPT` e
 (sintomi cardiaci, esame obiettivo, marcatori di infiammazione, ECG,
 ecocardiogramma) con i reperti scritti nelle parole del modulo.
 `MULTI_SELECT_EXAMPLE = None` toglie dalle istruzioni di risposta l'opzione della
-TVP usata come esempio (sezione 4.3).
+TVP usata come esempio, ed `EMPTY_ANSWER_SECTIONS = set()` toglie a E ed F
+l'istruzione su come lasciare vuota la sezione (sezione 4.3).
 
 Contiene anche gli hint di sezione: **`HINT_PREAMBLE`**, anteposto a ogni hint, e
 i testi di `_SECTION_HINT_TEXTS`, uniti in **`SECTION_HINTS`**. Riprendono le
@@ -1017,7 +1032,7 @@ frase per frase:
 | C | non dedurre aumento o assenza dai sintomi; «confirmed …» solo se dichiarato | prompt precedenti, C, Reasoning Guidelines |
 | C | «None of the above» richiede almeno un marcatore dosato e tutti normali; nessuno citato = «None tested» | testo dell'opzione 5 del modulo e prompt precedenti, C |
 | C | troponina, CK-MB, leucociti, procalcitonina e PCR virale non sono marcatori di questa sezione | formulazione nuova; il paper (Tabella 4) elenca i leucociti fra gli esami dell'infiammazione |
-| E | solo menzioni dirette; ECG non eseguito = solo la prima opzione; un pattern specifico va alla sua opzione; «No abnormalities» solo se dichiarato | prompt precedenti, E, Reasoning Guidelines |
+| E | solo menzioni dirette; ECG non eseguito = solo la prima opzione; un pattern specifico va alla sua opzione | prompt precedenti, E, Reasoning Guidelines; la regola su «No abnormalities» delle Reasoning Guidelines riguarda il «No» sulle singole righe del formato sì/no/sconosciuto e non ha un corrispettivo nel formato a caselle |
 | E | tachicardia sinusale, SVT, FA, PVC, TV, FV appartengono a «Paroxysmal …» | esempi nel testo dell'opzione (dal paper, Tabella 5) |
 | E | «Nonspecific …» solo se il referto le chiama aspecifiche | prompt precedenti, E.2 |
 | F | definizione dell'opzione 2 (ipocinesia, acinesia, FE ridotta) e della dilatazione | prompt precedenti, F, istruzione 4, quasi alla lettera; *chamber enlargement* dalle Reasoning Guidelines |
@@ -1048,7 +1063,8 @@ parole del modulo, così nessuna query porta lessico preso dai referti su cui gi
 **`apply_domain(guideline=False, temperature=MYO_TEMPERATURE)`** imposta sezioni e
 temperatura, modalità `agentic_graph`, gli hint di `prompts_myo.SECTION_HINTS`,
 nessuna regola cross-section; sostituisce i tre prompt degli agenti,
-`agents.MULTI_SELECT_EXAMPLE`, le query di sezione e il tool di ricerca, e indica
+`agents.MULTI_SELECT_EXAMPLE`, `agents.EMPTY_ANSWER_SECTIONS`, le query di
+sezione e il tool di ricerca, e indica
 per il paper un indice suo, `myo/vectorstores/chroma_brighton_myo`, perché
 `build_brighton_kb` ricaricherebbe l'indice del paper della TVP senza leggere il
 testo che riceve. Da riga di comando: `--guideline` accende il contesto della
@@ -1142,11 +1158,13 @@ le valuta. Prima della prima run controlla che Ollama risponda, che il modello
 valutatore sia scaricato e, con lo stesso codice della run (`run_myo.apply_domain`
 e le funzioni di impronta di `pipeline.py`), che impronta degli hint, impronta
 delle query, temperatura e verificatore siano quelli attesi (`EXPECTED_HINTS`,
-`EXPECTED_QUERIES`); altrimenti si ferma. Esegue le run una dopo l'altra in
+`EXPECTED_QUERIES`) e che nessuna sezione riceva la clausola sulla risposta
+vuota; altrimenti si ferma. Esegue le run una dopo l'altra in
 `myo/output_<RUN_TAG>_r1`, `r2` e `r3` (`RUN_TAG` vale `t05` di default), con un
 log per run in `logs/`, e rifiuta una
 cartella che contiene già file salvo `FORCE=1`. Dopo ogni run **`check_run`**
-rilegge gli audit log e stampa temperatura, tetto di token e finestra, impronte, metodi del verificatore,
+rilegge gli audit log e stampa temperatura, tetto di token e finestra, impronte,
+sezioni con la clausola sulla risposta vuota, metodi del verificatore,
 richieste oltre la finestra, mediana dei secondi per richiesta e sezioni fallite.
 Alla fine lancia `myo/evaluate_myo.py` ed `evaluate_verifier.py` su ogni run e
 `agreement_runs.py` sulle tre. Variabili d'ambiente: `T0=1` aggiunge una run a

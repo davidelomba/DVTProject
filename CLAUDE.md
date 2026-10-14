@@ -64,7 +64,8 @@ When something is unverified, say so.
   myocarditis questionnaire (17 dummy cases, ground truth by two authors outside
   the project), replacing schema, prompts, queries and hints in memory.
   `run_myo.apply_domain` sets Agents 1 and 2 to `MYO_TEMPERATURE` 0.5 with no
-  seed, queries made of each section's name and options in the form's words,
+  seed, no section to the empty-answer clause (`agents.EMPTY_ANSWER_SECTIONS`,
+  recorded as `_run_config.empty_answer_sections`), queries made of each section's name and options in the form's words,
   and hints from the earlier myocarditis prompts (`MYO_prompts_EN.pdf`) plus a
   few sentences from the case definition and the SPEAC companion guide, sourced
   sentence by sentence in `docs/DOCUMENTAZIONE_CODICE.md` section 16.
@@ -1253,15 +1254,19 @@ not say which governs, which is what the clinician question below is asking.
   from the earlier arms in sections, queries, hints and temperature at once; a
   run at temperature 0 would separate the temperature and say whether the six
   failed sections and the 44 calls at the token cap come from sampling.
-- **`_extract_final_answer_line` reads the line anywhere in the text.** In a
-  response cut at the cap the model may be quoting the instruction that contains
-  `FINAL_ANSWER: none`, and that quotation becomes the answer (E on C003_1a,
-  `myo/output_t05_np2048_r3`). Requiring the line at the start of a line is the
-  fix to consider; not tried.
-- **Two myocarditis hint sentences cost answers.** E's `No abnormalities seen on
-  ECG` only when the report states the ECG was normal turns `no ST/T abnormality`
-  into an empty answer on C003_1a; C's warning that a viral PCR is not CRP sits
-  next to Italian records where PCR is CRP, and C0001_1f was read that way once.
+- **Three fixes for E on C003_1a, applied 2026-10-14 and not yet measured.**
+  `FINAL_ANSWER` and `FINAL_OPTION` are read only where they open a line, which
+  changes the parse of 1 of the 27,672 stored responses, that one. The E hint
+  lost the sentence keeping `No abnormalities seen on ECG` for a report that
+  states the ECG was normal: the earlier prompts' rule it came from is about not
+  answering No on each abnormality row of a yes/no/unknown form, and has no
+  counterpart in a checkbox form. The empty-answer clause goes only to the
+  sections in `agents.EMPTY_ANSWER_SECTIONS`, A3_2 and B1_2 on DVT and none on
+  myocarditis, where E and F reached it only for lacking a none-of-the-above
+  option; DVT prompts are byte-identical. Hints `c65a9e1960da`; the run to
+  compare is `RUN_TAG=t05_np2048_v2`.
+- **C's warning that a viral PCR is not CRP** sits next to Italian records where
+  PCR is CRP, and C0001_1f was read that way once.
 - **Questions for the authors of the myocarditis ground truth**, from the
   dummy cases read against the form and the sources:
   - Is a decreased ejection fraction option 2 or option 4 of F?

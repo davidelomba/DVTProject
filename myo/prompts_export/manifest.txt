@@ -1,15 +1,15 @@
 # testo                            nel codice           nel file
 agentic_extra.txt           1279 d99d007dbe14  1277 24bab00f5cba
-answer_multi.txt            1213 7c38d5ef6ce7  1214 c8ad83632c03
+answer_multi.txt            1004 430c0a114945  1005 c8831cc17d50
 evaluator.txt               1316 d8a9afdfefa2  1317 40c8969cfd48
 extractor.txt               1334 4176c26ecc3b  1334 4176c26ecc3b
 hint_A1.txt                  758 99dbdc853cfd   759 076c44ed654a
 hint_B.txt                   819 9f2a59477f45   820 5d536149c725
 hint_C.txt                  1230 6ec36fe211da  1231 08e7de8be5b9
-hint_E.txt                   935 258b8bee0659   936 7ae66de78263
+hint_E.txt                   822 10caa2fd3b4c   823 c410ea51ff71
 hint_F.txt                  1452 bc6ff86cd637  1453 397386985962
 message_skeleton.txt         361 61160e09b14b   362 9a38adaea453
 retriever_tool.txt           996 1d1d1b1e185c   997 3eae47ba24a8
 
-section_hints_fingerprint  1545bbe30d9a
+section_hints_fingerprint  c65a9e1960da
 section_queries_fingerprint 45a59c4e6d03

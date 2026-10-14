@@ -36,7 +36,7 @@ if [ -f .venv/bin/activate ]; then
     source .venv/bin/activate
 fi
 
-EXPECTED_HINTS="1545bbe30d9a"
+EXPECTED_HINTS="c65a9e1960da"
 EXPECTED_QUERIES="45a59c4e6d03"
 GT="./myo/data/records"
 RUN_TAG="${RUN_TAG:-t05}"
@@ -73,14 +73,17 @@ preflight() {
 import os, sys
 sys.path.insert(0, "myo")
 import myo_schema  # noqa: F401
-import config, pipeline, run_myo
+import agents, config, pipeline, run_myo
 run_myo.apply_domain(guideline=True)
 hints = pipeline._hint_fingerprint()["all"]
 queries = pipeline._query_fingerprint()["all"]
 print(f"sections {config.SECTION_ORDER}, temperature {config.LLM_TEMPERATURE}, "
       f"hints {hints}, queries {queries}, verifier {config.VERIFIER_ENABLED} "
-      f"{list(config.VERIFIER_INPUTS)}")
+      f"{list(config.VERIFIER_INPUTS)}, empty-answer sections "
+      f"{sorted(agents.EMPTY_ANSWER_SECTIONS)}")
 problems = []
+if agents.EMPTY_ANSWER_SECTIONS:
+    problems.append(f"empty-answer sections {sorted(agents.EMPTY_ANSWER_SECTIONS)}, expected none")
 if hints != os.environ["EXPECTED_HINTS"]:
     problems.append(f"hint fingerprint {hints}, expected {os.environ['EXPECTED_HINTS']}")
 if queries != os.environ["EXPECTED_QUERIES"]:
@@ -117,7 +120,7 @@ logs = sorted(Path(sys.argv[1]).glob("*_audit_log.json"))
 if not logs:
     print(f"no audit log in {sys.argv[1]}")
     sys.exit(1)
-temps, caps, hints, queries, methods, errors, overflow, seconds = set(), set(), set(), set(), Counter(), [], 0, []
+temps, caps, hints, queries, empties, methods, errors, overflow, seconds = set(), set(), set(), set(), set(), Counter(), [], 0, []
 for path in logs:
     audit = json.loads(path.read_text(encoding="utf-8"))
     rc = audit.get("_run_config", {})
@@ -126,6 +129,7 @@ for path in logs:
     caps.add((generation.get("num_predict"), generation.get("num_ctx")))
     hints.add(rc.get("section_hints_fingerprint", {}).get("all"))
     queries.add(rc.get("section_queries_fingerprint", {}).get("all"))
+    empties.add(tuple(rc.get("empty_answer_sections", ["not recorded"])))
     for key, entry in audit.items():
         if key.startswith("_") or not isinstance(entry, dict):
             continue
@@ -137,7 +141,7 @@ for path in logs:
             if outcome.get("seconds") is not None:
                 seconds.append(outcome["seconds"])
 print(f"{len(logs)} audit logs; temperature {temps}; (num_predict, num_ctx) {caps}; "
-      f"hints {hints}; queries {queries}")
+      f"hints {hints}; queries {queries}; empty-answer sections {empties}")
 print(f"verifier methods {dict(methods)}; overflow {overflow}; "
       f"seconds per request median {sorted(seconds)[len(seconds) // 2] if seconds else 'n/a'}")
 print(f"failed sections: {', '.join(errors) if errors else 'none'}")
