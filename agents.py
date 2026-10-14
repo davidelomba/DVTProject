@@ -304,6 +304,7 @@ def _build_reasoning_prompt(
     multi_select: bool,
     extra_instructions: str = "",
     section_description: str = "",
+    accepts_empty: bool = False,
 ) -> str:
     """Builds the prompt Agent 2 answers for one section.
 
@@ -323,6 +324,8 @@ def _build_reasoning_prompt(
         section_description: the section heading from models.py, placed
             directly above the options as the printed form has it. Empty when
             config.SECTION_DESCRIPTIONS_ENABLED is False.
+        accepts_empty: whether the closing instructions tell the model how to
+            answer that no option applies (see _accepts_empty).
 
     Returns:
         The prompt string.
@@ -361,12 +364,10 @@ def _build_reasoning_prompt(
             "just because it is listed first -- every option you list on FINAL_OPTION must "
             "be traceable to a specific sentence in your reasoning."
         )
-        # Sections with no "none of the above" option among their choices (A3.2,
-        # B1.2) accept an empty answer in the schema, but the numbered list
-        # gives the model no way to express one, and without this clause it
-        # selects every option when nothing applies. Added only to those
-        # sections, so B2 keeps using its own option 5.
-        if not _has_none_option(options):
+        # The sections in EMPTY_ANSWER_SECTIONS (A3.2, B1.2) accept an empty
+        # answer, but the numbered list gives the model no way to express one,
+        # and without this clause it selects every option when nothing applies.
+        if accepts_empty:
             prompt += (
                 "\nIf NONE of the numbered options applies, write exactly "
                 "'FINAL_OPTION: none' and 'FINAL_ANSWER: none'. Leaving this section "
@@ -391,8 +392,14 @@ def _build_reasoning_prompt(
 # answer through an option of their own from those that cannot.
 _NONE_OPTION_PREFIX = "none of the above"
 
+# Class names of the multi-select sections whose answer may be empty although
+# no option says so: A3.2 and B1.2, whose printed questionnaire has no "none
+# of the above". Only these are told how to answer that nothing applies, and
+# only these accept that answer.
+EMPTY_ANSWER_SECTIONS = {"A3_2_ImagingStudies", "B1_2_DVTType"}
+
 # What the model may write on FINAL_ANSWER/FINAL_OPTION to say that no option
-# applies, in the sections that have no "none of the above" option to select.
+# applies, in the sections of EMPTY_ANSWER_SECTIONS.
 # Both languages are accepted because the evaluator answers in English but the
 # clinical records may be in any language and it occasionally follows theirs.
 _NO_SELECTION_ANSWERS = {
@@ -412,6 +419,21 @@ def _has_none_option(options: list[str]) -> bool:
         True if one of them is the catch-all negative option.
     """
     return any(opt.lower().startswith(_NONE_OPTION_PREFIX) for opt in options)
+
+
+def _accepts_empty(section_model, options: list[str]) -> bool:
+    """Whether a section may be answered with no option at all.
+
+    Args:
+        section_model: the section's Pydantic class.
+        options: the section's options, in schema order.
+
+    Returns:
+        True if the section is in EMPTY_ANSWER_SECTIONS and has no "none of
+        the above" option of its own.
+    """
+    return (section_model.__name__ in EMPTY_ANSWER_SECTIONS
+            and not _has_none_option(options))
 
 
 def _is_no_selection(raw_value: str) -> bool:
@@ -563,9 +585,10 @@ def evaluate_section(
     # Introspection and prompt built once, outside the retry loop.
     field_name, options, multi_select, description = field_info(section_model)
     section_description = description if config.SECTION_DESCRIPTIONS_ENABLED else ""
+    accepts_empty = multi_select and _accepts_empty(section_model, options)
     prompt = _build_reasoning_prompt(
         evidence_text, brighton_context, options, multi_select, extra_instructions,
-        section_description,
+        section_description, accepts_empty,
     )
 
     last_error = None
@@ -593,9 +616,9 @@ def evaluate_section(
             # Sections where several options may apply; the single-choice ones
             # are handled after this block.
             if multi_select:
-                # True when the section offers no "none of the above" option
-                # (A3.2, B1.2) and the model answered with the "none" token.
-                if not _has_none_option(options) and _is_no_selection(raw_final):
+                # True when the section may be left empty (A3.2, B1.2) and the
+                # model answered with the "none" token.
+                if accepts_empty and _is_no_selection(raw_final):
                     conflict = None
                     # Logged only: FINAL_OPTION still naming options contradicts
                     # the "none" just given.
@@ -619,7 +642,7 @@ def evaluate_section(
                 # "none" also arrives as one item among several, which the
                 # whole-line check above does not see.
                 none_with_options = None
-                if not _has_none_option(options):
+                if accepts_empty:
                     dropped = [item for item in raw_items if _is_no_selection(item)]
                     raw_items = [item for item in raw_items if not _is_no_selection(item)]
                     if not raw_items:

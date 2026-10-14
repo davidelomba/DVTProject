@@ -117,6 +117,7 @@ def apply_domain(guideline: bool = False, temperature: float = MYO_TEMPERATURE):
     )
     agents.EVALUATOR_SYSTEM_PROMPT = prompts_myo.EVALUATOR_SYSTEM_PROMPT
     agents.MULTI_SELECT_EXAMPLE = prompts_myo.MULTI_SELECT_EXAMPLE
+    agents.EMPTY_ANSWER_SECTIONS = prompts_myo.EMPTY_ANSWER_SECTIONS
     pipeline.SECTION_QUERIES = SECTION_QUERIES
 
 

@@ -91,6 +91,12 @@ even if myocarditis was confirmed by other means."""
 # number-text correspondence without naming an option of this questionnaire.
 MULTI_SELECT_EXAMPLE = None
 
+# agents.EMPTY_ANSWER_SECTIONS: none. Every section of this questionnaire has an
+# option for every record, a none-of-the-above option or, in E and F, the
+# not-done option and the no-abnormalities option, so no section is told that
+# an empty answer is valid.
+EMPTY_ANSWER_SECTIONS = set()
+
 # Prepended to every section hint: instructions 1 and 2 of the earlier prompts,
 # independent evaluation and no inference. "Exact terms" is not carried over,
 # since the records are in Italian and the options in English.
@@ -147,9 +153,7 @@ _SECTION_HINT_TEXTS = {
         "elevation, PR-segment depression), select only the option that names "
         "that pattern. Sinus tachycardia, SVT, atrial fibrillation, PVCs, VT and "
         "VF belong to 'Paroxysmal or sustained atrial or ventricular "
-        "arrhythmias', as its examples say. Choose 'No abnormalities seen on ECG' "
-        "only when the report states the ECG was normal or showed no "
-        "abnormalities. Choose '*Nonspecific abnormalities other than those "
+        "arrhythmias', as its examples say. Choose '*Nonspecific abnormalities other than those "
         "listed above' only for abnormalities the record explicitly calls "
         "nonspecific, such as 'nonspecific ST changes' or 'borderline low "
         "voltage'."
