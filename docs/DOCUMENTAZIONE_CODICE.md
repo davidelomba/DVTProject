@@ -33,6 +33,7 @@ dice **cosa fa** il codice, quello dice **cosa è stato misurato**.
 | `export_prompts.py` | esportazione di prompt, query e hint in file per la tesi (non versionato) |
 | `myo/` | il braccio di trasferimento sul questionario della miocardite |
 | `run_myo_t05.sh` | le tre run della miocardite a temperatura 0,5 su mari, con controlli e valutazione |
+| `replay_verifier.py` | il verificatore riapplicato a una run già su disco, con un modello a scelta |
 
 ---
 
@@ -88,6 +89,9 @@ Quattro costanti governano l'Agent 3 (sezione 7):
 - `VERIFIER_TEMPERATURE = 0.0` — separata da `LLM_TEMPERATURE`, perché il
   punteggio è una probabilità letta dai logprob e il verdetto deve essere
   ripetibile anche quando gli altri due agenti campionano.
+- `VERIFIER_MODEL_NAME = None` — il modello a cui il verificatore invia le
+  richieste; con `None` è `EVALUATOR_LLM_MODEL_NAME`, il modello che ha scritto
+  le risposte che giudica.
 - `VERIFIER_NUM_CTX = 8192` — deve contenere la variante `reasoning`, che
   aggiunge fino a `LLM_NUM_PREDICT` token di ragionamento a un prompt che arriva
   già a circa 3200.
@@ -571,10 +575,12 @@ spazio o un segno di punteggiatura. `SYSTEM_PROMPT` presenta il compito: valutar
 la risposta data da un altro revisore, rispondendo solo YES o NO.
 
 **`_chat(user_prompt)`** invia una richiesta a `/api/chat` di Ollama, non
-attraverso `ChatOllama`, perché servono i campi `logprobs`. Il modello è
-`EVALUATOR_LLM_MODEL_NAME`, così non se ne carica un secondo sulla GPU; temperatura
-e finestra di contesto sono quelle del verificatore (`VERIFIER_TEMPERATURE`,
-`VERIFIER_NUM_CTX`).
+attraverso `ChatOllama`, perché servono i campi `logprobs`. Il modello è quello
+di **`verifier_model()`**: `VERIFIER_MODEL_NAME`, oppure `EVALUATOR_LLM_MODEL_NAME`
+quando è `None`, nel qual caso non se ne carica un secondo sulla GPU. Il parametro
+`think` (`LLM_REASONING`) è inviato solo quando il giudice è il modello
+dell'Agent 2, per cui è impostato. Temperatura e finestra di contesto sono quelle
+del verificatore (`VERIFIER_TEMPERATURE`, `VERIFIER_NUM_CTX`).
 
 **`_format_answer(answer, options, multi)`** scrive la risposta come opzioni
 numerate: per una sezione multipla le opzioni selezionate, oppure «No option
@@ -683,7 +689,8 @@ risposte finali; poi aggiunge lo snapshot di configurazione e costruisce
 vengono omesse invece che scritte come `null`, così una risposta mancante è
 assente e non somiglia a una risposta di "nessuno". Riceve anche l'audit log: se
 l'Agent 3 ha girato, copia verdetto e P(YES) di ogni sezione e variante sotto la
-chiave `VERIFIER_KEY = "_verifier"`. Così i valori restano nel file dei risultati
+chiave `VERIFIER_KEY = "_verifier"`, tramite **`verifier_verdicts(audit_log)`**,
+che usa anche `replay_verifier.py`. Così i valori restano nel file dei risultati
 anche quando l'audit log non viene salvato.
 Il trattino basso la tiene separata dalle chiavi delle sezioni, le sole che
 `evaluate_predictions`, `compare_runs` ed `export_redcap_csv` leggono. Con
@@ -1170,3 +1177,28 @@ Alla fine lancia `myo/evaluate_myo.py` ed `evaluate_verifier.py` su ogni run e
 temperatura 0 (`myo/output_<RUN_TAG>_t0`), `STRIPPED=1` la TVP senza hint
 (`output_stripped_verifier`), `EVAL_ONLY=1` salta le run, `PYTHON` indica
 l'interprete; attiva `.venv` se esiste.
+
+## 20. `replay_verifier.py`
+
+Riapplica il verificatore a una run già su disco, con il modello indicato da
+`--model`, senza rieseguire gli Agenti 1 e 2: il verificatore non cambia nessuna
+risposta, e l'audit log conserva evidenza e ragionamento, il file dei risultati
+le risposte finali. Due giudici si confrontano così sulle stesse risposte.
+
+Per ogni coppia di file dei risultati e audit log della cartella di origine toglie
+i verdetti presenti, chiama `verifier.verify_record` sulle risposte salvate (la
+stessa funzione della pipeline, quindi stesso prompt, stessa eredità per le
+sezioni riscritte da una regola e stessi parametri) con `VERIFIER_MODEL_NAME`
+impostato al modello scelto, e scrive i due file con gli stessi nomi nella
+cartella `--output-dir`. Le risposte sono copiate senza modifiche. In
+`_run_config.verifier` registra modello, varianti, temperatura e finestra usati,
+più `replayed_from` (la cartella di origine), `replayed_at`, `hostname` e
+`ollama_version` della rilettura. `evaluate_verifier.py` e `agreement_runs.py`
+leggono la cartella prodotta come una run.
+
+`--domain myo` installa lo schema della miocardite prima di importare il
+verificatore e prende `SECTION_ORDER` dalle sue sezioni. Prima del primo referto
+una richiesta di prova controlla che il modello risponda YES o NO con le
+probabilità dei token; senza, non c'è P(YES) e lo script si ferma. Rifiuta una
+cartella di destinazione che contiene già file, salvo `--force`.
+

@@ -28,7 +28,7 @@ import agents
 from agents import build_llm, evaluate_section, extract_evidence, extract_evidence_full_text
 from criteria_rules import apply_cross_section_rules
 from agentic_graph import build_agentic_llm, run_agentic_graph_pipeline
-from verifier import verify_record
+from verifier import verifier_model, verify_record
 
 
 # One query per section, naming the content of the section's options in words
@@ -174,6 +174,7 @@ def _run_config_snapshot() -> dict:
         "cross_section_rules_applied": True,
         "verifier": {
             "enabled": config.VERIFIER_ENABLED,
+            "model": verifier_model(),
             "inputs": list(config.VERIFIER_INPUTS),
             "temperature": config.VERIFIER_TEMPERATURE,
             "num_ctx": config.VERIFIER_NUM_CTX,

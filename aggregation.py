@@ -30,14 +30,28 @@ def form_to_json_summary(form: BaseModel, audit_log: dict = None) -> dict:
 
     summary = form.model_dump(exclude_none=True)
     if audit_log:
-        verdicts = {
-            section: {
-                variant: {"agree": outcome.get("agree"), "p_agree": outcome.get("p_agree")}
-                for variant, outcome in audit_log[section]["verifier"].items()
-            }
-            for section in config.SECTION_ORDER
-            if isinstance(audit_log.get(section), dict) and "verifier" in audit_log[section]
-        }
+        verdicts = verifier_verdicts(audit_log)
         if verdicts:
             summary[VERIFIER_KEY] = verdicts
     return summary
+
+
+def verifier_verdicts(audit_log: dict) -> dict:
+    """Agent 3's verdicts in an audit log, the form the result file keeps.
+
+    Args:
+        audit_log: section key -> that section's log entry.
+
+    Returns:
+        Section key -> {variant: {"agree", "p_agree"}}, for the sections of
+        config.SECTION_ORDER that carry a "verifier" entry; empty when none does.
+    """
+
+    return {
+        section: {
+            variant: {"agree": outcome.get("agree"), "p_agree": outcome.get("p_agree")}
+            for variant, outcome in audit_log[section]["verifier"].items()
+        }
+        for section in config.SECTION_ORDER
+        if isinstance(audit_log.get(section), dict) and "verifier" in audit_log[section]
+    }

@@ -35,15 +35,19 @@ LLM_REASONING = False
 LLM_NUM_CTX = 8192
 LLM_REQUEST_TIMEOUT = 180  # seconds; allows time for reasoning on slower hardware
 
-# Agent 3 as a verifier (verifier.py). After the cross-section rules, asks the
-# evaluator model whether each section's final answer is correct given the
-# evidence, YES or NO, and records the verdict and P(YES) in the section's audit
-# log entry under "verifier". One request per section and per input variant:
-# "answer" sends evidence, options and answer; "reasoning" adds Agent 2's
-# reasoning. Never changes an answer. When False, no extra request is sent.
+# Agent 3 as a verifier (verifier.py). After the cross-section rules, asks a
+# model whether each section's final answer is correct given the evidence, YES
+# or NO, and records the verdict and P(YES) in the section's audit log entry
+# under "verifier". One request per section and per input variant: "answer"
+# sends evidence, options and answer; "reasoning" adds Agent 2's reasoning.
+# Never changes an answer. When False, no extra request is sent.
 VERIFIER_ENABLED = True
 VERIFIER_INPUTS = ("answer", "reasoning")
 VERIFIER_TEMPERATURE = 0.0
+
+# Model the verifier sends its requests to. None uses EVALUATOR_LLM_MODEL_NAME,
+# the model that wrote the answers it judges.
+VERIFIER_MODEL_NAME = None
 
 # Has to hold the "reasoning" variant, which adds up to LLM_NUM_PREDICT tokens
 # of Agent 2's reasoning to a prompt that already reaches about 3200.

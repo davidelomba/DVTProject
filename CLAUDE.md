@@ -55,6 +55,10 @@ When something is unverified, say so.
   gets the guideline context or the hint. It records the verdict and P(YES),
   normalised over YES and NO, under `verifier` in the audit log and `_verifier`
   in the result file, at `VERIFIER_TEMPERATURE` 0 and `VERIFIER_NUM_CTX` 8192.
+  The judge is `config.VERIFIER_MODEL_NAME`, or Agent 2's model when None, and is
+  recorded as `_run_config.verifier.model`. `replay_verifier.py` applies the
+  verifier again, with a chosen model, to a run already on disk, writing a copy
+  of the run with only the verdicts replaced.
   It never changes an answer. A section a cross-section rule rewrote, marked
   `overridden_by`, sends no request and takes its source section's verdict
   (method `rule:<source>`). `evaluate_verifier.py` scores it against the ground
@@ -127,6 +131,7 @@ python generate_synthetic_records.py --check      # fidelity audit, no LLM call
 python export_redcap_csv.py                       # results -> REDCap import CSV
 python evaluate_verifier.py ./output_x            # Agent 3 against the ground truth
 python agreement_runs.py ./out_r1 ./out_r2 ./out_r3   # agreement between repeated runs
+python replay_verifier.py ./output_x --model medgemma:27b --output-dir ./output_x_judge   # verifier again, another judge
 python export_prompts.py                          # DVT prompts, queries, hints -> prompts_export/
 python myo/run_myo.py --guideline --output-dir ./myo/output_x   # myocarditis, five sections
 python myo/evaluate_myo.py ./myo/output_x
@@ -1027,6 +1032,22 @@ not say which governs, which is what the clinician question below is asking.
   record now costs 2.0 seconds like the others, against 9.5, which fits the model
   reload on a `num_ctx` change; the runs take 160 to 178 seconds a record and 46
   to 51 minutes.
+- **With the hints revised against the earlier prompts, E is 17 of 17 in every
+  run and every error outside F is one of the two conventions.**
+  `myo/output_t05_np2048_v2_r1` to `r3`, the 2048-token arm with hints
+  `9029b6f01738`, no section given the empty-answer clause and the answer lines
+  read only at the start of a line, the three changed together: A1 14, 13, 14,
+  B 12, 12, 11, C 11 in every run, E 17 in every run, F 3, 4, 4; 57 of 85 in
+  every run against 58, 56 and 54. No failed section, 5 of 260 calls at the cap,
+  no `answer_conflict`. C003_1a's E answers option 13 in all three runs, C0001_1f's
+  C is right in r2. Outside F the 14, 15 and 15 errors are all `none` against
+  `unknown` in A1 and B and `None tested` against `None of the above` in C, with
+  C005 flipping direction between runs. F selects option 4 10 times against 16,
+  the truth having 30; 60 false positives and 40 false negatives. Fleiss kappa
+  0.872 overall, 1.000 on C and E, 0.436 on F; unanimous answers right 77.5% of
+  the time, split ones 14.3%. Verifier AUROC 0.558 for `answer`, 0.659 for
+  `reasoning`, which answers NO 3, 2 and 2 times in 85 and approves every error
+  of B and C. 156 to 167 seconds a record, 46 to 52 minutes a run.
 - Read the metrics in this order: majority baseline and gain, then kappa, then
   accuracy with its interval. Accuracy alone ranked F above A3_2 under the 8B
   model, where F gained nothing over a constant answer and A3_2 gained 13
@@ -1245,16 +1266,21 @@ not say which governs, which is what the clinician question below is asking.
   3 sections lost. Realistic-length records will lengthen the prompt by several
   hundred tokens (an estimate): run a token check on the first batch, then set
   the window (likely 8192) and the cap by that rule and measure them as one arm.
-- **The verifier needs a corpus with more errors.** On the myocarditis runs
-  the errors sit in two coding conventions and in F; `myo/run_dvt_stripped.py`
-  gives 46 errors on DVT and has not been run with the verifier. The confidence
+- **The verifier needs a corpus with more errors, and a judge other than the
+  model it judges.** On the myocarditis runs the errors sit in two coding
+  conventions and in F; `output_stripped`, the DVT corpus stripped of hints,
+  context and rules (46 errors, on disk), has not been verified.
+  `replay_verifier.py` can verify it, and the final myocarditis series, with
+  qwen3.6:27b and with another judge such as `medgemma:27b`, without running
+  Agents 1 and 2 again; not run yet. The confidence
   Agent 3 could not flag an answer wrong for lack of evidence, because it read
   the same fragments as Agent 2; the verifier reads them too.
 - **The temperature alone is not measured.** The three myocarditis runs differ
   from the earlier arms in sections, queries, hints and temperature at once; a
   run at temperature 0 would separate the temperature and say whether the six
   failed sections and the 44 calls at the token cap come from sampling.
-- **Three fixes for E on C003_1a, applied 2026-10-14 and not yet measured.**
+- **Three fixes for E on C003_1a, applied 2026-10-14 and measured together,
+  not one by one.**
   `FINAL_ANSWER` and `FINAL_OPTION` are read only where they open a line, which
   changes the parse of 1 of the 27,672 stored responses, that one. The E hint
   lost the sentence keeping `No abnormalities seen on ECG` for a report that
@@ -1274,7 +1300,8 @@ not say which governs, which is what the clinician question below is asking.
   E.2 does; F says that a report calling the echocardiogram normal gives `No
   abnormalities seen on ECHO`, a sufficient condition where it had read only
   when. The C passage on None tested is corrupted in the PDF itself. Hints
-  `9029b6f01738`; the run to compare is `RUN_TAG=t05_np2048_v2`.
+  `9029b6f01738`, measured in `myo/output_t05_np2048_v2_*` (bullet above): E
+  reaches 17 of 17, and which of the three changes did it is not separated.
 - **Questions for the authors of the myocarditis ground truth**, from the
   dummy cases read against the form and the sources:
   - Is a decreased ejection fraction option 2 or option 4 of F?

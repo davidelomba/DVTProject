@@ -3,7 +3,8 @@ Agent 3 as a verifier: does the model agree with the answer the form holds?
 
 After the cross-section rules, verify_record sends, for
 each section and for each input variant in config.VERIFIER_INPUTS, one request
-to the evaluator model. The request carries the evidence Agent 2 received, the
+to the model verifier_model() names: config.VERIFIER_MODEL_NAME, or Agent 2's
+model when that is None. The request carries the evidence Agent 2 received, the
 section's numbered options and the final answer, and asks for YES or NO alone:
 
   - "answer":    evidence, options, answer;
@@ -54,9 +55,20 @@ SYSTEM_PROMPT = (
 )
 
 
-def _chat(user_prompt: str) -> dict:
-    """One non-streamed /api/chat request with token probabilities."""
+def verifier_model() -> str:
+    """The model the verifier asks: config.VERIFIER_MODEL_NAME, or Agent 2's."""
 
+    return config.VERIFIER_MODEL_NAME or config.EVALUATOR_LLM_MODEL_NAME
+
+
+def _chat(user_prompt: str) -> dict:
+    """One non-streamed /api/chat request with token probabilities.
+
+    The thinking switch config.LLM_REASONING is sent only when the verifier
+    model is Agent 2's, the model it was set for.
+    """
+
+    model = verifier_model()
     options = {
         "temperature": config.VERIFIER_TEMPERATURE,
         "num_predict": NUM_PREDICT,
@@ -64,7 +76,7 @@ def _chat(user_prompt: str) -> dict:
         "num_ctx": config.VERIFIER_NUM_CTX,
     }
     body = {
-        "model": config.EVALUATOR_LLM_MODEL_NAME,
+        "model": model,
         "stream": False,
         "messages": [
             {"role": "system", "content": SYSTEM_PROMPT},
@@ -74,7 +86,7 @@ def _chat(user_prompt: str) -> dict:
         "logprobs": True,
         "top_logprobs": TOP_LOGPROBS,
     }
-    if config.LLM_REASONING is not None:
+    if config.LLM_REASONING is not None and model == config.EVALUATOR_LLM_MODEL_NAME:
         body["think"] = config.LLM_REASONING
     request = urllib.request.Request(
         f"{OLLAMA_URL}/api/chat",
