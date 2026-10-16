@@ -4,6 +4,7 @@ parameters, retrieval settings, section order, the per-section prompt hints
 and the cross-section rules.
 """
 
+import hashlib
 from pathlib import Path
 
 # Project root directory, used to locate persistent vector stores and other resources
@@ -39,8 +40,10 @@ LLM_REQUEST_TIMEOUT = 180  # seconds; allows time for reasoning on slower hardwa
 # model whether each section's final answer is correct given the evidence, YES
 # or NO, and records the verdict and P(YES) in the section's audit log entry
 # under "verifier". One request per section and per input variant: "answer"
-# sends evidence, options and answer; "reasoning" adds Agent 2's reasoning.
-# Never changes an answer. When False, no extra request is sent.
+# sends evidence, options and answer; "reasoning" adds Agent 2's reasoning;
+# "answer_hint" and "reasoning_hint" add to each the section's hint, the one
+# section_hint() gives Agent 2. Never changes an answer. When False, no extra
+# request is sent.
 VERIFIER_ENABLED = True
 VERIFIER_INPUTS = ("answer", "reasoning")
 VERIFIER_TEMPERATURE = 0.0
@@ -279,3 +282,24 @@ def section_hint(section_key: str) -> str:
     if not SECTION_HINTS_ENABLED or section_key in SECTION_HINTS_DISABLED:
         return ""
     return SECTION_HINTS.get(section_key, "")
+
+
+def hint_fingerprint() -> dict:
+    """Identifies the hint text each section is sent, as section_hint gives it.
+
+    Returns:
+        Section key -> "<chars> <first 12 hex of sha256>", for the sections
+        with a non-empty hint. `all` digests the whole set, so two runs can be
+        compared on one string.
+    """
+
+    digest = hashlib.sha256()
+    per_section = {}
+    for section_key in SECTION_ORDER:
+        hint = section_hint(section_key)
+        digest.update(f"{section_key}:{hint}\n".encode("utf-8"))
+        if hint:
+            own = hashlib.sha256(hint.encode("utf-8")).hexdigest()[:12]
+            per_section[section_key] = f"{len(hint)} {own}"
+    per_section["all"] = digest.hexdigest()[:12]
+    return per_section

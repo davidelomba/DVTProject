@@ -28,7 +28,7 @@ import agents
 from agents import build_llm, evaluate_section, extract_evidence, extract_evidence_full_text
 from criteria_rules import apply_cross_section_rules
 from agentic_graph import build_agentic_llm, run_agentic_graph_pipeline
-from verifier import verifier_model, verify_record
+from verifier import verifier_settings, verify_record
 
 
 # One query per section, naming the content of the section's options in words
@@ -96,21 +96,12 @@ def _hint_fingerprint() -> dict:
     copying the hints into every audit log.
 
     Returns:
-        Section key -> "<chars> <first 12 hex of sha256>", for the sections
-        that received a non-empty hint. `all` digests the whole set, so two
-        runs can be compared on one string.
+        config.hint_fingerprint(): section key -> "<chars> <first 12 hex of
+        sha256>", for the sections that received a non-empty hint, and `all`,
+        a digest of the whole set, so two runs can be compared on one string.
     """
 
-    digest = hashlib.sha256()
-    per_section = {}
-    for section_key in config.SECTION_ORDER:
-        hint = config.section_hint(section_key)
-        digest.update(f"{section_key}:{hint}\n".encode("utf-8"))
-        if hint:
-            own = hashlib.sha256(hint.encode("utf-8")).hexdigest()[:12]
-            per_section[section_key] = f"{len(hint)} {own}"
-    per_section["all"] = digest.hexdigest()[:12]
-    return per_section
+    return config.hint_fingerprint()
 
 
 def _query_fingerprint() -> dict:
@@ -172,13 +163,7 @@ def _run_config_snapshot() -> dict:
         # Always applied, never switchable: recorded so a reader does not have
         # to know that to interpret the run
         "cross_section_rules_applied": True,
-        "verifier": {
-            "enabled": config.VERIFIER_ENABLED,
-            "model": verifier_model(),
-            "inputs": list(config.VERIFIER_INPUTS),
-            "temperature": config.VERIFIER_TEMPERATURE,
-            "num_ctx": config.VERIFIER_NUM_CTX,
-        },
+        "verifier": verifier_settings(),
         "models": {
             "extractor": extractor_model,
             "evaluator": config.EVALUATOR_LLM_MODEL_NAME,

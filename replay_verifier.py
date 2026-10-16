@@ -9,12 +9,18 @@ on exactly the same answers, without running Agents 1 and 2 again.
 For every pair of result file and audit log in the run directory, the script
 drops the verdicts already there, calls verifier.verify_record on the stored
 answers, the same function the pipeline calls, with config.VERIFIER_MODEL_NAME
-set to the chosen model, and writes both files under the same names into the
-output directory. The answers are copied unchanged. _run_config.verifier
-records the model and the other verifier settings used, plus
+set to the chosen model and config.VERIFIER_INPUTS to the variants of
+--inputs, and writes both files under the same names into the output
+directory. The answers are copied unchanged. _run_config.verifier records the
+model and the other verifier settings used (verifier.verifier_settings), plus
 "replayed_from" (the source directory), "replayed_at", "hostname" and
 "ollama_version" of the replay. evaluate_verifier.py and agreement_runs.py read
 the output directory as they read a run.
+
+The "_hint" variants send the hint the current code gives the section:
+config.section_hint, with the myocarditis hints under --domain myo. Its digest
+is recorded in _run_config.verifier.hints, and the script says so when it
+differs from the hints the run itself was produced with.
 
 Before the first record, one request checks that the model answers with token
 probabilities; without them there is no P(YES) and the script stops.
@@ -24,6 +30,9 @@ Usage:
         --output-dir ./output_stripped_judge_medgemma
     python replay_verifier.py ./myo/output_t05_np2048_v2_r1 --domain myo \
         --model medgemma:27b --output-dir ./myo/output_t05_np2048_v2_r1_judge_medgemma
+    python replay_verifier.py ./output_stripped --model qwen3.6:27b \
+        --inputs answer reasoning answer_hint reasoning_hint \
+        --output-dir ./output_stripped_judge_qwen_hint
 """
 
 import argparse
@@ -45,20 +54,26 @@ def _parse_args():
                         help="directory the replayed files are written to")
     parser.add_argument("--domain", choices=("dvt", "myo"), default="dvt",
                         help="questionnaire of the run (default dvt)")
+    parser.add_argument("--inputs", nargs="+", default=None,
+                        help="verifier variants (default config.VERIFIER_INPUTS): "
+                             "answer, reasoning, answer_hint, reasoning_hint")
     parser.add_argument("--force", action="store_true",
                         help="write into an output directory that already holds files")
     return parser.parse_args()
 
 
 def _install_domain(domain: str):
-    """Installs the myocarditis schema before verifier is imported."""
+    """Installs the myocarditis schema and hints before verifier is imported."""
 
     if domain == "myo":
         sys.path.insert(0, str(PROJECT_ROOT / "myo"))
         import myo_schema  # noqa: F401  -- registers models_myo as `models`
         import config
         import models
+        import prompts_myo
         config.SECTION_ORDER = list(models.SECTION_MODELS)
+        config.SECTION_HINTS = prompts_myo.SECTION_HINTS
+        config.SECTION_HINTS_DISABLED = set()
 
 
 def _ollama_version(base_url: str):
@@ -93,6 +108,12 @@ def main():
     from aggregation import VERIFIER_KEY, verifier_verdicts
 
     config.VERIFIER_MODEL_NAME = args.model
+    if args.inputs:
+        unknown = [v for v in args.inputs if v not in verifier.VARIANTS]
+        if unknown:
+            sys.exit(f"unknown variants {unknown}; valid: {list(verifier.VARIANTS)}")
+        config.VERIFIER_INPUTS = tuple(args.inputs)
+    config.VERIFIER_ENABLED = True
 
     if not args.run_dir.is_dir():
         sys.exit(f"{args.run_dir} is not a directory")
@@ -113,6 +134,13 @@ def main():
     print(f"{len(pairs)} records from {args.run_dir}, judge {args.model}, "
           f"sections {config.SECTION_ORDER}, variants {list(config.VERIFIER_INPUTS)}",
           flush=True)
+    settings = verifier.verifier_settings()
+    if settings["hints"] is not None:
+        first_audit = json.loads(pairs[0][1].read_text(encoding="utf-8"))
+        run_hints = ((first_audit.get("_run_config") or {}).get("section_hints_fingerprint") or {}).get("all")
+        same = "same as" if run_hints == settings["hints"] else "differs from"
+        print(f"hints given to the verifier {settings['hints']}, {same} the run's {run_hints}",
+              flush=True)
     _check_model(verifier)
 
     replay_info = {
@@ -135,14 +163,7 @@ def main():
         verifier.verify_record(form_data, audit)
 
         run_config = audit.setdefault("_run_config", {})
-        run_config["verifier"] = {
-            "enabled": True,
-            "model": verifier.verifier_model(),
-            "inputs": list(config.VERIFIER_INPUTS),
-            "temperature": config.VERIFIER_TEMPERATURE,
-            "num_ctx": config.VERIFIER_NUM_CTX,
-            **replay_info,
-        }
+        run_config["verifier"] = {**settings, **replay_info}
 
         prediction.pop(VERIFIER_KEY, None)
         verdicts = verifier_verdicts(audit)

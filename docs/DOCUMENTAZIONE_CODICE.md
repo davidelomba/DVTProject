@@ -85,7 +85,8 @@ Quattro costanti governano l'Agent 3 (sezione 7):
   pipeline non fa alcuna richiesta in più.
 - `VERIFIER_INPUTS = ("answer", "reasoning")` — le varianti, una richiesta per
   sezione ciascuna: `answer` invia evidenza, opzioni e risposta; `reasoning`
-  aggiunge il ragionamento dell'Agent 2.
+  aggiunge il ragionamento dell'Agent 2; `answer_hint` e `reasoning_hint`,
+  disponibili ma non nel default, aggiungono a ciascuna l'hint della sezione.
 - `VERIFIER_TEMPERATURE = 0.0` — separata da `LLM_TEMPERATURE`, perché il
   punteggio è una probabilità letta dai logprob e il verdetto deve essere
   ripetibile anche quando gli altri due agenti campionano.
@@ -161,6 +162,9 @@ Due interruttori permettono l'ablazione senza toccare il codice:
 
 `section_hint(section_key)` è l'unico accesso e rispetta entrambi gli
 interruttori, restituendo stringa vuota quando l'hint non va inviato.
+**`hint_fingerprint()`** produce, per ogni sezione che riceve un hint non vuoto,
+la coppia lunghezza e prefisso sha256 del testo, più un digest `all` dell'intero
+insieme; la usano lo snapshot della pipeline e il verificatore.
 
 Contenuto attuale, in sintesi:
 
@@ -550,16 +554,23 @@ verdetto (YES o NO) e la probabilità assegnata a YES. Gira dopo le regole
 cross-section, quindi giudica la risposta che finisce nel CSV, ed è acceso da
 `config.VERIFIER_ENABLED`. Non cambia mai una risposta.
 
-**Le due varianti.** Per ogni voce di `config.VERIFIER_INPUTS` la sezione riceve una
-richiesta separata:
+**Le varianti.** Per ogni voce di `config.VERIFIER_INPUTS` la sezione riceve una
+richiesta separata; le varianti ammesse sono in **`VARIANTS`**:
 
 - `answer`: evidenza, opzioni numerate e risposta finale;
 - `reasoning`: le stesse cose più il ragionamento dell'Agent 2 come registrato
-  nell'audit log (campo `reasoning`).
+  nell'audit log (campo `reasoning`);
+- `answer_hint` e `reasoning_hint`: come le due precedenti, più l'hint della
+  sezione, quello che `config.section_hint` dà all'Agent 2.
 
-Nessuna delle due riceve il contesto della linea guida né l'hint della sezione.
-Le due varianti girano nella stessa run, quindi giudicano le stesse identiche
-risposte.
+Nessuna variante riceve il contesto della linea guida. L'hint va in testa al
+messaggio sotto l'intestazione `Section guidance:`, seguito da
+**`HINT_FORMAT_NOTE`**, che chiede di ignorarne le istruzioni sul formato della
+risposta: alcuni hint ne contengono, come la riga `DETAILS_PRESENT` di F nella
+TVP, che contraddirebbe «Reply YES or NO». Una sezione senza hint invia la
+richiesta senza quel blocco. Le varianti girano nella stessa run, quindi
+giudicano le stesse identiche risposte. Una variante non elencata in `VARIANTS`
+ferma `verify_record` con un errore.
 
 **Il punteggio.** La richiesta chiede YES o NO senza spiegazioni, a
 `config.VERIFIER_TEMPERATURE`. Con `logprobs` attivo Ollama restituisce, per il
@@ -577,7 +588,11 @@ la risposta data da un altro revisore, rispondendo solo YES o NO.
 **`_chat(user_prompt)`** invia una richiesta a `/api/chat` di Ollama, non
 attraverso `ChatOllama`, perché servono i campi `logprobs`. Il modello è quello
 di **`verifier_model()`**: `VERIFIER_MODEL_NAME`, oppure `EVALUATOR_LLM_MODEL_NAME`
-quando è `None`, nel qual caso non se ne carica un secondo sulla GPU. Il parametro
+quando è `None`, nel qual caso non se ne carica un secondo sulla GPU.
+**`verifier_settings()`** restituisce le impostazioni che `_run_config.verifier`
+registra: `enabled`, `model`, `inputs`, `hints` (il digest `all` di
+`config.hint_fingerprint()` quando c'è una variante `_hint`, altrimenti `None`),
+`temperature` e `num_ctx`. Il parametro
 `think` (`LLM_REASONING`) è inviato solo quando il giudice è il modello
 dell'Agent 2, per cui è impostato. Temperatura e finestra di contesto sono quelle
 del verificatore (`VERIFIER_TEMPERATURE`, `VERIFIER_NUM_CTX`).
@@ -586,9 +601,10 @@ del verificatore (`VERIFIER_TEMPERATURE`, `VERIFIER_NUM_CTX`).
 numerate: per una sezione multipla le opzioni selezionate, oppure «No option
 selected.».
 
-**`build_prompt(evidence, options, multi, answer, reasoning=None)`** compone il
-messaggio: evidenza, opzioni, risposta, il ragionamento solo per la variante
-`reasoning`, per le sezioni multiple la precisazione che la risposta è corretta
+**`build_prompt(evidence, options, multi, answer, reasoning=None, hint=None)`**
+compone il messaggio: l'hint con `HINT_FORMAT_NOTE` solo per le varianti `_hint`,
+evidenza, opzioni, risposta, il ragionamento solo per le varianti `reasoning` e
+`reasoning_hint`, per le sezioni multiple la precisazione che la risposta è corretta
 solo se seleziona tutte e sole le opzioni sostenute dall'evidenza, e la domanda
 finale.
 
@@ -639,9 +655,9 @@ modello aveva quasi in parità, quindi run prodotte sotto versioni diverse non
 sono direttamente confrontabili. Non solleva mai: una versione mancante costa la
 provenienza, non la run.
 
-**`_hint_fingerprint()`** produce, per ogni sezione che riceve un hint non vuoto,
-la coppia lunghezza e prefisso sha256 del testo, più un digest `all` dell'intero
-insieme. Gli interruttori dicono quali hint sono stati inviati, non cosa
+**`_hint_fingerprint()`** restituisce `config.hint_fingerprint()`: per ogni
+sezione che riceve un hint non vuoto, la coppia lunghezza e prefisso sha256 del
+testo, più un digest `all` dell'intero insieme. Gli interruttori dicono quali hint sono stati inviati, non cosa
 dicevano, quindi senza questo due run i cui hint sono stati riscritti in mezzo
 porterebbero la stessa firma.
 
@@ -656,7 +672,8 @@ produce: modalità, contesto della linea guida, intestazioni di sezione,
 hint e query con i rispettivi fingerprint, le sezioni che ricevono la clausola
 sulla risposta vuota (`empty_answer_sections`, da `agents.EMPTY_ANSWER_SECTIONS`,
 che l'impronta degli hint non copre), le impostazioni dell'Agent 3
-(`verifier`: `enabled`, `inputs`, `temperature`, `num_ctx`), modelli per ruolo (con
+(`verifier`, da `verifier.verifier_settings()`: `enabled`, `model`, `inputs`,
+`hints`, `temperature`, `num_ctx`), modelli per ruolo (con
 l'estrattore **effettivo**: `AGENTIC_LLM_MODEL_NAME` in modalità agentica,
 nessuno in `raw_record`), ambiente, parametri di generazione compreso
 `num_ctx`, parametri di retrieval. Viene scritto nell'audit log sotto la chiave
@@ -1114,10 +1131,12 @@ finestra di contesto. Le sezioni il cui verdetto è stato copiato da una regola
 - **`collect(runs, ground_truth)`** produce una riga per referto, sezione e
   variante;
 - **`summarise(rows)`** calcola le metriche di un gruppo di righe;
-- **`compare_variants(rows)`** elenca le sezioni in cui le due varianti danno
-  verdetti diversi, divise per correttezza della risposta: un errore approvato
-  solo dalla variante `reasoning` è il caso in cui il ragionamento dell'Agent 2
-  ha convinto il verificatore;
+- **`compare_variants(rows, first="answer", second="reasoning")`** elenca le
+  sezioni in cui due varianti danno verdetti diversi, divise per correttezza
+  della risposta: un errore approvato solo dalla variante `reasoning` è il caso
+  in cui il ragionamento dell'Agent 2 ha convinto il verificatore. `evaluate` la
+  chiama anche per `answer` contro `answer_hint` e `reasoning` contro
+  `reasoning_hint` (`hint_disagreements`), vuote quando le varianti mancano;
 - **`evaluate(rows)`**, **`print_report(report)`** e **`main()`**: il report va in
   `reports/verifier_<cartella>_<timestamp>.json`. `--ground-truth` indica i
   riferimenti, `myo/data/records` per la miocardite.
@@ -1189,15 +1208,19 @@ Per ogni coppia di file dei risultati e audit log della cartella di origine togl
 i verdetti presenti, chiama `verifier.verify_record` sulle risposte salvate (la
 stessa funzione della pipeline, quindi stesso prompt, stessa eredità per le
 sezioni riscritte da una regola e stessi parametri) con `VERIFIER_MODEL_NAME`
-impostato al modello scelto, e scrive i due file con gli stessi nomi nella
+impostato al modello scelto e `VERIFIER_INPUTS` alle varianti di `--inputs` (di
+default quelle di `config.py`), e scrive i due file con gli stessi nomi nella
 cartella `--output-dir`. Le risposte sono copiate senza modifiche. In
-`_run_config.verifier` registra modello, varianti, temperatura e finestra usati,
+`_run_config.verifier` registra le impostazioni di `verifier.verifier_settings()`,
 più `replayed_from` (la cartella di origine), `replayed_at`, `hostname` e
 `ollama_version` della rilettura. `evaluate_verifier.py` e `agreement_runs.py`
 leggono la cartella prodotta come una run.
 
-`--domain myo` installa lo schema della miocardite prima di importare il
-verificatore e prende `SECTION_ORDER` dalle sue sezioni. Prima del primo referto
+`--domain myo` installa lo schema e gli hint della miocardite
+(`prompts_myo.SECTION_HINTS`, nessuno disattivato) prima di importare il
+verificatore e prende `SECTION_ORDER` dalle sue sezioni. Le varianti `_hint`
+ricevono gli hint del codice attuale, non quelli della run: lo script stampa il
+loro digest e dice se coincide con `section_hints_fingerprint` della run. Prima del primo referto
 una richiesta di prova controlla che il modello risponda YES o NO con le
 probabilità dei token; senza, non c'è P(YES) e lo script si ferma. Rifiuta una
 cartella di destinazione che contiene già file, salvo `--force`.

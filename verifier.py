@@ -7,10 +7,15 @@ to the model verifier_model() names: config.VERIFIER_MODEL_NAME, or Agent 2's
 model when that is None. The request carries the evidence Agent 2 received, the
 section's numbered options and the final answer, and asks for YES or NO alone:
 
-  - "answer":    evidence, options, answer;
-  - "reasoning": the same, plus Agent 2's reasoning as logged.
+  - "answer":         evidence, options, answer;
+  - "reasoning":      the same, plus Agent 2's reasoning as logged;
+  - "answer_hint":    "answer" plus the section's hint;
+  - "reasoning_hint": "reasoning" plus the section's hint.
 
-Neither variant receives the guideline context or the section hint.
+The hint is the one config.section_hint gives Agent 2, under a heading and
+followed by a line telling the model to ignore its formatting instructions. A
+section without a hint sends the "_hint" request without that block. No variant
+receives the guideline context.
 
 The verdict is the YES or NO the model generated; the score is the probability
 the model puts on YES at that position, normalised over YES and NO, the P(True)
@@ -47,6 +52,12 @@ TOP_LOGPROBS = 10
 # YES or NO, plus a token of margin for a leading space or punctuation.
 NUM_PREDICT = 4
 
+VARIANTS = ("answer", "reasoning", "answer_hint", "reasoning_hint")
+
+# Some hints carry instructions on how Agent 2 formats its reply, such as DVT
+# F's DETAILS_PRESENT line, which would contradict "Reply YES or NO".
+HINT_FORMAT_NOTE = "(Ignore any instruction in this guidance about how to format the answer.)"
+
 SYSTEM_PROMPT = (
     "You review answers to a clinical questionnaire. You receive evidence "
     "extracted from a patient record, the numbered options of one question and "
@@ -59,6 +70,24 @@ def verifier_model() -> str:
     """The model the verifier asks: config.VERIFIER_MODEL_NAME, or Agent 2's."""
 
     return config.VERIFIER_MODEL_NAME or config.EVALUATOR_LLM_MODEL_NAME
+
+
+def verifier_settings() -> dict:
+    """The verifier's settings, as _run_config.verifier records them.
+
+    "hints" is the `all` digest of config.hint_fingerprint() when a "_hint"
+    variant is in config.VERIFIER_INPUTS, None otherwise.
+    """
+
+    uses_hint = any(v.endswith("_hint") for v in config.VERIFIER_INPUTS)
+    return {
+        "enabled": config.VERIFIER_ENABLED,
+        "model": verifier_model(),
+        "inputs": list(config.VERIFIER_INPUTS),
+        "hints": config.hint_fingerprint()["all"] if uses_hint else None,
+        "temperature": config.VERIFIER_TEMPERATURE,
+        "num_ctx": config.VERIFIER_NUM_CTX,
+    }
 
 
 def _chat(user_prompt: str) -> dict:
@@ -108,7 +137,8 @@ def _format_answer(answer, options: list, multi: bool) -> str:
     return f"{options.index(answer) + 1}. {answer}"
 
 
-def build_prompt(evidence: str, options: list, multi: bool, answer, reasoning: str = None) -> str:
+def build_prompt(evidence: str, options: list, multi: bool, answer, reasoning: str = None,
+                 hint: str = None) -> str:
     """The user message for one section and one input variant.
 
     Args:
@@ -116,10 +146,14 @@ def build_prompt(evidence: str, options: list, multi: bool, answer, reasoning: s
         options: the section's options, in schema order.
         multi: whether the section is multiple-choice.
         answer: the final answer, a string or a list of strings.
-        reasoning: Agent 2's reasoning, or None for the "answer" variant.
+        reasoning: Agent 2's reasoning, or None for the variants without it.
+        hint: the section's hint, or None for the variants without it.
     """
 
-    parts = [
+    parts = []
+    if hint:
+        parts.append("Section guidance:\n" + hint + "\n" + HINT_FORMAT_NOTE)
+    parts += [
         "Evidence from the patient record:\n" + (evidence or ""),
         "Options:\n" + "\n".join(f"{i}. {o}" for i, o in enumerate(options, 1)),
         "Answer given:\n" + _format_answer(answer, options, multi),
@@ -168,7 +202,8 @@ def verify_section(section_key: str, answer, evidence: str, reasoning: str, vari
 
     _, options, multi, _ = field_info(SECTION_MODELS[section_key])
     prompt = build_prompt(evidence, options, multi, answer,
-                          reasoning if variant == "reasoning" else None)
+                          reasoning if variant.startswith("reasoning") else None,
+                          config.section_hint(section_key) if variant.endswith("_hint") else None)
 
     started = time.time()
     reply = _chat(prompt)
@@ -194,13 +229,17 @@ def verify_record(form_data: dict, audit_log: dict) -> None:
     """Adds the verifier's results to every section's audit log entry.
 
     Each entry gains "verifier": {variant: result}. Sections without an answer,
-    without a reasoning (for the "reasoning" variant) or whose request fails get
+    without a reasoning (for the two "reasoning" variants) or whose request fails get
     agree None with the reason in "method". A failure never affects the answers.
 
     Args:
         form_data: section key in lower case -> the section's final answer.
         audit_log: section key -> that section's log entry, updated in place.
     """
+
+    unknown = [v for v in config.VERIFIER_INPUTS if v not in VARIANTS]
+    if unknown:
+        raise ValueError(f"unknown verifier variants {unknown}; valid: {list(VARIANTS)}")
 
     inherited = []
     for section_key in config.SECTION_ORDER:
@@ -216,7 +255,7 @@ def verify_record(form_data: dict, audit_log: dict) -> None:
         for variant in config.VERIFIER_INPUTS:
             if result is None:
                 outcome = {"agree": None, "p_agree": None, "method": "no_answer"}
-            elif variant == "reasoning" and not entry.get("reasoning"):
+            elif variant.startswith("reasoning") and not entry.get("reasoning"):
                 outcome = {"agree": None, "p_agree": None, "method": "no_reasoning"}
             else:
                 values = result.model_dump() if hasattr(result, "model_dump") else dict(result)

@@ -16,7 +16,9 @@ Reported for each input variant, overall and per section:
 When a run carries both the "answer" and the "reasoning" variant, the sections
 on which the two verdicts differ are listed, split by whether the answer was
 right or wrong. A wrong answer approved with the reasoning and rejected without
-it is the case where Agent 2's reasoning talked the verifier into agreeing.
+it is the case where Agent 2's reasoning talked the verifier into agreeing. The
+same comparison is made between each variant and its "_hint" counterpart when
+both are present.
 
 Sections whose verdict a cross-section rule copied (method "rule:<source>")
 are counted, since that verdict is the one the form carries; sections without
@@ -154,7 +156,14 @@ def evaluate(rows: list) -> dict:
             "errors": [{k: r[k] for k in ("record_id", "section", "agree", "p_agree")}
                        for r in variant_rows if not r["correct"]],
         }
-    return {"variants": variants, "variant_disagreements": compare_variants(rows)}
+    return {
+        "variants": variants,
+        "variant_disagreements": compare_variants(rows),
+        "hint_disagreements": {
+            "answer": compare_variants(rows, "answer", "answer_hint"),
+            "reasoning": compare_variants(rows, "reasoning", "reasoning_hint"),
+        },
+    }
 
 
 def _fmt(value, digits=3):
@@ -175,12 +184,15 @@ def print_report(report: dict) -> None:
             print(f"{section:<8} {s['right']:>5} {s['wrong']:>5} {_fmt(s['auroc_verifier'], 2):>6} "
                   f"{s['approved_errors']:>8} {s['rejected_right']:>9}")
 
-    disagreements = report["variant_disagreements"]
-    if disagreements:
-        print("\n=== sections where the two variants disagree ===")
-        for key, items in disagreements.items():
-            shown = ", ".join(f"{i['record_id']} {i['section']}" for i in items)
-            print(f"{key}: {len(items)}  ({shown})")
+    groups = [("answer and reasoning", report["variant_disagreements"])]
+    groups += [(f"{base} with and without the hint", found)
+               for base, found in report["hint_disagreements"].items()]
+    for title, disagreements in groups:
+        if disagreements:
+            print(f"\n=== sections where {title} disagree ===")
+            for key, items in disagreements.items():
+                shown = ", ".join(f"{i['record_id']} {i['section']}" for i in items)
+                print(f"{key}: {len(items)}  ({shown})")
 
 
 def main():

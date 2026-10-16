@@ -51,8 +51,10 @@ When something is unverified, say so.
   variant in `config.VERIFIER_INPUTS` it sends the evaluator model one request,
   straight to Ollama's `/api/chat` for the logprobs, asking whether the answer
   is correct given the evidence, YES or NO: the `answer` variant sends evidence,
-  options and answer, the `reasoning` variant adds Agent 2's reasoning; neither
-  gets the guideline context or the hint. It records the verdict and P(YES),
+  options and answer, the `reasoning` variant adds Agent 2's reasoning, and
+  `answer_hint` and `reasoning_hint`, not in the default, add the section's hint
+  to either, recorded as `_run_config.verifier.hints`; no variant gets the
+  guideline context. It records the verdict and P(YES),
   normalised over YES and NO, under `verifier` in the audit log and `_verifier`
   in the result file, at `VERIFIER_TEMPERATURE` 0 and `VERIFIER_NUM_CTX` 8192.
   The judge is `config.VERIFIER_MODEL_NAME`, or Agent 2's model when None, and is
@@ -1048,6 +1050,25 @@ not say which governs, which is what the clinician question below is asking.
   the time, split ones 14.3%. Verifier AUROC 0.558 for `answer`, 0.659 for
   `reasoning`, which answers NO 3, 2 and 2 times in 85 and approves every error
   of B and C. 156 to 167 seconds a record, 46 to 52 minutes a run.
+- **A judge from another family approves the errors too, and is more swayed by
+  the reasoning, not less.** `replay_verifier.py` on stored runs, mari, Ollama
+  0.32.1. Replaying qwen on `myo/output_t05_np2048_v2_r1` reproduces 169 of 170
+  verdicts (P(YES) median difference 0.006 on `answer`, 0.0006 on `reasoning`,
+  cause of the residual noise not verified). On `output_stripped` (46 errors in
+  399) qwen scores AUROC 0.760 / 0.835 (`answer` / `reasoning`), approving 36 and
+  45 errors, rejecting 28 and 1 right answers of 353; medgemma:27b 0.712 / 0.632,
+  approving 36 and 40, rejecting 80 and 52. On the three final myocarditis runs
+  (84 errors in 255) qwen 0.558 / 0.659, approving 55 and 77, rejecting 24 and 0
+  of 171; medgemma 0.568 / 0.509, approving 40 and 74, rejecting 77 and 17.
+  Adding the reasoning makes medgemma approve 34 more errors, qwen 22, so the
+  approval is not self-preference. Errors rejected by both judges with the
+  reasoning: 1 of 46 and 1 of 84. medgemma without reasoning rejects answers that
+  declare an absence or missing information almost always (myocarditis B
+  `unknown` 41 of 41, C `None tested` 30 of 30, E `ECG not done` 12 of 12; DVT
+  empty A3_2 14 of 14, empty B1_2 13 of 13), right or wrong. Within sections the
+  DVT AUROC falls to 0.485 / 0.592 for qwen and 0.449 / 0.475 for medgemma: F's 19
+  errors, the inverted question misread without the hint, are approved by both,
+  and the verifier never receives the hint. About 2 seconds a request for both.
 - Read the metrics in this order: majority baseline and gain, then kappa, then
   accuracy with its interval. Accuracy alone ranked F above A3_2 under the 8B
   model, where F gained nothing over a constant answer and A3_2 gained 13
@@ -1266,13 +1287,12 @@ not say which governs, which is what the clinician question below is asking.
   3 sections lost. Realistic-length records will lengthen the prompt by several
   hundred tokens (an estimate): run a token check on the first batch, then set
   the window (likely 8192) and the cap by that rule and measure them as one arm.
-- **The verifier needs a corpus with more errors, and a judge other than the
-  model it judges.** On the myocarditis runs the errors sit in two coding
-  conventions and in F; `output_stripped`, the DVT corpus stripped of hints,
-  context and rules (46 errors, on disk), has not been verified.
-  `replay_verifier.py` can verify it, and the final myocarditis series, with
-  qwen3.6:27b and with another judge such as `medgemma:27b`, without running
-  Agents 1 and 2 again; not run yet. The confidence
+- **The verifier cannot see what made the answer wrong.** Measured with two
+  judges and two corpora (bullet above): with the reasoning nearly every error is
+  approved, and the DVT stripped errors hinge on conventions written in the hints
+  the verifier never receives. Not measured: a verifier given the hint, or the
+  whole record instead of Agent 1's evidence. The `_hint` variants exist and
+  `replay_verifier.py --inputs` runs them on stored runs; not measured yet. The confidence
   Agent 3 could not flag an answer wrong for lack of evidence, because it read
   the same fragments as Agent 2; the verifier reads them too.
 - **The temperature alone is not measured.** The three myocarditis runs differ
