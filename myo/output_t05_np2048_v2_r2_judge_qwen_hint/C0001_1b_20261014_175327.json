@@ -1,0 +1,121 @@
+{
+  "record_id": "C0001_1b",
+  "a1": {
+    "symptoms": [
+      "acute chest pain or pressure",
+      "palpitation"
+    ]
+  },
+  "b": {
+    "features": [
+      "unknown if any of 1-3 present or absent"
+    ]
+  },
+  "c": {
+    "markers": [
+      "None of the above (choose this option if whichever ones were tested, were within normal range)"
+    ]
+  },
+  "e": {
+    "findings": [
+      "Paroxysmal or sustained atrial or ventricular arrhythmias (premature atrial or ventricular beats, and/or supraventricular or ventricular tachycardia, interventricular conduction delay, abnormal Q waves, low voltages): :e.g (Sinus tachycardia, SVT, atrial fibrillation, PVCs, VT, VF)"
+    ]
+  },
+  "f": {
+    "findings": [
+      "Segmental wall motion abnormalities"
+    ]
+  },
+  "_verifier": {
+    "A1": {
+      "answer": {
+        "agree": true,
+        "p_agree": 0.9954
+      },
+      "reasoning": {
+        "agree": true,
+        "p_agree": 0.9998
+      },
+      "answer_hint": {
+        "agree": true,
+        "p_agree": 0.9936
+      },
+      "reasoning_hint": {
+        "agree": true,
+        "p_agree": 0.9989
+      }
+    },
+    "B": {
+      "answer": {
+        "agree": true,
+        "p_agree": 0.8955
+      },
+      "reasoning": {
+        "agree": true,
+        "p_agree": 0.9952
+      },
+      "answer_hint": {
+        "agree": true,
+        "p_agree": 0.8688
+      },
+      "reasoning_hint": {
+        "agree": true,
+        "p_agree": 0.9659
+      }
+    },
+    "C": {
+      "answer": {
+        "agree": true,
+        "p_agree": 0.8747
+      },
+      "reasoning": {
+        "agree": true,
+        "p_agree": 0.9946
+      },
+      "answer_hint": {
+        "agree": true,
+        "p_agree": 0.8703
+      },
+      "reasoning_hint": {
+        "agree": true,
+        "p_agree": 0.8138
+      }
+    },
+    "E": {
+      "answer": {
+        "agree": true,
+        "p_agree": 0.8727
+      },
+      "reasoning": {
+        "agree": true,
+        "p_agree": 0.9894
+      },
+      "answer_hint": {
+        "agree": true,
+        "p_agree": 0.999
+      },
+      "reasoning_hint": {
+        "agree": true,
+        "p_agree": 0.9996
+      }
+    },
+    "F": {
+      "answer": {
+        "agree": true,
+        "p_agree": 0.5539
+      },
+      "reasoning": {
+        "agree": true,
+        "p_agree": 0.7804
+      },
+      "answer_hint": {
+        "agree": true,
+        "p_agree": 0.6341
+      },
+      "reasoning_hint": {
+        "agree": true,
+        "p_agree": 0.7336
+      }
+    }
+  }
+}

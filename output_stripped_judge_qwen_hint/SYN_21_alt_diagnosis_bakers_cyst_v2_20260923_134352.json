@@ -1,0 +1,220 @@
+{
+  "record_id": "SYN_21_alt_diagnosis_bakers_cyst_v2",
+  "a1": {
+    "answer": "No autopsy done, unknown if done, or done but results unavailable"
+  },
+  "a2": {
+    "answer": "No surgical procedure done; or, done but either did not confirm presence of DVT or findings unknown; or unknown if done"
+  },
+  "a3_1": {
+    "answer": "≥1 imaging study was done but didn't confirm DVT"
+  },
+  "a3_2": {
+    "studies": [
+      "Compression ultrasonography"
+    ]
+  },
+  "b1_1": {
+    "answer": "≥1 symptom or sign of DVT was reported"
+  },
+  "b1_2": {
+    "types": []
+  },
+  "b2": {
+    "symptoms": [
+      "Calf pain or tenderness",
+      "Leg swelling or pitting oedema"
+    ]
+  },
+  "c": {
+    "answer": "D-dimer tested and was within test lab's range of normal"
+  },
+  "f": {
+    "answer": "No"
+  },
+  "x": {
+    "answer": "An alternative diagnosis was found that explained the acute illness"
+  },
+  "_verifier": {
+    "A1": {
+      "answer": {
+        "agree": true,
+        "p_agree": 0.8632
+      },
+      "reasoning": {
+        "agree": true,
+        "p_agree": 0.9996
+      },
+      "answer_hint": {
+        "agree": true,
+        "p_agree": 0.9993
+      },
+      "reasoning_hint": {
+        "agree": true,
+        "p_agree": 0.9999
+      }
+    },
+    "A2": {
+      "answer": {
+        "agree": true,
+        "p_agree": 0.9992
+      },
+      "reasoning": {
+        "agree": true,
+        "p_agree": 0.9999
+      },
+      "answer_hint": {
+        "agree": true,
+        "p_agree": 0.9997
+      },
+      "reasoning_hint": {
+        "agree": true,
+        "p_agree": 0.9999
+      }
+    },
+    "A3_1": {
+      "answer": {
+        "agree": true,
+        "p_agree": 0.9999
+      },
+      "reasoning": {
+        "agree": true,
+        "p_agree": 1.0
+      },
+      "answer_hint": {
+        "agree": true,
+        "p_agree": 1.0
+      },
+      "reasoning_hint": {
+        "agree": true,
+        "p_agree": 1.0
+      }
+    },
+    "A3_2": {
+      "answer": {
+        "agree": true,
+        "p_agree": 0.9162
+      },
+      "reasoning": {
+        "agree": true,
+        "p_agree": 0.9317
+      },
+      "answer_hint": {
+        "agree": false,
+        "p_agree": 0.2993
+      },
+      "reasoning_hint": {
+        "agree": false,
+        "p_agree": 0.3423
+      }
+    },
+    "B1_1": {
+      "answer": {
+        "agree": false,
+        "p_agree": 0.1565
+      },
+      "reasoning": {
+        "agree": true,
+        "p_agree": 0.8216
+      },
+      "answer_hint": {
+        "agree": true,
+        "p_agree": 0.9904
+      },
+      "reasoning_hint": {
+        "agree": true,
+        "p_agree": 0.9908
+      }
+    },
+    "B1_2": {
+      "answer": {
+        "agree": true,
+        "p_agree": 0.8783
+      },
+      "reasoning": {
+        "agree": true,
+        "p_agree": 0.9998
+      },
+      "answer_hint": {
+        "agree": true,
+        "p_agree": 0.8783
+      },
+      "reasoning_hint": {
+        "agree": true,
+        "p_agree": 0.9998
+      }
+    },
+    "B2": {
+      "answer": {
+        "agree": true,
+        "p_agree": 0.9988
+      },
+      "reasoning": {
+        "agree": true,
+        "p_agree": 0.9917
+      },
+      "answer_hint": {
+        "agree": true,
+        "p_agree": 0.9988
+      },
+      "reasoning_hint": {
+        "agree": true,
+        "p_agree": 0.9917
+      }
+    },
+    "C": {
+      "answer": {
+        "agree": true,
+        "p_agree": 1.0
+      },
+      "reasoning": {
+        "agree": true,
+        "p_agree": 1.0
+      },
+      "answer_hint": {
+        "agree": true,
+        "p_agree": 1.0
+      },
+      "reasoning_hint": {
+        "agree": true,
+        "p_agree": 1.0
+      }
+    },
+    "F": {
+      "answer": {
+        "agree": true,
+        "p_agree": 0.7343
+      },
+      "reasoning": {
+        "agree": true,
+        "p_agree": 0.9817
+      },
+      "answer_hint": {
+        "agree": null,
+        "p_agree": null
+      },
+      "reasoning_hint": {
+        "agree": true,
+        "p_agree": 0.9391
+      }
+    },
+    "X": {
+      "answer": {
+        "agree": true,
+        "p_agree": 1.0
+      },
+      "reasoning": {
+        "agree": true,
+        "p_agree": 1.0
+      },
+      "answer_hint": {
+        "agree": true,
+        "p_agree": 0.9999
+      },
+      "reasoning_hint": {
+        "agree": true,
+        "p_agree": 1.0
+      }
+    }
+  }
+}
