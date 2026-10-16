@@ -1,0 +1,81 @@
+{
+  "record_id": "C005_1b",
+  "a1": {
+    "symptoms": [
+      "none of the above"
+    ]
+  },
+  "b": {
+    "features": [
+      "unknown if any of 1-3 present or absent"
+    ]
+  },
+  "c": {
+    "markers": [
+      "None tested, or tested but no results or unknown if tested"
+    ]
+  },
+  "e": {
+    "findings": [
+      "ECG not done, or done but no results available or unknown if done"
+    ]
+  },
+  "f": {
+    "findings": [
+      "Segmental wall motion abnormalities",
+      "Wall thickness change"
+    ]
+  },
+  "_verifier": {
+    "A1": {
+      "answer": {
+        "agree": true,
+        "p_agree": 0.6102
+      },
+      "reasoning": {
+        "agree": true,
+        "p_agree": 0.9787
+      }
+    },
+    "B": {
+      "answer": {
+        "agree": false,
+        "p_agree": 0.077
+      },
+      "reasoning": {
+        "agree": false,
+        "p_agree": 0.1321
+      }
+    },
+    "C": {
+      "answer": {
+        "agree": false,
+        "p_agree": 0.0124
+      },
+      "reasoning": {
+        "agree": true,
+        "p_agree": 0.9357
+      }
+    },
+    "E": {
+      "answer": {
+        "agree": false,
+        "p_agree": 0.0517
+      },
+      "reasoning": {
+        "agree": true,
+        "p_agree": 0.8688
+      }
+    },
+    "F": {
+      "answer": {
+        "agree": true,
+        "p_agree": 0.9471
+      },
+      "reasoning": {
+        "agree": true,
+        "p_agree": 0.9151
+      }
+    }
+  }
+}

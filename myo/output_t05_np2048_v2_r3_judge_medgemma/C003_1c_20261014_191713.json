@@ -1,0 +1,80 @@
+{
+  "record_id": "C003_1c",
+  "a1": {
+    "symptoms": [
+      "unknown if any of 1-5 present or absent"
+    ]
+  },
+  "b": {
+    "features": [
+      "unknown if any of 1-3 present or absent"
+    ]
+  },
+  "c": {
+    "markers": [
+      "None tested, or tested but no results or unknown if tested"
+    ]
+  },
+  "e": {
+    "findings": [
+      "Paroxysmal or sustained atrial or ventricular arrhythmias (premature atrial or ventricular beats, and/or supraventricular or ventricular tachycardia, interventricular conduction delay, abnormal Q waves, low voltages): :e.g (Sinus tachycardia, SVT, atrial fibrillation, PVCs, VT, VF)"
+    ]
+  },
+  "f": {
+    "findings": [
+      "New focal or diffuse left or right ventricular function abnormalities (e.g. decreased ejection fraction)"
+    ]
+  },
+  "_verifier": {
+    "A1": {
+      "answer": {
+        "agree": false,
+        "p_agree": 0.1188
+      },
+      "reasoning": {
+        "agree": true,
+        "p_agree": 0.97
+      }
+    },
+    "B": {
+      "answer": {
+        "agree": false,
+        "p_agree": 0.0312
+      },
+      "reasoning": {
+        "agree": true,
+        "p_agree": 0.9795
+      }
+    },
+    "C": {
+      "answer": {
+        "agree": false,
+        "p_agree": 0.0066
+      },
+      "reasoning": {
+        "agree": true,
+        "p_agree": 0.9115
+      }
+    },
+    "E": {
+      "answer": {
+        "agree": true,
+        "p_agree": 0.8535
+      },
+      "reasoning": {
+        "agree": true,
+        "p_agree": 0.9632
+      }
+    },
+    "F": {
+      "answer": {
+        "agree": true,
+        "p_agree": 0.8569
+      },
+      "reasoning": {
+        "agree": true,
+        "p_agree": 0.9829
+      }
+    }
+  }
+}

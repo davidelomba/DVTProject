@@ -1,0 +1,136 @@
+{
+  "record_id": "SYN_32_discharge_letter_dvt_v2",
+  "a1": {
+    "answer": "No autopsy done, unknown if done, or done but results unavailable"
+  },
+  "a2": {
+    "answer": "No surgical procedure done; or, done but either did not confirm presence of DVT or findings unknown; or unknown if done"
+  },
+  "a3_1": {
+    "answer": "No imaging studies done, unknown if done, or done but results unknown"
+  },
+  "a3_2": {
+    "studies": []
+  },
+  "b1_2": {
+    "types": [
+      "Lower extremity DVT"
+    ]
+  },
+  "b2": {
+    "symptoms": [
+      "None of the above were present or it is unknown if any of 1-4 were present"
+    ]
+  },
+  "c": {
+    "answer": "D-dimer not tested, or tested but results unknown or not available"
+  },
+  "f": {
+    "answer": "No"
+  },
+  "x": {
+    "answer": "No alternative diagnosis was found to explain the acute illness"
+  },
+  "_verifier": {
+    "A1": {
+      "answer": {
+        "agree": true,
+        "p_agree": 0.6758
+      },
+      "reasoning": {
+        "agree": true,
+        "p_agree": 0.9436
+      }
+    },
+    "A2": {
+      "answer": {
+        "agree": true,
+        "p_agree": 0.9966
+      },
+      "reasoning": {
+        "agree": true,
+        "p_agree": 0.9988
+      }
+    },
+    "A3_1": {
+      "answer": {
+        "agree": true,
+        "p_agree": 0.9789
+      },
+      "reasoning": {
+        "agree": true,
+        "p_agree": 0.9968
+      }
+    },
+    "A3_2": {
+      "answer": {
+        "agree": false,
+        "p_agree": 0.0021
+      },
+      "reasoning": {
+        "agree": false,
+        "p_agree": 0.0043
+      }
+    },
+    "B1_1": {
+      "answer": {
+        "agree": null,
+        "p_agree": null
+      },
+      "reasoning": {
+        "agree": null,
+        "p_agree": null
+      }
+    },
+    "B1_2": {
+      "answer": {
+        "agree": true,
+        "p_agree": 0.9948
+      },
+      "reasoning": {
+        "agree": true,
+        "p_agree": 0.9991
+      }
+    },
+    "B2": {
+      "answer": {
+        "agree": true,
+        "p_agree": 0.8333
+      },
+      "reasoning": {
+        "agree": true,
+        "p_agree": 0.9961
+      }
+    },
+    "C": {
+      "answer": {
+        "agree": true,
+        "p_agree": 0.9753
+      },
+      "reasoning": {
+        "agree": true,
+        "p_agree": 0.9989
+      }
+    },
+    "F": {
+      "answer": {
+        "agree": false,
+        "p_agree": 0.4373
+      },
+      "reasoning": {
+        "agree": true,
+        "p_agree": 0.9837
+      }
+    },
+    "X": {
+      "answer": {
+        "agree": false,
+        "p_agree": 0.209
+      },
+      "reasoning": {
+        "agree": true,
+        "p_agree": 0.9317
+      }
+    }
+  }
+}

@@ -1,0 +1,1022 @@
+{
+  "variants": {
+    "answer": {
+      "overall": {
+        "sections": 400,
+        "without_verdict": 1,
+        "overflow": 0,
+        "right": 353,
+        "wrong": 46,
+        "auroc_verifier": 0.7604384776450301,
+        "approved_errors": 36,
+        "rejected_right": 28
+      },
+      "per_section": {
+        "A1": {
+          "sections": 40,
+          "without_verdict": 0,
+          "overflow": 0,
+          "right": 40,
+          "wrong": 0,
+          "auroc_verifier": null,
+          "approved_errors": 0,
+          "rejected_right": 3
+        },
+        "A2": {
+          "sections": 40,
+          "without_verdict": 0,
+          "overflow": 0,
+          "right": 37,
+          "wrong": 3,
+          "auroc_verifier": 0.5405405405405406,
+          "approved_errors": 3,
+          "rejected_right": 6
+        },
+        "A3_1": {
+          "sections": 40,
+          "without_verdict": 0,
+          "overflow": 0,
+          "right": 40,
+          "wrong": 0,
+          "auroc_verifier": null,
+          "approved_errors": 0,
+          "rejected_right": 1
+        },
+        "A3_2": {
+          "sections": 40,
+          "without_verdict": 0,
+          "overflow": 0,
+          "right": 28,
+          "wrong": 12,
+          "auroc_verifier": 0.4107142857142857,
+          "approved_errors": 10,
+          "rejected_right": 4
+        },
+        "B1_1": {
+          "sections": 40,
+          "without_verdict": 1,
+          "overflow": 0,
+          "right": 29,
+          "wrong": 10,
+          "auroc_verifier": 0.9172413793103448,
+          "approved_errors": 4,
+          "rejected_right": 3
+        },
+        "B1_2": {
+          "sections": 40,
+          "without_verdict": 0,
+          "overflow": 0,
+          "right": 40,
+          "wrong": 0,
+          "auroc_verifier": null,
+          "approved_errors": 0,
+          "rejected_right": 1
+        },
+        "B2": {
+          "sections": 40,
+          "without_verdict": 0,
+          "overflow": 0,
+          "right": 39,
+          "wrong": 1,
+          "auroc_verifier": 1.0,
+          "approved_errors": 0,
+          "rejected_right": 0
+        },
+        "C": {
+          "sections": 40,
+          "without_verdict": 0,
+          "overflow": 0,
+          "right": 40,
+          "wrong": 0,
+          "auroc_verifier": null,
+          "approved_errors": 0,
+          "rejected_right": 0
+        },
+        "F": {
+          "sections": 40,
+          "without_verdict": 0,
+          "overflow": 0,
+          "right": 21,
+          "wrong": 19,
+          "auroc_verifier": 0.13283208020050125,
+          "approved_errors": 19,
+          "rejected_right": 2
+        },
+        "X": {
+          "sections": 40,
+          "without_verdict": 0,
+          "overflow": 0,
+          "right": 39,
+          "wrong": 1,
+          "auroc_verifier": 0.8461538461538461,
+          "approved_errors": 0,
+          "rejected_right": 8
+        }
+      },
+      "errors": [
+        {
+          "record_id": "SYN_01_lower_dvt_doppler_v2",
+          "section": "F",
+          "agree": true,
+          "p_agree": 0.983
+        },
+        {
+          "record_id": "SYN_02_dvt_ruled_out_cellulitis_v2",
+          "section": "A3_2",
+          "agree": true,
+          "p_agree": 0.9847
+        },
+        {
+          "record_id": "SYN_02_dvt_ruled_out_cellulitis_v2",
+          "section": "B1_1",
+          "agree": true,
+          "p_agree": 0.9511
+        },
+        {
+          "record_id": "SYN_03_upper_extremity_catheter_v2",
+          "section": "F",
+          "agree": true,
+          "p_agree": 0.983
+        },
+        {
+          "record_id": "SYN_03_upper_extremity_catheter_v2",
+          "section": "X",
+          "agree": false,
+          "p_agree": 0.3385
+        },
+        {
+          "record_id": "SYN_05_absent_flow_not_pulses_trap_v2",
+          "section": "F",
+          "agree": true,
+          "p_agree": 0.9447
+        },
+        {
+          "record_id": "SYN_07_thrombectomy_positive_v2",
+          "section": "B2",
+          "agree": false,
+          "p_agree": 0.0548
+        },
+        {
+          "record_id": "SYN_08_autopsy_positive_v2",
+          "section": "A3_2",
+          "agree": true,
+          "p_agree": 0.7385
+        },
+        {
+          "record_id": "SYN_08_autopsy_positive_v2",
+          "section": "F",
+          "agree": true,
+          "p_agree": 0.9694
+        },
+        {
+          "record_id": "SYN_09_risk_factor_not_alt_diagnosis_v2",
+          "section": "F",
+          "agree": true,
+          "p_agree": 0.9926
+        },
+        {
+          "record_id": "SYN_10_unclear_sparse_record_v2",
+          "section": "B1_1",
+          "agree": true,
+          "p_agree": 0.5141
+        },
+        {
+          "record_id": "SYN_12_other_procedure_positive_v2",
+          "section": "A2",
+          "agree": true,
+          "p_agree": 0.9339
+        },
+        {
+          "record_id": "SYN_12_other_procedure_positive_v2",
+          "section": "A3_2",
+          "agree": true,
+          "p_agree": 0.6996
+        },
+        {
+          "record_id": "SYN_13_contrast_venography_only_v2",
+          "section": "A2",
+          "agree": true,
+          "p_agree": 0.9995
+        },
+        {
+          "record_id": "SYN_13_contrast_venography_only_v2",
+          "section": "F",
+          "agree": true,
+          "p_agree": 0.9979
+        },
+        {
+          "record_id": "SYN_14_other_imaging_incidental_v2",
+          "section": "A3_2",
+          "agree": false,
+          "p_agree": 0.1848
+        },
+        {
+          "record_id": "SYN_14_other_imaging_incidental_v2",
+          "section": "F",
+          "agree": true,
+          "p_agree": 0.9887
+        },
+        {
+          "record_id": "SYN_17_diagnosis_no_details_v2",
+          "section": "B1_1",
+          "agree": false,
+          "p_agree": 0.4527
+        },
+        {
+          "record_id": "SYN_17_diagnosis_no_details_v2",
+          "section": "F",
+          "agree": true,
+          "p_agree": 0.7875
+        },
+        {
+          "record_id": "SYN_18_absent_pulses_true_positive_v2",
+          "section": "F",
+          "agree": true,
+          "p_agree": 0.9812
+        },
+        {
+          "record_id": "SYN_21_alt_diagnosis_bakers_cyst_v2",
+          "section": "A3_2",
+          "agree": true,
+          "p_agree": 0.9196
+        },
+        {
+          "record_id": "SYN_22_upper_extremity_effort_thrombosis_v2",
+          "section": "F",
+          "agree": true,
+          "p_agree": 0.9711
+        },
+        {
+          "record_id": "SYN_24_imaging_inconclusive_no_alt_diagnosis_v2",
+          "section": "A3_2",
+          "agree": true,
+          "p_agree": 0.9746
+        },
+        {
+          "record_id": "SYN_26_ct_venography_pregnancy_pelvic_v2",
+          "section": "A3_2",
+          "agree": true,
+          "p_agree": 0.9836
+        },
+        {
+          "record_id": "SYN_26_ct_venography_pregnancy_pelvic_v2",
+          "section": "F",
+          "agree": true,
+          "p_agree": 0.9842
+        },
+        {
+          "record_id": "SYN_27_contrast_venography_absent_pulses_v2",
+          "section": "F",
+          "agree": true,
+          "p_agree": 0.9955
+        },
+        {
+          "record_id": "SYN_28_other_modality_plethysmography_v2",
+          "section": "F",
+          "agree": true,
+          "p_agree": 0.9883
+        },
+        {
+          "record_id": "SYN_29_diagnosis_no_details_second_v2",
+          "section": "B1_1",
+          "agree": false,
+          "p_agree": 0.4283
+        },
+        {
+          "record_id": "SYN_30_confirmed_dvt_normal_ddimer_v2",
+          "section": "A2",
+          "agree": true,
+          "p_agree": 0.998
+        },
+        {
+          "record_id": "SYN_30_confirmed_dvt_normal_ddimer_v2",
+          "section": "F",
+          "agree": true,
+          "p_agree": 0.9332
+        },
+        {
+          "record_id": "SYN_31_diagnosis_no_details_upper_v2",
+          "section": "B1_1",
+          "agree": false,
+          "p_agree": 0.2601
+        },
+        {
+          "record_id": "SYN_31_diagnosis_no_details_upper_v2",
+          "section": "F",
+          "agree": true,
+          "p_agree": 0.9136
+        },
+        {
+          "record_id": "SYN_32_discharge_letter_dvt_v2",
+          "section": "B1_1",
+          "agree": null,
+          "p_agree": null
+        },
+        {
+          "record_id": "SYN_32_discharge_letter_dvt_v2",
+          "section": "F",
+          "agree": true,
+          "p_agree": 0.8644
+        },
+        {
+          "record_id": "SYN_33_transfer_note_dvt_upper_v2",
+          "section": "B1_1",
+          "agree": false,
+          "p_agree": 0.0264
+        },
+        {
+          "record_id": "SYN_33_transfer_note_dvt_upper_v2",
+          "section": "F",
+          "agree": true,
+          "p_agree": 0.8594
+        },
+        {
+          "record_id": "SYN_34_dvt_reported_other_facility_v2",
+          "section": "B1_1",
+          "agree": false,
+          "p_agree": 0.3903
+        },
+        {
+          "record_id": "SYN_34_dvt_reported_other_facility_v2",
+          "section": "F",
+          "agree": true,
+          "p_agree": 0.8339
+        },
+        {
+          "record_id": "SYN_35_specialist_note_dvt_lower_v2",
+          "section": "B1_1",
+          "agree": false,
+          "p_agree": 0.0042
+        },
+        {
+          "record_id": "SYN_35_specialist_note_dvt_lower_v2",
+          "section": "F",
+          "agree": true,
+          "p_agree": 0.7617
+        },
+        {
+          "record_id": "SYN_36_calf_muscle_tear_v2",
+          "section": "A3_2",
+          "agree": true,
+          "p_agree": 0.8589
+        },
+        {
+          "record_id": "SYN_37_lymphatic_obstruction_v2",
+          "section": "A3_2",
+          "agree": true,
+          "p_agree": 0.9208
+        },
+        {
+          "record_id": "SYN_38_compartment_syndrome_v2",
+          "section": "A3_2",
+          "agree": true,
+          "p_agree": 0.8765
+        },
+        {
+          "record_id": "SYN_38_compartment_syndrome_v2",
+          "section": "B1_1",
+          "agree": true,
+          "p_agree": 0.5066
+        },
+        {
+          "record_id": "SYN_39_external_vein_compression_v2",
+          "section": "A3_2",
+          "agree": true,
+          "p_agree": 0.8411
+        },
+        {
+          "record_id": "SYN_39_external_vein_compression_v2",
+          "section": "B1_1",
+          "agree": true,
+          "p_agree": 0.5191
+        },
+        {
+          "record_id": "SYN_40_imaging_report_pending_v2",
+          "section": "A3_2",
+          "agree": false,
+          "p_agree": 0.441
+        }
+      ]
+    },
+    "reasoning": {
+      "overall": {
+        "sections": 400,
+        "without_verdict": 1,
+        "overflow": 0,
+        "right": 353,
+        "wrong": 46,
+        "auroc_verifier": 0.8351090035718685,
+        "approved_errors": 45,
+        "rejected_right": 1
+      },
+      "per_section": {
+        "A1": {
+          "sections": 40,
+          "without_verdict": 0,
+          "overflow": 0,
+          "right": 40,
+          "wrong": 0,
+          "auroc_verifier": null,
+          "approved_errors": 0,
+          "rejected_right": 0
+        },
+        "A2": {
+          "sections": 40,
+          "without_verdict": 0,
+          "overflow": 0,
+          "right": 37,
+          "wrong": 3,
+          "auroc_verifier": 0.7837837837837838,
+          "approved_errors": 3,
+          "rejected_right": 1
+        },
+        "A3_1": {
+          "sections": 40,
+          "without_verdict": 0,
+          "overflow": 0,
+          "right": 40,
+          "wrong": 0,
+          "auroc_verifier": null,
+          "approved_errors": 0,
+          "rejected_right": 0
+        },
+        "A3_2": {
+          "sections": 40,
+          "without_verdict": 0,
+          "overflow": 0,
+          "right": 28,
+          "wrong": 12,
+          "auroc_verifier": 0.6354166666666666,
+          "approved_errors": 12,
+          "rejected_right": 0
+        },
+        "B1_1": {
+          "sections": 40,
+          "without_verdict": 1,
+          "overflow": 0,
+          "right": 29,
+          "wrong": 10,
+          "auroc_verifier": 0.9655172413793104,
+          "approved_errors": 9,
+          "rejected_right": 0
+        },
+        "B1_2": {
+          "sections": 40,
+          "without_verdict": 0,
+          "overflow": 0,
+          "right": 40,
+          "wrong": 0,
+          "auroc_verifier": null,
+          "approved_errors": 0,
+          "rejected_right": 0
+        },
+        "B2": {
+          "sections": 40,
+          "without_verdict": 0,
+          "overflow": 0,
+          "right": 39,
+          "wrong": 1,
+          "auroc_verifier": 1.0,
+          "approved_errors": 1,
+          "rejected_right": 0
+        },
+        "C": {
+          "sections": 40,
+          "without_verdict": 0,
+          "overflow": 0,
+          "right": 40,
+          "wrong": 0,
+          "auroc_verifier": null,
+          "approved_errors": 0,
+          "rejected_right": 0
+        },
+        "F": {
+          "sections": 40,
+          "without_verdict": 0,
+          "overflow": 0,
+          "right": 21,
+          "wrong": 19,
+          "auroc_verifier": 0.18170426065162906,
+          "approved_errors": 19,
+          "rejected_right": 0
+        },
+        "X": {
+          "sections": 40,
+          "without_verdict": 0,
+          "overflow": 0,
+          "right": 39,
+          "wrong": 1,
+          "auroc_verifier": 0.6923076923076923,
+          "approved_errors": 1,
+          "rejected_right": 0
+        }
+      },
+      "errors": [
+        {
+          "record_id": "SYN_01_lower_dvt_doppler_v2",
+          "section": "F",
+          "agree": true,
+          "p_agree": 0.999
+        },
+        {
+          "record_id": "SYN_02_dvt_ruled_out_cellulitis_v2",
+          "section": "A3_2",
+          "agree": true,
+          "p_agree": 0.9547
+        },
+        {
+          "record_id": "SYN_02_dvt_ruled_out_cellulitis_v2",
+          "section": "B1_1",
+          "agree": true,
+          "p_agree": 0.9996
+        },
+        {
+          "record_id": "SYN_03_upper_extremity_catheter_v2",
+          "section": "F",
+          "agree": true,
+          "p_agree": 0.9994
+        },
+        {
+          "record_id": "SYN_03_upper_extremity_catheter_v2",
+          "section": "X",
+          "agree": true,
+          "p_agree": 0.9758
+        },
+        {
+          "record_id": "SYN_05_absent_flow_not_pulses_trap_v2",
+          "section": "F",
+          "agree": true,
+          "p_agree": 0.9994
+        },
+        {
+          "record_id": "SYN_07_thrombectomy_positive_v2",
+          "section": "B2",
+          "agree": true,
+          "p_agree": 0.6921
+        },
+        {
+          "record_id": "SYN_08_autopsy_positive_v2",
+          "section": "A3_2",
+          "agree": true,
+          "p_agree": 0.9943
+        },
+        {
+          "record_id": "SYN_08_autopsy_positive_v2",
+          "section": "F",
+          "agree": true,
+          "p_agree": 0.998
+        },
+        {
+          "record_id": "SYN_09_risk_factor_not_alt_diagnosis_v2",
+          "section": "F",
+          "agree": true,
+          "p_agree": 0.9994
+        },
+        {
+          "record_id": "SYN_10_unclear_sparse_record_v2",
+          "section": "B1_1",
+          "agree": true,
+          "p_agree": 0.8713
+        },
+        {
+          "record_id": "SYN_12_other_procedure_positive_v2",
+          "section": "A2",
+          "agree": true,
+          "p_agree": 0.9921
+        },
+        {
+          "record_id": "SYN_12_other_procedure_positive_v2",
+          "section": "A3_2",
+          "agree": true,
+          "p_agree": 0.5137
+        },
+        {
+          "record_id": "SYN_13_contrast_venography_only_v2",
+          "section": "A2",
+          "agree": true,
+          "p_agree": 0.9995
+        },
+        {
+          "record_id": "SYN_13_contrast_venography_only_v2",
+          "section": "F",
+          "agree": true,
+          "p_agree": 0.996
+        },
+        {
+          "record_id": "SYN_14_other_imaging_incidental_v2",
+          "section": "A3_2",
+          "agree": true,
+          "p_agree": 0.5008
+        },
+        {
+          "record_id": "SYN_14_other_imaging_incidental_v2",
+          "section": "F",
+          "agree": true,
+          "p_agree": 0.9987
+        },
+        {
+          "record_id": "SYN_17_diagnosis_no_details_v2",
+          "section": "B1_1",
+          "agree": true,
+          "p_agree": 0.7162
+        },
+        {
+          "record_id": "SYN_17_diagnosis_no_details_v2",
+          "section": "F",
+          "agree": true,
+          "p_agree": 0.9366
+        },
+        {
+          "record_id": "SYN_18_absent_pulses_true_positive_v2",
+          "section": "F",
+          "agree": true,
+          "p_agree": 0.9995
+        },
+        {
+          "record_id": "SYN_21_alt_diagnosis_bakers_cyst_v2",
+          "section": "A3_2",
+          "agree": true,
+          "p_agree": 0.9056
+        },
+        {
+          "record_id": "SYN_22_upper_extremity_effort_thrombosis_v2",
+          "section": "F",
+          "agree": true,
+          "p_agree": 0.9928
+        },
+        {
+          "record_id": "SYN_24_imaging_inconclusive_no_alt_diagnosis_v2",
+          "section": "A3_2",
+          "agree": true,
+          "p_agree": 0.9776
+        },
+        {
+          "record_id": "SYN_26_ct_venography_pregnancy_pelvic_v2",
+          "section": "A3_2",
+          "agree": true,
+          "p_agree": 0.9992
+        },
+        {
+          "record_id": "SYN_26_ct_venography_pregnancy_pelvic_v2",
+          "section": "F",
+          "agree": true,
+          "p_agree": 0.9878
+        },
+        {
+          "record_id": "SYN_27_contrast_venography_absent_pulses_v2",
+          "section": "F",
+          "agree": true,
+          "p_agree": 0.997
+        },
+        {
+          "record_id": "SYN_28_other_modality_plethysmography_v2",
+          "section": "F",
+          "agree": true,
+          "p_agree": 0.9983
+        },
+        {
+          "record_id": "SYN_29_diagnosis_no_details_second_v2",
+          "section": "B1_1",
+          "agree": true,
+          "p_agree": 0.8665
+        },
+        {
+          "record_id": "SYN_30_confirmed_dvt_normal_ddimer_v2",
+          "section": "A2",
+          "agree": true,
+          "p_agree": 0.8649
+        },
+        {
+          "record_id": "SYN_30_confirmed_dvt_normal_ddimer_v2",
+          "section": "F",
+          "agree": true,
+          "p_agree": 0.9991
+        },
+        {
+          "record_id": "SYN_31_diagnosis_no_details_upper_v2",
+          "section": "B1_1",
+          "agree": true,
+          "p_agree": 0.8378
+        },
+        {
+          "record_id": "SYN_31_diagnosis_no_details_upper_v2",
+          "section": "F",
+          "agree": true,
+          "p_agree": 0.9766
+        },
+        {
+          "record_id": "SYN_32_discharge_letter_dvt_v2",
+          "section": "B1_1",
+          "agree": null,
+          "p_agree": null
+        },
+        {
+          "record_id": "SYN_32_discharge_letter_dvt_v2",
+          "section": "F",
+          "agree": true,
+          "p_agree": 0.9917
+        },
+        {
+          "record_id": "SYN_33_transfer_note_dvt_upper_v2",
+          "section": "B1_1",
+          "agree": true,
+          "p_agree": 0.5018
+        },
+        {
+          "record_id": "SYN_33_transfer_note_dvt_upper_v2",
+          "section": "F",
+          "agree": true,
+          "p_agree": 0.9926
+        },
+        {
+          "record_id": "SYN_34_dvt_reported_other_facility_v2",
+          "section": "B1_1",
+          "agree": true,
+          "p_agree": 0.8704
+        },
+        {
+          "record_id": "SYN_34_dvt_reported_other_facility_v2",
+          "section": "F",
+          "agree": true,
+          "p_agree": 0.9976
+        },
+        {
+          "record_id": "SYN_35_specialist_note_dvt_lower_v2",
+          "section": "B1_1",
+          "agree": false,
+          "p_agree": 0.3034
+        },
+        {
+          "record_id": "SYN_35_specialist_note_dvt_lower_v2",
+          "section": "F",
+          "agree": true,
+          "p_agree": 0.9901
+        },
+        {
+          "record_id": "SYN_36_calf_muscle_tear_v2",
+          "section": "A3_2",
+          "agree": true,
+          "p_agree": 0.8926
+        },
+        {
+          "record_id": "SYN_37_lymphatic_obstruction_v2",
+          "section": "A3_2",
+          "agree": true,
+          "p_agree": 0.996
+        },
+        {
+          "record_id": "SYN_38_compartment_syndrome_v2",
+          "section": "A3_2",
+          "agree": true,
+          "p_agree": 0.9981
+        },
+        {
+          "record_id": "SYN_38_compartment_syndrome_v2",
+          "section": "B1_1",
+          "agree": true,
+          "p_agree": 0.9614
+        },
+        {
+          "record_id": "SYN_39_external_vein_compression_v2",
+          "section": "A3_2",
+          "agree": true,
+          "p_agree": 0.9567
+        },
+        {
+          "record_id": "SYN_39_external_vein_compression_v2",
+          "section": "B1_1",
+          "agree": true,
+          "p_agree": 0.9975
+        },
+        {
+          "record_id": "SYN_40_imaging_report_pending_v2",
+          "section": "A3_2",
+          "agree": true,
+          "p_agree": 0.8451
+        }
+      ]
+    }
+  },
+  "variant_disagreements": {
+    "right_approved_only_by_reasoning": [
+      {
+        "record_id": "SYN_03_upper_extremity_catheter_v2",
+        "section": "A2",
+        "p_agree_answer": 0.0988,
+        "p_agree_reasoning": 0.8793
+      },
+      {
+        "record_id": "SYN_04_multi_imaging_confirmed_v2",
+        "section": "A2",
+        "p_agree_answer": 0.2748,
+        "p_agree_reasoning": 0.9506
+      },
+      {
+        "record_id": "SYN_04_multi_imaging_confirmed_v2",
+        "section": "F",
+        "p_agree_answer": 0.3358,
+        "p_agree_reasoning": 0.8851
+      },
+      {
+        "record_id": "SYN_05_absent_flow_not_pulses_trap_v2",
+        "section": "A1",
+        "p_agree_answer": 0.3857,
+        "p_agree_reasoning": 0.9998
+      },
+      {
+        "record_id": "SYN_05_absent_flow_not_pulses_trap_v2",
+        "section": "A2",
+        "p_agree_answer": 0.2708,
+        "p_agree_reasoning": 0.9048
+      },
+      {
+        "record_id": "SYN_05_absent_flow_not_pulses_trap_v2",
+        "section": "X",
+        "p_agree_answer": 0.2435,
+        "p_agree_reasoning": 0.7616
+      },
+      {
+        "record_id": "SYN_06_no_imaging_clinical_only_v2",
+        "section": "A3_2",
+        "p_agree_answer": 0.0895,
+        "p_agree_reasoning": 0.9597
+      },
+      {
+        "record_id": "SYN_07_thrombectomy_positive_v2",
+        "section": "X",
+        "p_agree_answer": 0.1738,
+        "p_agree_reasoning": 0.86
+      },
+      {
+        "record_id": "SYN_11_autopsy_negative_v2",
+        "section": "A3_1",
+        "p_agree_answer": 0.3247,
+        "p_agree_reasoning": 0.9998
+      },
+      {
+        "record_id": "SYN_15_ddimer_negative_low_probability_v2",
+        "section": "X",
+        "p_agree_answer": 0.4293,
+        "p_agree_reasoning": 0.9853
+      },
+      {
+        "record_id": "SYN_17_diagnosis_no_details_v2",
+        "section": "A3_2",
+        "p_agree_answer": 0.2766,
+        "p_agree_reasoning": 0.8368
+      },
+      {
+        "record_id": "SYN_21_alt_diagnosis_bakers_cyst_v2",
+        "section": "B1_1",
+        "p_agree_answer": 0.2288,
+        "p_agree_reasoning": 0.8816
+      },
+      {
+        "record_id": "SYN_22_upper_extremity_effort_thrombosis_v2",
+        "section": "A2",
+        "p_agree_answer": 0.1289,
+        "p_agree_reasoning": 0.8144
+      },
+      {
+        "record_id": "SYN_22_upper_extremity_effort_thrombosis_v2",
+        "section": "X",
+        "p_agree_answer": 0.1305,
+        "p_agree_reasoning": 0.694
+      },
+      {
+        "record_id": "SYN_26_ct_venography_pregnancy_pelvic_v2",
+        "section": "X",
+        "p_agree_answer": 0.3378,
+        "p_agree_reasoning": 0.9859
+      },
+      {
+        "record_id": "SYN_27_contrast_venography_absent_pulses_v2",
+        "section": "A2",
+        "p_agree_answer": 0.0485,
+        "p_agree_reasoning": 0.5814
+      },
+      {
+        "record_id": "SYN_27_contrast_venography_absent_pulses_v2",
+        "section": "X",
+        "p_agree_answer": 0.1881,
+        "p_agree_reasoning": 0.9348
+      },
+      {
+        "record_id": "SYN_28_other_modality_plethysmography_v2",
+        "section": "A3_2",
+        "p_agree_answer": 0.0927,
+        "p_agree_reasoning": 0.9873
+      },
+      {
+        "record_id": "SYN_29_diagnosis_no_details_second_v2",
+        "section": "F",
+        "p_agree_answer": 0.46,
+        "p_agree_reasoning": 0.9848
+      },
+      {
+        "record_id": "SYN_30_confirmed_dvt_normal_ddimer_v2",
+        "section": "A1",
+        "p_agree_answer": 0.3294,
+        "p_agree_reasoning": 0.9994
+      },
+      {
+        "record_id": "SYN_30_confirmed_dvt_normal_ddimer_v2",
+        "section": "X",
+        "p_agree_answer": 0.0561,
+        "p_agree_reasoning": 0.5832
+      },
+      {
+        "record_id": "SYN_31_diagnosis_no_details_upper_v2",
+        "section": "A3_2",
+        "p_agree_answer": 0.4469,
+        "p_agree_reasoning": 0.9109
+      },
+      {
+        "record_id": "SYN_35_specialist_note_dvt_lower_v2",
+        "section": "X",
+        "p_agree_answer": 0.4231,
+        "p_agree_reasoning": 0.7867
+      },
+      {
+        "record_id": "SYN_36_calf_muscle_tear_v2",
+        "section": "A1",
+        "p_agree_answer": 0.2616,
+        "p_agree_reasoning": 0.9994
+      },
+      {
+        "record_id": "SYN_36_calf_muscle_tear_v2",
+        "section": "B1_1",
+        "p_agree_answer": 0.2018,
+        "p_agree_reasoning": 0.9226
+      },
+      {
+        "record_id": "SYN_37_lymphatic_obstruction_v2",
+        "section": "B1_1",
+        "p_agree_answer": 0.0797,
+        "p_agree_reasoning": 0.9338
+      },
+      {
+        "record_id": "SYN_40_imaging_report_pending_v2",
+        "section": "B1_2",
+        "p_agree_answer": 0.1161,
+        "p_agree_reasoning": 0.9959
+      }
+    ],
+    "wrong_approved_only_by_reasoning": [
+      {
+        "record_id": "SYN_03_upper_extremity_catheter_v2",
+        "section": "X",
+        "p_agree_answer": 0.3385,
+        "p_agree_reasoning": 0.9758
+      },
+      {
+        "record_id": "SYN_07_thrombectomy_positive_v2",
+        "section": "B2",
+        "p_agree_answer": 0.0548,
+        "p_agree_reasoning": 0.6921
+      },
+      {
+        "record_id": "SYN_14_other_imaging_incidental_v2",
+        "section": "A3_2",
+        "p_agree_answer": 0.1848,
+        "p_agree_reasoning": 0.5008
+      },
+      {
+        "record_id": "SYN_17_diagnosis_no_details_v2",
+        "section": "B1_1",
+        "p_agree_answer": 0.4527,
+        "p_agree_reasoning": 0.7162
+      },
+      {
+        "record_id": "SYN_29_diagnosis_no_details_second_v2",
+        "section": "B1_1",
+        "p_agree_answer": 0.4283,
+        "p_agree_reasoning": 0.8665
+      },
+      {
+        "record_id": "SYN_31_diagnosis_no_details_upper_v2",
+        "section": "B1_1",
+        "p_agree_answer": 0.2601,
+        "p_agree_reasoning": 0.8378
+      },
+      {
+        "record_id": "SYN_33_transfer_note_dvt_upper_v2",
+        "section": "B1_1",
+        "p_agree_answer": 0.0264,
+        "p_agree_reasoning": 0.5018
+      },
+      {
+        "record_id": "SYN_34_dvt_reported_other_facility_v2",
+        "section": "B1_1",
+        "p_agree_answer": 0.3903,
+        "p_agree_reasoning": 0.8704
+      },
+      {
+        "record_id": "SYN_40_imaging_report_pending_v2",
+        "section": "A3_2",
+        "p_agree_answer": 0.441,
+        "p_agree_reasoning": 0.8451
+      }
+    ]
+  }
+}

@@ -1,0 +1,140 @@
+{
+  "record_id": "SYN_40_imaging_report_pending_v2",
+  "a1": {
+    "answer": "No autopsy done, unknown if done, or done but results unavailable"
+  },
+  "a2": {
+    "answer": "No surgical procedure done; or, done but either did not confirm presence of DVT or findings unknown; or unknown if done"
+  },
+  "a3_1": {
+    "answer": "No imaging studies done, unknown if done, or done but results unknown"
+  },
+  "a3_2": {
+    "studies": [
+      "Compression ultrasonography"
+    ]
+  },
+  "b1_1": {
+    "answer": "≥1 symptom or sign of DVT was reported"
+  },
+  "b1_2": {
+    "types": []
+  },
+  "b2": {
+    "symptoms": [
+      "Calf pain or tenderness",
+      "Leg swelling or pitting oedema"
+    ]
+  },
+  "c": {
+    "answer": "D-dimer exceeded test lab's upper limit of normal."
+  },
+  "f": {
+    "answer": "No"
+  },
+  "x": {
+    "answer": "No alternative diagnosis was found to explain the acute illness"
+  },
+  "_verifier": {
+    "A1": {
+      "answer": {
+        "agree": true,
+        "p_agree": 0.661
+      },
+      "reasoning": {
+        "agree": false,
+        "p_agree": 0.0785
+      }
+    },
+    "A2": {
+      "answer": {
+        "agree": true,
+        "p_agree": 0.9866
+      },
+      "reasoning": {
+        "agree": true,
+        "p_agree": 0.9929
+      }
+    },
+    "A3_1": {
+      "answer": {
+        "agree": true,
+        "p_agree": 0.9692
+      },
+      "reasoning": {
+        "agree": true,
+        "p_agree": 0.9858
+      }
+    },
+    "A3_2": {
+      "answer": {
+        "agree": true,
+        "p_agree": 0.5895
+      },
+      "reasoning": {
+        "agree": true,
+        "p_agree": 0.9593
+      }
+    },
+    "B1_1": {
+      "answer": {
+        "agree": true,
+        "p_agree": 0.9968
+      },
+      "reasoning": {
+        "agree": true,
+        "p_agree": 0.9996
+      }
+    },
+    "B1_2": {
+      "answer": {
+        "agree": false,
+        "p_agree": 0.0027
+      },
+      "reasoning": {
+        "agree": false,
+        "p_agree": 0.001
+      }
+    },
+    "B2": {
+      "answer": {
+        "agree": true,
+        "p_agree": 0.998
+      },
+      "reasoning": {
+        "agree": true,
+        "p_agree": 0.997
+      }
+    },
+    "C": {
+      "answer": {
+        "agree": true,
+        "p_agree": 0.9996
+      },
+      "reasoning": {
+        "agree": true,
+        "p_agree": 0.9998
+      }
+    },
+    "F": {
+      "answer": {
+        "agree": false,
+        "p_agree": 0.3047
+      },
+      "reasoning": {
+        "agree": true,
+        "p_agree": 0.9135
+      }
+    },
+    "X": {
+      "answer": {
+        "agree": true,
+        "p_agree": 0.9458
+      },
+      "reasoning": {
+        "agree": true,
+        "p_agree": 0.9894
+      }
+    }
+  }
+}
