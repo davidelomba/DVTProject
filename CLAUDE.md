@@ -1069,6 +1069,26 @@ not say which governs, which is what the clinician question below is asking.
   DVT AUROC falls to 0.485 / 0.592 for qwen and 0.449 / 0.475 for medgemma: F's 19
   errors, the inverted question misread without the hint, are approved by both,
   and the verifier never receives the hint. About 2 seconds a request for both.
+- **Given the section hint, the verifier catches the errors the hint would have
+  prevented, and only those.** `replay_verifier.py` with qwen and all four
+  variants, the `_hint` ones carrying the current hints. On `output_stripped`,
+  whose Agent 2 had no hints, outside F (359 sections, 27 errors) `reasoning_hint`
+  approves 10 errors against 25 for `reasoning`, rejects 2 right answers against
+  1, and lifts the within-section AUROC from 0.788 to 0.964; A3_2 rejects 10 of
+  its 12 errors. Still approved: SYN_10 B1_1 (0.98) and SYN_14 A3_2 (0.93), the
+  reference's two errors, and A2 on SYN_12, the readings the hint does not
+  settle. **F gets no verdict**, 40 of 40 sections in `answer_hint` and 33 in
+  `reasoning_hint`: its hint asks for a `DETAILS_PRESENT` first line, which
+  `HINT_FORMAT_NOTE` does not suppress within 4 tokens; inferred, since the
+  generated text is not logged. On the three myocarditis runs, whose Agent 2 had
+  the same hints, `reasoning_hint` approves 74 errors of 84 against 77 and the
+  within-section AUROC falls from 0.638 to 0.492: the errors are mostly the
+  conventions the hint itself states (`unknown` for A1 and B, C005 going the
+  other way; `None tested` for C, all 18 C errors approved). `answer_hint` rises from 0.551 to 0.689 by approving right
+  answers, rejected right answers falling from 25 to 5, not by catching errors
+  (56 to 60 approved). In the deployed configuration Agent 2 already has the
+  hint, so the DVT gain does not transfer. Replay noise: 7 of 399 `answer`
+  verdicts and 1 `reasoning` change against the replay of 2026-10-15.
 - Read the metrics in this order: majority baseline and gain, then kappa, then
   accuracy with its interval. Accuracy alone ranked F above A3_2 under the 8B
   model, where F gained nothing over a constant answer and A3_2 gained 13
@@ -1290,9 +1310,10 @@ not say which governs, which is what the clinician question below is asking.
 - **The verifier cannot see what made the answer wrong.** Measured with two
   judges and two corpora (bullet above): with the reasoning nearly every error is
   approved, and the DVT stripped errors hinge on conventions written in the hints
-  the verifier never receives. Not measured: a verifier given the hint, or the
-  whole record instead of Agent 1's evidence. The `_hint` variants exist and
-  `replay_verifier.py --inputs` runs them on stored runs; not measured yet. The confidence
+  the verifier never receives. Given the hint (bullet above) it catches them
+  only where Agent 2 lacked that hint, and DVT F gets no verdict because of the
+  `DETAILS_PRESENT` line, so F with the hint stays unmeasured. Not measured: a
+  verifier reading the whole record instead of Agent 1's evidence. The confidence
   Agent 3 could not flag an answer wrong for lack of evidence, because it read
   the same fragments as Agent 2; the verifier reads them too.
 - **The temperature alone is not measured.** The three myocarditis runs differ
@@ -1322,6 +1343,10 @@ not say which governs, which is what the clinician question below is asking.
   when. The C passage on None tested is corrupted in the PDF itself. Hints
   `9029b6f01738`, measured in `myo/output_t05_np2048_v2_*` (bullet above): E
   reaches 17 of 17, and which of the three changes did it is not separated.
+  On 2026-10-19 F's hint lost the sentence on the meaning of `New`, a
+  reformulation of note c of the paper's Table 1, which defines new-onset left
+  ventricular dysfunction rather than the form's word. Hints `67281873d74e`,
+  expected by `run_myo_t05.sh`, not yet run.
 - **Questions for the authors of the myocarditis ground truth**, from the
   dummy cases read against the form and the sources:
   - Is a decreased ejection fraction option 2 or option 4 of F?

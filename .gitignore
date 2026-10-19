@@ -31,3 +31,5 @@ vectorstores/
 docs/
 
 export_prompts.py
+
+myo/export_prompts_myo.py

@@ -1061,7 +1061,6 @@ frase per frase:
 | F | definizione dell'opzione 2 (ipocinesia, acinesia, FE ridotta) e della dilatazione | prompt precedenti, F, istruzione 4, quasi alla lettera; *chamber enlargement* dalle Reasoning Guidelines |
 | F | definizione delle anomalie segmentali; versamento o infiammazione pericardica = opzione 8 | prompt precedenti, F, Reasoning Guidelines, riformulate |
 | F | ECO non eseguito = solo la prima opzione; referto che dice l'ECO normale = «No abnormalities» | prompt precedenti, F, Reasoning Guidelines; della seconda regola solo la metà che non contraddice le istruzioni 2-3, come condizione sufficiente |
-| F | «New»: senza un esame precedente, nuova se migliora o peggiora ai controlli | paper, Tabella 1, nota c (definizione CDC 2003), riformulata |
 | F | raccolta anomala di liquido pericardico: versamento anteriore e posteriore, o ampio versamento posteriore isolato | paper, Tabella 1 (CDC, pericardite confermata), riformulata |
 
 La riga delle Reasoning Guidelines di F che chiede di selezionare entrambe le
