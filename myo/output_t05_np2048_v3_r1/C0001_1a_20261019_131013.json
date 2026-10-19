@@ -1,0 +1,83 @@
+{
+  "record_id": "C0001_1a",
+  "a1": {
+    "symptoms": [
+      "acute chest pain or pressure",
+      "palpitation"
+    ]
+  },
+  "b": {
+    "features": [
+      "unknown if any of 1-3 present or absent"
+    ]
+  },
+  "c": {
+    "markers": [
+      "None of the above (choose this option if whichever ones were tested, were within normal range)"
+    ]
+  },
+  "e": {
+    "findings": [
+      "Paroxysmal or sustained atrial or ventricular arrhythmias (premature atrial or ventricular beats, and/or supraventricular or ventricular tachycardia, interventricular conduction delay, abnormal Q waves, low voltages): :e.g (Sinus tachycardia, SVT, atrial fibrillation, PVCs, VT, VF)"
+    ]
+  },
+  "f": {
+    "findings": [
+      "New focal or diffuse left or right ventricular function abnormalities (e.g. decreased ejection fraction)",
+      "Segmental wall motion abnormalities",
+      "Evidence of abnormal fluid collection or pericardial inflammation"
+    ]
+  },
+  "_verifier": {
+    "A1": {
+      "answer": {
+        "agree": true,
+        "p_agree": 0.9982
+      },
+      "reasoning": {
+        "agree": true,
+        "p_agree": 0.9998
+      }
+    },
+    "B": {
+      "answer": {
+        "agree": true,
+        "p_agree": 0.9218
+      },
+      "reasoning": {
+        "agree": true,
+        "p_agree": 0.9943
+      }
+    },
+    "C": {
+      "answer": {
+        "agree": true,
+        "p_agree": 0.8406
+      },
+      "reasoning": {
+        "agree": true,
+        "p_agree": 0.9887
+      }
+    },
+    "E": {
+      "answer": {
+        "agree": true,
+        "p_agree": 0.8485
+      },
+      "reasoning": {
+        "agree": true,
+        "p_agree": 0.978
+      }
+    },
+    "F": {
+      "answer": {
+        "agree": true,
+        "p_agree": 0.6426
+      },
+      "reasoning": {
+        "agree": true,
+        "p_agree": 0.9575
+      }
+    }
+  }
+}
