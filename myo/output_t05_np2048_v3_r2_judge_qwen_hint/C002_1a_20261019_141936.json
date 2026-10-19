@@ -1,0 +1,123 @@
+{
+  "record_id": "C002_1a",
+  "a1": {
+    "symptoms": [
+      "acute chest pain or pressure",
+      "dyspnea at rest, with exercise or lying down"
+    ]
+  },
+  "b": {
+    "features": [
+      "none of the above"
+    ]
+  },
+  "c": {
+    "markers": [
+      "None tested, or tested but no results or unknown if tested"
+    ]
+  },
+  "e": {
+    "findings": [
+      "ST, segment or T, wave abnormalities (elevation or inversion)"
+    ]
+  },
+  "f": {
+    "findings": [
+      "New focal or diffuse left or right ventricular function abnormalities (e.g. decreased ejection fraction)",
+      "Segmental wall motion abnormalities",
+      "Global systolic or diastolic function depression/abnormality - (*Decreased longitudinal and circumferential strain and strain rates on tissue Doppler)"
+    ]
+  },
+  "_verifier": {
+    "A1": {
+      "answer": {
+        "agree": true,
+        "p_agree": 0.9772
+      },
+      "reasoning": {
+        "agree": true,
+        "p_agree": 0.993
+      },
+      "answer_hint": {
+        "agree": true,
+        "p_agree": 0.9566
+      },
+      "reasoning_hint": {
+        "agree": true,
+        "p_agree": 0.9509
+      }
+    },
+    "B": {
+      "answer": {
+        "agree": true,
+        "p_agree": 0.996
+      },
+      "reasoning": {
+        "agree": true,
+        "p_agree": 0.9849
+      },
+      "answer_hint": {
+        "agree": true,
+        "p_agree": 0.9992
+      },
+      "reasoning_hint": {
+        "agree": true,
+        "p_agree": 0.9662
+      }
+    },
+    "C": {
+      "answer": {
+        "agree": false,
+        "p_agree": 0.3284
+      },
+      "reasoning": {
+        "agree": true,
+        "p_agree": 0.9966
+      },
+      "answer_hint": {
+        "agree": false,
+        "p_agree": 0.4486
+      },
+      "reasoning_hint": {
+        "agree": true,
+        "p_agree": 0.9993
+      }
+    },
+    "E": {
+      "answer": {
+        "agree": true,
+        "p_agree": 0.9499
+      },
+      "reasoning": {
+        "agree": true,
+        "p_agree": 0.9805
+      },
+      "answer_hint": {
+        "agree": true,
+        "p_agree": 0.9415
+      },
+      "reasoning_hint": {
+        "agree": true,
+        "p_agree": 0.9733
+      }
+    },
+    "F": {
+      "answer": {
+        "agree": true,
+        "p_agree": 0.9452
+      },
+      "reasoning": {
+        "agree": true,
+        "p_agree": 0.9954
+      },
+      "answer_hint": {
+        "agree": true,
+        "p_agree": 0.9899
+      },
+      "reasoning_hint": {
+        "agree": true,
+        "p_agree": 0.9989
+      }
+    }
+  }
+}

@@ -1,0 +1,122 @@
+{
+  "record_id": "C004_1b",
+  "a1": {
+    "symptoms": [
+      "acute chest pain or pressure",
+      "dyspnea at rest, with exercise or lying down",
+      "diaphoresis"
+    ]
+  },
+  "b": {
+    "features": [
+      "unknown if any of 1-3 present or absent"
+    ]
+  },
+  "c": {
+    "markers": [
+      "None tested, or tested but no results or unknown if tested"
+    ]
+  },
+  "e": {
+    "findings": [
+      "ECG not done, or done but no results available or unknown if done"
+    ]
+  },
+  "f": {
+    "findings": [
+      "ECHO not done, or done but no results or unknown if done"
+    ]
+  },
+  "_verifier": {
+    "A1": {
+      "answer": {
+        "agree": true,
+        "p_agree": 0.9987
+      },
+      "reasoning": {
+        "agree": true,
+        "p_agree": 0.9998
+      },
+      "answer_hint": {
+        "agree": true,
+        "p_agree": 0.9987
+      },
+      "reasoning_hint": {
+        "agree": true,
+        "p_agree": 0.9999
+      }
+    },
+    "B": {
+      "answer": {
+        "agree": true,
+        "p_agree": 0.8814
+      },
+      "reasoning": {
+        "agree": true,
+        "p_agree": 0.9938
+      },
+      "answer_hint": {
+        "agree": true,
+        "p_agree": 0.9321
+      },
+      "reasoning_hint": {
+        "agree": true,
+        "p_agree": 0.9984
+      }
+    },
+    "C": {
+      "answer": {
+        "agree": false,
+        "p_agree": 0.4826
+      },
+      "reasoning": {
+        "agree": true,
+        "p_agree": 0.998
+      },
+      "answer_hint": {
+        "agree": true,
+        "p_agree": 0.6218
+      },
+      "reasoning_hint": {
+        "agree": true,
+        "p_agree": 0.9994
+      }
+    },
+    "E": {
+      "answer": {
+        "agree": false,
+        "p_agree": 0.2562
+      },
+      "reasoning": {
+        "agree": true,
+        "p_agree": 0.9982
+      },
+      "answer_hint": {
+        "agree": true,
+        "p_agree": 0.9925
+      },
+      "reasoning_hint": {
+        "agree": true,
+        "p_agree": 0.9996
+      }
+    },
+    "F": {
+      "answer": {
+        "agree": true,
+        "p_agree": 0.7212
+      },
+      "reasoning": {
+        "agree": true,
+        "p_agree": 0.9982
+      },
+      "answer_hint": {
+        "agree": true,
+        "p_agree": 0.9346
+      },
+      "reasoning_hint": {
+        "agree": true,
+        "p_agree": 0.9994
+      }
+    }
+  }
+}
