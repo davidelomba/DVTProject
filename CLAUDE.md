@@ -264,7 +264,9 @@ models, same temperature 0, gave three different sections out of thirty on
 the laptop and on mari, against a generation noise floor of 1 in 300 measured
 on the laptop and 0 in 30 measured on mari. Each machine is deterministic; the
 two disagree with each other. Ollama 0.33.2 on the laptop against 0.32.1 on
-mari is the most likely cause, GPU architecture the other candidate.
+mari is the most likely cause, GPU architecture the other candidate. Mari runs
+Ollama 0.40.7 from the myocarditis v4 series (2026-10-21); every earlier run
+on disk records 0.32.1.
 
 Every run's audit log records `hostname` and `ollama_version` under
 `_run_config.environment`. Check them before comparing two result files.
@@ -1113,6 +1115,30 @@ not say which governs, which is what the clinician question below is asking.
   `unknown`, C `None tested`, E `ECG not done` and F `ECHO not done` rejected
   right or wrong. No error is rejected by both judges with the reasoning.
   Replay noise 9 and 3 verdicts of 253.
+- **The expert's rule on `unknown`, applied literally, makes `unknown`
+  unreachable in A1 for a living patient; qwen3.8:27b ignores it in B.**
+  `myo/output_t05_np2048_v4_r1` to `r3` (qwen3.6:27b) and `_v4_q38_r1` to `r3`
+  (qwen3.8:27b for Agents 1 and 2 and the verifier, through `run_myo.py
+  --model`), hints `7d4be67fec0f`, mari with **Ollama 0.40.7** instead of
+  0.32.1, so v3 to v4 changes the hints and Ollama together. No failed section,
+  no `answer_conflict`. qwen3.6: 57, 55, 53 of 85 against 55, 55, 56; A1 40 to
+  35 over the three runs, B 32 to 35, C 33, E 51, F 11. `unknown` in A1 falls
+  from 26 answers of 51 to 4 (truth 18): `eupnoico` makes C0001_1c to 1e `none`
+  in 9 of 9, and the reasoning cites the living patient as sudden death known
+  absent in 15 of the 23 `none`, all 6 on C005; B gets C002_1b right in 3 of 3
+  and keeps `unknown` on C003. Errors outside F: 50, all none/unknown or None
+  tested. qwen3.8: 49, 48, 52; B 23, answering `none` where no examination is
+  described (34 `none` of 51, truth 18), against the rule; F 7, 120 options
+  selected against 81. Counting the readings already shared as right (C of
+  C002 and C003 `None tested`, B of C002_1c and C003 `unknown`): 65, 65, 66 for
+  v3, 65, 63, 63 for v4, 57, 54, 56 for qwen3.8. Fleiss 0.918 and 0.767 (B
+  0.118 for qwen3.8). Verifier: qwen3.6 as in v3, `reasoning` approving 89
+  errors of 90; qwen3.8 answers NO on 222 of 255 `answer` requests and rejects
+  122 right answers of 149, E included, and its generated text is not logged,
+  so whether a token such as *Not* is being read as NO by `read_verdict` is not
+  verified. Medians 141.5, 141.5, 136.5 seconds a record for qwen3.6 (147.5 to
+  170.5 in v3, the verifier at 1.2 seconds a request against 2.0) and 103.5 to
+  106 for qwen3.8.
 - Read the metrics in this order: majority baseline and gain, then kappa, then
   accuracy with its interval. Accuracy alone ranked F above A3_2 under the 8B
   model, where F gained nothing over a constant answer and A3_2 gained 13
@@ -1372,7 +1398,12 @@ not say which governs, which is what the clinician question below is asking.
   ventricular dysfunction rather than the form's word. Hints `67281873d74e`,
   measured in `myo/output_t05_np2048_v3_*` (bullet above). On 2026-10-21 the
   A1 and B hints took the expert's rule on `unknown` (next bullet), hints
-  `7d4be67fec0f`, expected by `run_myo_t05.sh`, not yet measured.
+  `7d4be67fec0f`, measured in `myo/output_t05_np2048_v4_*` (bullet under What
+  the measurements say). Later on 2026-10-21 F's hint gained a sentence naming
+  TTE, TEE and strain or speckle-tracking analysis as echocardiographic studies,
+  from the ground-truth author's suggestion that the model misses them, hints
+  `578847158c3b`, expected by `run_myo_t05.sh`, not yet measured; predicted
+  inert, since 53 of 53 F answers on C002 and C003 already recognise the study.
 - **Settled on 2026-10-21, through the supervisor.** An expert: `unknown` in A1
   and B is chosen only when every option is unknown, and never with another
   option; if at least one option is known to be absent and none is present, the
@@ -1381,10 +1412,17 @@ not say which governs, which is what the clinician question below is asking.
   cardiac symptom or examination finding documented), `none` on B of C002_1b
   (muffled sounds negated), as the ground truth does, and `none` where it codes
   `unknown` if `eupnoico` makes dyspnea known absent (A1 of C0001_1c to 1e) and
-  if `pause apparentemente libere` excludes a friction rub (B of C005). The
-  supervisor agrees that C of C002 and C003, with no ESR, CRP or D-dimer in the
-  record, is `None tested`, where the ground truth codes `None of the above`.
-  The ground truth files are unchanged: the experts will review the cases.
+  if `pause apparentemente libere` excludes a friction rub (B of C005). C of
+  C002 and C003, with no ESR, CRP or D-dimer in the record, is `None tested`:
+  the author of those cases confirmed it, and **the myocarditis ground truth
+  was corrected on 2026-10-21** in `MYO_dummy_cases.xlsx` (column N, rows 10 to
+  15) and regenerated, the six files changing in `c` alone; every run gains 6
+  sections (v3 61, 61, 62; v4 63, 61, 59; v4_q38 55, 54, 58), and myocarditis
+  figures written before that date are against the earlier ground truth. The
+  resaved workbook stores C0001's `Variation_id` as 0, which
+  `convert_cases.py` would turn into `C0001_0`, so C0001_0_0's file was left as
+  it was. The same author confirmed F of C002 and C003; A1 and B of C003 were
+  asked and not answered, and C0001, C004 and C005 are not yet rechecked.
   Still open on the rule: whether a living patient makes `sudden death` known
   absent, which would leave `unknown` unreachable in A1; whether `eupnoico` on
   oxygen and `pause apparentemente libere` count as an absence; whether

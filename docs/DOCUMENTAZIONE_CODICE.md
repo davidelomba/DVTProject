@@ -1067,6 +1067,7 @@ frase per frase:
 | F | definizione delle anomalie segmentali; versamento o infiammazione pericardica = opzione 8 | prompt precedenti, F, Reasoning Guidelines, riformulate |
 | F | ECO non eseguito = solo la prima opzione; referto che dice l'ECO normale = «No abnormalities» | prompt precedenti, F, Reasoning Guidelines; della seconda regola solo la metà che non contraddice le istruzioni 2-3, come condizione sufficiente |
 | F | raccolta anomala di liquido pericardico: versamento anteriore e posteriore, o ampio versamento posteriore isolato | paper, Tabella 1 (CDC, pericardite confermata), riformulata |
+| F | TTE, TEE e analisi dello strain o speckle-tracking sono studi ecocardiografici | formulazione nuova, dall'ipotesi di un'autrice della ground truth (2026-10-21) che il modello non riconosca *TTE* e lo strain come ecocardiografia |
 
 La riga delle Reasoning Guidelines di F che chiede di selezionare entrambe le
 opzioni sulla funzione non è inclusa.
