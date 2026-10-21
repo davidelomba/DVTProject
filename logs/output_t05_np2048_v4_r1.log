@@ -1,0 +1,825 @@
+17 records, sections ['A1', 'B', 'C', 'E', 'F'], mode agentic_graph, agent qwen3.6:27b, evaluator qwen3.6:27b
+guideline context True from main.pdf, index in /home/lombardi/DVTProject/myo/vectorstores/chroma_brighton_myo
+context window 8192 tokens, temperature 0.5
+-> myo/output_t05_np2048_v4_r1
+
+[1/17] C0001_0_0 ...
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+Loading weights:   0%|          | 0/199 [00:00<?, ?it/s]Loading weights: 100%|██████████| 199/199 [00:00<00:00, 9941.00it/s]
+
+=== Section A1 ===
+[A1] Agent 1 (agentic search) exploring the record...
+[A1] Agent 1 done in 4.2s
+[A1] Agent 2 (evaluator) filling in the schema...
+[A1] Agent 2 done in 8.2s
+[A1] filled in: symptoms=['acute chest pain or pressure', 'palpitation']
+
+=== Section B ===
+[B] Agent 1 (agentic search) exploring the record...
+[B] Agent 1 done in 3.9s
+[B] Agent 2 (evaluator) filling in the schema...
+[B] Agent 2 done in 10.5s
+[B] filled in: features=['unknown if any of 1-3 present or absent']
+
+=== Section C ===
+[C] Agent 1 (agentic search) exploring the record...
+[C] Agent 1 done in 6.1s
+[C] Agent 2 (evaluator) filling in the schema...
+[C] Agent 2 done in 21.2s
+[C] filled in: markers=['None of the above (choose this option if whichever ones were tested, were within normal range)']
+
+=== Section E ===
+[E] Agent 1 (agentic search) exploring the record...
+[E] Agent 1 done in 5.0s
+[E] Agent 2 (evaluator) filling in the schema...
+[E] Agent 2 done in 16.7s
+[E] filled in: findings=['Paroxysmal or sustained atrial or ventricular arrhythmias (premature atrial or ventricular beats, and/or supraventricular or ventricular tachycardia, interventricular conduction delay, abnormal Q waves, low voltages): :e.g (Sinus tachycardia, SVT, atrial fibrillation, PVCs, VT, VF)']
+
+=== Section F ===
+[F] Agent 1 (agentic search) exploring the record...
+[F] Agent 1 done in 11.1s
+[F] Agent 2 (evaluator) filling in the schema...
+[F] Agent 2 done in 57.1s
+[F] filled in: findings=['New focal or diffuse left or right ventricular function abnormalities (e.g. decreased ejection fraction)', 'Segmental wall motion abnormalities']
+[A1] Agent 3 verifier (answer) AGREE, P(YES) 0.9970 (verdict)
+[A1] Agent 3 verifier (reasoning) AGREE, P(YES) 0.9998 (verdict)
+[B] Agent 3 verifier (answer) AGREE, P(YES) 0.9033 (verdict)
+[B] Agent 3 verifier (reasoning) AGREE, P(YES) 0.9980 (verdict)
+[C] Agent 3 verifier (answer) AGREE, P(YES) 0.8102 (verdict)
+[C] Agent 3 verifier (reasoning) AGREE, P(YES) 0.9956 (verdict)
+[E] Agent 3 verifier (answer) AGREE, P(YES) 0.8667 (verdict)
+[E] Agent 3 verifier (reasoning) AGREE, P(YES) 0.9905 (verdict)
+[F] Agent 3 verifier (answer) AGREE, P(YES) 0.9890 (verdict)
+[F] Agent 3 verifier (reasoning) AGREE, P(YES) 0.9403 (verdict)
+    done in 163s
+[2/17] C0001_1a ...
+Loading weights:   0%|          | 0/199 [00:00<?, ?it/s]Loading weights: 100%|██████████| 199/199 [00:00<00:00, 7504.31it/s]
+
+=== Section A1 ===
+[A1] Agent 1 (agentic search) exploring the record...
+[A1] Agent 1 done in 4.6s
+[A1] Agent 2 (evaluator) filling in the schema...
+[A1] Agent 2 done in 8.6s
+[A1] filled in: symptoms=['acute chest pain or pressure', 'palpitation']
+
+=== Section B ===
+[B] Agent 1 (agentic search) exploring the record...
+[B] Agent 1 done in 3.8s
+[B] Agent 2 (evaluator) filling in the schema...
+[B] Agent 2 done in 10.6s
+[B] filled in: features=['unknown if any of 1-3 present or absent']
+
+=== Section C ===
+[C] Agent 1 (agentic search) exploring the record...
+[C] Agent 1 done in 6.9s
+[C] Agent 2 (evaluator) filling in the schema...
+[C] Agent 2 done in 11.0s
+[C] filled in: markers=['None of the above (choose this option if whichever ones were tested, were within normal range)']
+
+=== Section E ===
+[E] Agent 1 (agentic search) exploring the record...
+[E] Agent 1 done in 4.4s
+[E] Agent 2 (evaluator) filling in the schema...
+[E] Agent 2 done in 19.6s
+[E] filled in: findings=['Paroxysmal or sustained atrial or ventricular arrhythmias (premature atrial or ventricular beats, and/or supraventricular or ventricular tachycardia, interventricular conduction delay, abnormal Q waves, low voltages): :e.g (Sinus tachycardia, SVT, atrial fibrillation, PVCs, VT, VF)']
+
+=== Section F ===
+[F] Agent 1 (agentic search) exploring the record...
+[F] Agent 1 done in 8.5s
+[F] Agent 2 (evaluator) filling in the schema...
+[F] Agent 2 done in 33.7s
+[F] filled in: findings=['New focal or diffuse left or right ventricular function abnormalities (e.g. decreased ejection fraction)', 'Segmental wall motion abnormalities']
+[A1] Agent 3 verifier (answer) AGREE, P(YES) 0.9980 (verdict)
+[A1] Agent 3 verifier (reasoning) AGREE, P(YES) 0.9994 (verdict)
+[B] Agent 3 verifier (answer) AGREE, P(YES) 0.9040 (verdict)
+[B] Agent 3 verifier (reasoning) AGREE, P(YES) 0.9922 (verdict)
+[C] Agent 3 verifier (answer) AGREE, P(YES) 0.8488 (verdict)
+[C] Agent 3 verifier (reasoning) AGREE, P(YES) 0.9009 (verdict)
+[E] Agent 3 verifier (answer) AGREE, P(YES) 0.8684 (verdict)
+[E] Agent 3 verifier (reasoning) AGREE, P(YES) 0.9837 (verdict)
+[F] Agent 3 verifier (answer) AGREE, P(YES) 0.9667 (verdict)
+[F] Agent 3 verifier (reasoning) AGREE, P(YES) 0.8574 (verdict)
+    done in 131s
+[3/17] C0001_1b ...
+Loading weights:   0%|          | 0/199 [00:00<?, ?it/s]Loading weights: 100%|██████████| 199/199 [00:00<00:00, 3969.20it/s]
+
+=== Section A1 ===
+[A1] Agent 1 (agentic search) exploring the record...
+[A1] Agent 1 done in 6.2s
+[A1] Agent 2 (evaluator) filling in the schema...
+[A1] Agent 2 done in 14.5s
+[A1] filled in: symptoms=['acute chest pain or pressure', 'palpitation']
+
+=== Section B ===
+[B] Agent 1 (agentic search) exploring the record...
+[B] Agent 1 done in 3.8s
+[B] Agent 2 (evaluator) filling in the schema...
+[B] Agent 2 done in 8.0s
+[B] filled in: features=['unknown if any of 1-3 present or absent']
+
+=== Section C ===
+[C] Agent 1 (agentic search) exploring the record...
+[C] Agent 1 done in 5.8s
+[C] Agent 2 (evaluator) filling in the schema...
+[C] Agent 2 done in 10.5s
+[C] filled in: markers=['None of the above (choose this option if whichever ones were tested, were within normal range)']
+
+=== Section E ===
+[E] Agent 1 (agentic search) exploring the record...
+[E] Agent 1 done in 4.6s
+[E] Agent 2 (evaluator) filling in the schema...
+[E] Agent 2 done in 14.6s
+[E] filled in: findings=['Paroxysmal or sustained atrial or ventricular arrhythmias (premature atrial or ventricular beats, and/or supraventricular or ventricular tachycardia, interventricular conduction delay, abnormal Q waves, low voltages): :e.g (Sinus tachycardia, SVT, atrial fibrillation, PVCs, VT, VF)']
+
+=== Section F ===
+[F] Agent 1 (agentic search) exploring the record...
+[F] Agent 1 done in 9.5s
+[F] Agent 2 (evaluator) filling in the schema...
+[F] Agent 2 done in 44.7s
+[F] filled in: findings=['Segmental wall motion abnormalities']
+[A1] Agent 3 verifier (answer) AGREE, P(YES) 0.9935 (verdict)
+[A1] Agent 3 verifier (reasoning) AGREE, P(YES) 0.9996 (verdict)
+[B] Agent 3 verifier (answer) AGREE, P(YES) 0.8609 (verdict)
+[B] Agent 3 verifier (reasoning) AGREE, P(YES) 0.9986 (verdict)
+[C] Agent 3 verifier (answer) AGREE, P(YES) 0.9101 (verdict)
+[C] Agent 3 verifier (reasoning) AGREE, P(YES) 0.9935 (verdict)
+[E] Agent 3 verifier (answer) AGREE, P(YES) 0.9095 (verdict)
+[E] Agent 3 verifier (reasoning) AGREE, P(YES) 0.9917 (verdict)
+[F] Agent 3 verifier (answer) AGREE, P(YES) 0.5368 (verdict)
+[F] Agent 3 verifier (reasoning) AGREE, P(YES) 0.9042 (verdict)
+    done in 142s
+[4/17] C0001_1c ...
+Loading weights:   0%|          | 0/199 [00:00<?, ?it/s]Loading weights: 100%|██████████| 199/199 [00:00<00:00, 6667.52it/s]
+
+=== Section A1 ===
+[A1] Agent 1 (agentic search) exploring the record...
+[A1] Agent 1 done in 4.7s
+[A1] Agent 2 (evaluator) filling in the schema...
+[A1] Agent 2 done in 21.1s
+[A1] filled in: symptoms=['none of the above']
+
+=== Section B ===
+[B] Agent 1 (agentic search) exploring the record...
+[B] Agent 1 done in 3.8s
+[B] Agent 2 (evaluator) filling in the schema...
+[B] Agent 2 done in 25.7s
+[B] filled in: features=['unknown if any of 1-3 present or absent']
+
+=== Section C ===
+[C] Agent 1 (agentic search) exploring the record...
+[C] Agent 1 done in 5.9s
+[C] Agent 2 (evaluator) filling in the schema...
+[C] Agent 2 done in 9.6s
+[C] filled in: markers=['None of the above (choose this option if whichever ones were tested, were within normal range)']
+
+=== Section E ===
+[E] Agent 1 (agentic search) exploring the record...
+[E] Agent 1 done in 5.3s
+[E] Agent 2 (evaluator) filling in the schema...
+[E] Agent 2 done in 13.2s
+[E] filled in: findings=['Paroxysmal or sustained atrial or ventricular arrhythmias (premature atrial or ventricular beats, and/or supraventricular or ventricular tachycardia, interventricular conduction delay, abnormal Q waves, low voltages): :e.g (Sinus tachycardia, SVT, atrial fibrillation, PVCs, VT, VF)']
+
+=== Section F ===
+[F] Agent 1 (agentic search) exploring the record...
+[F] Agent 1 done in 11.3s
+[F] Agent 2 (evaluator) filling in the schema...
+[F] Agent 2 done in 11.6s
+[F] filled in: findings=['New focal or diffuse left or right ventricular function abnormalities (e.g. decreased ejection fraction)', 'Segmental wall motion abnormalities']
+[A1] Agent 3 verifier (answer) DISAGREE, P(YES) 0.3385 (verdict)
+[A1] Agent 3 verifier (reasoning) AGREE, P(YES) 0.8740 (verdict)
+[B] Agent 3 verifier (answer) AGREE, P(YES) 0.8514 (verdict)
+[B] Agent 3 verifier (reasoning) AGREE, P(YES) 0.9937 (verdict)
+[C] Agent 3 verifier (answer) AGREE, P(YES) 0.9772 (verdict)
+[C] Agent 3 verifier (reasoning) AGREE, P(YES) 0.9966 (verdict)
+[E] Agent 3 verifier (answer) AGREE, P(YES) 0.8826 (verdict)
+[E] Agent 3 verifier (reasoning) AGREE, P(YES) 0.9880 (verdict)
+[F] Agent 3 verifier (answer) AGREE, P(YES) 0.9922 (verdict)
+[F] Agent 3 verifier (reasoning) AGREE, P(YES) 0.9915 (verdict)
+    done in 133s
+[5/17] C0001_1d ...
+Loading weights:   0%|          | 0/199 [00:00<?, ?it/s]Loading weights: 100%|██████████| 199/199 [00:00<00:00, 5958.84it/s]
+
+=== Section A1 ===
+[A1] Agent 1 (agentic search) exploring the record...
+[A1] Agent 1 done in 5.4s
+[A1] Agent 2 (evaluator) filling in the schema...
+[A1] Agent 2 done in 47.1s
+[A1] filled in: symptoms=['none of the above']
+
+=== Section B ===
+[B] Agent 1 (agentic search) exploring the record...
+[B] Agent 1 done in 3.9s
+[B] Agent 2 (evaluator) filling in the schema...
+[B] Agent 2 done in 10.5s
+[B] filled in: features=['unknown if any of 1-3 present or absent']
+
+=== Section C ===
+[C] Agent 1 (agentic search) exploring the record...
+[C] Agent 1 done in 6.1s
+[C] Agent 2 (evaluator) filling in the schema...
+[C] Agent 2 done in 21.4s
+[C] filled in: markers=['None of the above (choose this option if whichever ones were tested, were within normal range)']
+
+=== Section E ===
+[E] Agent 1 (agentic search) exploring the record...
+[E] Agent 1 done in 5.2s
+[E] Agent 2 (evaluator) filling in the schema...
+[E] Agent 2 done in 11.8s
+[E] filled in: findings=['Paroxysmal or sustained atrial or ventricular arrhythmias (premature atrial or ventricular beats, and/or supraventricular or ventricular tachycardia, interventricular conduction delay, abnormal Q waves, low voltages): :e.g (Sinus tachycardia, SVT, atrial fibrillation, PVCs, VT, VF)']
+
+=== Section F ===
+[F] Agent 1 (agentic search) exploring the record...
+[F] Agent 1 done in 11.3s
+[F] Agent 2 (evaluator) filling in the schema...
+[F] Agent 2 done in 20.6s
+[F] filled in: findings=['New focal or diffuse left or right ventricular function abnormalities (e.g. decreased ejection fraction)', 'Segmental wall motion abnormalities']
+[A1] Agent 3 verifier (answer) DISAGREE, P(YES) 0.3904 (verdict)
+[A1] Agent 3 verifier (reasoning) AGREE, P(YES) 0.9907 (verdict)
+[B] Agent 3 verifier (answer) AGREE, P(YES) 0.8681 (verdict)
+[B] Agent 3 verifier (reasoning) AGREE, P(YES) 0.9884 (verdict)
+[C] Agent 3 verifier (answer) AGREE, P(YES) 0.6757 (verdict)
+[C] Agent 3 verifier (reasoning) AGREE, P(YES) 0.9000 (verdict)
+[E] Agent 3 verifier (answer) AGREE, P(YES) 0.7879 (verdict)
+[E] Agent 3 verifier (reasoning) AGREE, P(YES) 0.9824 (verdict)
+[F] Agent 3 verifier (answer) AGREE, P(YES) 0.9087 (verdict)
+[F] Agent 3 verifier (reasoning) AGREE, P(YES) 0.6782 (verdict)
+    done in 163s
+[6/17] C0001_1e ...
+Loading weights:   0%|          | 0/199 [00:00<?, ?it/s]Loading weights: 100%|██████████| 199/199 [00:00<00:00, 5621.33it/s]
+
+=== Section A1 ===
+[A1] Agent 1 (agentic search) exploring the record...
+[A1] Agent 1 done in 5.4s
+[A1] Agent 2 (evaluator) filling in the schema...
+[A1] Agent 2 done in 39.6s
+[A1] filled in: symptoms=['none of the above']
+
+=== Section B ===
+[B] Agent 1 (agentic search) exploring the record...
+[B] Agent 1 done in 3.9s
+[B] Agent 2 (evaluator) filling in the schema...
+[B] Agent 2 done in 25.2s
+[B] filled in: features=['unknown if any of 1-3 present or absent']
+
+=== Section C ===
+[C] Agent 1 (agentic search) exploring the record...
+[C] Agent 1 done in 6.1s
+[C] Agent 2 (evaluator) filling in the schema...
+[C] Agent 2 done in 9.8s
+[C] filled in: markers=['None of the above (choose this option if whichever ones were tested, were within normal range)']
+
+=== Section E ===
+[E] Agent 1 (agentic search) exploring the record...
+[E] Agent 1 done in 4.5s
+[E] Agent 2 (evaluator) filling in the schema...
+[E] Agent 2 done in 12.1s
+[E] filled in: findings=['Paroxysmal or sustained atrial or ventricular arrhythmias (premature atrial or ventricular beats, and/or supraventricular or ventricular tachycardia, interventricular conduction delay, abnormal Q waves, low voltages): :e.g (Sinus tachycardia, SVT, atrial fibrillation, PVCs, VT, VF)']
+
+=== Section F ===
+[F] Agent 1 (agentic search) exploring the record...
+[F] Agent 1 done in 8.6s
+[F] Agent 2 (evaluator) filling in the schema...
+[F] Agent 2 done in 21.0s
+[F] filled in: findings=['New focal or diffuse left or right ventricular function abnormalities (e.g. decreased ejection fraction)', 'Segmental wall motion abnormalities']
+[A1] Agent 3 verifier (answer) DISAGREE, P(YES) 0.4770 (verdict)
+[A1] Agent 3 verifier (reasoning) AGREE, P(YES) 0.9925 (verdict)
+[B] Agent 3 verifier (answer) AGREE, P(YES) 0.9132 (verdict)
+[B] Agent 3 verifier (reasoning) AGREE, P(YES) 0.9964 (verdict)
+[C] Agent 3 verifier (answer) AGREE, P(YES) 0.6290 (verdict)
+[C] Agent 3 verifier (reasoning) AGREE, P(YES) 0.8087 (verdict)
+[E] Agent 3 verifier (answer) AGREE, P(YES) 0.8478 (verdict)
+[E] Agent 3 verifier (reasoning) AGREE, P(YES) 0.9904 (verdict)
+[F] Agent 3 verifier (answer) AGREE, P(YES) 0.9684 (verdict)
+[F] Agent 3 verifier (reasoning) AGREE, P(YES) 0.6779 (verdict)
+    done in 157s
+[7/17] C0001_1f ...
+Loading weights:   0%|          | 0/199 [00:00<?, ?it/s]Loading weights: 100%|██████████| 199/199 [00:00<00:00, 4519.50it/s]
+
+=== Section A1 ===
+[A1] Agent 1 (agentic search) exploring the record...
+[A1] Agent 1 done in 4.4s
+[A1] Agent 2 (evaluator) filling in the schema...
+[A1] Agent 2 done in 11.0s
+[A1] filled in: symptoms=['unknown if any of 1-5 present or absent']
+
+=== Section B ===
+[B] Agent 1 (agentic search) exploring the record...
+[B] Agent 1 done in 3.8s
+[B] Agent 2 (evaluator) filling in the schema...
+[B] Agent 2 done in 10.3s
+[B] filled in: features=['unknown if any of 1-3 present or absent']
+
+=== Section C ===
+[C] Agent 1 (agentic search) exploring the record...
+[C] Agent 1 done in 5.9s
+[C] Agent 2 (evaluator) filling in the schema...
+[C] Agent 2 done in 32.0s
+[C] filled in: markers=['None of the above (choose this option if whichever ones were tested, were within normal range)']
+
+=== Section E ===
+[E] Agent 1 (agentic search) exploring the record...
+[E] Agent 1 done in 4.8s
+[E] Agent 2 (evaluator) filling in the schema...
+[E] Agent 2 done in 12.0s
+[E] filled in: findings=['Paroxysmal or sustained atrial or ventricular arrhythmias (premature atrial or ventricular beats, and/or supraventricular or ventricular tachycardia, interventricular conduction delay, abnormal Q waves, low voltages): :e.g (Sinus tachycardia, SVT, atrial fibrillation, PVCs, VT, VF)']
+
+=== Section F ===
+[F] Agent 1 (agentic search) exploring the record...
+[F] Agent 1 done in 11.3s
+[F] Agent 2 (evaluator) filling in the schema...
+[F] Agent 2 done in 25.9s
+[F] filled in: findings=['New focal or diffuse left or right ventricular function abnormalities (e.g. decreased ejection fraction)', 'Segmental wall motion abnormalities', 'Evidence of abnormal fluid collection or pericardial inflammation']
+[A1] Agent 3 verifier (answer) DISAGREE, P(YES) 0.2473 (verdict)
+[A1] Agent 3 verifier (reasoning) AGREE, P(YES) 0.6577 (verdict)
+[B] Agent 3 verifier (answer) AGREE, P(YES) 0.9407 (verdict)
+[B] Agent 3 verifier (reasoning) AGREE, P(YES) 0.9911 (verdict)
+[C] Agent 3 verifier (answer) DISAGREE, P(YES) 0.4902 (verdict)
+[C] Agent 3 verifier (reasoning) AGREE, P(YES) 0.8337 (verdict)
+[E] Agent 3 verifier (answer) AGREE, P(YES) 0.9100 (verdict)
+[E] Agent 3 verifier (reasoning) AGREE, P(YES) 0.9975 (verdict)
+[F] Agent 3 verifier (answer) AGREE, P(YES) 0.8105 (verdict)
+[F] Agent 3 verifier (reasoning) AGREE, P(YES) 0.9723 (verdict)
+    done in 141s
+[8/17] C002_1a ...
+Loading weights:   0%|          | 0/199 [00:00<?, ?it/s]Loading weights: 100%|██████████| 199/199 [00:00<00:00, 6477.41it/s]
+
+=== Section A1 ===
+[A1] Agent 1 (agentic search) exploring the record...
+[A1] Agent 1 done in 6.4s
+[A1] Agent 2 (evaluator) filling in the schema...
+[A1] Agent 2 done in 10.8s
+[A1] filled in: symptoms=['acute chest pain or pressure', 'dyspnea at rest, with exercise or lying down']
+
+=== Section B ===
+[B] Agent 1 (agentic search) exploring the record...
+[B] Agent 1 done in 4.2s
+[B] Agent 2 (evaluator) filling in the schema...
+[B] Agent 2 done in 17.9s
+[B] filled in: features=['none of the above']
+
+=== Section C ===
+[C] Agent 1 (agentic search) exploring the record...
+[C] Agent 1 done in 4.0s
+[C] Agent 2 (evaluator) filling in the schema...
+[C] Agent 2 done in 10.7s
+[C] filled in: markers=['None tested, or tested but no results or unknown if tested']
+
+=== Section E ===
+[E] Agent 1 (agentic search) exploring the record...
+[E] Agent 1 done in 5.1s
+[E] Agent 2 (evaluator) filling in the schema...
+[E] Agent 2 done in 18.9s
+[E] filled in: findings=['ST, segment or T, wave abnormalities (elevation or inversion)']
+
+=== Section F ===
+[F] Agent 1 (agentic search) exploring the record...
+[F] Agent 1 done in 8.0s
+[F] Agent 2 (evaluator) filling in the schema...
+[F] Agent 2 done in 16.5s
+[F] filled in: findings=['New focal or diffuse left or right ventricular function abnormalities (e.g. decreased ejection fraction)', 'Segmental wall motion abnormalities', 'Global systolic or diastolic function depression/abnormality - (*Decreased longitudinal and circumferential strain and strain rates on tissue Doppler)']
+[A1] Agent 3 verifier (answer) AGREE, P(YES) 0.9707 (verdict)
+[A1] Agent 3 verifier (reasoning) AGREE, P(YES) 0.9942 (verdict)
+[B] Agent 3 verifier (answer) AGREE, P(YES) 0.9962 (verdict)
+[B] Agent 3 verifier (reasoning) AGREE, P(YES) 0.9964 (verdict)
+[C] Agent 3 verifier (answer) DISAGREE, P(YES) 0.3042 (verdict)
+[C] Agent 3 verifier (reasoning) AGREE, P(YES) 0.9964 (verdict)
+[E] Agent 3 verifier (answer) AGREE, P(YES) 0.9385 (verdict)
+[E] Agent 3 verifier (reasoning) AGREE, P(YES) 0.9984 (verdict)
+[F] Agent 3 verifier (answer) AGREE, P(YES) 0.9345 (verdict)
+[F] Agent 3 verifier (reasoning) AGREE, P(YES) 0.9890 (verdict)
+    done in 124s
+[9/17] C002_1b ...
+Loading weights:   0%|          | 0/199 [00:00<?, ?it/s]Loading weights: 100%|██████████| 199/199 [00:00<00:00, 5674.68it/s]
+
+=== Section A1 ===
+[A1] Agent 1 (agentic search) exploring the record...
+[A1] Agent 1 done in 6.3s
+[A1] Agent 2 (evaluator) filling in the schema...
+[A1] Agent 2 done in 8.5s
+[A1] filled in: symptoms=['acute chest pain or pressure', 'dyspnea at rest, with exercise or lying down']
+
+=== Section B ===
+[B] Agent 1 (agentic search) exploring the record...
+[B] Agent 1 done in 4.6s
+[B] Agent 2 (evaluator) filling in the schema...
+[B] Agent 2 done in 10.2s
+[B] filled in: features=['none of the above']
+
+=== Section C ===
+[C] Agent 1 (agentic search) exploring the record...
+[C] Agent 1 done in 3.7s
+[C] Agent 2 (evaluator) filling in the schema...
+[C] Agent 2 done in 11.5s
+[C] filled in: markers=['None tested, or tested but no results or unknown if tested']
+
+=== Section E ===
+[E] Agent 1 (agentic search) exploring the record...
+[E] Agent 1 done in 4.2s
+[E] Agent 2 (evaluator) filling in the schema...
+[E] Agent 2 done in 9.4s
+[E] filled in: findings=['ST, segment or T, wave abnormalities (elevation or inversion)']
+
+=== Section F ===
+[F] Agent 1 (agentic search) exploring the record...
+[F] Agent 1 done in 8.8s
+[F] Agent 2 (evaluator) filling in the schema...
+[F] Agent 2 done in 57.7s
+[F] filled in: findings=['New focal or diffuse left or right ventricular function abnormalities (e.g. decreased ejection fraction)', 'Segmental wall motion abnormalities']
+[A1] Agent 3 verifier (answer) AGREE, P(YES) 0.9276 (verdict)
+[A1] Agent 3 verifier (reasoning) AGREE, P(YES) 0.9994 (verdict)
+[B] Agent 3 verifier (answer) AGREE, P(YES) 0.7731 (verdict)
+[B] Agent 3 verifier (reasoning) DISAGREE, P(YES) 0.4743 (verdict)
+[C] Agent 3 verifier (answer) DISAGREE, P(YES) 0.2417 (verdict)
+[C] Agent 3 verifier (reasoning) AGREE, P(YES) 0.9762 (verdict)
+[E] Agent 3 verifier (answer) AGREE, P(YES) 0.9510 (verdict)
+[E] Agent 3 verifier (reasoning) AGREE, P(YES) 0.9955 (verdict)
+[F] Agent 3 verifier (answer) AGREE, P(YES) 0.9420 (verdict)
+[F] Agent 3 verifier (reasoning) AGREE, P(YES) 0.8258 (verdict)
+    done in 145s
+[10/17] C002_1c ...
+Loading weights:   0%|          | 0/199 [00:00<?, ?it/s]Loading weights: 100%|██████████| 199/199 [00:00<00:00, 7395.40it/s]
+
+=== Section A1 ===
+[A1] Agent 1 (agentic search) exploring the record...
+[A1] Agent 1 done in 4.9s
+[A1] Agent 2 (evaluator) filling in the schema...
+[A1] Agent 2 done in 8.6s
+[A1] filled in: symptoms=['acute chest pain or pressure', 'dyspnea at rest, with exercise or lying down']
+
+=== Section B ===
+[B] Agent 1 (agentic search) exploring the record...
+[B] Agent 1 done in 3.7s
+[B] Agent 2 (evaluator) filling in the schema...
+[B] Agent 2 done in 78.1s
+[B] filled in: features=['none of the above']
+
+=== Section C ===
+[C] Agent 1 (agentic search) exploring the record...
+[C] Agent 1 done in 4.5s
+[C] Agent 2 (evaluator) filling in the schema...
+[C] Agent 2 done in 9.1s
+[C] filled in: markers=['None tested, or tested but no results or unknown if tested']
+
+=== Section E ===
+[E] Agent 1 (agentic search) exploring the record...
+[E] Agent 1 done in 4.6s
+[E] Agent 2 (evaluator) filling in the schema...
+[E] Agent 2 done in 11.0s
+[E] filled in: findings=['ST, segment or T, wave abnormalities (elevation or inversion)']
+
+=== Section F ===
+[F] Agent 1 (agentic search) exploring the record...
+[F] Agent 1 done in 4.5s
+[F] Agent 2 (evaluator) filling in the schema...
+[F] Agent 2 done in 21.2s
+[F] filled in: findings=['New focal or diffuse left or right ventricular function abnormalities (e.g. decreased ejection fraction)', 'Segmental wall motion abnormalities']
+[A1] Agent 3 verifier (answer) AGREE, P(YES) 0.9018 (verdict)
+[A1] Agent 3 verifier (reasoning) AGREE, P(YES) 0.9974 (verdict)
+[B] Agent 3 verifier (answer) AGREE, P(YES) 0.8113 (verdict)
+[B] Agent 3 verifier (reasoning) AGREE, P(YES) 0.8120 (verdict)
+[C] Agent 3 verifier (answer) DISAGREE, P(YES) 0.3587 (verdict)
+[C] Agent 3 verifier (reasoning) AGREE, P(YES) 0.9758 (verdict)
+[E] Agent 3 verifier (answer) AGREE, P(YES) 0.9301 (verdict)
+[E] Agent 3 verifier (reasoning) AGREE, P(YES) 0.9857 (verdict)
+[F] Agent 3 verifier (answer) AGREE, P(YES) 0.7029 (verdict)
+[F] Agent 3 verifier (reasoning) AGREE, P(YES) 0.9851 (verdict)
+    done in 170s
+[11/17] C003_1a ...
+Loading weights:   0%|          | 0/199 [00:00<?, ?it/s]Loading weights: 100%|██████████| 199/199 [00:00<00:00, 5847.01it/s]
+
+=== Section A1 ===
+[A1] Agent 1 (agentic search) exploring the record...
+[A1] Agent 1 done in 3.9s
+[A1] Agent 2 (evaluator) filling in the schema...
+[A1] Agent 2 done in 58.7s
+[A1] filled in: symptoms=['none of the above']
+
+=== Section B ===
+[B] Agent 1 (agentic search) exploring the record...
+[B] Agent 1 done in 3.8s
+[B] Agent 2 (evaluator) filling in the schema...
+[B] Agent 2 done in 30.3s
+[B] filled in: features=['unknown if any of 1-3 present or absent']
+
+=== Section C ===
+[C] Agent 1 (agentic search) exploring the record...
+[C] Agent 1 done in 3.7s
+[C] Agent 2 (evaluator) filling in the schema...
+[C] Agent 2 done in 9.5s
+[C] filled in: markers=['None tested, or tested but no results or unknown if tested']
+
+=== Section E ===
+[E] Agent 1 (agentic search) exploring the record...
+[E] Agent 1 done in 4.0s
+[E] Agent 2 (evaluator) filling in the schema...
+[E] Agent 2 done in 15.5s
+[E] filled in: findings=['No abnormalities seen on ECG']
+
+=== Section F ===
+[F] Agent 1 (agentic search) exploring the record...
+[F] Agent 1 done in 8.6s
+[F] Agent 2 (evaluator) filling in the schema...
+[F] Agent 2 done in 21.9s
+[F] filled in: findings=['New focal or diffuse left or right ventricular function abnormalities (e.g. decreased ejection fraction)', 'Global systolic or diastolic function depression/abnormality - (*Decreased longitudinal and circumferential strain and strain rates on tissue Doppler)', 'Evidence of abnormal fluid collection or pericardial inflammation']
+[A1] Agent 3 verifier (answer) DISAGREE, P(YES) 0.4932 (verdict)
+[A1] Agent 3 verifier (reasoning) AGREE, P(YES) 0.9922 (verdict)
+[B] Agent 3 verifier (answer) AGREE, P(YES) 0.9651 (verdict)
+[B] Agent 3 verifier (reasoning) AGREE, P(YES) 0.9990 (verdict)
+[C] Agent 3 verifier (answer) AGREE, P(YES) 0.5286 (verdict)
+[C] Agent 3 verifier (reasoning) AGREE, P(YES) 0.9993 (verdict)
+[E] Agent 3 verifier (answer) AGREE, P(YES) 0.9974 (verdict)
+[E] Agent 3 verifier (reasoning) DISAGREE, P(YES) 0.3679 (verdict)
+[F] Agent 3 verifier (answer) AGREE, P(YES) 0.9029 (verdict)
+[F] Agent 3 verifier (reasoning) AGREE, P(YES) 0.9914 (verdict)
+    done in 182s
+[12/17] C003_1b ...
+Loading weights:   0%|          | 0/199 [00:00<?, ?it/s]Loading weights: 100%|██████████| 199/199 [00:00<00:00, 5446.90it/s]
+
+=== Section A1 ===
+[A1] Agent 1 (agentic search) exploring the record...
+[A1] Agent 1 done in 3.8s
+[A1] Agent 2 (evaluator) filling in the schema...
+[A1] Agent 2 done in 52.3s
+[A1] filled in: symptoms=['none of the above']
+
+=== Section B ===
+[B] Agent 1 (agentic search) exploring the record...
+[B] Agent 1 done in 3.8s
+[B] Agent 2 (evaluator) filling in the schema...
+[B] Agent 2 done in 27.7s
+[B] filled in: features=['unknown if any of 1-3 present or absent']
+
+=== Section C ===
+[C] Agent 1 (agentic search) exploring the record...
+[C] Agent 1 done in 4.6s
+[C] Agent 2 (evaluator) filling in the schema...
+[C] Agent 2 done in 9.7s
+[C] filled in: markers=['None tested, or tested but no results or unknown if tested']
+
+=== Section E ===
+[E] Agent 1 (agentic search) exploring the record...
+[E] Agent 1 done in 4.2s
+[E] Agent 2 (evaluator) filling in the schema...
+[E] Agent 2 done in 14.9s
+[E] filled in: findings=['Paroxysmal or sustained atrial or ventricular arrhythmias (premature atrial or ventricular beats, and/or supraventricular or ventricular tachycardia, interventricular conduction delay, abnormal Q waves, low voltages): :e.g (Sinus tachycardia, SVT, atrial fibrillation, PVCs, VT, VF)']
+
+=== Section F ===
+[F] Agent 1 (agentic search) exploring the record...
+[F] Agent 1 done in 7.4s
+[F] Agent 2 (evaluator) filling in the schema...
+[F] Agent 2 done in 22.0s
+[F] filled in: findings=['New focal or diffuse left or right ventricular function abnormalities (e.g. decreased ejection fraction)', 'Evidence of abnormal fluid collection or pericardial inflammation']
+[A1] Agent 3 verifier (answer) DISAGREE, P(YES) 0.4643 (verdict)
+[A1] Agent 3 verifier (reasoning) AGREE, P(YES) 0.9950 (verdict)
+[B] Agent 3 verifier (answer) AGREE, P(YES) 0.9738 (verdict)
+[B] Agent 3 verifier (reasoning) AGREE, P(YES) 0.9984 (verdict)
+[C] Agent 3 verifier (answer) DISAGREE, P(YES) 0.3620 (verdict)
+[C] Agent 3 verifier (reasoning) AGREE, P(YES) 0.9971 (verdict)
+[E] Agent 3 verifier (answer) AGREE, P(YES) 0.5912 (verdict)
+[E] Agent 3 verifier (reasoning) AGREE, P(YES) 0.8724 (verdict)
+[F] Agent 3 verifier (answer) AGREE, P(YES) 0.9834 (verdict)
+[F] Agent 3 verifier (reasoning) AGREE, P(YES) 0.9976 (verdict)
+    done in 171s
+[13/17] C003_1c ...
+Loading weights:   0%|          | 0/199 [00:00<?, ?it/s]Loading weights: 100%|██████████| 199/199 [00:00<00:00, 5956.80it/s]
+
+=== Section A1 ===
+[A1] Agent 1 (agentic search) exploring the record...
+[A1] Agent 1 done in 4.0s
+[A1] Agent 2 (evaluator) filling in the schema...
+[A1] Agent 2 done in 13.6s
+[A1] filled in: symptoms=['none of the above']
+
+=== Section B ===
+[B] Agent 1 (agentic search) exploring the record...
+[B] Agent 1 done in 3.7s
+[B] Agent 2 (evaluator) filling in the schema...
+[B] Agent 2 done in 12.0s
+[B] filled in: features=['unknown if any of 1-3 present or absent']
+
+=== Section C ===
+[C] Agent 1 (agentic search) exploring the record...
+[C] Agent 1 done in 3.7s
+[C] Agent 2 (evaluator) filling in the schema...
+[C] Agent 2 done in 9.0s
+[C] filled in: markers=['None tested, or tested but no results or unknown if tested']
+
+=== Section E ===
+[E] Agent 1 (agentic search) exploring the record...
+[E] Agent 1 done in 4.0s
+[E] Agent 2 (evaluator) filling in the schema...
+[E] Agent 2 done in 10.7s
+[E] filled in: findings=['Paroxysmal or sustained atrial or ventricular arrhythmias (premature atrial or ventricular beats, and/or supraventricular or ventricular tachycardia, interventricular conduction delay, abnormal Q waves, low voltages): :e.g (Sinus tachycardia, SVT, atrial fibrillation, PVCs, VT, VF)']
+
+=== Section F ===
+[F] Agent 1 (agentic search) exploring the record...
+[F] Agent 1 done in 4.9s
+[F] Agent 2 (evaluator) filling in the schema...
+[F] Agent 2 done in 20.7s
+[F] filled in: findings=['New focal or diffuse left or right ventricular function abnormalities (e.g. decreased ejection fraction)', 'Global systolic or diastolic function depression/abnormality - (*Decreased longitudinal and circumferential strain and strain rates on tissue Doppler)']
+[A1] Agent 3 verifier (answer) DISAGREE, P(YES) 0.4685 (verdict)
+[A1] Agent 3 verifier (reasoning) AGREE, P(YES) 0.9698 (verdict)
+[B] Agent 3 verifier (answer) AGREE, P(YES) 0.9797 (verdict)
+[B] Agent 3 verifier (reasoning) AGREE, P(YES) 0.9985 (verdict)
+[C] Agent 3 verifier (answer) AGREE, P(YES) 0.8648 (verdict)
+[C] Agent 3 verifier (reasoning) AGREE, P(YES) 0.9992 (verdict)
+[E] Agent 3 verifier (answer) AGREE, P(YES) 0.8228 (verdict)
+[E] Agent 3 verifier (reasoning) AGREE, P(YES) 0.9791 (verdict)
+[F] Agent 3 verifier (answer) AGREE, P(YES) 0.7219 (verdict)
+[F] Agent 3 verifier (reasoning) AGREE, P(YES) 0.9570 (verdict)
+    done in 105s
+[14/17] C004_1a ...
+Loading weights:   0%|          | 0/199 [00:00<?, ?it/s]Loading weights: 100%|██████████| 199/199 [00:00<00:00, 5376.62it/s]
+
+=== Section A1 ===
+[A1] Agent 1 (agentic search) exploring the record...
+[A1] Agent 1 done in 5.7s
+[A1] Agent 2 (evaluator) filling in the schema...
+[A1] Agent 2 done in 15.6s
+[A1] filled in: symptoms=['acute chest pain or pressure', 'dyspnea at rest, with exercise or lying down', 'diaphoresis']
+
+=== Section B ===
+[B] Agent 1 (agentic search) exploring the record...
+[B] Agent 1 done in 3.7s
+[B] Agent 2 (evaluator) filling in the schema...
+[B] Agent 2 done in 10.2s
+[B] filled in: features=['unknown if any of 1-3 present or absent']
+
+=== Section C ===
+[C] Agent 1 (agentic search) exploring the record...
+[C] Agent 1 done in 4.6s
+[C] Agent 2 (evaluator) filling in the schema...
+[C] Agent 2 done in 9.4s
+[C] filled in: markers=['None tested, or tested but no results or unknown if tested']
+
+=== Section E ===
+[E] Agent 1 (agentic search) exploring the record...
+[E] Agent 1 done in 4.0s
+[E] Agent 2 (evaluator) filling in the schema...
+[E] Agent 2 done in 10.6s
+[E] filled in: findings=['ECG not done, or done but no results available or unknown if done']
+
+=== Section F ===
+[F] Agent 1 (agentic search) exploring the record...
+[F] Agent 1 done in 4.0s
+[F] Agent 2 (evaluator) filling in the schema...
+[F] Agent 2 done in 9.8s
+[F] filled in: findings=['ECHO not done, or done but no results or unknown if done']
+[A1] Agent 3 verifier (answer) AGREE, P(YES) 0.9982 (verdict)
+[A1] Agent 3 verifier (reasoning) AGREE, P(YES) 0.9999 (verdict)
+[B] Agent 3 verifier (answer) AGREE, P(YES) 0.9537 (verdict)
+[B] Agent 3 verifier (reasoning) AGREE, P(YES) 0.9978 (verdict)
+[C] Agent 3 verifier (answer) AGREE, P(YES) 0.7128 (verdict)
+[C] Agent 3 verifier (reasoning) AGREE, P(YES) 0.9967 (verdict)
+[E] Agent 3 verifier (answer) DISAGREE, P(YES) 0.3051 (verdict)
+[E] Agent 3 verifier (reasoning) AGREE, P(YES) 0.9984 (verdict)
+[F] Agent 3 verifier (answer) AGREE, P(YES) 0.6824 (verdict)
+[F] Agent 3 verifier (reasoning) AGREE, P(YES) 0.9979 (verdict)
+    done in 95s
+[15/17] C004_1b ...
+Loading weights:   0%|          | 0/199 [00:00<?, ?it/s]Loading weights: 100%|██████████| 199/199 [00:00<00:00, 6301.08it/s]
+
+=== Section A1 ===
+[A1] Agent 1 (agentic search) exploring the record...
+[A1] Agent 1 done in 5.6s
+[A1] Agent 2 (evaluator) filling in the schema...
+[A1] Agent 2 done in 15.7s
+[A1] filled in: symptoms=['acute chest pain or pressure', 'dyspnea at rest, with exercise or lying down', 'diaphoresis']
+
+=== Section B ===
+[B] Agent 1 (agentic search) exploring the record...
+[B] Agent 1 done in 3.7s
+[B] Agent 2 (evaluator) filling in the schema...
+[B] Agent 2 done in 8.3s
+[B] filled in: features=['unknown if any of 1-3 present or absent']
+
+=== Section C ===
+[C] Agent 1 (agentic search) exploring the record...
+[C] Agent 1 done in 3.5s
+[C] Agent 2 (evaluator) filling in the schema...
+[C] Agent 2 done in 10.3s
+[C] filled in: markers=['None tested, or tested but no results or unknown if tested']
+
+=== Section E ===
+[E] Agent 1 (agentic search) exploring the record...
+[E] Agent 1 done in 4.7s
+[E] Agent 2 (evaluator) filling in the schema...
+[E] Agent 2 done in 8.0s
+[E] filled in: findings=['ECG not done, or done but no results available or unknown if done']
+
+=== Section F ===
+[F] Agent 1 (agentic search) exploring the record...
+[F] Agent 1 done in 6.6s
+[F] Agent 2 (evaluator) filling in the schema...
+[F] Agent 2 done in 9.0s
+[F] filled in: findings=['ECHO not done, or done but no results or unknown if done']
+[A1] Agent 3 verifier (answer) AGREE, P(YES) 0.9976 (verdict)
+[A1] Agent 3 verifier (reasoning) AGREE, P(YES) 0.9999 (verdict)
+[B] Agent 3 verifier (answer) AGREE, P(YES) 0.8959 (verdict)
+[B] Agent 3 verifier (reasoning) AGREE, P(YES) 0.9978 (verdict)
+[C] Agent 3 verifier (answer) DISAGREE, P(YES) 0.4949 (verdict)
+[C] Agent 3 verifier (reasoning) AGREE, P(YES) 0.9971 (verdict)
+[E] Agent 3 verifier (answer) DISAGREE, P(YES) 0.3263 (verdict)
+[E] Agent 3 verifier (reasoning) AGREE, P(YES) 0.9917 (verdict)
+[F] Agent 3 verifier (answer) AGREE, P(YES) 0.5466 (verdict)
+[F] Agent 3 verifier (reasoning) AGREE, P(YES) 0.9987 (verdict)
+    done in 91s
+[16/17] C005_1a ...
+Loading weights:   0%|          | 0/199 [00:00<?, ?it/s]Loading weights: 100%|██████████| 199/199 [00:00<00:00, 6243.44it/s]
+
+=== Section A1 ===
+[A1] Agent 1 (agentic search) exploring the record...
+[A1] Agent 1 done in 4.2s
+[A1] Agent 2 (evaluator) filling in the schema...
+[A1] Agent 2 done in 27.1s
+[A1] filled in: symptoms=['none of the above']
+
+=== Section B ===
+[B] Agent 1 (agentic search) exploring the record...
+[B] Agent 1 done in 4.3s
+[B] Agent 2 (evaluator) filling in the schema...
+[B] Agent 2 done in 32.0s
+[B] filled in: features=['unknown if any of 1-3 present or absent']
+
+=== Section C ===
+[C] Agent 1 (agentic search) exploring the record...
+[C] Agent 1 done in 4.5s
+[C] Agent 2 (evaluator) filling in the schema...
+[C] Agent 2 done in 9.7s
+[C] filled in: markers=['None tested, or tested but no results or unknown if tested']
+
+=== Section E ===
+[E] Agent 1 (agentic search) exploring the record...
+[E] Agent 1 done in 3.9s
+[E] Agent 2 (evaluator) filling in the schema...
+[E] Agent 2 done in 12.1s
+[E] filled in: findings=['ECG not done, or done but no results available or unknown if done']
+
+=== Section F ===
+[F] Agent 1 (agentic search) exploring the record...
+[F] Agent 1 done in 6.6s
+[F] Agent 2 (evaluator) filling in the schema...
+[F] Agent 2 done in 14.3s
+[F] filled in: findings=['New focal or diffuse left or right ventricular function abnormalities (e.g. decreased ejection fraction)', 'Segmental wall motion abnormalities', 'Wall thickness change']
+[A1] Agent 3 verifier (answer) AGREE, P(YES) 0.5010 (verdict)
+[A1] Agent 3 verifier (reasoning) AGREE, P(YES) 0.9662 (verdict)
+[B] Agent 3 verifier (answer) AGREE, P(YES) 0.6794 (verdict)
+[B] Agent 3 verifier (reasoning) AGREE, P(YES) 0.9828 (verdict)
+[C] Agent 3 verifier (answer) AGREE, P(YES) 0.8819 (verdict)
+[C] Agent 3 verifier (reasoning) AGREE, P(YES) 0.9995 (verdict)
+[E] Agent 3 verifier (answer) AGREE, P(YES) 0.6589 (verdict)
+[E] Agent 3 verifier (reasoning) AGREE, P(YES) 0.9983 (verdict)
+[F] Agent 3 verifier (answer) AGREE, P(YES) 0.9472 (verdict)
+[F] Agent 3 verifier (reasoning) AGREE, P(YES) 0.9827 (verdict)
+    done in 139s
+[17/17] C005_1b ...
+Loading weights:   0%|          | 0/199 [00:00<?, ?it/s]Loading weights: 100%|██████████| 199/199 [00:00<00:00, 6969.90it/s]
+
+=== Section A1 ===
+[A1] Agent 1 (agentic search) exploring the record...
+[A1] Agent 1 done in 3.8s
+[A1] Agent 2 (evaluator) filling in the schema...
+[A1] Agent 2 done in 50.4s
+[A1] filled in: symptoms=['none of the above']
+
+=== Section B ===
+[B] Agent 1 (agentic search) exploring the record...
+[B] Agent 1 done in 4.0s
+[B] Agent 2 (evaluator) filling in the schema...
+[B] Agent 2 done in 12.2s
+[B] filled in: features=['none of the above']
+
+=== Section C ===
+[C] Agent 1 (agentic search) exploring the record...
+[C] Agent 1 done in 3.7s
+[C] Agent 2 (evaluator) filling in the schema...
+[C] Agent 2 done in 9.3s
+[C] filled in: markers=['None tested, or tested but no results or unknown if tested']
+
+=== Section E ===
+[E] Agent 1 (agentic search) exploring the record...
+[E] Agent 1 done in 4.7s
+[E] Agent 2 (evaluator) filling in the schema...
+[E] Agent 2 done in 9.8s
+[E] filled in: findings=['ECG not done, or done but no results available or unknown if done']
+
+=== Section F ===
+[F] Agent 1 (agentic search) exploring the record...
+[F] Agent 1 done in 9.2s
+[F] Agent 2 (evaluator) filling in the schema...
+[F] Agent 2 done in 69.4s
+[F] filled in: findings=['New focal or diffuse left or right ventricular function abnormalities (e.g. decreased ejection fraction)', 'Segmental wall motion abnormalities', 'Wall thickness change']
+[A1] Agent 3 verifier (answer) AGREE, P(YES) 0.5432 (verdict)
+[A1] Agent 3 verifier (reasoning) AGREE, P(YES) 0.9898 (verdict)
+[B] Agent 3 verifier (answer) AGREE, P(YES) 0.9228 (verdict)
+[B] Agent 3 verifier (reasoning) AGREE, P(YES) 0.9616 (verdict)
+[C] Agent 3 verifier (answer) AGREE, P(YES) 0.9358 (verdict)
+[C] Agent 3 verifier (reasoning) AGREE, P(YES) 0.9993 (verdict)
+[E] Agent 3 verifier (answer) DISAGREE, P(YES) 0.4482 (verdict)
+[E] Agent 3 verifier (reasoning) AGREE, P(YES) 0.9983 (verdict)
+[F] Agent 3 verifier (answer) AGREE, P(YES) 0.9534 (verdict)
+[F] Agent 3 verifier (reasoning) AGREE, P(YES) 0.9903 (verdict)
+    done in 197s
+
+17 succeeded, 0 failed
+median per record: 142s

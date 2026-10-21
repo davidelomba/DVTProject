@@ -1,0 +1,81 @@
+{
+  "record_id": "C003_1a",
+  "a1": {
+    "symptoms": [
+      "unknown if any of 1-5 present or absent"
+    ]
+  },
+  "b": {
+    "features": [
+      "none of the above"
+    ]
+  },
+  "c": {
+    "markers": [
+      "None tested, or tested but no results or unknown if tested"
+    ]
+  },
+  "e": {
+    "findings": [
+      "No abnormalities seen on ECG"
+    ]
+  },
+  "f": {
+    "findings": [
+      "New focal or diffuse left or right ventricular function abnormalities (e.g. decreased ejection fraction)",
+      "Evidence of abnormal fluid collection or pericardial inflammation"
+    ]
+  },
+  "_verifier": {
+    "A1": {
+      "answer": {
+        "agree": false,
+        "p_agree": 0.1371
+      },
+      "reasoning": {
+        "agree": false,
+        "p_agree": 0.2132
+      }
+    },
+    "B": {
+      "answer": {
+        "agree": false,
+        "p_agree": 0.2068
+      },
+      "reasoning": {
+        "agree": false,
+        "p_agree": 0.2111
+      }
+    },
+    "C": {
+      "answer": {
+        "agree": false,
+        "p_agree": 0.0674
+      },
+      "reasoning": {
+        "agree": false,
+        "p_agree": 0.2621
+      }
+    },
+    "E": {
+      "answer": {
+        "agree": true,
+        "p_agree": 0.8146
+      },
+      "reasoning": {
+        "agree": false,
+        "p_agree": 0.2743
+      }
+    },
+    "F": {
+      "answer": {
+        "agree": false,
+        "p_agree": 0.2392
+      },
+      "reasoning": {
+        "agree": false,
+        "p_agree": 0.3587
+      }
+    }
+  }
+}

@@ -1,0 +1,81 @@
+{
+  "record_id": "C003_1c",
+  "a1": {
+    "symptoms": [
+      "none of the above"
+    ]
+  },
+  "b": {
+    "features": [
+      "none of the above"
+    ]
+  },
+  "c": {
+    "markers": [
+      "None tested, or tested but no results or unknown if tested"
+    ]
+  },
+  "e": {
+    "findings": [
+      "Paroxysmal or sustained atrial or ventricular arrhythmias (premature atrial or ventricular beats, and/or supraventricular or ventricular tachycardia, interventricular conduction delay, abnormal Q waves, low voltages): :e.g (Sinus tachycardia, SVT, atrial fibrillation, PVCs, VT, VF)"
+    ]
+  },
+  "f": {
+    "findings": [
+      "New focal or diffuse left or right ventricular function abnormalities (e.g. decreased ejection fraction)",
+      "Global systolic or diastolic function depression/abnormality - (*Decreased longitudinal and circumferential strain and strain rates on tissue Doppler)"
+    ]
+  },
+  "_verifier": {
+    "A1": {
+      "answer": {
+        "agree": false,
+        "p_agree": 0.2018
+      },
+      "reasoning": {
+        "agree": false,
+        "p_agree": 0.3202
+      }
+    },
+    "B": {
+      "answer": {
+        "agree": false,
+        "p_agree": 0.1906
+      },
+      "reasoning": {
+        "agree": false,
+        "p_agree": 0.1475
+      }
+    },
+    "C": {
+      "answer": {
+        "agree": false,
+        "p_agree": 0.0375
+      },
+      "reasoning": {
+        "agree": false,
+        "p_agree": 0.2872
+      }
+    },
+    "E": {
+      "answer": {
+        "agree": false,
+        "p_agree": 0.1681
+      },
+      "reasoning": {
+        "agree": false,
+        "p_agree": 0.2076
+      }
+    },
+    "F": {
+      "answer": {
+        "agree": false,
+        "p_agree": 0.1686
+      },
+      "reasoning": {
+        "agree": false,
+        "p_agree": 0.2403
+      }
+    }
+  }
+}
