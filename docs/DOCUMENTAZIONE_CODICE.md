@@ -1087,15 +1087,19 @@ del modulo; `MYO_TEMPERATURE = 0.5` è la temperatura di Agent 1 e Agent 2, senz
 seme, così ogni run campiona in modo indipendente. `SECTION_QUERIES` ha una query
 per sezione composta dal nome della sezione e da tutte le sue opzioni, con le sole
 parole del modulo, così nessuna query porta lessico preso dai referti su cui gira.
-**`apply_domain(guideline=False, temperature=MYO_TEMPERATURE)`** imposta sezioni e
-temperatura, modalità `agentic_graph`, gli hint di `prompts_myo.SECTION_HINTS`,
+**`apply_domain(guideline=False, temperature=MYO_TEMPERATURE, model=None)`**
+imposta sezioni e temperatura, con `model` il tag Ollama di Agente 1 e Agente 2
+(`AGENTIC_LLM_MODEL_NAME` ed `EVALUATOR_LLM_MODEL_NAME`, che il verificatore
+segue finché `VERIFIER_MODEL_NAME` è `None`; con `None` restano quelli di
+`config.py`), modalità `agentic_graph`, gli hint di `prompts_myo.SECTION_HINTS`,
 nessuna regola cross-section; sostituisce i tre prompt degli agenti,
 `agents.MULTI_SELECT_EXAMPLE`, `agents.EMPTY_ANSWER_SECTIONS`, le query di
 sezione e il tool di ricerca, e indica
 per il paper un indice suo, `myo/vectorstores/chroma_brighton_myo`, perché
 `build_brighton_kb` ricaricherebbe l'indice del paper della TVP senza leggere il
 testo che riceve. Da riga di comando: `--guideline` accende il contesto della
-linea guida, `--temperature` sostituisce `MYO_TEMPERATURE`, `--num-ctx`
+linea guida, `--temperature` sostituisce `MYO_TEMPERATURE`, `--model` passa il
+tag ad `apply_domain`, `--num-ctx`
 sostituisce `LLM_NUM_CTX`, `--brighton-pdf` indica il paper (`myo/main.pdf` di
 default), più `--records-dir`, `--output-dir` e `--only`. L'Agent 3 gira con le
 impostazioni di `config.py`.
@@ -1201,8 +1205,11 @@ richieste oltre la finestra, mediana dei secondi per richiesta e sezioni fallite
 Alla fine lancia `myo/evaluate_myo.py` ed `evaluate_verifier.py` su ogni run e
 `agreement_runs.py` sulle tre. Variabili d'ambiente: `T0=1` aggiunge una run a
 temperatura 0 (`myo/output_<RUN_TAG>_t0`), `STRIPPED=1` la TVP senza hint
-(`output_stripped_verifier`), `EVAL_ONLY=1` salta le run, `PYTHON` indica
-l'interprete; attiva `.venv` se esiste.
+(`output_stripped_verifier`), `MODEL` passa a `run_myo.py` il tag di Agente 1,
+Agente 2 e verificatore (`--model`), controllato anche nel preflight e stampato
+da `check_run`, `EVAL_ONLY=1` salta le run, `PYTHON` indica l'interprete; attiva
+`.venv` se esiste. `run_myo_v4.sh` lo lancia due volte di seguito, con
+`RUN_TAG=t05_np2048_v4` e con `RUN_TAG=t05_np2048_v4_q38 MODEL=qwen3.8:27b`.
 
 ## 20. `replay_verifier.py`
 

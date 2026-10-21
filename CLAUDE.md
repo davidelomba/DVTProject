@@ -136,6 +136,7 @@ python agreement_runs.py ./out_r1 ./out_r2 ./out_r3   # agreement between repeat
 python replay_verifier.py ./output_x --model medgemma:27b --output-dir ./output_x_judge   # verifier again, another judge
 python export_prompts.py                          # DVT prompts, queries, hints -> prompts_export/
 python myo/run_myo.py --guideline --output-dir ./myo/output_x   # myocarditis, five sections
+python myo/run_myo.py --guideline --model qwen3.8:27b --output-dir ./myo/output_x   # another tag for Agents 1, 2 and the verifier
 python myo/evaluate_myo.py ./myo/output_x
 python myo/export_prompts_myo.py                  # myocarditis texts -> myo/prompts_export/
 bash run_myo_t05.sh                               # the three runs at 0.5, checks and scoring, on mari

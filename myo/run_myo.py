@@ -4,7 +4,8 @@ Runs the pipeline over the myocarditis cases, in agentic_graph mode.
 Same code as the DVT runs: pipeline.run_pipeline, both agents, the verbatim
 evidence of agentic_graph. What differs is the schema, the section queries, the
 terms naming the condition in the prompts and the temperature of Agents 1 and 2,
-MYO_TEMPERATURE unless --temperature overrides it. The cross-section rules are
+MYO_TEMPERATURE unless --temperature overrides it. Agents 1 and 2 run the tags
+in config.py unless --model names another, the same for both. The cross-section rules are
 off, not translated: they encode the DVT form, and a myocarditis run measures
 the architecture without them.
 
@@ -22,6 +23,7 @@ Usage:
     python myo/run_myo.py --output-dir ./myo/output_myo
     python myo/run_myo.py --guideline --output-dir ./myo/output_myo_guideline
     python myo/run_myo.py --only C0001
+    python myo/run_myo.py --guideline --model qwen3.8:27b --output-dir ./myo/output_x
 """
 
 import argparse
@@ -85,17 +87,25 @@ SECTION_QUERIES = {
 }
 
 
-def apply_domain(guideline: bool = False, temperature: float = MYO_TEMPERATURE):
+def apply_domain(guideline: bool = False, temperature: float = MYO_TEMPERATURE,
+                 model: str | None = None):
     """Points the shared modules at the myocarditis sections and prompts.
 
     Args:
         guideline: whether Agent 2 receives the context retrieved from the
             myocarditis paper.
         temperature: temperature of Agents 1 and 2.
+        model: Ollama tag for Agents 1 and 2, written to
+            config.AGENTIC_LLM_MODEL_NAME and config.EVALUATOR_LLM_MODEL_NAME;
+            the verifier follows Agent 2 while config.VERIFIER_MODEL_NAME is
+            None. None keeps the tags in config.py.
     """
 
     config.SECTION_ORDER = SECTION_ORDER
     config.LLM_TEMPERATURE = temperature
+    if model is not None:
+        config.AGENTIC_LLM_MODEL_NAME = model
+        config.EVALUATOR_LLM_MODEL_NAME = model
     config.EXTRACTOR_MODE = "agentic_graph"
     config.BRIGHTON_CONTEXT_ENABLED = guideline
     # Its own store: build_brighton_kb reloads an index already on disk without
@@ -158,13 +168,19 @@ def main():
         help=f"temperature of Agents 1 and 2 (default {MYO_TEMPERATURE})",
     )
     parser.add_argument(
+        "--model", default=None, metavar="TAG",
+        help="Ollama tag for Agents 1 and 2, and for the verifier when "
+             "config.VERIFIER_MODEL_NAME is None; default the tags in config.py",
+    )
+    parser.add_argument(
         "--brighton-pdf", type=Path, default=MYO_DIR / "main.pdf",
         help="the myocarditis case definition; indexed even when the context "
              "is off, and into myo/vectorstores rather than the shared store",
     )
     args = parser.parse_args()
 
-    pipeline = apply_domain(guideline=args.guideline, temperature=args.temperature)
+    pipeline = apply_domain(guideline=args.guideline, temperature=args.temperature,
+                            model=args.model)
     if args.num_ctx is not None:
         config.LLM_NUM_CTX = args.num_ctx
 

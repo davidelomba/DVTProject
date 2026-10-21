@@ -17,6 +17,8 @@
 #                verifier on
 #   RUN_TAG=...  names the output directories myo/output_<RUN_TAG>_r1 to _r3
 #                and myo/output_<RUN_TAG>_t0; t05 by default
+#   MODEL=...    Ollama tag for Agents 1 and 2 and the verifier, passed to
+#                myo/run_myo.py as --model; the tags in config.py by default
 #   EVAL_ONLY=1  skip the runs and score the directories already on disk
 #   FORCE=1      run into an output directory that already holds files
 #   PYTHON=...   the interpreter, python by default
@@ -40,6 +42,11 @@ EXPECTED_HINTS="7d4be67fec0f"
 EXPECTED_QUERIES="45a59c4e6d03"
 GT="./myo/data/records"
 RUN_TAG="${RUN_TAG:-t05}"
+MODEL="${MODEL:-}"
+MODEL_ARGS=()
+if [ -n "$MODEL" ]; then
+    MODEL_ARGS=(--model "$MODEL")
+fi
 RUNS=(./myo/output_${RUN_TAG}_r1 ./myo/output_${RUN_TAG}_r2 ./myo/output_${RUN_TAG}_r3)
 T0_DIR=./myo/output_${RUN_TAG}_t0
 STRIPPED_DIR=./output_stripped_verifier
@@ -59,7 +66,7 @@ preflight() {
     fi
 
     local evaluator
-    evaluator=$(grep -E '^EVALUATOR_LLM_MODEL_NAME' config.py | sed -E 's/.*"(.*)".*/\1/')
+    evaluator="${MODEL:-$(grep -E '^EVALUATOR_LLM_MODEL_NAME' config.py | sed -E 's/.*"(.*)".*/\1/')}"
     if ! ollama list | awk '{print $1}' | grep -qx "$evaluator"; then
         echo "The evaluator model $evaluator is not pulled." >&2
         exit 1
@@ -69,14 +76,16 @@ preflight() {
     grep -E '^(LLM_MODEL_NAME|EVALUATOR_LLM_MODEL_NAME|AGENTIC_LLM_MODEL_NAME|LLM_REASONING|LLM_NUM_PREDICT|LLM_NUM_CTX|EXTRACTOR_MODE|VERIFIER_ENABLED|VERIFIER_INPUTS|VERIFIER_TEMPERATURE|VERIFIER_NUM_CTX)' config.py
 
     # What a myocarditis run will send, read through the same code it runs
-    EXPECTED_HINTS="$EXPECTED_HINTS" EXPECTED_QUERIES="$EXPECTED_QUERIES" "$PYTHON" - <<'EOF'
+    EXPECTED_HINTS="$EXPECTED_HINTS" EXPECTED_QUERIES="$EXPECTED_QUERIES" MODEL="$MODEL" "$PYTHON" - <<'EOF'
 import os, sys
 sys.path.insert(0, "myo")
 import myo_schema  # noqa: F401
-import agents, config, pipeline, run_myo
-run_myo.apply_domain(guideline=True)
+import agents, config, pipeline, run_myo, verifier
+run_myo.apply_domain(guideline=True, model=os.environ["MODEL"] or None)
 hints = pipeline._hint_fingerprint()["all"]
 queries = pipeline._query_fingerprint()["all"]
+print(f"agent {config.AGENTIC_LLM_MODEL_NAME}, evaluator "
+      f"{config.EVALUATOR_LLM_MODEL_NAME}, verifier {verifier.verifier_settings().get('model')}")
 print(f"sections {config.SECTION_ORDER}, temperature {config.LLM_TEMPERATURE}, "
       f"hints {hints}, queries {queries}, verifier {config.VERIFIER_ENABLED} "
       f"{list(config.VERIFIER_INPUTS)}, empty-answer sections "
@@ -121,9 +130,12 @@ if not logs:
     print(f"no audit log in {sys.argv[1]}")
     sys.exit(1)
 temps, caps, hints, queries, empties, methods, errors, overflow, seconds = set(), set(), set(), set(), set(), Counter(), [], 0, []
+models = set()
 for path in logs:
     audit = json.loads(path.read_text(encoding="utf-8"))
     rc = audit.get("_run_config", {})
+    models.add((rc.get("models", {}).get("extractor"), rc.get("models", {}).get("evaluator"),
+                rc.get("verifier", {}).get("model")))
     generation = rc.get("generation", {})
     temps.add(generation.get("temperature"))
     caps.add((generation.get("num_predict"), generation.get("num_ctx")))
@@ -140,6 +152,7 @@ for path in logs:
             overflow += bool(outcome.get("overflow"))
             if outcome.get("seconds") is not None:
                 seconds.append(outcome["seconds"])
+print(f"(agent, evaluator, verifier) {models}")
 print(f"{len(logs)} audit logs; temperature {temps}; (num_predict, num_ctx) {caps}; "
       f"hints {hints}; queries {queries}; empty-answer sections {empties}")
 print(f"verifier methods {dict(methods)}; overflow {overflow}; "
@@ -152,7 +165,7 @@ run_myo() {
     local dir="$1"; shift
     check_empty "$dir"
     say "run $dir $*"
-    "$PYTHON" myo/run_myo.py --guideline --output-dir "$dir" "$@" 2>&1 | tee "logs/$(basename "$dir").log"
+    "$PYTHON" myo/run_myo.py --guideline --output-dir "$dir" ${MODEL_ARGS[@]+"${MODEL_ARGS[@]}"} "$@" 2>&1 | tee "logs/$(basename "$dir").log"
     check_run "$dir"
 }
 
