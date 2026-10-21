@@ -1089,6 +1089,29 @@ not say which governs, which is what the clinician question below is asking.
   (56 to 60 approved). In the deployed configuration Agent 2 already has the
   hint, so the DVT gain does not transfer. Replay noise: 7 of 399 `answer`
   verdicts and 1 `reasoning` change against the replay of 2026-10-15.
+- **Dropping the `New` sentence from F's hint changes F's distribution, not its
+  score, and the change is inside the noise between two series.**
+  `myo/output_t05_np2048_v3_r1` to `r3`, the v2 arm with hints `67281873d74e`,
+  only F's hint differing: 55, 55 and 56 of 85 against 57 in every run; F 4, 3,
+  3 against 3, 4, 4. Two sections failed in r3 (B on C002_1b, F on C003_1c),
+  three attempts each at the 2048 cap; 15 of 268 calls at the cap. Outside F,
+  where the prompts are byte-identical, A1 goes 41 to 40 and B 35 to 32 plus the
+  failure: 3 to 4 sections of 204 moved by sampling at 0.5, as much as F moved.
+  A1 on C002_1c r1 drops the chest pain, the one error outside the two
+  conventions. On F option 4 rises from 10 to 14 selections against 30 in the
+  truth, option 9 disappears (C0001_1b now option 3 in every run), C002_1a takes
+  option 4 for the strain in every run; 66 false positives and 36 false
+  negatives. Fleiss kappa 0.897 overall, F 0.642 against 0.436; unanimous
+  answers 74 of 85, right 70.3% of the time, split ones 30.3%. Verifier AUROC
+  0.536 `answer`, 0.655 `reasoning`, the latter approving 81 of 87 errors.
+  Replayed on these runs (`_judge_qwen_hint`, `_judge_medgemma`), the verifier
+  repeats the v2 picture: `answer_hint` 0.689, approving 65 errors and rejecting
+  4 right answers of 166, `reasoning_hint` 0.651 with 82 approved and the
+  within-section AUROC down to 0.527, all 18 C errors approved; medgemma 0.589 /
+  0.538, approving 42 and 73 errors, rejecting 76 and 11 right answers, every B
+  `unknown`, C `None tested`, E `ECG not done` and F `ECHO not done` rejected
+  right or wrong. No error is rejected by both judges with the reasoning.
+  Replay noise 9 and 3 verdicts of 253.
 - Read the metrics in this order: majority baseline and gain, then kappa, then
   accuracy with its interval. Accuracy alone ranked F above A3_2 under the 8B
   model, where F gained nothing over a constant answer and A3_2 gained 13
@@ -1346,16 +1369,28 @@ not say which governs, which is what the clinician question below is asking.
   On 2026-10-19 F's hint lost the sentence on the meaning of `New`, a
   reformulation of note c of the paper's Table 1, which defines new-onset left
   ventricular dysfunction rather than the form's word. Hints `67281873d74e`,
-  expected by `run_myo_t05.sh`, not yet run.
+  measured in `myo/output_t05_np2048_v3_*` (bullet above). On 2026-10-21 the
+  A1 and B hints took the expert's rule on `unknown` (next bullet), hints
+  `7d4be67fec0f`, expected by `run_myo_t05.sh`, not yet measured.
+- **Settled on 2026-10-21, through the supervisor.** An expert: `unknown` in A1
+  and B is chosen only when every option is unknown, and never with another
+  option; if at least one option is known to be absent and none is present, the
+  answer is `none of the above`. Read against the records, this gives `unknown`
+  where the ground truth codes `none` (A1 and B of C003, B of C002_1c, with no
+  cardiac symptom or examination finding documented), `none` on B of C002_1b
+  (muffled sounds negated), as the ground truth does, and `none` where it codes
+  `unknown` if `eupnoico` makes dyspnea known absent (A1 of C0001_1c to 1e) and
+  if `pause apparentemente libere` excludes a friction rub (B of C005). The
+  supervisor agrees that C of C002 and C003, with no ESR, CRP or D-dimer in the
+  record, is `None tested`, where the ground truth codes `None of the above`.
+  The ground truth files are unchanged: the experts will review the cases.
+  Still open on the rule: whether a living patient makes `sudden death` known
+  absent, which would leave `unknown` unreachable in A1; whether `eupnoico` on
+  oxygen and `pause apparentemente libere` count as an absence; whether
+  `discharged asymptomatic` (C003_1b, 1c) applies to the presentation.
 - **Questions for the authors of the myocarditis ground truth**, from the
   dummy cases read against the form and the sources:
   - Is a decreased ejection fraction option 2 or option 4 of F?
-  - When is A1 or B `none of the above` and when `unknown`? C003 is coded `none`
-    with no cardiac symptom or examination documented, C0001_1c and C005
-    `unknown`.
-  - In C, with no inflammatory marker in the record (C002, C003, where the only
-    PCR is a viral test), the form's option 5 says it is for markers tested and
-    normal, and the ground truth codes option 5. Which applies?
   - Does a mild pericardial effusion count as an abnormal fluid collection?
     Does posterior pericardial hyperechogenicity, or a reduced strain, count?
   - Why is the same echocardiogram `No abnormalities` in C0001_0_0 and 1a and

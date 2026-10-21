@@ -1,6 +1,6 @@
 Evaluate each option independently, on what the evidence states for this patient, in whatever language the record is written. Do not infer, assume or add any finding the evidence does not state.
 Pay close attention to these distinctions:
-- 'New focal or diffuse left or right ventricular function abnormalities' refers to functional abnormalities, such as hypokinesia, akinesia, or reduced ejection fraction. 'New' means documented as new or as changed: without an earlier study, a ventricular dysfunction counts as new if follow-up studies show it improving or worsening.
+- 'New focal or diffuse left or right ventricular function abnormalities' refers to functional abnormalities, such as hypokinesia, akinesia, or reduced ejection fraction.
 - 'Segmental wall motion abnormalities' refers to regional wall motion abnormalities, for example akinesia of the anterior wall.
 - 'Ventricular dilation' refers to structural enlargement of the ventricles, typically indicated by terms like 'dilated ventricle', increased end-diastolic diameter (EDD) or chamber enlargement. Do not consider functional findings like reduced ejection fraction under this category.
 - Pericardial effusion, pericardial fluid or pericardial inflammation is 'Evidence of abnormal fluid collection or pericardial inflammation'. An abnormal collection of pericardial fluid is, for example, an anterior and posterior effusion, or a large posterior effusion alone.

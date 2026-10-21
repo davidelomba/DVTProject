@@ -1,0 +1,198 @@
+{
+  "records_compared": 40,
+  "sections": {
+    "A1": {
+      "compared": 40,
+      "changed": 0,
+      "correct_a": 40,
+      "correct_b": 40,
+      "stability": 1.0
+    },
+    "A2": {
+      "compared": 40,
+      "changed": 1,
+      "correct_a": 40,
+      "correct_b": 39,
+      "stability": 0.975
+    },
+    "A3_1": {
+      "compared": 40,
+      "changed": 1,
+      "correct_a": 39,
+      "correct_b": 38,
+      "stability": 0.975
+    },
+    "A3_2": {
+      "compared": 40,
+      "changed": 2,
+      "correct_a": 38,
+      "correct_b": 36,
+      "stability": 0.95
+    },
+    "B1_1": {
+      "compared": 40,
+      "changed": 1,
+      "correct_a": 39,
+      "correct_b": 38,
+      "stability": 0.975
+    },
+    "B1_2": {
+      "compared": 40,
+      "changed": 0,
+      "correct_a": 39,
+      "correct_b": 39,
+      "stability": 1.0
+    },
+    "B2": {
+      "compared": 40,
+      "changed": 5,
+      "correct_a": 38,
+      "correct_b": 33,
+      "stability": 0.875
+    },
+    "C": {
+      "compared": 40,
+      "changed": 0,
+      "correct_a": 40,
+      "correct_b": 40,
+      "stability": 1.0
+    },
+    "F": {
+      "compared": 40,
+      "changed": 1,
+      "correct_a": 40,
+      "correct_b": 39,
+      "stability": 0.975
+    },
+    "X": {
+      "compared": 40,
+      "changed": 0,
+      "correct_a": 40,
+      "correct_b": 40,
+      "stability": 1.0
+    }
+  },
+  "differences": [
+    {
+      "record_id": "SYN_04_multi_imaging_confirmed_v2",
+      "section": "A3_2",
+      "run_a": [
+        "Compression ultrasonography",
+        "Doppler/Duplex Ultrasound"
+      ],
+      "run_b": [
+        "Doppler/Duplex Ultrasound"
+      ]
+    },
+    {
+      "record_id": "SYN_07_thrombectomy_positive_v2",
+      "section": "B2",
+      "run_a": [
+        "Calf pain or tenderness",
+        "Leg swelling or pitting oedema"
+      ],
+      "run_b": [
+        "Leg swelling or pitting oedema",
+        "Redness, warmth, or pain in one or more extremities"
+      ]
+    },
+    {
+      "record_id": "SYN_09_risk_factor_not_alt_diagnosis_v2",
+      "section": "A3_1",
+      "run_a": [
+        "≥1 imaging study was done and confirmed DVT"
+      ],
+      "run_b": [
+        "No imaging studies done, unknown if done, or done but results unknown"
+      ]
+    },
+    {
+      "record_id": "SYN_09_risk_factor_not_alt_diagnosis_v2",
+      "section": "A3_2",
+      "run_a": [
+        "Doppler/Duplex Ultrasound"
+      ],
+      "run_b": []
+    },
+    {
+      "record_id": "SYN_15_ddimer_negative_low_probability_v2",
+      "section": "F",
+      "run_a": [
+        "No"
+      ],
+      "run_b": [
+        "Yes"
+      ]
+    },
+    {
+      "record_id": "SYN_16_no_dvt_syndrome_reported_v2",
+      "section": "B1_1",
+      "run_a": [
+        "There was no report of a recognized DVT syndrome"
+      ],
+      "run_b": [
+        "≥1 symptom or sign of DVT was reported"
+      ]
+    },
+    {
+      "record_id": "SYN_16_no_dvt_syndrome_reported_v2",
+      "section": "B2",
+      "run_a": [
+        "None of the above were present or it is unknown if any of 1-4 were present"
+      ],
+      "run_b": [
+        "Redness, warmth, or pain in one or more extremities"
+      ]
+    },
+    {
+      "record_id": "SYN_23_other_procedure_ivc_filter_v2",
+      "section": "A2",
+      "run_a": [
+        "Other procedure done that confirmed presence of DVT"
+      ],
+      "run_b": [
+        "No surgical procedure done; or, done but either did not confirm presence of DVT or findings unknown; or unknown if done"
+      ]
+    },
+    {
+      "record_id": "SYN_25_thrombectomy_postpartum_v2",
+      "section": "B2",
+      "run_a": [
+        "Calf pain or tenderness",
+        "Leg swelling or pitting oedema"
+      ],
+      "run_b": [
+        "Leg swelling or pitting oedema"
+      ]
+    },
+    {
+      "record_id": "SYN_26_ct_venography_pregnancy_pelvic_v2",
+      "section": "B2",
+      "run_a": [
+        "Calf pain or tenderness",
+        "Leg swelling or pitting oedema"
+      ],
+      "run_b": [
+        "Calf pain or tenderness"
+      ]
+    },
+    {
+      "record_id": "SYN_28_other_modality_plethysmography_v2",
+      "section": "B2",
+      "run_a": [
+        "Calf pain or tenderness",
+        "Leg swelling or pitting oedema"
+      ],
+      "run_b": [
+        "None of the above were present or it is unknown if any of 1-4 were present"
+      ]
+    }
+  ],
+  "overall": {
+    "compared": 400,
+    "changed": 11,
+    "correct_a": 393,
+    "correct_b": 382,
+    "stability": 0.9725
+  }
+}

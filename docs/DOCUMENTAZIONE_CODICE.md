@@ -985,7 +985,13 @@ incluso nella tesi e quello che ricevono i modelli sono lo stesso oggetto.
   `--output-dir`, più `queries.txt`, `queries.tex` (l'intera tabella),
   `hints.tex` e un `manifest.txt` con due digest per file, quello del testo nel
   codice e quello del file su disco. `--tex-prefix`, `--tex-query-width` e
-  `--tex-style` regolano i `.tex` generati.
+  `--tex-style` regolano i `.tex` generati. `--tex-query-table` sceglie
+  l'ambiente di `queries.tex`: `tabular` (default), da mettere in un float con
+  la propria didascalia, o `longtable`, che si spezza fra le pagine, ripete
+  l'intestazione e contiene didascalia ed etichetta (`--tex-query-caption`,
+  `--tex-query-label`), con la colonna della query allineata a sinistra. I
+  default delle quattro opzioni sono le costanti di modulo `QUERY_TABLE`,
+  `QUERY_WIDTH`, `QUERY_CAPTION` e `QUERY_LABEL`.
 
 Tutto viene letto quando `main` gira, non all'importazione (`pipeline.SECTION_QUERIES`,
 `pipeline._hint_fingerprint`, `pipeline._query_fingerprint`), così
@@ -1045,10 +1051,9 @@ frase per frase:
 | tutte | valutare ogni opzione indipendentemente; non inferire né aggiungere reperti | prompt precedenti, istruzioni 1-2, riformulate senza «exact terms» perché i referti sono in italiano |
 | A1 | termini simili non sono equivalenti; un'aritmia all'ECG non è palpitazione | prompt precedenti, A1, nota 1 |
 | A1 | dolore addominale, alla spalla o alla schiena sono sintomi di A2, non dolore toracico | prompt precedenti, A2, note 1 e 5, e il modulo; riformulata perché il paper (§4.4) li chiama varianti del dolore toracico |
-| A1 | sintomo non menzionato = unknown; «none of the above» solo con assenza esplicita | prompt precedenti, A1, regole 3-4; la regola su «none» è una scelta di formulazione |
+| A1 | sintomo non menzionato = unknown | prompt precedenti, A1, regole 3-4 |
+| A1, B | «unknown» solo se tutte le opzioni sono non note, mai insieme ad altre; almeno un'opzione nota come assente e nessuna presente = «none of the above» | esperto consultato dal relatore, 2026-10-21 |
 | B | se c'è lo sfregamento, selezionarlo senza dedurne gli altri segni; «confirmed … without details» solo se l'esame conferma la pericardite senza reperti | prompt precedenti, B, note e Reasoning Guidelines |
-| B | nessun reperto riportato = unknown | prompt precedenti, B, Reasoning Guidelines |
-| B | «none of the above» solo se i segni sono stati cercati e non trovati | formulazione nuova |
 | B | i toni attenuati comprendono i toni ovattati (*muffled*) | Companion Guide, Tabella 4.3.B |
 | C | soglie di VES, PCR, PCR-hs | prompt precedenti, C (le stesse note del modulo); per il D-dimero il limite del laboratorio, perché il modulo non dà soglia |
 | C | valore più alto; conversioni di unità | prompt precedenti, C.1-C.4; Companion Guide, §4.5 |
@@ -1102,6 +1107,9 @@ default su `myo/data/records` e `myo/output_myo`. Ripete la lista delle sezioni 
 
 **`export_prompts_myo.py`** esporta prompt, query e hint della miocardite con
 `export_prompts.py`, in `myo/prompts_export/` di default (sezione 15).
+`queries.tex` è una `longtable` con colonna larga `0.82\linewidth`, didascalia
+«Le cinque query di sezione della miocardite.» ed etichetta `tab:myo_queries`,
+perché la query di E non sta in una pagina con la colonna di 9 cm.
 
 **`run_dvt_stripped.py`** è il termine di confronto. Importa `project_path`, non
 `myo_schema`, perché lavora sullo schema della TVP; esegue il corpus TVP con
