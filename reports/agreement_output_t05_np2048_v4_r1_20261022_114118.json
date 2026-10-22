@@ -1,29 +1,29 @@
 {
   "overall": {
     "records": 85,
-    "fleiss_kappa": 0.9181836603735352,
-    "gwet_ac1": 0.9222726516992239,
+    "fleiss_kappa": 0.918183660373535,
+    "gwet_ac1": 0.9222726516992238,
     "unanimous": 0.8941176470588236,
     "accuracy_per_run": [
-      0.6705882352941176,
-      0.6470588235294118,
-      0.6235294117647059
+      0.7411764705882353,
+      0.7176470588235294,
+      0.6941176470588235
     ],
-    "accuracy_majority": 0.6588235294117647,
+    "accuracy_majority": 0.7294117647058823,
     "no_majority": 1,
-    "accuracy_when_unanimous": 0.6842105263157895,
+    "accuracy_when_unanimous": 0.7631578947368421,
     "accuracy_when_split": 0.3333333333333333,
-    "auroc_agreement_share": 0.5751515151515152,
+    "auroc_agreement_share": 0.6031420765027322,
     "auroc_verifier": {
-      "answer": 0.5371717171717172,
-      "reasoning": 0.6456565656565657
+      "answer": 0.4217516697024894,
+      "reasoning": 0.701578627808136
     }
   },
   "per_section": {
     "A1": {
       "records": 17,
-      "fleiss_kappa": 0.945102260495156,
-      "gwet_ac1": 0.9522583664872454,
+      "fleiss_kappa": 0.9451022604951562,
+      "gwet_ac1": 0.9522583664872457,
       "unanimous": 0.9411764705882353,
       "accuracy_per_run": [
         0.7058823529411765,
@@ -42,8 +42,8 @@
     },
     "B": {
       "records": 17,
-      "fleiss_kappa": 0.7046332046332046,
-      "gwet_ac1": 0.8044728434504792,
+      "fleiss_kappa": 0.7046332046332049,
+      "gwet_ac1": 0.8044728434504794,
       "unanimous": 0.8235294117647058,
       "accuracy_per_run": [
         0.7647058823529411,
@@ -66,18 +66,18 @@
       "gwet_ac1": 1.0,
       "unanimous": 1.0,
       "accuracy_per_run": [
-        0.6470588235294118,
-        0.6470588235294118,
-        0.6470588235294118
+        1.0,
+        1.0,
+        1.0
       ],
-      "accuracy_majority": 0.6470588235294118,
+      "accuracy_majority": 1.0,
       "no_majority": 0,
-      "accuracy_when_unanimous": 0.6470588235294118,
+      "accuracy_when_unanimous": 1.0,
       "accuracy_when_split": null,
-      "auroc_agreement_share": 0.5,
+      "auroc_agreement_share": null,
       "auroc_verifier": {
-        "answer": 0.8552188552188552,
-        "reasoning": 0.40824915824915825
+        "answer": null,
+        "reasoning": null
       }
     },
     "E": {
@@ -102,7 +102,7 @@
     },
     "F": {
       "records": 17,
-      "fleiss_kappa": 0.726341463414634,
+      "fleiss_kappa": 0.7263414634146341,
       "gwet_ac1": 0.7658597662771286,
       "unanimous": 0.7058823529411765,
       "accuracy_per_run": [
@@ -214,8 +214,8 @@
     }
   ],
   "runs": [
-    "./myo/output_t05_np2048_v4_r1",
-    "./myo/output_t05_np2048_v4_r2",
-    "./myo/output_t05_np2048_v4_r3"
+    "myo/output_t05_np2048_v4_r1",
+    "myo/output_t05_np2048_v4_r2",
+    "myo/output_t05_np2048_v4_r3"
   ]
 }

@@ -5,7 +5,7 @@
     "A1": {
       "compared": 17,
       "missing": 0,
-      "exact_matches": 12,
+      "exact_matches": 11,
       "options": [
         "acute chest pain or pressure",
         "palpitation",
@@ -15,16 +15,16 @@
         "none of the above",
         "unknown if any of 1-5 present or absent"
       ],
-      "accuracy": 0.7058823529411765,
+      "accuracy": 0.6470588235294118,
       "majority_baseline": 0.35294117647058826,
-      "tp": 22,
-      "tn": 87,
-      "fp": 5,
-      "fn": 5,
-      "precision": 0.8148148148148148,
-      "recall": 0.8148148148148148,
-      "f1": 0.8148148148148148,
-      "cohens_kappa": 0.6413502109704642
+      "tp": 21,
+      "tn": 86,
+      "fp": 6,
+      "fn": 6,
+      "precision": 0.7777777777777778,
+      "recall": 0.7777777777777778,
+      "f1": 0.7777777777777778,
+      "cohens_kappa": 0.5641025641025641
     },
     "B": {
       "compared": 17,
@@ -47,12 +47,12 @@
       "precision": 0.6470588235294118,
       "recall": 0.6470588235294118,
       "f1": 0.6470588235294118,
-      "cohens_kappa": 0.2272727272727273
+      "cohens_kappa": 0.16393442622950816
     },
     "C": {
       "compared": 17,
       "missing": 0,
-      "exact_matches": 11,
+      "exact_matches": 17,
       "options": [
         "None tested, or tested but no results or unknown if tested",
         "ESR elevated",
@@ -62,16 +62,16 @@
         "None of the above (choose this option if whichever ones were tested, were within normal range)",
         "*confirmed positive inflammatory marker conforming myocarditis without details."
       ],
-      "accuracy": 0.6470588235294118,
-      "majority_baseline": 0.7647058823529411,
-      "tp": 11,
-      "tn": 96,
-      "fp": 6,
-      "fn": 6,
-      "precision": 0.6470588235294118,
-      "recall": 0.6470588235294118,
-      "f1": 0.6470588235294118,
-      "cohens_kappa": 0.35443037974683544
+      "accuracy": 1.0,
+      "majority_baseline": 0.5882352941176471,
+      "tp": 17,
+      "tn": 102,
+      "fp": 0,
+      "fn": 0,
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0,
+      "cohens_kappa": 1.0
     },
     "E": {
       "compared": 17,
@@ -107,7 +107,7 @@
     "F": {
       "compared": 17,
       "missing": 0,
-      "exact_matches": 4,
+      "exact_matches": 3,
       "options": [
         "ECHO not done, or done but no results or unknown if done",
         "New focal or diffuse left or right ventricular function abnormalities (e.g. decreased ejection fraction)",
@@ -120,36 +120,36 @@
         "No abnormalities seen on ECHO",
         "*confirmed Echocardiogram conforming pericarditis without details"
       ],
-      "accuracy": 0.23529411764705882,
+      "accuracy": 0.17647058823529413,
       "majority_baseline": 0.29411764705882354,
-      "tp": 15,
-      "tn": 123,
-      "fp": 20,
-      "fn": 12,
-      "precision": 0.42857142857142855,
-      "recall": 0.5555555555555556,
-      "f1": 0.4838709677419355,
-      "cohens_kappa": 0.15325670498084287
+      "tp": 16,
+      "tn": 122,
+      "fp": 21,
+      "fn": 11,
+      "precision": 0.43243243243243246,
+      "recall": 0.5925925925925926,
+      "f1": 0.5,
+      "cohens_kappa": 0.10861423220973787
     }
   },
   "overall": {
     "compared": 85,
-    "exact_matches": 55,
-    "tp": 76,
-    "tn": 606,
-    "fp": 37,
-    "fn": 29,
-    "accuracy": 0.6470588235294118,
-    "precision": 0.672566371681416,
-    "recall": 0.7238095238095238,
-    "f1": 0.6972477064220184,
-    "macro_precision": 0.7075007780890135,
-    "macro_recall": 0.7328976034858388,
-    "macro_f1": 0.7185606859231147,
-    "macro_accuracy": 0.6470588235294118,
-    "macro_kappa": 0.47526200459417395,
-    "macro_majority_baseline": 0.5176470588235295
+    "exact_matches": 59,
+    "tp": 82,
+    "tn": 610,
+    "fp": 33,
+    "fn": 23,
+    "accuracy": 0.6941176470588235,
+    "precision": 0.7130434782608696,
+    "recall": 0.780952380952381,
+    "f1": 0.7454545454545454,
+    "macro_precision": 0.7714538067479244,
+    "macro_recall": 0.8034858387799565,
+    "macro_f1": 0.784967320261438,
+    "macro_accuracy": 0.6941176470588235,
+    "macro_kappa": 0.567330244508362,
+    "macro_majority_baseline": 0.48235294117647054
   },
-  "ground_truth_dir": "/home/lombardi/DVTProject/myo/data/records",
-  "predictions_dir": "myo/output_t05_np2048_v4_r2"
+  "ground_truth_dir": "/sessions/youthful-vigilant-newton/mnt/DVTProject/myo/data/records",
+  "predictions_dir": "myo/output_t05_np2048_v4_r3"
 }

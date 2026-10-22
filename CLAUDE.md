@@ -1138,7 +1138,23 @@ not say which governs, which is what the clinician question below is asking.
   so whether a token such as *Not* is being read as NO by `read_verdict` is not
   verified. Medians 141.5, 141.5, 136.5 seconds a record for qwen3.6 (147.5 to
   170.5 in v3, the verifier at 1.2 seconds a request against 2.0) and 103.5 to
-  106 for qwen3.8.
+  106 for qwen3.8. These figures are against the ground truth before the C
+  correction of 2026-10-21; after it v3 is 61, 61, 62, v4 63, 61, 59 and
+  v4_q38 55, 54, 58.
+- **Naming the echocardiogram's acronyms in F's hint changes nothing
+  measurable.** `myo/output_t05_np2048_v5_r1` to `r3`, v4 with only the F
+  sentence on TTE, TEE and strain analysis added (hints `578847158c3b`), scored
+  on the corrected ground truth: 61, 61, 60 of 85 against 63, 61, 59; F 3 in
+  every run, inside the predicted 3 to 4; C 17 in every run. C002_1c keeps 2, 3
+  in every run; C003_1c moves from [2, 4] to [4] in two runs, the reasoning
+  choosing global over diffuse dysfunction, not recognising the study, which it
+  already did in v4; F answers change on 9 of 17 records between the two
+  series, mostly unrelated to the sentence. Errors outside F 31, all
+  none/unknown. Fleiss 0.884 (B 0.897, F 0.567); unanimous answers right 81.9%,
+  split 12.8%, agreement-share AUROC 0.718. Verifier `answer` 0.465,
+  `reasoning` 0.726 approving 67 errors of 73. 124 to 140 seconds a record. The
+  author's hypothesis that the model misses TTE and strain as echocardiography
+  is ruled out by the audit logs of both series.
 - Read the metrics in this order: majority baseline and gain, then kappa, then
   accuracy with its interval. Accuracy alone ranked F above A3_2 under the 8B
   model, where F gained nothing over a constant answer and A3_2 gained 13
@@ -1402,8 +1418,10 @@ not say which governs, which is what the clinician question below is asking.
   the measurements say). Later on 2026-10-21 F's hint gained a sentence naming
   TTE, TEE and strain or speckle-tracking analysis as echocardiographic studies,
   from the ground-truth author's suggestion that the model misses them, hints
-  `578847158c3b`, expected by `run_myo_t05.sh`, not yet measured; predicted
-  inert, since 53 of 53 F answers on C002 and C003 already recognise the study.
+  `578847158c3b`, measured in `myo/output_t05_np2048_v5_*` and inert, as
+  predicted (bullet under What the measurements say). On 2026-10-22 the
+  sentence was removed and the hints are back to `7d4be67fec0f`, the v4 set,
+  expected by `run_myo_t05.sh` and kept as the final myocarditis hints.
 - **Settled on 2026-10-21, through the supervisor.** An expert: `unknown` in A1
   and B is chosen only when every option is unknown, and never with another
   option; if at least one option is known to be absent and none is present, the
