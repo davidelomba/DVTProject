@@ -1,0 +1,121 @@
+{
+  "record_id": "C0001_1f",
+  "a1": {
+    "symptoms": [
+      "unknown if any of 1-5 present or absent"
+    ]
+  },
+  "b": {
+    "features": [
+      "unknown if any of 1-3 present or absent"
+    ]
+  },
+  "c": {
+    "markers": [
+      "None of the above (choose this option if whichever ones were tested, were within normal range)"
+    ]
+  },
+  "e": {
+    "findings": [
+      "Paroxysmal or sustained atrial or ventricular arrhythmias (premature atrial or ventricular beats, and/or supraventricular or ventricular tachycardia, interventricular conduction delay, abnormal Q waves, low voltages): :e.g (Sinus tachycardia, SVT, atrial fibrillation, PVCs, VT, VF)"
+    ]
+  },
+  "f": {
+    "findings": [
+      "New focal or diffuse left or right ventricular function abnormalities (e.g. decreased ejection fraction)",
+      "Segmental wall motion abnormalities"
+    ]
+  },
+  "_verifier": {
+    "A1": {
+      "answer": {
+        "agree": false,
+        "p_agree": 0.2668
+      },
+      "reasoning": {
+        "agree": true,
+        "p_agree": 0.8129
+      },
+      "answer_hint": {
+        "agree": false,
+        "p_agree": 0.2241
+      },
+      "reasoning_hint": {
+        "agree": true,
+        "p_agree": 0.742
+      }
+    },
+    "B": {
+      "answer": {
+        "agree": true,
+        "p_agree": 0.9465
+      },
+      "reasoning": {
+        "agree": true,
+        "p_agree": 0.9973
+      },
+      "answer_hint": {
+        "agree": true,
+        "p_agree": 0.7187
+      },
+      "reasoning_hint": {
+        "agree": true,
+        "p_agree": 0.8048
+      }
+    },
+    "C": {
+      "answer": {
+        "agree": true,
+        "p_agree": 0.5229
+      },
+      "reasoning": {
+        "agree": true,
+        "p_agree": 0.5193
+      },
+      "answer_hint": {
+        "agree": true,
+        "p_agree": 0.7062
+      },
+      "reasoning_hint": {
+        "agree": true,
+        "p_agree": 0.6058
+      }
+    },
+    "E": {
+      "answer": {
+        "agree": true,
+        "p_agree": 0.8957
+      },
+      "reasoning": {
+        "agree": true,
+        "p_agree": 0.9935
+      },
+      "answer_hint": {
+        "agree": true,
+        "p_agree": 0.9946
+      },
+      "reasoning_hint": {
+        "agree": true,
+        "p_agree": 0.9993
+      }
+    },
+    "F": {
+      "answer": {
+        "agree": true,
+        "p_agree": 0.9691
+      },
+      "reasoning": {
+        "agree": true,
+        "p_agree": 0.9851
+      },
+      "answer_hint": {
+        "agree": true,
+        "p_agree": 0.9565
+      },
+      "reasoning_hint": {
+        "agree": true,
+        "p_agree": 0.9797
+      }
+    }
+  }
+}

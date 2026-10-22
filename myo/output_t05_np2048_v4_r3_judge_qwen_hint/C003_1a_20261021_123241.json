@@ -1,0 +1,122 @@
+{
+  "record_id": "C003_1a",
+  "a1": {
+    "symptoms": [
+      "none of the above"
+    ]
+  },
+  "b": {
+    "features": [
+      "unknown if any of 1-3 present or absent"
+    ]
+  },
+  "c": {
+    "markers": [
+      "None tested, or tested but no results or unknown if tested"
+    ]
+  },
+  "e": {
+    "findings": [
+      "No abnormalities seen on ECG"
+    ]
+  },
+  "f": {
+    "findings": [
+      "New focal or diffuse left or right ventricular function abnormalities (e.g. decreased ejection fraction)",
+      "Global systolic or diastolic function depression/abnormality - (*Decreased longitudinal and circumferential strain and strain rates on tissue Doppler)",
+      "Evidence of abnormal fluid collection or pericardial inflammation"
+    ]
+  },
+  "_verifier": {
+    "A1": {
+      "answer": {
+        "agree": false,
+        "p_agree": 0.4896
+      },
+      "reasoning": {
+        "agree": true,
+        "p_agree": 0.9682
+      },
+      "answer_hint": {
+        "agree": false,
+        "p_agree": 0.4742
+      },
+      "reasoning_hint": {
+        "agree": true,
+        "p_agree": 0.8071
+      }
+    },
+    "B": {
+      "answer": {
+        "agree": true,
+        "p_agree": 0.9694
+      },
+      "reasoning": {
+        "agree": true,
+        "p_agree": 0.9962
+      },
+      "answer_hint": {
+        "agree": true,
+        "p_agree": 0.8694
+      },
+      "reasoning_hint": {
+        "agree": true,
+        "p_agree": 0.9715
+      }
+    },
+    "C": {
+      "answer": {
+        "agree": false,
+        "p_agree": 0.4864
+      },
+      "reasoning": {
+        "agree": true,
+        "p_agree": 0.9989
+      },
+      "answer_hint": {
+        "agree": true,
+        "p_agree": 0.8644
+      },
+      "reasoning_hint": {
+        "agree": true,
+        "p_agree": 0.9996
+      }
+    },
+    "E": {
+      "answer": {
+        "agree": true,
+        "p_agree": 0.9973
+      },
+      "reasoning": {
+        "agree": false,
+        "p_agree": 0.4296
+      },
+      "answer_hint": {
+        "agree": true,
+        "p_agree": 0.9946
+      },
+      "reasoning_hint": {
+        "agree": false,
+        "p_agree": 0.498
+      }
+    },
+    "F": {
+      "answer": {
+        "agree": true,
+        "p_agree": 0.9038
+      },
+      "reasoning": {
+        "agree": true,
+        "p_agree": 0.9956
+      },
+      "answer_hint": {
+        "agree": true,
+        "p_agree": 0.875
+      },
+      "reasoning_hint": {
+        "agree": true,
+        "p_agree": 0.9813
+      }
+    }
+  }
+}

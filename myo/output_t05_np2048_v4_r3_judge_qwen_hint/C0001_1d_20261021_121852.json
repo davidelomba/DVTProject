@@ -1,0 +1,121 @@
+{
+  "record_id": "C0001_1d",
+  "a1": {
+    "symptoms": [
+      "none of the above"
+    ]
+  },
+  "b": {
+    "features": [
+      "unknown if any of 1-3 present or absent"
+    ]
+  },
+  "c": {
+    "markers": [
+      "None of the above (choose this option if whichever ones were tested, were within normal range)"
+    ]
+  },
+  "e": {
+    "findings": [
+      "Paroxysmal or sustained atrial or ventricular arrhythmias (premature atrial or ventricular beats, and/or supraventricular or ventricular tachycardia, interventricular conduction delay, abnormal Q waves, low voltages): :e.g (Sinus tachycardia, SVT, atrial fibrillation, PVCs, VT, VF)"
+    ]
+  },
+  "f": {
+    "findings": [
+      "New focal or diffuse left or right ventricular function abnormalities (e.g. decreased ejection fraction)",
+      "Segmental wall motion abnormalities"
+    ]
+  },
+  "_verifier": {
+    "A1": {
+      "answer": {
+        "agree": false,
+        "p_agree": 0.4534
+      },
+      "reasoning": {
+        "agree": true,
+        "p_agree": 0.8233
+      },
+      "answer_hint": {
+        "agree": false,
+        "p_agree": 0.444
+      },
+      "reasoning_hint": {
+        "agree": true,
+        "p_agree": 0.5881
+      }
+    },
+    "B": {
+      "answer": {
+        "agree": true,
+        "p_agree": 0.8866
+      },
+      "reasoning": {
+        "agree": true,
+        "p_agree": 0.9923
+      },
+      "answer_hint": {
+        "agree": true,
+        "p_agree": 0.8262
+      },
+      "reasoning_hint": {
+        "agree": true,
+        "p_agree": 0.9072
+      }
+    },
+    "C": {
+      "answer": {
+        "agree": true,
+        "p_agree": 0.6417
+      },
+      "reasoning": {
+        "agree": true,
+        "p_agree": 0.9112
+      },
+      "answer_hint": {
+        "agree": true,
+        "p_agree": 0.6349
+      },
+      "reasoning_hint": {
+        "agree": true,
+        "p_agree": 0.826
+      }
+    },
+    "E": {
+      "answer": {
+        "agree": true,
+        "p_agree": 0.7982
+      },
+      "reasoning": {
+        "agree": true,
+        "p_agree": 0.9458
+      },
+      "answer_hint": {
+        "agree": true,
+        "p_agree": 0.9945
+      },
+      "reasoning_hint": {
+        "agree": true,
+        "p_agree": 0.9972
+      }
+    },
+    "F": {
+      "answer": {
+        "agree": true,
+        "p_agree": 0.9047
+      },
+      "reasoning": {
+        "agree": true,
+        "p_agree": 0.916
+      },
+      "answer_hint": {
+        "agree": true,
+        "p_agree": 0.9008
+      },
+      "reasoning_hint": {
+        "agree": true,
+        "p_agree": 0.7069
+      }
+    }
+  }
+}

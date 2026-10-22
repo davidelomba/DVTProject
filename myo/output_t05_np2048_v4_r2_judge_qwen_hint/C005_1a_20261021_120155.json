@@ -1,0 +1,122 @@
+{
+  "record_id": "C005_1a",
+  "a1": {
+    "symptoms": [
+      "none of the above"
+    ]
+  },
+  "b": {
+    "features": [
+      "none of the above"
+    ]
+  },
+  "c": {
+    "markers": [
+      "None tested, or tested but no results or unknown if tested"
+    ]
+  },
+  "e": {
+    "findings": [
+      "ECG not done, or done but no results available or unknown if done"
+    ]
+  },
+  "f": {
+    "findings": [
+      "Segmental wall motion abnormalities",
+      "Global systolic or diastolic function depression/abnormality - (*Decreased longitudinal and circumferential strain and strain rates on tissue Doppler)",
+      "Wall thickness change"
+    ]
+  },
+  "_verifier": {
+    "A1": {
+      "answer": {
+        "agree": true,
+        "p_agree": 0.5492
+      },
+      "reasoning": {
+        "agree": true,
+        "p_agree": 0.953
+      },
+      "answer_hint": {
+        "agree": true,
+        "p_agree": 0.8354
+      },
+      "reasoning_hint": {
+        "agree": true,
+        "p_agree": 0.548
+      }
+    },
+    "B": {
+      "answer": {
+        "agree": true,
+        "p_agree": 0.8096
+      },
+      "reasoning": {
+        "agree": true,
+        "p_agree": 0.7543
+      },
+      "answer_hint": {
+        "agree": true,
+        "p_agree": 0.9837
+      },
+      "reasoning_hint": {
+        "agree": true,
+        "p_agree": 0.9848
+      }
+    },
+    "C": {
+      "answer": {
+        "agree": true,
+        "p_agree": 0.9121
+      },
+      "reasoning": {
+        "agree": true,
+        "p_agree": 0.9993
+      },
+      "answer_hint": {
+        "agree": true,
+        "p_agree": 0.9247
+      },
+      "reasoning_hint": {
+        "agree": true,
+        "p_agree": 0.9994
+      }
+    },
+    "E": {
+      "answer": {
+        "agree": true,
+        "p_agree": 0.7094
+      },
+      "reasoning": {
+        "agree": true,
+        "p_agree": 0.9925
+      },
+      "answer_hint": {
+        "agree": true,
+        "p_agree": 0.9938
+      },
+      "reasoning_hint": {
+        "agree": true,
+        "p_agree": 0.9993
+      }
+    },
+    "F": {
+      "answer": {
+        "agree": true,
+        "p_agree": 0.9308
+      },
+      "reasoning": {
+        "agree": true,
+        "p_agree": 0.9743
+      },
+      "answer_hint": {
+        "agree": true,
+        "p_agree": 0.6901
+      },
+      "reasoning_hint": {
+        "agree": true,
+        "p_agree": 0.846
+      }
+    }
+  }
+}
