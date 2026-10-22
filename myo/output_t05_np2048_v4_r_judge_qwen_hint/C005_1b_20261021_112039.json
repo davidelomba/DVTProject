@@ -1,0 +1,122 @@
+{
+  "record_id": "C005_1b",
+  "a1": {
+    "symptoms": [
+      "none of the above"
+    ]
+  },
+  "b": {
+    "features": [
+      "none of the above"
+    ]
+  },
+  "c": {
+    "markers": [
+      "None tested, or tested but no results or unknown if tested"
+    ]
+  },
+  "e": {
+    "findings": [
+      "ECG not done, or done but no results available or unknown if done"
+    ]
+  },
+  "f": {
+    "findings": [
+      "New focal or diffuse left or right ventricular function abnormalities (e.g. decreased ejection fraction)",
+      "Segmental wall motion abnormalities",
+      "Wall thickness change"
+    ]
+  },
+  "_verifier": {
+    "A1": {
+      "answer": {
+        "agree": true,
+        "p_agree": 0.5333
+      },
+      "reasoning": {
+        "agree": true,
+        "p_agree": 0.9952
+      },
+      "answer_hint": {
+        "agree": true,
+        "p_agree": 0.7826
+      },
+      "reasoning_hint": {
+        "agree": true,
+        "p_agree": 0.811
+      }
+    },
+    "B": {
+      "answer": {
+        "agree": true,
+        "p_agree": 0.8983
+      },
+      "reasoning": {
+        "agree": true,
+        "p_agree": 0.9519
+      },
+      "answer_hint": {
+        "agree": true,
+        "p_agree": 0.9937
+      },
+      "reasoning_hint": {
+        "agree": true,
+        "p_agree": 0.9853
+      }
+    },
+    "C": {
+      "answer": {
+        "agree": true,
+        "p_agree": 0.933
+      },
+      "reasoning": {
+        "agree": true,
+        "p_agree": 0.9992
+      },
+      "answer_hint": {
+        "agree": true,
+        "p_agree": 0.9886
+      },
+      "reasoning_hint": {
+        "agree": true,
+        "p_agree": 0.999
+      }
+    },
+    "E": {
+      "answer": {
+        "agree": false,
+        "p_agree": 0.4704
+      },
+      "reasoning": {
+        "agree": true,
+        "p_agree": 0.9986
+      },
+      "answer_hint": {
+        "agree": true,
+        "p_agree": 0.9942
+      },
+      "reasoning_hint": {
+        "agree": true,
+        "p_agree": 0.9997
+      }
+    },
+    "F": {
+      "answer": {
+        "agree": true,
+        "p_agree": 0.9324
+      },
+      "reasoning": {
+        "agree": true,
+        "p_agree": 0.9908
+      },
+      "answer_hint": {
+        "agree": true,
+        "p_agree": 0.9721
+      },
+      "reasoning_hint": {
+        "agree": true,
+        "p_agree": 0.9917
+      }
+    }
+  }
+}

@@ -1,0 +1,82 @@
+{
+  "record_id": "C004_1b",
+  "a1": {
+    "symptoms": [
+      "acute chest pain or pressure",
+      "dyspnea at rest, with exercise or lying down",
+      "diaphoresis"
+    ]
+  },
+  "b": {
+    "features": [
+      "unknown if any of 1-3 present or absent"
+    ]
+  },
+  "c": {
+    "markers": [
+      "None tested, or tested but no results or unknown if tested"
+    ]
+  },
+  "e": {
+    "findings": [
+      "ECG not done, or done but no results available or unknown if done"
+    ]
+  },
+  "f": {
+    "findings": [
+      "ECHO not done, or done but no results or unknown if done"
+    ]
+  },
+  "_verifier": {
+    "A1": {
+      "answer": {
+        "agree": true,
+        "p_agree": 0.9823
+      },
+      "reasoning": {
+        "agree": true,
+        "p_agree": 0.9873
+      }
+    },
+    "B": {
+      "answer": {
+        "agree": false,
+        "p_agree": 0.0346
+      },
+      "reasoning": {
+        "agree": true,
+        "p_agree": 0.9845
+      }
+    },
+    "C": {
+      "answer": {
+        "agree": false,
+        "p_agree": 0.0079
+      },
+      "reasoning": {
+        "agree": true,
+        "p_agree": 0.9593
+      }
+    },
+    "E": {
+      "answer": {
+        "agree": false,
+        "p_agree": 0.0338
+      },
+      "reasoning": {
+        "agree": false,
+        "p_agree": 0.4423
+      }
+    },
+    "F": {
+      "answer": {
+        "agree": false,
+        "p_agree": 0.0238
+      },
+      "reasoning": {
+        "agree": true,
+        "p_agree": 0.7231
+      }
+    }
+  }
+}
