@@ -1,0 +1,82 @@
+{
+  "record_id": "C005_1a",
+  "a1": {
+    "symptoms": [
+      "none of the above"
+    ]
+  },
+  "b": {
+    "features": [
+      "none of the above"
+    ]
+  },
+  "c": {
+    "markers": [
+      "None tested, or tested but no results or unknown if tested"
+    ]
+  },
+  "e": {
+    "findings": [
+      "ECG not done, or done but no results available or unknown if done"
+    ]
+  },
+  "f": {
+    "findings": [
+      "New focal or diffuse left or right ventricular function abnormalities (e.g. decreased ejection fraction)",
+      "Segmental wall motion abnormalities",
+      "Wall thickness change"
+    ]
+  },
+  "_verifier": {
+    "A1": {
+      "answer": {
+        "agree": true,
+        "p_agree": 0.501
+      },
+      "reasoning": {
+        "agree": true,
+        "p_agree": 0.9769
+      }
+    },
+    "B": {
+      "answer": {
+        "agree": true,
+        "p_agree": 0.8157
+      },
+      "reasoning": {
+        "agree": true,
+        "p_agree": 0.7295
+      }
+    },
+    "C": {
+      "answer": {
+        "agree": true,
+        "p_agree": 0.9321
+      },
+      "reasoning": {
+        "agree": true,
+        "p_agree": 0.9991
+      }
+    },
+    "E": {
+      "answer": {
+        "agree": true,
+        "p_agree": 0.6302
+      },
+      "reasoning": {
+        "agree": true,
+        "p_agree": 0.9992
+      }
+    },
+    "F": {
+      "answer": {
+        "agree": true,
+        "p_agree": 0.9912
+      },
+      "reasoning": {
+        "agree": true,
+        "p_agree": 0.9775
+      }
+    }
+  }
+}
