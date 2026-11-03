@@ -1,0 +1,149 @@
+{
+  "record_id": "SYN_15_ddimer_negative_low_probability_v2",
+  "a1": {
+    "answer": "No autopsy done, unknown if done, or done but results unavailable"
+  },
+  "a2": {
+    "answer": "No surgical procedure done; or, done but either did not confirm presence of DVT or findings unknown; or unknown if done"
+  },
+  "a3_1": {
+    "answer": "No imaging studies done, unknown if done, or done but results unknown"
+  },
+  "a3_2": {
+    "studies": []
+  },
+  "b1_1": {
+    "answer": "≥1 symptom or sign of DVT was reported"
+  },
+  "b1_2": {
+    "types": []
+  },
+  "b2": {
+    "symptoms": [
+      "Calf pain or tenderness"
+    ]
+  },
+  "c": {
+    "answer": "D-dimer tested and was within test lab's range of normal"
+  },
+  "f": {
+    "answer": "No"
+  },
+  "x": {
+    "answer": "No alternative diagnosis was found to explain the acute illness"
+  },
+  "_confidence": {
+    "A1": 0.9988,
+    "A2": 0.9999,
+    "A3_1": 0.9976,
+    "A3_2": 0.996,
+    "B1_1": 0.816,
+    "B1_2": 0.9905,
+    "B2": 0.9888,
+    "C": 1.0,
+    "F": null,
+    "X": 0.8958
+  },
+  "_verifier": {
+    "A1": {
+      "answer": {
+        "agree": false,
+        "p_agree": 0.0388
+      },
+      "reasoning": {
+        "agree": true,
+        "p_agree": 0.6313
+      }
+    },
+    "A2": {
+      "answer": {
+        "agree": true,
+        "p_agree": 0.9917
+      },
+      "reasoning": {
+        "agree": true,
+        "p_agree": 0.9953
+      }
+    },
+    "A3_1": {
+      "answer": {
+        "agree": true,
+        "p_agree": 0.9889
+      },
+      "reasoning": {
+        "agree": true,
+        "p_agree": 0.9983
+      }
+    },
+    "A3_2": {
+      "answer": {
+        "agree": false,
+        "p_agree": 0.0144
+      },
+      "reasoning": {
+        "agree": false,
+        "p_agree": 0.2137
+      }
+    },
+    "B1_1": {
+      "answer": {
+        "agree": true,
+        "p_agree": 0.9888
+      },
+      "reasoning": {
+        "agree": true,
+        "p_agree": 0.9991
+      }
+    },
+    "B1_2": {
+      "answer": {
+        "agree": false,
+        "p_agree": 0.0777
+      },
+      "reasoning": {
+        "agree": false,
+        "p_agree": 0.4984
+      }
+    },
+    "B2": {
+      "answer": {
+        "agree": true,
+        "p_agree": 0.9901
+      },
+      "reasoning": {
+        "agree": true,
+        "p_agree": 0.9918
+      }
+    },
+    "C": {
+      "answer": {
+        "agree": true,
+        "p_agree": 0.9978
+      },
+      "reasoning": {
+        "agree": true,
+        "p_agree": 0.9967
+      }
+    },
+    "F": {
+      "answer": {
+        "agree": true,
+        "p_agree": 0.5892
+      },
+      "reasoning": {
+        "agree": false,
+        "p_agree": 0.4606
+      }
+    },
+    "X": {
+      "answer": {
+        "agree": false,
+        "p_agree": 0.4085
+      },
+      "reasoning": {
+        "agree": true,
+        "p_agree": 0.8849
+      }
+    }
+  }
+}
