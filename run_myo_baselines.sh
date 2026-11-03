@@ -46,8 +46,8 @@ EXPECTED_NUM_PREDICT=2048
 EXPECTED_NUM_CTX=8192
 GT="./myo/data/records"
 SMALL_EXTRACTOR="llama3:8b-instruct-q4_0"
-AGENT_TAG="$(grep -E '^AGENTIC_LLM_MODEL_NAME' config.py | sed -E 's/.*"(.*)".*/\1/')"
-EVALUATOR_TAG="$(grep -E '^EVALUATOR_LLM_MODEL_NAME' config.py | sed -E 's/.*"(.*)".*/\1/')"
+AGENT_TAG="$(grep -E '^AGENTIC_LLM_MODEL_NAME' config.py | sed -E 's/^[^"]*"([^"]*)".*/\1/')"
+EVALUATOR_TAG="$(grep -E '^EVALUATOR_LLM_MODEL_NAME' config.py | sed -E 's/^[^"]*"([^"]*)".*/\1/')"
 ARMS="${ARMS:-raw_record full_text_8b rag_8b full_text_27b rag_27b}"
 
 # arm -> "mode extractor" (extractor "-" for raw_record)
