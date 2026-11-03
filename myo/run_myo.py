@@ -1,8 +1,11 @@
 """
-Runs the pipeline over the myocarditis cases, in agentic_graph mode.
+Runs the pipeline over the myocarditis cases, in agentic_graph mode unless
+--mode names one of the baselines (raw_record, full_text, rag).
 
-Same code as the DVT runs: pipeline.run_pipeline, both agents, the verbatim
-evidence of agentic_graph. What differs is the schema, the section queries, the
+Same code as the DVT runs: pipeline.run_pipeline, both agents and, in
+agentic_graph, its verbatim evidence. full_text and rag use Agent 1's tag,
+config.AGENTIC_LLM_MODEL_NAME, as extractor unless --extractor-model names
+another, with this domain's extractor prompt. What differs is the schema, the section queries, the
 terms naming the condition in the prompts and the temperature of Agents 1 and 2,
 MYO_TEMPERATURE unless --temperature overrides it. Agents 1 and 2 run the tags
 in config.py unless --model names another, the same for both. The cross-section rules are
@@ -24,6 +27,8 @@ Usage:
     python myo/run_myo.py --guideline --output-dir ./myo/output_myo_guideline
     python myo/run_myo.py --only C0001
     python myo/run_myo.py --guideline --model qwen3.8:27b --output-dir ./myo/output_x
+    python myo/run_myo.py --guideline --mode raw_record --output-dir ./myo/output_x
+    python myo/run_myo.py --guideline --mode rag --extractor-model llama3:8b-instruct-q4_0 --output-dir ./myo/output_x
 """
 
 import argparse
@@ -87,8 +92,12 @@ SECTION_QUERIES = {
 }
 
 
+EXTRACTOR_MODES = ("agentic_graph", "raw_record", "full_text", "rag")
+
+
 def apply_domain(guideline: bool = False, temperature: float = MYO_TEMPERATURE,
-                 model: str | None = None):
+                 model: str | None = None, mode: str = "agentic_graph",
+                 extractor_model: str | None = None):
     """Points the shared modules at the myocarditis sections and prompts.
 
     Args:
@@ -99,6 +108,9 @@ def apply_domain(guideline: bool = False, temperature: float = MYO_TEMPERATURE,
             config.AGENTIC_LLM_MODEL_NAME and config.EVALUATOR_LLM_MODEL_NAME;
             the verifier follows Agent 2 while config.VERIFIER_MODEL_NAME is
             None. None keeps the tags in config.py.
+        mode: config.EXTRACTOR_MODE, one of EXTRACTOR_MODES.
+        extractor_model: Ollama tag the full_text and rag modes extract with,
+            written to config.LLM_MODEL_NAME; None uses Agent 1's tag.
     """
 
     config.SECTION_ORDER = SECTION_ORDER
@@ -106,7 +118,10 @@ def apply_domain(guideline: bool = False, temperature: float = MYO_TEMPERATURE,
     if model is not None:
         config.AGENTIC_LLM_MODEL_NAME = model
         config.EVALUATOR_LLM_MODEL_NAME = model
-    config.EXTRACTOR_MODE = "agentic_graph"
+    if mode not in EXTRACTOR_MODES:
+        raise ValueError(f"mode {mode!r}, expected one of {EXTRACTOR_MODES}")
+    config.EXTRACTOR_MODE = mode
+    config.LLM_MODEL_NAME = extractor_model or config.AGENTIC_LLM_MODEL_NAME
     config.BRIGHTON_CONTEXT_ENABLED = guideline
     # Its own store: build_brighton_kb reloads an index already on disk without
     # reading the text it was handed, so the two papers need two directories.
@@ -177,10 +192,19 @@ def main():
         help="the myocarditis case definition; indexed even when the context "
              "is off, and into myo/vectorstores rather than the shared store",
     )
+    parser.add_argument(
+        "--mode", choices=EXTRACTOR_MODES, default="agentic_graph",
+        help="extraction mode (default agentic_graph)",
+    )
+    parser.add_argument(
+        "--extractor-model", default=None, metavar="TAG",
+        help="Ollama tag full_text and rag extract with; default Agent 1's tag",
+    )
     args = parser.parse_args()
 
     pipeline = apply_domain(guideline=args.guideline, temperature=args.temperature,
-                            model=args.model)
+                            model=args.model, mode=args.mode,
+                            extractor_model=args.extractor_model)
     if args.num_ctx is not None:
         config.LLM_NUM_CTX = args.num_ctx
 

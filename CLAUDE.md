@@ -151,7 +151,9 @@ gaps between consecutive records: the reference costs 165 seconds a record
 without Agent 3 and 185 with the confidence Agent 3, and a full run over the 40
 records takes 1h56. The verifier costs about 28 seconds a record on the
 myocarditis runs at 1024/4096 and about 20 at 2048/8192, two requests for each
-of five sections; not measured on DVT.
+of five sections. On DVT only the replay is timed, about 1 second a request with
+qwen and 0.7 to 0.9 with medgemma; the pipeline with the verifier inside has not
+been timed.
 What sets the cost is how many model tags a run loads. `raw_record` loads one
 and costs 96, 1h10 for the corpus; the arms whose Agent 1 and Agent 2 share a
 tag, the reference among them, cost 157 to 190; every arm running two different
@@ -1154,7 +1156,42 @@ not say which governs, which is what the clinician question below is asking.
   split 12.8%, agreement-share AUROC 0.718. Verifier `answer` 0.465,
   `reasoning` 0.726 approving 67 errors of 73. 124 to 140 seconds a record. The
   author's hypothesis that the model misses TTE and strain as echocardiography
-  is ruled out by the audit logs of both series.
+  is ruled out by the audit logs: across v3, v4 and v4_q38 no F answer on C002
+  or C003 is `ECHO not done` (53 of 53); the reasoning spells out TTE on
+  C003_1c in 7 runs of 9 and calls the strain analysis echocardiography on
+  C002_1c in 5 of 9, treating it as one without saying so in the others.
+- **On the final series the verifier still approves the errors, and the
+  reasoning sways both judges equally.** `replay_verifier.py` on
+  `myo/output_t05_np2048_v4_r1` to `r3` (`_judge_qwen_hint` with the four
+  variants and hints `7d4be67fec0f`, `_judge_medgemma`), corrected ground truth,
+  255 answers and 72 errors. qwen: `answer` AUROC 0.425, 59 errors approved, 34
+  right answers rejected; `reasoning` 0.689, 71 and 5; `answer_hint` 0.590, 64
+  and 19; `reasoning_hint` 0.746, 66 and 7. medgemma: `answer` 0.408, 56 and
+  96; `reasoning` 0.408, 67 and 27. Without the reasoning both judges reject
+  answers that declare an absence: qwen 16 `None tested` of 30 and 8 `ECG not
+  done` of 12, medgemma every B `unknown`, C `None tested`, E `ECG not done` and
+  F `ECHO not done`, right or wrong, and A1 `none` where nothing is reported
+  while approving it where an absence is. The reasoning adds 12 approved errors
+  for qwen and 11 for medgemma, against 21 and 31 on v3. With the hint and the
+  reasoning qwen still approves 14 of the 15 wrong A1 `none` and all 10 wrong B
+  `unknown`, which follow the hint's rule. Errors rejected by both judges with
+  the reasoning: 0 of 72. Replay noise 8 and 1 verdicts of 255. The first
+  launch through `systemd-run` wrote run 1 to `..._v4_r_judge_*` and stopped,
+  since systemd expands `${i}` before bash; inside a `systemd-run` command bash
+  variables are written `$${i}`.
+- **On the DVT reference the verifier is no filter, and as a guide it rests on two
+  errors.** `replay_verifier.py` on `output_a32_ref`, Ollama 0.40.7 against the 0.32.1 the
+  answers came from, 0 answers changed: `output_a32_ref_judge_qwen_hint` (four variants,
+  hints `a78dc29e962f`) and `output_a32_ref_judge_medgemma`. 398 right, 2 wrong (SYN_10
+  B1_1, SYN_14 A3_2). qwen `answer`: AUROC 0.896, within sections 0.731, rejects both errors
+  and 63 right answers, 43 of which declare an absence or an unknown; `reasoning` 0.882,
+  rejects 1 error and 9 right answers, SYN_10 going from 0.488 to 0.979 with the reasoning;
+  `answer_hint` approves both errors, rejects 19 right answers and gives no verdict on F, 40
+  of 40; `reasoning_hint` 0.944 answers YES on all 400. medgemma 0.726 / 0.694, rejecting 110
+  and 59 right answers, SYN_14 rejected and SYN_10 approved in both. As a filter the balance
+  ER − GR is −61, −8, −19, 0 for qwen and −109, −58 for medgemma; as a guide qwen `answer`
+  catches both errors by rereading 65 sections of 400, 3.1% against a 0.5% error rate. One
+  section inherits its verdict from a rule (SYN_19 A3_2). About 1 second a request.
 - Read the metrics in this order: majority baseline and gain, then kappa, then
   accuracy with its interval. Accuracy alone ranked F above A3_2 under the 8B
   model, where F gained nothing over a constant answer and A3_2 gained 13
@@ -1381,7 +1418,9 @@ not say which governs, which is what the clinician question below is asking.
   `DETAILS_PRESENT` line, so F with the hint stays unmeasured. Not measured: a
   verifier reading the whole record instead of Agent 1's evidence. The confidence
   Agent 3 could not flag an answer wrong for lack of evidence, because it read
-  the same fragments as Agent 2; the verifier reads them too.
+  the same fragments as Agent 2; the verifier reads them too. On the DVT reference the two errors are the two
+  readings the ground truth disputes; both are approved once the verifier gets the
+  hint, so the reference run cannot tell whether the verifier helps.
 - **The temperature alone is not measured.** The three myocarditis runs differ
   from the earlier arms in sections, queries, hints and temperature at once; a
   run at temperature 0 would separate the temperature and say whether the six

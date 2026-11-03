@@ -1,0 +1,93 @@
+{
+  "records_compared": 40,
+  "sections": {
+    "A1": {
+      "compared": 40,
+      "changed": 0,
+      "correct_a": 40,
+      "correct_b": 40,
+      "stability": 1.0
+    },
+    "A2": {
+      "compared": 40,
+      "changed": 0,
+      "correct_a": 40,
+      "correct_b": 40,
+      "stability": 1.0
+    },
+    "A3_1": {
+      "compared": 40,
+      "changed": 0,
+      "correct_a": 40,
+      "correct_b": 40,
+      "stability": 1.0
+    },
+    "A3_2": {
+      "compared": 40,
+      "changed": 0,
+      "correct_a": 39,
+      "correct_b": 39,
+      "stability": 1.0
+    },
+    "B1_1": {
+      "compared": 40,
+      "changed": 0,
+      "correct_a": 39,
+      "correct_b": 39,
+      "stability": 1.0
+    },
+    "B1_2": {
+      "compared": 40,
+      "changed": 0,
+      "correct_a": 40,
+      "correct_b": 40,
+      "stability": 1.0
+    },
+    "B2": {
+      "compared": 40,
+      "changed": 1,
+      "correct_a": 40,
+      "correct_b": 39,
+      "stability": 0.975
+    },
+    "C": {
+      "compared": 40,
+      "changed": 0,
+      "correct_a": 40,
+      "correct_b": 40,
+      "stability": 1.0
+    },
+    "F": {
+      "compared": 40,
+      "changed": 0,
+      "correct_a": 40,
+      "correct_b": 40,
+      "stability": 1.0
+    },
+    "X": {
+      "compared": 40,
+      "changed": 0,
+      "correct_a": 40,
+      "correct_b": 40,
+      "stability": 1.0
+    }
+  },
+  "differences": [
+    {
+      "record_id": "SYN_07_thrombectomy_positive_v2",
+      "section": "B2",
+      "run_a": [
+        "Calf pain or tenderness",
+        "Leg swelling or pitting oedema"
+      ],
+      "run_b": null
+    }
+  ],
+  "overall": {
+    "compared": 400,
+    "changed": 1,
+    "correct_a": 398,
+    "correct_b": 397,
+    "stability": 0.9975
+  }
+}

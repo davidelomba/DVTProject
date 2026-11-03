@@ -5,8 +5,6 @@ Reference synonyms/terminology (Brighton):
 
 <SECTION HINT: sent only when the section has an active one>
 
-<SECTION HEADING: sent only when the descriptions are enabled>
-
 Options:
 1. <first option>
 2. <second option>

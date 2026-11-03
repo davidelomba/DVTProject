@@ -966,7 +966,9 @@ incluso nella tesi e quello che ricevono i modelli sono lo stesso oggetto.
   istruzioni finali, la descrizione del tool di ricerca e un file per hint;
 - **`_message_skeleton()`** e **`_answer_instructions(multi_select)`** passano da
   `agents._build_reasoning_prompt` con segnaposto al posto dei contenuti, così
-  etichette, righe vuote e ordine sono quelli che il codice produce;
+  etichette, righe vuote e ordine sono quelli che il codice produce; lo
+  scheletro omette il titolo di sezione, che il valutatore riceve solo con
+  `config.SECTION_DESCRIPTIONS_ENABLED` attivo;
 - **`_example_section(multi_select)`** sceglie la sezione da cui costruire le
   istruzioni finali: la prima a scelta singola di `config.SECTION_ORDER`, oppure
   la prima a scelta multipla che può restare vuota, l'unico tipo che porta la
