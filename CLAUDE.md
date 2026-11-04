@@ -75,7 +75,9 @@ When something is unverified, say so.
   and hints from the earlier myocarditis prompts (`MYO_prompts_EN.pdf`) plus a
   few sentences from the case definition and the SPEAC companion guide, sourced
   sentence by sentence in `docs/DOCUMENTAZIONE_CODICE.md` section 16.
-  `agreement_runs.py` measures agreement between repeated runs.
+  `agreement_runs.py` measures agreement between repeated runs. `run_myo.py
+  --mode` runs `raw_record`, `full_text` or `rag` instead of `agentic_graph`, and
+  `--extractor-model` sets the extractor of the last two, Agent 1's tag by default.
 - `docs/DOCUMENTAZIONE_CODICE.md` describes the code module by module,
   `docs/RISULTATI_SPERIMENTALI.md` holds every measurement with the
   configuration that produced it, and `docs/SCALETTA_TESI.md` the thesis
@@ -140,6 +142,8 @@ python myo/run_myo.py --guideline --model qwen3.8:27b --output-dir ./myo/output_
 python myo/evaluate_myo.py ./myo/output_x
 python myo/export_prompts_myo.py                  # myocarditis texts -> myo/prompts_export/
 bash run_myo_t05.sh                               # the three runs at 0.5, checks and scoring, on mari
+python myo/run_myo.py --guideline --mode rag --extractor-model llama3:8b-instruct-q4_0 --output-dir ./myo/output_x   # a baseline mode
+bash run_myo_baselines.sh                         # the DVT baselines on myocarditis, three runs each, on mari
 ```
 
 `evaluate_verifier` and `agreement_runs` take `--ground-truth ./myo/data/records`
@@ -1192,6 +1196,33 @@ not say which governs, which is what the clinician question below is asking.
   ER − GR is −61, −8, −19, 0 for qwen and −109, −58 for medgemma; as a guide qwen `answer`
   catches both errors by rereading 65 sections of 400, 3.1% against a 0.5% error rate. One
   section inherits its verdict from a rule (SYN_19 A3_2). About 1 second a request.
+- **On myocarditis the baselines with the 27B extractor match the reference, and
+  the 8B collapses as on the DVT.** `run_myo_baselines.sh`, three runs each, every
+  setting of the v4 series, mari, Ollama 0.40.7, checked on all 255 audit logs;
+  `myo/output_base_<arm>_r1` to `r3`. Exact sections of 255 over the three runs:
+  v4 `agentic_graph` 183 (63, 61, 59), `raw_record` 178, `full_text` 8B 105, `rag`
+  8B 124, `full_text` 27B 184, `rag` 27B 186; no failed section. Records run 1001
+  to 2032 characters, so at 800/150/5 `rag` and `agentic_graph` see the whole
+  record, checked on the 255 v4 sections. The 27B tie is two errors cancelling:
+  its extractor returns no evidence on 23 and 21 A1 sections of 51, dropping
+  `eupnoico` and the other stated absences, Agent 2 then answers `unknown` on 26
+  of 51 (4 in v4), which matches the ground truth's `unknown` against the
+  expert's rule (C0001_1c to 1e, C005, 15 of 15 against 0) and misses its
+  `none` (C003_1a and 1c, 0 of 6 against 6): A1 +8 and +6, F -5 and -2. Empty
+  evidence from the 27B is right on 30 of 30 C sections and 12 of 12 E; 99% of
+  its fragments are verbatim. The 8B empties E on 38 and 34 of 51 and C on 17 and
+  18, E falling to 22 and 27 of 51 and C to 21 and 27, 65% and 69% verbatim;
+  removing the rewriting is worth +73 and +59 of 255 against +54 and +57 of 400
+  on the DVT. Fleiss 0.918 for v4, 0.893 and 0.863 with the 27B, 0.660 and 0.753
+  with the 8B. **First positive filter balance**: `answer` with the 27B
+  extractor rejects 16 and 14 errors and 3 and 4 right answers over the three
+  runs, ER - GR +13 and +10, Prec_ER 84% and 78% against an error rate of 28%
+  and 27%; in v4 the same variant is -21, Prec_ER 28%. The right answers it no
+  longer rejects are the absences (`None tested`, `ECG not done`) that now come
+  with empty evidence, and the errors it rejects are in F, 16 of 16 and 10 of
+  14; why an extract makes the F errors visible is not verified. `reasoning`
+  stays at -2 and -1. 85 to 129 seconds a record with the 27B, 142 to 160 with
+  the 8B, 141 for v4.
 - Read the metrics in this order: majority baseline and gain, then kappa, then
   accuracy with its interval. Accuracy alone ranked F above A3_2 under the 8B
   model, where F gained nothing over a constant answer and A3_2 gained 13

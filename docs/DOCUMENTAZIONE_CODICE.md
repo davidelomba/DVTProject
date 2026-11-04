@@ -33,6 +33,7 @@ dice **cosa fa** il codice, quello dice **cosa è stato misurato**.
 | `export_prompts.py` | esportazione di prompt, query e hint in file per la tesi (non versionato) |
 | `myo/` | il braccio di trasferimento sul questionario della miocardite |
 | `run_myo_t05.sh` | le tre run della miocardite a temperatura 0,5 su mari, con controlli e valutazione |
+| `run_myo_baselines.sh` | le baseline della TVP sulla miocardite, tre run ciascuna, con controlli e valutazione |
 | `replay_verifier.py` | il verificatore riapplicato a una run già su disco, con un modello a scelta |
 
 ---
@@ -1088,11 +1089,15 @@ del modulo; `MYO_TEMPERATURE = 0.5` è la temperatura di Agent 1 e Agent 2, senz
 seme, così ogni run campiona in modo indipendente. `SECTION_QUERIES` ha una query
 per sezione composta dal nome della sezione e da tutte le sue opzioni, con le sole
 parole del modulo, così nessuna query porta lessico preso dai referti su cui gira.
-**`apply_domain(guideline=False, temperature=MYO_TEMPERATURE, model=None)`**
+**`apply_domain(guideline=False, temperature=MYO_TEMPERATURE, model=None,
+mode="agentic_graph", extractor_model=None)`**
 imposta sezioni e temperatura, con `model` il tag Ollama di Agente 1 e Agente 2
 (`AGENTIC_LLM_MODEL_NAME` ed `EVALUATOR_LLM_MODEL_NAME`, che il verificatore
 segue finché `VERIFIER_MODEL_NAME` è `None`; con `None` restano quelli di
-`config.py`), modalità `agentic_graph`, gli hint di `prompts_myo.SECTION_HINTS`,
+`config.py`), la modalità `mode`, una di `EXTRACTOR_MODES` (`agentic_graph`,
+`raw_record`, `full_text`, `rag`; un altro valore solleva `ValueError`), e
+`LLM_MODEL_NAME`, l'estrattore di `full_text` e `rag`, uguale a
+`extractor_model` o, se `None`, al tag di Agente 1; gli hint di `prompts_myo.SECTION_HINTS`,
 nessuna regola cross-section; sostituisce i tre prompt degli agenti,
 `agents.MULTI_SELECT_EXAMPLE`, `agents.EMPTY_ANSWER_SECTIONS`, le query di
 sezione e il tool di ricerca, e indica
@@ -1100,7 +1105,8 @@ per il paper un indice suo, `myo/vectorstores/chroma_brighton_myo`, perché
 `build_brighton_kb` ricaricherebbe l'indice del paper della TVP senza leggere il
 testo che riceve. Da riga di comando: `--guideline` accende il contesto della
 linea guida, `--temperature` sostituisce `MYO_TEMPERATURE`, `--model` passa il
-tag ad `apply_domain`, `--num-ctx`
+tag ad `apply_domain`, `--mode` ed `--extractor-model` passano modalità ed
+estrattore, `--num-ctx`
 sostituisce `LLM_NUM_CTX`, `--brighton-pdf` indica il paper (`myo/main.pdf` di
 default), più `--records-dir`, `--output-dir` e `--only`. L'Agent 3 gira con le
 impostazioni di `config.py`.
@@ -1240,3 +1246,21 @@ una richiesta di prova controlla che il modello risponda YES o NO con le
 probabilità dei token; senza, non c'è P(YES) e lo script si ferma. Rifiuta una
 cartella di destinazione che contiene già file, salvo `--force`.
 
+## 21. `run_myo_baselines.sh`
+
+Script bash per mari che esegue sulla miocardite le baseline della TVP, tre run
+ciascuna, con le impostazioni della serie v4, e le valuta. I bracci sono
+`raw_record`, `full_text_8b` e `rag_8b` (estrattore `llama3:8b-instruct-q4_0`),
+`full_text_27b` e `rag_27b` (estrattore il tag di Agente 1); **`arm_spec`** associa
+a ogni braccio modalità ed estrattore. Il preflight controlla che Ollama risponda,
+che tutti i modelli dei bracci siano scaricati, che `config.py` abbia
+`LLM_NUM_PREDICT` 2048 e `LLM_NUM_CTX` 8192 e, con lo stesso codice della run, che
+ogni braccio abbia modalità, estrattore, impronte di hint e query, temperatura 0,5
+e verificatore attesi; altrimenti si ferma. Le run vanno in
+`myo/output_base_<braccio>_r1`, `r2` e `r3`, una dopo l'altra, con un log ciascuna
+in `logs/`; una cartella che contiene già file blocca lo script salvo `FORCE=1`.
+**`check_run`** stampa modalità, modelli, impronte, evidenze vuote, metodi del
+verificatore e sezioni fallite. Alla fine lancia `myo/evaluate_myo.py` ed
+`evaluate_verifier.py` su ogni run e `agreement_runs.py` sulle tre di ogni braccio.
+Variabili d'ambiente: `ARMS` sceglie i bracci, `EVAL_ONLY=1` salta le run, `PYTHON`
+indica l'interprete; attiva `.venv` se esiste.
