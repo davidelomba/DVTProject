@@ -1,0 +1,80 @@
+{
+  "record_id": "C002_1c",
+  "a1": {
+    "symptoms": [
+      "unknown if any of 1-5 present or absent"
+    ]
+  },
+  "b": {
+    "features": [
+      "pericardial friction rub"
+    ]
+  },
+  "c": {
+    "markers": [
+      "None tested, or tested but no results or unknown if tested"
+    ]
+  },
+  "e": {
+    "findings": [
+      "ST, segment or T, wave abnormalities (elevation or inversion)"
+    ]
+  },
+  "f": {
+    "findings": [
+      "No abnormalities seen on ECHO"
+    ]
+  },
+  "_verifier": {
+    "A1": {
+      "answer": {
+        "agree": true,
+        "p_agree": 0.9058
+      },
+      "reasoning": {
+        "agree": true,
+        "p_agree": 0.9975
+      }
+    },
+    "B": {
+      "answer": {
+        "agree": true,
+        "p_agree": 0.9941
+      },
+      "reasoning": {
+        "agree": true,
+        "p_agree": 0.9994
+      }
+    },
+    "C": {
+      "answer": {
+        "agree": true,
+        "p_agree": 0.905
+      },
+      "reasoning": {
+        "agree": true,
+        "p_agree": 0.9925
+      }
+    },
+    "E": {
+      "answer": {
+        "agree": true,
+        "p_agree": 0.99
+      },
+      "reasoning": {
+        "agree": true,
+        "p_agree": 0.994
+      }
+    },
+    "F": {
+      "answer": {
+        "agree": true,
+        "p_agree": 0.9917
+      },
+      "reasoning": {
+        "agree": true,
+        "p_agree": 0.9991
+      }
+    }
+  }
+}

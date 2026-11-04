@@ -1,0 +1,82 @@
+{
+  "record_id": "C003_1a",
+  "a1": {
+    "symptoms": [
+      "unknown if any of 1-5 present or absent"
+    ]
+  },
+  "b": {
+    "features": [
+      "pericardial friction rub"
+    ]
+  },
+  "c": {
+    "markers": [
+      "None tested, or tested but no results or unknown if tested"
+    ]
+  },
+  "e": {
+    "findings": [
+      "No abnormalities seen on ECG"
+    ]
+  },
+  "f": {
+    "findings": [
+      "New focal or diffuse left or right ventricular function abnormalities (e.g. decreased ejection fraction)",
+      "Global systolic or diastolic function depression/abnormality - (*Decreased longitudinal and circumferential strain and strain rates on tissue Doppler)",
+      "Evidence of abnormal fluid collection or pericardial inflammation"
+    ]
+  },
+  "_verifier": {
+    "A1": {
+      "answer": {
+        "agree": true,
+        "p_agree": 0.945
+      },
+      "reasoning": {
+        "agree": true,
+        "p_agree": 0.999
+      }
+    },
+    "B": {
+      "answer": {
+        "agree": true,
+        "p_agree": 0.9885
+      },
+      "reasoning": {
+        "agree": true,
+        "p_agree": 0.9992
+      }
+    },
+    "C": {
+      "answer": {
+        "agree": false,
+        "p_agree": 0.1802
+      },
+      "reasoning": {
+        "agree": true,
+        "p_agree": 0.983
+      }
+    },
+    "E": {
+      "answer": {
+        "agree": true,
+        "p_agree": 0.9945
+      },
+      "reasoning": {
+        "agree": true,
+        "p_agree": 0.7123
+      }
+    },
+    "F": {
+      "answer": {
+        "agree": true,
+        "p_agree": 0.7215
+      },
+      "reasoning": {
+        "agree": true,
+        "p_agree": 0.9722
+      }
+    }
+  }
+}

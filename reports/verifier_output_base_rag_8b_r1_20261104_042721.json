@@ -1,0 +1,722 @@
+{
+  "variants": {
+    "answer": {
+      "overall": {
+        "sections": 85,
+        "without_verdict": 0,
+        "overflow": 0,
+        "right": 41,
+        "wrong": 44,
+        "auroc_verifier": 0.5304878048780488,
+        "approved_errors": 37,
+        "rejected_right": 3
+      },
+      "per_section": {
+        "A1": {
+          "sections": 17,
+          "without_verdict": 0,
+          "overflow": 0,
+          "right": 10,
+          "wrong": 7,
+          "auroc_verifier": 0.7285714285714285,
+          "approved_errors": 6,
+          "rejected_right": 1
+        },
+        "B": {
+          "sections": 17,
+          "without_verdict": 0,
+          "overflow": 0,
+          "right": 9,
+          "wrong": 8,
+          "auroc_verifier": 0.4930555555555556,
+          "approved_errors": 8,
+          "rejected_right": 0
+        },
+        "C": {
+          "sections": 17,
+          "without_verdict": 0,
+          "overflow": 0,
+          "right": 9,
+          "wrong": 8,
+          "auroc_verifier": 0.5,
+          "approved_errors": 5,
+          "rejected_right": 2
+        },
+        "E": {
+          "sections": 17,
+          "without_verdict": 0,
+          "overflow": 0,
+          "right": 9,
+          "wrong": 8,
+          "auroc_verifier": 0.4791666666666667,
+          "approved_errors": 8,
+          "rejected_right": 0
+        },
+        "F": {
+          "sections": 17,
+          "without_verdict": 0,
+          "overflow": 0,
+          "right": 4,
+          "wrong": 13,
+          "auroc_verifier": 0.7884615384615384,
+          "approved_errors": 10,
+          "rejected_right": 0
+        }
+      },
+      "errors": [
+        {
+          "record_id": "C0001_0_0",
+          "section": "C",
+          "agree": false,
+          "p_agree": 0.0741
+        },
+        {
+          "record_id": "C0001_0_0",
+          "section": "E",
+          "agree": true,
+          "p_agree": 0.9922
+        },
+        {
+          "record_id": "C0001_0_0",
+          "section": "F",
+          "agree": true,
+          "p_agree": 0.9969
+        },
+        {
+          "record_id": "C0001_1a",
+          "section": "A1",
+          "agree": true,
+          "p_agree": 0.9487
+        },
+        {
+          "record_id": "C0001_1a",
+          "section": "C",
+          "agree": true,
+          "p_agree": 0.9989
+        },
+        {
+          "record_id": "C0001_1a",
+          "section": "E",
+          "agree": true,
+          "p_agree": 0.9922
+        },
+        {
+          "record_id": "C0001_1a",
+          "section": "F",
+          "agree": true,
+          "p_agree": 0.9969
+        },
+        {
+          "record_id": "C0001_1b",
+          "section": "A1",
+          "agree": true,
+          "p_agree": 0.893
+        },
+        {
+          "record_id": "C0001_1b",
+          "section": "C",
+          "agree": true,
+          "p_agree": 0.9989
+        },
+        {
+          "record_id": "C0001_1b",
+          "section": "E",
+          "agree": true,
+          "p_agree": 0.9922
+        },
+        {
+          "record_id": "C0001_1b",
+          "section": "F",
+          "agree": false,
+          "p_agree": 0.3977
+        },
+        {
+          "record_id": "C0001_1c",
+          "section": "C",
+          "agree": false,
+          "p_agree": 0.0903
+        },
+        {
+          "record_id": "C0001_1c",
+          "section": "F",
+          "agree": true,
+          "p_agree": 0.9825
+        },
+        {
+          "record_id": "C0001_1d",
+          "section": "B",
+          "agree": true,
+          "p_agree": 0.9897
+        },
+        {
+          "record_id": "C0001_1d",
+          "section": "C",
+          "agree": false,
+          "p_agree": 0.1483
+        },
+        {
+          "record_id": "C0001_1d",
+          "section": "E",
+          "agree": true,
+          "p_agree": 0.9922
+        },
+        {
+          "record_id": "C0001_1d",
+          "section": "F",
+          "agree": true,
+          "p_agree": 0.9823
+        },
+        {
+          "record_id": "C0001_1e",
+          "section": "C",
+          "agree": true,
+          "p_agree": 0.9989
+        },
+        {
+          "record_id": "C0001_1e",
+          "section": "E",
+          "agree": true,
+          "p_agree": 0.9897
+        },
+        {
+          "record_id": "C0001_1e",
+          "section": "F",
+          "agree": true,
+          "p_agree": 0.9958
+        },
+        {
+          "record_id": "C0001_1f",
+          "section": "B",
+          "agree": true,
+          "p_agree": 0.9565
+        },
+        {
+          "record_id": "C0001_1f",
+          "section": "C",
+          "agree": true,
+          "p_agree": 0.9989
+        },
+        {
+          "record_id": "C0001_1f",
+          "section": "E",
+          "agree": true,
+          "p_agree": 0.9922
+        },
+        {
+          "record_id": "C0001_1f",
+          "section": "F",
+          "agree": true,
+          "p_agree": 0.9969
+        },
+        {
+          "record_id": "C002_1a",
+          "section": "A1",
+          "agree": true,
+          "p_agree": 0.976
+        },
+        {
+          "record_id": "C002_1a",
+          "section": "C",
+          "agree": true,
+          "p_agree": 0.9942
+        },
+        {
+          "record_id": "C002_1b",
+          "section": "B",
+          "agree": true,
+          "p_agree": 0.9974
+        },
+        {
+          "record_id": "C002_1b",
+          "section": "E",
+          "agree": true,
+          "p_agree": 0.9908
+        },
+        {
+          "record_id": "C002_1c",
+          "section": "A1",
+          "agree": false,
+          "p_agree": 0.268
+        },
+        {
+          "record_id": "C002_1c",
+          "section": "B",
+          "agree": true,
+          "p_agree": 0.9974
+        },
+        {
+          "record_id": "C002_1c",
+          "section": "F",
+          "agree": true,
+          "p_agree": 0.7572
+        },
+        {
+          "record_id": "C003_1a",
+          "section": "A1",
+          "agree": true,
+          "p_agree": 0.945
+        },
+        {
+          "record_id": "C003_1a",
+          "section": "B",
+          "agree": true,
+          "p_agree": 0.9974
+        },
+        {
+          "record_id": "C003_1a",
+          "section": "E",
+          "agree": true,
+          "p_agree": 0.9922
+        },
+        {
+          "record_id": "C003_1a",
+          "section": "F",
+          "agree": true,
+          "p_agree": 0.6313
+        },
+        {
+          "record_id": "C003_1b",
+          "section": "A1",
+          "agree": true,
+          "p_agree": 0.9384
+        },
+        {
+          "record_id": "C003_1b",
+          "section": "B",
+          "agree": true,
+          "p_agree": 0.9762
+        },
+        {
+          "record_id": "C003_1b",
+          "section": "F",
+          "agree": true,
+          "p_agree": 0.9161
+        },
+        {
+          "record_id": "C003_1c",
+          "section": "A1",
+          "agree": true,
+          "p_agree": 0.9349
+        },
+        {
+          "record_id": "C003_1c",
+          "section": "B",
+          "agree": true,
+          "p_agree": 0.9944
+        },
+        {
+          "record_id": "C003_1c",
+          "section": "F",
+          "agree": false,
+          "p_agree": 0.4229
+        },
+        {
+          "record_id": "C005_1a",
+          "section": "F",
+          "agree": false,
+          "p_agree": 0.4981
+        },
+        {
+          "record_id": "C005_1b",
+          "section": "B",
+          "agree": true,
+          "p_agree": 0.9844
+        },
+        {
+          "record_id": "C005_1b",
+          "section": "F",
+          "agree": true,
+          "p_agree": 0.911
+        }
+      ]
+    },
+    "reasoning": {
+      "overall": {
+        "sections": 85,
+        "without_verdict": 0,
+        "overflow": 0,
+        "right": 41,
+        "wrong": 44,
+        "auroc_verifier": 0.5299334811529933,
+        "approved_errors": 42,
+        "rejected_right": 0
+      },
+      "per_section": {
+        "A1": {
+          "sections": 17,
+          "without_verdict": 0,
+          "overflow": 0,
+          "right": 10,
+          "wrong": 7,
+          "auroc_verifier": 0.55,
+          "approved_errors": 7,
+          "rejected_right": 0
+        },
+        "B": {
+          "sections": 17,
+          "without_verdict": 0,
+          "overflow": 0,
+          "right": 9,
+          "wrong": 8,
+          "auroc_verifier": 0.375,
+          "approved_errors": 8,
+          "rejected_right": 0
+        },
+        "C": {
+          "sections": 17,
+          "without_verdict": 0,
+          "overflow": 0,
+          "right": 9,
+          "wrong": 8,
+          "auroc_verifier": 0.5694444444444444,
+          "approved_errors": 6,
+          "rejected_right": 0
+        },
+        "E": {
+          "sections": 17,
+          "without_verdict": 0,
+          "overflow": 0,
+          "right": 9,
+          "wrong": 8,
+          "auroc_verifier": 0.3055555555555556,
+          "approved_errors": 8,
+          "rejected_right": 0
+        },
+        "F": {
+          "sections": 17,
+          "without_verdict": 0,
+          "overflow": 0,
+          "right": 4,
+          "wrong": 13,
+          "auroc_verifier": 0.7884615384615384,
+          "approved_errors": 13,
+          "rejected_right": 0
+        }
+      },
+      "errors": [
+        {
+          "record_id": "C0001_0_0",
+          "section": "C",
+          "agree": false,
+          "p_agree": 0.2739
+        },
+        {
+          "record_id": "C0001_0_0",
+          "section": "E",
+          "agree": true,
+          "p_agree": 0.9989
+        },
+        {
+          "record_id": "C0001_0_0",
+          "section": "F",
+          "agree": true,
+          "p_agree": 0.9992
+        },
+        {
+          "record_id": "C0001_1a",
+          "section": "A1",
+          "agree": true,
+          "p_agree": 0.9992
+        },
+        {
+          "record_id": "C0001_1a",
+          "section": "C",
+          "agree": true,
+          "p_agree": 0.999
+        },
+        {
+          "record_id": "C0001_1a",
+          "section": "E",
+          "agree": true,
+          "p_agree": 0.9986
+        },
+        {
+          "record_id": "C0001_1a",
+          "section": "F",
+          "agree": true,
+          "p_agree": 0.9986
+        },
+        {
+          "record_id": "C0001_1b",
+          "section": "A1",
+          "agree": true,
+          "p_agree": 0.9975
+        },
+        {
+          "record_id": "C0001_1b",
+          "section": "C",
+          "agree": true,
+          "p_agree": 0.9984
+        },
+        {
+          "record_id": "C0001_1b",
+          "section": "E",
+          "agree": true,
+          "p_agree": 0.9957
+        },
+        {
+          "record_id": "C0001_1b",
+          "section": "F",
+          "agree": true,
+          "p_agree": 0.7726
+        },
+        {
+          "record_id": "C0001_1c",
+          "section": "C",
+          "agree": false,
+          "p_agree": 0.37
+        },
+        {
+          "record_id": "C0001_1c",
+          "section": "F",
+          "agree": true,
+          "p_agree": 0.9769
+        },
+        {
+          "record_id": "C0001_1d",
+          "section": "B",
+          "agree": true,
+          "p_agree": 0.9992
+        },
+        {
+          "record_id": "C0001_1d",
+          "section": "C",
+          "agree": true,
+          "p_agree": 0.919
+        },
+        {
+          "record_id": "C0001_1d",
+          "section": "E",
+          "agree": true,
+          "p_agree": 0.999
+        },
+        {
+          "record_id": "C0001_1d",
+          "section": "F",
+          "agree": true,
+          "p_agree": 0.9408
+        },
+        {
+          "record_id": "C0001_1e",
+          "section": "C",
+          "agree": true,
+          "p_agree": 0.9988
+        },
+        {
+          "record_id": "C0001_1e",
+          "section": "E",
+          "agree": true,
+          "p_agree": 0.9981
+        },
+        {
+          "record_id": "C0001_1e",
+          "section": "F",
+          "agree": true,
+          "p_agree": 0.9988
+        },
+        {
+          "record_id": "C0001_1f",
+          "section": "B",
+          "agree": true,
+          "p_agree": 0.9984
+        },
+        {
+          "record_id": "C0001_1f",
+          "section": "C",
+          "agree": true,
+          "p_agree": 0.9969
+        },
+        {
+          "record_id": "C0001_1f",
+          "section": "E",
+          "agree": true,
+          "p_agree": 0.9993
+        },
+        {
+          "record_id": "C0001_1f",
+          "section": "F",
+          "agree": true,
+          "p_agree": 0.9995
+        },
+        {
+          "record_id": "C002_1a",
+          "section": "A1",
+          "agree": true,
+          "p_agree": 0.9991
+        },
+        {
+          "record_id": "C002_1a",
+          "section": "C",
+          "agree": true,
+          "p_agree": 0.9989
+        },
+        {
+          "record_id": "C002_1b",
+          "section": "B",
+          "agree": true,
+          "p_agree": 0.9993
+        },
+        {
+          "record_id": "C002_1b",
+          "section": "E",
+          "agree": true,
+          "p_agree": 0.999
+        },
+        {
+          "record_id": "C002_1c",
+          "section": "A1",
+          "agree": true,
+          "p_agree": 0.6521
+        },
+        {
+          "record_id": "C002_1c",
+          "section": "B",
+          "agree": true,
+          "p_agree": 0.9976
+        },
+        {
+          "record_id": "C002_1c",
+          "section": "F",
+          "agree": true,
+          "p_agree": 0.9703
+        },
+        {
+          "record_id": "C003_1a",
+          "section": "A1",
+          "agree": true,
+          "p_agree": 0.999
+        },
+        {
+          "record_id": "C003_1a",
+          "section": "B",
+          "agree": true,
+          "p_agree": 0.9993
+        },
+        {
+          "record_id": "C003_1a",
+          "section": "E",
+          "agree": true,
+          "p_agree": 0.9962
+        },
+        {
+          "record_id": "C003_1a",
+          "section": "F",
+          "agree": true,
+          "p_agree": 0.9746
+        },
+        {
+          "record_id": "C003_1b",
+          "section": "A1",
+          "agree": true,
+          "p_agree": 0.929
+        },
+        {
+          "record_id": "C003_1b",
+          "section": "B",
+          "agree": true,
+          "p_agree": 0.9992
+        },
+        {
+          "record_id": "C003_1b",
+          "section": "F",
+          "agree": true,
+          "p_agree": 0.9225
+        },
+        {
+          "record_id": "C003_1c",
+          "section": "A1",
+          "agree": true,
+          "p_agree": 0.9966
+        },
+        {
+          "record_id": "C003_1c",
+          "section": "B",
+          "agree": true,
+          "p_agree": 0.9997
+        },
+        {
+          "record_id": "C003_1c",
+          "section": "F",
+          "agree": true,
+          "p_agree": 0.76
+        },
+        {
+          "record_id": "C005_1a",
+          "section": "F",
+          "agree": true,
+          "p_agree": 0.5031
+        },
+        {
+          "record_id": "C005_1b",
+          "section": "B",
+          "agree": true,
+          "p_agree": 0.9333
+        },
+        {
+          "record_id": "C005_1b",
+          "section": "F",
+          "agree": true,
+          "p_agree": 0.7508
+        }
+      ]
+    }
+  },
+  "variant_disagreements": {
+    "wrong_approved_only_by_reasoning": [
+      {
+        "record_id": "C0001_1b",
+        "section": "F",
+        "p_agree_answer": 0.3977,
+        "p_agree_reasoning": 0.7726
+      },
+      {
+        "record_id": "C0001_1d",
+        "section": "C",
+        "p_agree_answer": 0.1483,
+        "p_agree_reasoning": 0.919
+      },
+      {
+        "record_id": "C002_1c",
+        "section": "A1",
+        "p_agree_answer": 0.268,
+        "p_agree_reasoning": 0.6521
+      },
+      {
+        "record_id": "C003_1c",
+        "section": "F",
+        "p_agree_answer": 0.4229,
+        "p_agree_reasoning": 0.76
+      },
+      {
+        "record_id": "C005_1a",
+        "section": "F",
+        "p_agree_answer": 0.4981,
+        "p_agree_reasoning": 0.5031
+      }
+    ],
+    "right_approved_only_by_reasoning": [
+      {
+        "record_id": "C002_1b",
+        "section": "C",
+        "p_agree_answer": 0.1484,
+        "p_agree_reasoning": 0.7883
+      },
+      {
+        "record_id": "C003_1b",
+        "section": "C",
+        "p_agree_answer": 0.3763,
+        "p_agree_reasoning": 0.9974
+      },
+      {
+        "record_id": "C005_1a",
+        "section": "A1",
+        "p_agree_answer": 0.4946,
+        "p_agree_reasoning": 0.9575
+      }
+    ]
+  },
+  "hint_disagreements": {
+    "answer": {},
+    "reasoning": {}
+  }
+}

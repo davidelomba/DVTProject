@@ -1,0 +1,80 @@
+{
+  "record_id": "C0001_1d",
+  "a1": {
+    "symptoms": [
+      "unknown if any of 1-5 present or absent"
+    ]
+  },
+  "b": {
+    "features": [
+      "distant heart sounds (infant and children)"
+    ]
+  },
+  "c": {
+    "markers": [
+      "None tested, or tested but no results or unknown if tested"
+    ]
+  },
+  "e": {
+    "findings": [
+      "Paroxysmal or sustained atrial or ventricular arrhythmias (premature atrial or ventricular beats, and/or supraventricular or ventricular tachycardia, interventricular conduction delay, abnormal Q waves, low voltages): :e.g (Sinus tachycardia, SVT, atrial fibrillation, PVCs, VT, VF)"
+    ]
+  },
+  "f": {
+    "findings": [
+      "ECHO not done, or done but no results or unknown if done"
+    ]
+  },
+  "_verifier": {
+    "A1": {
+      "answer": {
+        "agree": true,
+        "p_agree": 0.9905
+      },
+      "reasoning": {
+        "agree": true,
+        "p_agree": 0.9993
+      }
+    },
+    "B": {
+      "answer": {
+        "agree": false,
+        "p_agree": 0.423
+      },
+      "reasoning": {
+        "agree": true,
+        "p_agree": 0.8736
+      }
+    },
+    "C": {
+      "answer": {
+        "agree": true,
+        "p_agree": 0.9989
+      },
+      "reasoning": {
+        "agree": true,
+        "p_agree": 0.9987
+      }
+    },
+    "E": {
+      "answer": {
+        "agree": true,
+        "p_agree": 0.8307
+      },
+      "reasoning": {
+        "agree": true,
+        "p_agree": 0.9478
+      }
+    },
+    "F": {
+      "answer": {
+        "agree": true,
+        "p_agree": 0.997
+      },
+      "reasoning": {
+        "agree": true,
+        "p_agree": 0.9992
+      }
+    }
+  }
+}

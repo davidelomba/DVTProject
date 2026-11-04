@@ -1,0 +1,84 @@
+{
+  "record_id": "C003_1a",
+  "a1": {
+    "symptoms": [
+      "palpitation"
+    ]
+  },
+  "b": {
+    "features": [
+      "pericardial friction rub"
+    ]
+  },
+  "c": {
+    "markers": [
+      "ESR elevated",
+      "CRP elevated",
+      "High sensitivity (hs) CRP elevated",
+      "D-Dimer elevated"
+    ]
+  },
+  "e": {
+    "findings": [
+      "No abnormalities seen on ECG"
+    ]
+  },
+  "f": {
+    "findings": [
+      "New focal or diffuse left or right ventricular function abnormalities (e.g. decreased ejection fraction)",
+      "Global systolic or diastolic function depression/abnormality - (*Decreased longitudinal and circumferential strain and strain rates on tissue Doppler)"
+    ]
+  },
+  "_verifier": {
+    "A1": {
+      "answer": {
+        "agree": true,
+        "p_agree": 0.9994
+      },
+      "reasoning": {
+        "agree": true,
+        "p_agree": 0.9998
+      }
+    },
+    "B": {
+      "answer": {
+        "agree": true,
+        "p_agree": 0.9851
+      },
+      "reasoning": {
+        "agree": true,
+        "p_agree": 0.9978
+      }
+    },
+    "C": {
+      "answer": {
+        "agree": true,
+        "p_agree": 0.9987
+      },
+      "reasoning": {
+        "agree": true,
+        "p_agree": 0.9999
+      }
+    },
+    "E": {
+      "answer": {
+        "agree": true,
+        "p_agree": 0.9881
+      },
+      "reasoning": {
+        "agree": true,
+        "p_agree": 0.9049
+      }
+    },
+    "F": {
+      "answer": {
+        "agree": false,
+        "p_agree": 0.4658
+      },
+      "reasoning": {
+        "agree": true,
+        "p_agree": 0.5007
+      }
+    }
+  }
+}

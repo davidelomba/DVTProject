@@ -1,0 +1,83 @@
+{
+  "record_id": "C002_1a",
+  "a1": {
+    "symptoms": [
+      "unknown if any of 1-5 present or absent"
+    ]
+  },
+  "b": {
+    "features": [
+      "none of the above"
+    ]
+  },
+  "c": {
+    "markers": [
+      "ESR elevated",
+      "CRP elevated",
+      "High sensitivity (hs) CRP elevated"
+    ]
+  },
+  "e": {
+    "findings": [
+      "ST, segment or T, wave abnormalities (elevation or inversion)"
+    ]
+  },
+  "f": {
+    "findings": [
+      "New focal or diffuse left or right ventricular function abnormalities (e.g. decreased ejection fraction)",
+      "Segmental wall motion abnormalities"
+    ]
+  },
+  "_verifier": {
+    "A1": {
+      "answer": {
+        "agree": true,
+        "p_agree": 0.976
+      },
+      "reasoning": {
+        "agree": true,
+        "p_agree": 0.9991
+      }
+    },
+    "B": {
+      "answer": {
+        "agree": true,
+        "p_agree": 0.9871
+      },
+      "reasoning": {
+        "agree": true,
+        "p_agree": 0.6089
+      }
+    },
+    "C": {
+      "answer": {
+        "agree": true,
+        "p_agree": 0.9942
+      },
+      "reasoning": {
+        "agree": true,
+        "p_agree": 0.9989
+      }
+    },
+    "E": {
+      "answer": {
+        "agree": true,
+        "p_agree": 0.9938
+      },
+      "reasoning": {
+        "agree": true,
+        "p_agree": 0.9974
+      }
+    },
+    "F": {
+      "answer": {
+        "agree": true,
+        "p_agree": 0.9868
+      },
+      "reasoning": {
+        "agree": true,
+        "p_agree": 0.978
+      }
+    }
+  }
+}

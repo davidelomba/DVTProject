@@ -1,0 +1,80 @@
+{
+  "record_id": "C0001_1d",
+  "a1": {
+    "symptoms": [
+      "unknown if any of 1-5 present or absent"
+    ]
+  },
+  "b": {
+    "features": [
+      "pericardial friction rub"
+    ]
+  },
+  "c": {
+    "markers": [
+      "None tested, or tested but no results or unknown if tested"
+    ]
+  },
+  "e": {
+    "findings": [
+      "ECG not done, or done but no results available or unknown if done"
+    ]
+  },
+  "f": {
+    "findings": [
+      "No abnormalities seen on ECHO"
+    ]
+  },
+  "_verifier": {
+    "A1": {
+      "answer": {
+        "agree": true,
+        "p_agree": 0.8877
+      },
+      "reasoning": {
+        "agree": true,
+        "p_agree": 0.9993
+      }
+    },
+    "B": {
+      "answer": {
+        "agree": true,
+        "p_agree": 0.9897
+      },
+      "reasoning": {
+        "agree": true,
+        "p_agree": 0.9995
+      }
+    },
+    "C": {
+      "answer": {
+        "agree": false,
+        "p_agree": 0.2385
+      },
+      "reasoning": {
+        "agree": false,
+        "p_agree": 0.2935
+      }
+    },
+    "E": {
+      "answer": {
+        "agree": true,
+        "p_agree": 0.9922
+      },
+      "reasoning": {
+        "agree": true,
+        "p_agree": 0.9991
+      }
+    },
+    "F": {
+      "answer": {
+        "agree": true,
+        "p_agree": 0.9929
+      },
+      "reasoning": {
+        "agree": true,
+        "p_agree": 0.9894
+      }
+    }
+  }
+}

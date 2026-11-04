@@ -1,0 +1,81 @@
+{
+  "record_id": "C002_1c",
+  "a1": {
+    "symptoms": [
+      "palpitation",
+      "dyspnea at rest, with exercise or lying down"
+    ]
+  },
+  "b": {
+    "features": [
+      "unknown if any of 1-3 present or absent"
+    ]
+  },
+  "c": {
+    "markers": [
+      "None tested, or tested but no results or unknown if tested"
+    ]
+  },
+  "e": {
+    "findings": [
+      "ST, segment or T, wave abnormalities (elevation or inversion)"
+    ]
+  },
+  "f": {
+    "findings": [
+      "No abnormalities seen on ECHO"
+    ]
+  },
+  "_verifier": {
+    "A1": {
+      "answer": {
+        "agree": true,
+        "p_agree": 0.9996
+      },
+      "reasoning": {
+        "agree": true,
+        "p_agree": 0.9999
+      }
+    },
+    "B": {
+      "answer": {
+        "agree": true,
+        "p_agree": 0.9982
+      },
+      "reasoning": {
+        "agree": true,
+        "p_agree": 0.9986
+      }
+    },
+    "C": {
+      "answer": {
+        "agree": true,
+        "p_agree": 0.905
+      },
+      "reasoning": {
+        "agree": true,
+        "p_agree": 0.9881
+      }
+    },
+    "E": {
+      "answer": {
+        "agree": true,
+        "p_agree": 0.99
+      },
+      "reasoning": {
+        "agree": true,
+        "p_agree": 0.9904
+      }
+    },
+    "F": {
+      "answer": {
+        "agree": true,
+        "p_agree": 0.9937
+      },
+      "reasoning": {
+        "agree": true,
+        "p_agree": 0.9985
+      }
+    }
+  }
+}

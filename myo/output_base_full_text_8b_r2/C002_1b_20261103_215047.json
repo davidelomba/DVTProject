@@ -1,0 +1,81 @@
+{
+  "record_id": "C002_1b",
+  "a1": {
+    "symptoms": [
+      "unknown if any of 1-5 present or absent"
+    ]
+  },
+  "b": {
+    "features": [
+      "none of the above"
+    ]
+  },
+  "c": {
+    "markers": [
+      "ESR elevated"
+    ]
+  },
+  "e": {
+    "findings": [
+      "ECG not done, or done but no results available or unknown if done"
+    ]
+  },
+  "f": {
+    "findings": [
+      "New focal or diffuse left or right ventricular function abnormalities (e.g. decreased ejection fraction)",
+      "Segmental wall motion abnormalities"
+    ]
+  },
+  "_verifier": {
+    "A1": {
+      "answer": {
+        "agree": true,
+        "p_agree": 0.933
+      },
+      "reasoning": {
+        "agree": true,
+        "p_agree": 0.9994
+      }
+    },
+    "B": {
+      "answer": {
+        "agree": true,
+        "p_agree": 0.9601
+      },
+      "reasoning": {
+        "agree": false,
+        "p_agree": 0.3113
+      }
+    },
+    "C": {
+      "answer": {
+        "agree": true,
+        "p_agree": 0.9995
+      },
+      "reasoning": {
+        "agree": true,
+        "p_agree": 0.9995
+      }
+    },
+    "E": {
+      "answer": {
+        "agree": true,
+        "p_agree": 0.9922
+      },
+      "reasoning": {
+        "agree": true,
+        "p_agree": 0.9989
+      }
+    },
+    "F": {
+      "answer": {
+        "agree": true,
+        "p_agree": 0.9855
+      },
+      "reasoning": {
+        "agree": true,
+        "p_agree": 0.9951
+      }
+    }
+  }
+}
