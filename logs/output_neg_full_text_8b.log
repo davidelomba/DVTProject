@@ -1,0 +1,76 @@
+Found 40 synthetic records. Running pipeline (EXTRACTOR_MODE='full_text', evaluator='qwen3.6:27b') into output_neg_full_text_8b...
+
+[1/40] SYN_01_lower_dvt_doppler_v2 ...
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+Loading weights:   0%|          | 0/199 [00:00<?, ?it/s]Loading weights: 100%|██████████| 199/199 [00:00<00:00, 5943.22it/s]
+
+=== Section A1 ===
+[A1] Agent 1 (extractor, mode=full_text) searching the clinical record...
+[A1] Agent 1 done in 6.1s
+[A1] Agent 2 (evaluator) filling in the schema...
+[A1] Agent 2 done in 16.5s
+[A1] filled in: answer='No autopsy done, unknown if done, or done but results unavailable'
+
+=== Section A2 ===
+[A2] Agent 1 (extractor, mode=full_text) searching the clinical record...
+[A2] Agent 1 done in 5.7s
+[A2] Agent 2 (evaluator) filling in the schema...
+[A2] Agent 2 done in 16.7s
+[A2] filled in: answer='No surgical procedure done; or, done but either did not confirm presence of DVT or findings unknown; or unknown if done'
+
+=== Section A3_1 ===
+[A3_1] Agent 1 (extractor, mode=full_text) searching the clinical record...
+[A3_1] Agent 1 done in 5.7s
+[A3_1] Agent 2 (evaluator) filling in the schema...
+[A3_1] Agent 2 done in 16.4s
+[A3_1] filled in: answer='≥1 imaging study was done and confirmed DVT'
+
+=== Section A3_2 ===
+[A3_2] Agent 1 (extractor, mode=full_text) searching the clinical record...
+[A3_2] Agent 1 done in 5.7s
+[A3_2] Agent 2 (evaluator) filling in the schema...
+[A3_2] Agent 2 done in 18.2s
+[A3_2] filled in: studies=['Doppler/Duplex Ultrasound']
+
+=== Section B1_1 ===
+[B1_1] Agent 1 (extractor, mode=full_text) searching the clinical record...
+[B1_1] Agent 1 done in 5.7s
+[B1_1] Agent 2 (evaluator) filling in the schema...
+[B1_1] Agent 2 done in 17.6s
+[B1_1] filled in: answer='It is unknown if there was a report of a DVT syndrome'
+
+=== Section B1_2 ===
+[B1_2] Agent 1 (extractor, mode=full_text) searching the clinical record...
+[B1_2] Agent 1 done in 5.7s
+[B1_2] Agent 2 (evaluator) filling in the schema...
+[B1_2] Agent 2 done in 16.2s
+[B1_2] filled in: types=['Lower extremity DVT']
+
+=== Section B2 ===
+[B2] Agent 1 (extractor, mode=full_text) searching the clinical record...
+[B2] Agent 1 done in 5.3s
+[B2] Agent 2 (evaluator) filling in the schema...
+[B2] Agent 2 done in 16.3s
+[B2] filled in: symptoms=['Calf pain or tenderness']
+
+=== Section C ===
+[C] Agent 1 (extractor, mode=full_text) searching the clinical record...
+[C] Agent 1 done in 5.5s
+[C] Agent 2 (evaluator) filling in the schema...
+[C] Agent 2 done in 15.4s
+[C] filled in: answer="D-dimer exceeded test lab's upper limit of normal."
+
+=== Section F ===
+[F] Agent 1 (extractor, mode=full_text) searching the clinical record...
+[F] Agent 1 done in 5.7s
+[F] Agent 2 (evaluator) filling in the schema...
+[F] Agent 2 done in 15.3s
+[F] filled in: answer='No'
+
+=== Section X ===
+[X] Agent 1 (extractor, mode=full_text) searching the clinical record...
+[X] Agent 1 done in 5.4s
+[X] Agent 2 (evaluator) filling in the schema...
+[X] Agent 2 done in 19.4s
+[X] filled in: answer='No alternative diagnosis was found to explain the acute illness'
+[CROSS-SECTION RULE] 'b2' triggered. Forcing 'b1_1' to '≥1 symptom or sign of DVT was reported'.
