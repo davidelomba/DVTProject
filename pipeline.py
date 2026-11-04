@@ -150,6 +150,7 @@ def _run_config_snapshot() -> dict:
 
     return {
         "extractor_mode": config.EXTRACTOR_MODE,
+        "extractor_negation_rule": config.EXTRACTOR_NEGATION_RULE,
         "brighton_context_enabled": config.BRIGHTON_CONTEXT_ENABLED,
         "section_descriptions_enabled": config.SECTION_DESCRIPTIONS_ENABLED,
         "section_hints_enabled": config.SECTION_HINTS_ENABLED,

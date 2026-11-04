@@ -77,6 +77,13 @@ EXTRACTOR_MODE = "agentic_graph"  # "full_text", "rag", "agentic_graph", "raw_re
 
 AGENTIC_MAX_ITERATIONS = 5  # cap on tool calls per section, used by "agentic_graph" mode
 
+# Adds agents.NEGATION_RULE to the extractor prompt of "full_text" and "rag": a
+# fragment stating that something the criterion asks about is absent, negated,
+# normal or not done is copied like any other. "agentic_graph" passes the raw
+# tool observations to Agent 2 and is not affected. Recorded as
+# _run_config.extractor_negation_rule.
+EXTRACTOR_NEGATION_RULE = False
+
 # Chunking for the clinical record (EHR)
 # Only used when EXTRACTOR_MODE is "rag" or "agentic_graph"
 EHR_CHUNK_SIZE = 800

@@ -122,6 +122,12 @@ e cercare una query per sezione richiede pochi secondi.
 - `"raw_record"` — nessun Agent 1: Agent 2 legge il referto intero e non viene
   caricato alcun modello estrattore.
 
+`EXTRACTOR_NEGATION_RULE = False`: con `True` il prompt dell'estrattore di `full_text`
+e `rag` riceve anche `agents.NEGATION_RULE`, per cui un frammento che dice assente,
+negato, normale o non eseguito ciò che il criterio chiede va copiato come gli altri.
+`agentic_graph` passa ad Agent 2 i chunk grezzi e non ne è toccato. Registrato in
+`_run_config.extractor_negation_rule`.
+
 `BRIGHTON_CONTEXT_ENABLED = True` decide se Agent 2 riceve il contesto della
 linea guida; a `False` risponde dalla sola evidenza e dalle opzioni.
 `SECTION_DESCRIPTIONS_ENABLED = False` decide se sopra le opzioni numerate compare
@@ -327,6 +333,13 @@ in italiano senza tradurlo, considerare rilevante solo ciò che riguarda lo stes
 test o evento specifico chiesto dal criterio, e rispondere esattamente
 `NO RELEVANT EVIDENCE FOUND.` se nulla è pertinente. Il prompt include un
 esempio corretto e uno sbagliato.
+
+**`NEGATION_RULE`** è la regola 5, aggiunta al prompt quando
+`config.EXTRACTOR_NEGATION_RULE` è `True`: un frammento che dice assente, negato,
+normale o non eseguito ciò che il criterio chiede è pertinente e va copiato.
+**`baseline_extractor_prompt()`** restituisce il prompt di `full_text` e `rag`:
+`EXTRACTOR_SYSTEM_PROMPT`, letto al momento della chiamata così che un dominio che
+lo sostituisce venga rispettato, seguito da `NEGATION_RULE` se l'impostazione è attiva.
 
 **`extract_evidence(llm, ehr_vectorstore, criterion_query)`** — modalità `rag`.
 Retrieval a `k` fisso, poi il modello copia i frammenti rilevanti dai chunk
@@ -669,7 +682,8 @@ senza questo due run le cui query sono state riscritte in mezzo porterebbero la
 stessa firma.
 
 **`_run_config_snapshot(...)`** cattura tutto ciò che determina cosa una run
-produce: modalità, contesto della linea guida, intestazioni di sezione,
+produce: modalità, regola sulle negazioni dell'estrattore
+(`extractor_negation_rule`), contesto della linea guida, intestazioni di sezione,
 hint e query con i rispettivi fingerprint, le sezioni che ricevono la clausola
 sulla risposta vuota (`empty_answer_sections`, da `agents.EMPTY_ANSWER_SECTIONS`,
 che l'impronta degli hint non copre), le impostazioni dell'Agent 3
@@ -1264,3 +1278,18 @@ verificatore e sezioni fallite. Alla fine lancia `myo/evaluate_myo.py` ed
 `evaluate_verifier.py` su ogni run e `agreement_runs.py` sulle tre di ogni braccio.
 Variabili d'ambiente: `ARMS` sceglie i bracci, `EVAL_ONLY=1` salta le run, `PYTHON`
 indica l'interprete; attiva `.venv` se esiste.
+
+## 22. `run_dvt_baselines_neg.sh`
+
+Script bash per mari che esegue sulla TVP le quattro baseline con estrattore con
+`EXTRACTOR_NEGATION_RULE` attivo: `full_text_8b` e `rag_8b`
+(`llama3:8b-instruct-q4_0`), `full_text_27b` e `rag_27b` (il tag di Agente 1), ai
+parametri del riferimento (1024/4096, chunk 800/150/5, temperatura 0), con hint e
+query del codice e il verificatore. `config.py` non viene modificato: modalità,
+estrattore, token e regola sono impostati in memoria prima di
+`run_synthetic_records.main`. Il preflight controlla che i modelli siano scaricati,
+che le cartelle `output_neg_<braccio>` siano vuote, che l'impronta degli hint sia
+`a78dc29e962f`, chunk, temperatura, verificatore e contesto, e che la regola compaia
+nel prompt dell'estrattore. Alla fine lancia `evaluate_predictions.py`,
+`evaluate_verifier.py` e `compare_runs.py` contro `output_a32_ref`. Variabili
+d'ambiente: `ARMS`, `EVAL_ONLY=1`, `PYTHON`.

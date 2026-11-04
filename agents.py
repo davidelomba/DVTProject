@@ -77,6 +77,27 @@ INCORRECT: Here is the extracted relevant fragment: "Eseguito ecocolordoppler ve
 """
 
 
+# Appended to the extractor prompt of "full_text" and "rag" when
+# config.EXTRACTOR_NEGATION_RULE is True.
+NEGATION_RULE = """
+5. A fragment stating that something the criterion asks about is absent, negated,
+   normal or not done is relevant too: copy it like any other (e.g. "nessun edema
+   degli arti inferiori", "eupnoico", "ECG non eseguito").
+"""
+
+
+def baseline_extractor_prompt() -> str:
+    """The system prompt of the "full_text" and "rag" extractor.
+
+    EXTRACTOR_SYSTEM_PROMPT, read at call time so a domain that replaces it is
+    honoured, followed by NEGATION_RULE when config.EXTRACTOR_NEGATION_RULE is
+    True.
+    """
+    if config.EXTRACTOR_NEGATION_RULE:
+        return EXTRACTOR_SYSTEM_PROMPT + NEGATION_RULE
+    return EXTRACTOR_SYSTEM_PROMPT
+
+
 def extract_evidence(llm: ChatOllama, ehr_vectorstore, criterion_query: str) -> str:
     """Extracts evidence via retrieval (config.EXTRACTOR_MODE == "rag").
 
@@ -104,7 +125,7 @@ def extract_evidence(llm: ChatOllama, ehr_vectorstore, criterion_query: str) -> 
         return NO_EVIDENCE
 
     messages = [
-        ("system", EXTRACTOR_SYSTEM_PROMPT),
+        ("system", baseline_extractor_prompt()),
         ("human", f"Criterion to investigate: {criterion_query}\n\nClinical record fragments:\n{context}"),
     ]
     response = llm.invoke(messages)
@@ -128,7 +149,7 @@ def extract_evidence_full_text(llm: ChatOllama, full_ehr_text: str, criterion_qu
         The extracted fragments as returned by the model.
     """
     messages = [
-        ("system", EXTRACTOR_SYSTEM_PROMPT),
+        ("system", baseline_extractor_prompt()),
         ("human", f"Criterion to investigate: {criterion_query}\n\nFull Clinical Record:\n{full_ehr_text}"),
     ]
     response = llm.invoke(messages)

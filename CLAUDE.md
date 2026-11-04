@@ -78,6 +78,11 @@ When something is unverified, say so.
   `agreement_runs.py` measures agreement between repeated runs. `run_myo.py
   --mode` runs `raw_record`, `full_text` or `rag` instead of `agentic_graph`, and
   `--extractor-model` sets the extractor of the last two, Agent 1's tag by default.
+- `config.EXTRACTOR_NEGATION_RULE`, False by default and recorded as
+  `_run_config.extractor_negation_rule`, appends `agents.NEGATION_RULE` to the
+  extractor prompt of `full_text` and `rag`, so that a fragment stating that
+  something the criterion asks about is absent, negated, normal or not done is
+  copied like any other. `agentic_graph` is not affected.
 - `docs/DOCUMENTAZIONE_CODICE.md` describes the code module by module,
   `docs/RISULTATI_SPERIMENTALI.md` holds every measurement with the
   configuration that produced it, and `docs/SCALETTA_TESI.md` the thesis
@@ -144,6 +149,7 @@ python myo/export_prompts_myo.py                  # myocarditis texts -> myo/pro
 bash run_myo_t05.sh                               # the three runs at 0.5, checks and scoring, on mari
 python myo/run_myo.py --guideline --mode rag --extractor-model llama3:8b-instruct-q4_0 --output-dir ./myo/output_x   # a baseline mode
 bash run_myo_baselines.sh                         # the DVT baselines on myocarditis, three runs each, on mari
+bash run_dvt_baselines_neg.sh                     # the four DVT baselines with an extractor, EXTRACTOR_NEGATION_RULE on, on mari
 ```
 
 `evaluate_verifier` and `agreement_runs` take `--ground-truth ./myo/data/records`
@@ -1196,6 +1202,29 @@ not say which governs, which is what the clinician question below is asking.
   ER − GR is −61, −8, −19, 0 for qwen and −109, −58 for medgemma; as a guide qwen `answer`
   catches both errors by rereading 65 sections of 400, 3.1% against a 0.5% error rate. One
   section inherits its verdict from a rule (SYN_19 A3_2). About 1 second a request.
+- **On the DVT baselines the verifier is no filter either, and as a guide it always
+  enriches the flagged set.** `run_replay_baselines.sh`, qwen3.6:27b, `answer` and
+  `reasoning`, on `output_full_text`, `output_rag_nogate`, `output_full_text_27b_nogate`
+  and `output_a32_raw` (`<run>_judge_qwen`); the `_nogate` copies restore X, on 3 and 2
+  records, to the answer written before the keyword gate and rescore at 343/400 and
+  381/399, the published reconstructed figures. Answers unchanged; Ollama 0.40.7 for the
+  verifier. `answer` balance ER - GR -44, -43, -24, -54 (full_text 8B, rag 8B,
+  full_text 27B, raw_record), `reasoning` -11, -6, -6, -6, against -61 and -8 on the
+  reference. Errors among the rejected answers without the reasoning 26.6%, 20.5%,
+  21.4%, 5.0% against error rates of 15.3%, 14.3%, 4.5%, 1.25%. The rejected right
+  answers sit mostly in F, X, B1.1 and A3.2. Unlike myocarditis, where `answer` with the
+  27B extractor reached +13 and +10, full_text with the 27B stays at -24.
+- **rag with the 27B extractor at the reference parameters scores 384, beside full_text
+  with the 27B.** `run_dvt_rag27.sh`, `output_rag_27b`: rag, qwen3.6:27b as extractor,
+  evaluator and verifier, 1024/4096, 800/150/5, hints `a78dc29e962f`, queries
+  `f7ed731f7e7d`, Ollama 0.40.7 against 0.32.1 for the reference, so queries and Ollama
+  change together. 384/400, micro 96.0%, macro kappa 0.847, no failed section, 206
+  seconds a record with the verifier. F 33 (seven diagnoses without details answered
+  No, as in full_text with the 27B), A3_2 36, B1_1 38; differs from full_text 27B on 9
+  sections, from the double agent on 14. Empty evidence 147 of 400, right on 145; 99%
+  of fragments verbatim. X hits the 1024 cap on 52 calls, 26 sections retried, and stays
+  40 of 40. Verifier `answer` balance -26, Prec_ER 20.5% against a 4.0% error rate;
+  `reasoning` -4, no error rejected.
 - **On myocarditis the baselines with the 27B extractor match the reference, and
   the 8B collapses as on the DVT.** `run_myo_baselines.sh`, three runs each, every
   setting of the v4 series, mari, Ollama 0.40.7, checked on all 255 audit logs;
