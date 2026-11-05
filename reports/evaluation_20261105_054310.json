@@ -1,0 +1,227 @@
+{
+  "records_compared": 40,
+  "records_missing_prediction": [],
+  "sections": {
+    "A1": {
+      "compared": 40,
+      "missing": 0,
+      "exact_matches": 40,
+      "options": [
+        "Autopsy showed presence of DVT",
+        "Autopsy done but showed no evidence of DVT",
+        "No autopsy done, unknown if done, or done but results unavailable"
+      ],
+      "accuracy": 1.0,
+      "majority_baseline": 0.9,
+      "tp": 40,
+      "tn": 80,
+      "fp": 0,
+      "fn": 0,
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0,
+      "cohens_kappa": 1.0
+    },
+    "A2": {
+      "compared": 40,
+      "missing": 0,
+      "exact_matches": 38,
+      "options": [
+        "Thrombectomy related to DVT performed",
+        "Other procedure done that confirmed presence of DVT",
+        "No surgical procedure done; or, done but either did not confirm presence of DVT or findings unknown; or unknown if done"
+      ],
+      "accuracy": 0.95,
+      "majority_baseline": 0.9,
+      "tp": 38,
+      "tn": 78,
+      "fp": 2,
+      "fn": 2,
+      "precision": 0.95,
+      "recall": 0.95,
+      "f1": 0.95,
+      "cohens_kappa": 0.6491228070175439
+    },
+    "A3_1": {
+      "compared": 40,
+      "missing": 0,
+      "exact_matches": 38,
+      "options": [
+        "≥1 imaging study was done and confirmed DVT",
+        "≥1 imaging study was done but didn't confirm DVT",
+        "No imaging studies done, unknown if done, or done but results unknown"
+      ],
+      "accuracy": 0.95,
+      "majority_baseline": 0.425,
+      "tp": 38,
+      "tn": 78,
+      "fp": 2,
+      "fn": 2,
+      "precision": 0.95,
+      "recall": 0.95,
+      "f1": 0.95,
+      "cohens_kappa": 0.9203187250996016
+    },
+    "A3_2": {
+      "compared": 40,
+      "missing": 0,
+      "exact_matches": 36,
+      "options": [
+        "Compression ultrasonography",
+        "CT or MR venography",
+        "Contrast venography",
+        "Doppler/Duplex Ultrasound",
+        "Other"
+      ],
+      "accuracy": 0.9,
+      "majority_baseline": 0.575,
+      "tp": 16,
+      "tn": 180,
+      "fp": 0,
+      "fn": 4,
+      "precision": 1.0,
+      "recall": 0.8,
+      "f1": 0.8888888888888888,
+      "cohens_kappa": 0.8315789473684211
+    },
+    "B1_1": {
+      "compared": 40,
+      "missing": 0,
+      "exact_matches": 29,
+      "options": [
+        "≥1 symptom or sign of DVT was reported",
+        "There was no report of a recognized DVT syndrome",
+        "It is unknown if there was a report of a DVT syndrome"
+      ],
+      "accuracy": 0.725,
+      "majority_baseline": 0.725,
+      "tp": 29,
+      "tn": 69,
+      "fp": 11,
+      "fn": 11,
+      "precision": 0.725,
+      "recall": 0.725,
+      "f1": 0.725,
+      "cohens_kappa": 0.1682419659735349
+    },
+    "B1_2": {
+      "compared": 40,
+      "missing": 0,
+      "exact_matches": 35,
+      "options": [
+        "Lower extremity DVT",
+        "Upper extremity DVT"
+      ],
+      "accuracy": 0.875,
+      "majority_baseline": 0.55,
+      "tp": 26,
+      "tn": 48,
+      "fp": 5,
+      "fn": 1,
+      "precision": 0.8387096774193549,
+      "recall": 0.9629629629629629,
+      "f1": 0.896551724137931,
+      "cohens_kappa": 0.7698504027617952
+    },
+    "B2": {
+      "compared": 40,
+      "missing": 0,
+      "exact_matches": 35,
+      "options": [
+        "Calf pain or tenderness",
+        "Leg swelling or pitting oedema",
+        "Absent pulses in legs or arms",
+        "Redness, warmth, or pain in one or more extremities",
+        "None of the above were present or it is unknown if any of 1-4 were present"
+      ],
+      "accuracy": 0.875,
+      "majority_baseline": 0.4,
+      "tp": 60,
+      "tn": 133,
+      "fp": 3,
+      "fn": 4,
+      "precision": 0.9523809523809523,
+      "recall": 0.9375,
+      "f1": 0.9448818897637795,
+      "cohens_kappa": 0.8367346938775511
+    },
+    "C": {
+      "compared": 40,
+      "missing": 0,
+      "exact_matches": 40,
+      "options": [
+        "D-dimer exceeded test lab's upper limit of normal.",
+        "D-dimer tested and was within test lab's range of normal",
+        "D-dimer not tested, or tested but results unknown or not available"
+      ],
+      "accuracy": 1.0,
+      "majority_baseline": 0.475,
+      "tp": 40,
+      "tn": 80,
+      "fp": 0,
+      "fn": 0,
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0,
+      "cohens_kappa": 1.0
+    },
+    "F": {
+      "compared": 40,
+      "missing": 0,
+      "exact_matches": 32,
+      "options": [
+        "Yes",
+        "No"
+      ],
+      "accuracy": 0.8,
+      "majority_baseline": 0.825,
+      "tp": 32,
+      "tn": 32,
+      "fp": 8,
+      "fn": 8,
+      "precision": 0.8,
+      "recall": 0.8,
+      "f1": 0.8,
+      "cohens_kappa": -0.045751633986928164
+    },
+    "X": {
+      "compared": 39,
+      "missing": 1,
+      "exact_matches": 36,
+      "options": [
+        "An alternative diagnosis was found that explained the acute illness",
+        "No alternative diagnosis was found to explain the acute illness"
+      ],
+      "accuracy": 0.9230769230769231,
+      "majority_baseline": 0.7692307692307693,
+      "tp": 36,
+      "tn": 36,
+      "fp": 3,
+      "fn": 3,
+      "precision": 0.9230769230769231,
+      "recall": 0.9230769230769231,
+      "f1": 0.9230769230769231,
+      "cohens_kappa": 0.7547169811320754
+    }
+  },
+  "overall": {
+    "compared": 399,
+    "exact_matches": 359,
+    "tp": 355,
+    "tn": 814,
+    "fp": 34,
+    "fn": 35,
+    "accuracy": 0.899749373433584,
+    "precision": 0.9125964010282777,
+    "recall": 0.9102564102564102,
+    "f1": 0.9114249037227213,
+    "macro_precision": 0.9139167552877231,
+    "macro_recall": 0.9048539886039887,
+    "macro_f1": 0.9078399425867522,
+    "macro_accuracy": 0.8998076923076923,
+    "macro_kappa": 0.6884812889243594,
+    "macro_majority_baseline": 0.654423076923077
+  },
+  "ground_truth_dir": "/home/lombardi/DVTProject/data/synthetic_records",
+  "predictions_dir": "output_neg_rag_8b"
+}

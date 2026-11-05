@@ -1,0 +1,252 @@
+{
+  "records_compared": 40,
+  "sections": {
+    "A1": {
+      "compared": 40,
+      "changed": 0,
+      "correct_a": 40,
+      "correct_b": 40,
+      "stability": 1.0
+    },
+    "A2": {
+      "compared": 40,
+      "changed": 1,
+      "correct_a": 40,
+      "correct_b": 39,
+      "stability": 0.975
+    },
+    "A3_1": {
+      "compared": 40,
+      "changed": 1,
+      "correct_a": 40,
+      "correct_b": 39,
+      "stability": 0.975
+    },
+    "A3_2": {
+      "compared": 40,
+      "changed": 3,
+      "correct_a": 39,
+      "correct_b": 36,
+      "stability": 0.925
+    },
+    "B1_1": {
+      "compared": 40,
+      "changed": 4,
+      "correct_a": 39,
+      "correct_b": 35,
+      "stability": 0.9
+    },
+    "B1_2": {
+      "compared": 40,
+      "changed": 1,
+      "correct_a": 40,
+      "correct_b": 39,
+      "stability": 0.975
+    },
+    "B2": {
+      "compared": 40,
+      "changed": 0,
+      "correct_a": 40,
+      "correct_b": 40,
+      "stability": 1.0
+    },
+    "C": {
+      "compared": 40,
+      "changed": 0,
+      "correct_a": 40,
+      "correct_b": 40,
+      "stability": 1.0
+    },
+    "F": {
+      "compared": 40,
+      "changed": 7,
+      "correct_a": 40,
+      "correct_b": 33,
+      "stability": 0.825
+    },
+    "X": {
+      "compared": 40,
+      "changed": 0,
+      "correct_a": 40,
+      "correct_b": 40,
+      "stability": 1.0
+    }
+  },
+  "differences": [
+    {
+      "record_id": "SYN_10_unclear_sparse_record_v2",
+      "section": "F",
+      "run_a": [
+        "No"
+      ],
+      "run_b": [
+        "Yes"
+      ]
+    },
+    {
+      "record_id": "SYN_12_other_procedure_positive_v2",
+      "section": "A3_2",
+      "run_a": [
+        "Contrast venography",
+        "Doppler/Duplex Ultrasound"
+      ],
+      "run_b": [
+        "Doppler/Duplex Ultrasound"
+      ]
+    },
+    {
+      "record_id": "SYN_17_diagnosis_no_details_v2",
+      "section": "B1_1",
+      "run_a": [
+        "It is unknown if there was a report of a DVT syndrome"
+      ],
+      "run_b": [
+        "≥1 symptom or sign of DVT was reported"
+      ]
+    },
+    {
+      "record_id": "SYN_17_diagnosis_no_details_v2",
+      "section": "F",
+      "run_a": [
+        "Yes"
+      ],
+      "run_b": [
+        "No"
+      ]
+    },
+    {
+      "record_id": "SYN_23_other_procedure_ivc_filter_v2",
+      "section": "A2",
+      "run_a": [
+        "Other procedure done that confirmed presence of DVT"
+      ],
+      "run_b": [
+        "No surgical procedure done; or, done but either did not confirm presence of DVT or findings unknown; or unknown if done"
+      ]
+    },
+    {
+      "record_id": "SYN_23_other_procedure_ivc_filter_v2",
+      "section": "A3_2",
+      "run_a": [
+        "Contrast venography",
+        "Doppler/Duplex Ultrasound"
+      ],
+      "run_b": [
+        "Doppler/Duplex Ultrasound"
+      ]
+    },
+    {
+      "record_id": "SYN_28_other_modality_plethysmography_v2",
+      "section": "A3_1",
+      "run_a": [
+        "≥1 imaging study was done and confirmed DVT"
+      ],
+      "run_b": [
+        "No imaging studies done, unknown if done, or done but results unknown"
+      ]
+    },
+    {
+      "record_id": "SYN_28_other_modality_plethysmography_v2",
+      "section": "A3_2",
+      "run_a": [
+        "Other"
+      ],
+      "run_b": []
+    },
+    {
+      "record_id": "SYN_29_diagnosis_no_details_second_v2",
+      "section": "F",
+      "run_a": [
+        "Yes"
+      ],
+      "run_b": [
+        "No"
+      ]
+    },
+    {
+      "record_id": "SYN_31_diagnosis_no_details_upper_v2",
+      "section": "B1_1",
+      "run_a": [
+        "It is unknown if there was a report of a DVT syndrome"
+      ],
+      "run_b": [
+        "≥1 symptom or sign of DVT was reported"
+      ]
+    },
+    {
+      "record_id": "SYN_32_discharge_letter_dvt_v2",
+      "section": "F",
+      "run_a": [
+        "Yes"
+      ],
+      "run_b": [
+        "No"
+      ]
+    },
+    {
+      "record_id": "SYN_33_transfer_note_dvt_upper_v2",
+      "section": "B1_1",
+      "run_a": [
+        "It is unknown if there was a report of a DVT syndrome"
+      ],
+      "run_b": [
+        "≥1 symptom or sign of DVT was reported"
+      ]
+    },
+    {
+      "record_id": "SYN_33_transfer_note_dvt_upper_v2",
+      "section": "F",
+      "run_a": [
+        "Yes"
+      ],
+      "run_b": [
+        "No"
+      ]
+    },
+    {
+      "record_id": "SYN_34_dvt_reported_other_facility_v2",
+      "section": "B1_1",
+      "run_a": [
+        "It is unknown if there was a report of a DVT syndrome"
+      ],
+      "run_b": [
+        "≥1 symptom or sign of DVT was reported"
+      ]
+    },
+    {
+      "record_id": "SYN_34_dvt_reported_other_facility_v2",
+      "section": "F",
+      "run_a": [
+        "Yes"
+      ],
+      "run_b": [
+        "No"
+      ]
+    },
+    {
+      "record_id": "SYN_35_specialist_note_dvt_lower_v2",
+      "section": "F",
+      "run_a": [
+        "Yes"
+      ],
+      "run_b": [
+        "No"
+      ]
+    },
+    {
+      "record_id": "SYN_40_imaging_report_pending_v2",
+      "section": "B1_2",
+      "run_a": [],
+      "run_b": [
+        "Lower extremity DVT"
+      ]
+    }
+  ],
+  "overall": {
+    "compared": 400,
+    "changed": 17,
+    "correct_a": 398,
+    "correct_b": 381,
+    "stability": 0.9575
+  }
+}

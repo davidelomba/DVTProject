@@ -74,3 +74,3672 @@ Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF
 [X] Agent 2 done in 19.4s
 [X] filled in: answer='No alternative diagnosis was found to explain the acute illness'
 [CROSS-SECTION RULE] 'b2' triggered. Forcing 'b1_1' to '≥1 symptom or sign of DVT was reported'.
+[A1] Agent 3 verifier (answer) AGREE, P(YES) 0.9999 (verdict)
+[A1] Agent 3 verifier (reasoning) AGREE, P(YES) 0.9999 (verdict)
+[A2] Agent 3 verifier (answer) DISAGREE, P(YES) 0.2384 (verdict)
+[A2] Agent 3 verifier (reasoning) AGREE, P(YES) 0.7891 (verdict)
+[A3_1] Agent 3 verifier (answer) AGREE, P(YES) 1.0000 (verdict)
+[A3_1] Agent 3 verifier (reasoning) AGREE, P(YES) 1.0000 (verdict)
+[A3_2] Agent 3 verifier (answer) AGREE, P(YES) 0.9944 (verdict)
+[A3_2] Agent 3 verifier (reasoning) AGREE, P(YES) 0.9374 (verdict)
+[B1_2] Agent 3 verifier (answer) AGREE, P(YES) 0.9986 (verdict)
+[B1_2] Agent 3 verifier (reasoning) AGREE, P(YES) 0.9998 (verdict)
+[B2] Agent 3 verifier (answer) AGREE, P(YES) 0.9916 (verdict)
+[B2] Agent 3 verifier (reasoning) AGREE, P(YES) 0.9997 (verdict)
+[C] Agent 3 verifier (answer) AGREE, P(YES) 1.0000 (verdict)
+[C] Agent 3 verifier (reasoning) AGREE, P(YES) 1.0000 (verdict)
+[F] Agent 3 verifier (answer) DISAGREE, P(YES) 0.1474 (verdict)
+[F] Agent 3 verifier (reasoning) AGREE, P(YES) 0.9180 (verdict)
+[X] Agent 3 verifier (answer) DISAGREE, P(YES) 0.0155 (verdict)
+[X] Agent 3 verifier (reasoning) AGREE, P(YES) 0.8053 (verdict)
+[B1_1] Agent 3 verifier (answer) AGREE, P(YES) 0.9916 (rule:B2)
+[B1_1] Agent 3 verifier (reasoning) AGREE, P(YES) 0.9997 (rule:B2)
+  -> saved SYN_01_lower_dvt_doppler_v2_20261104_192655.json in 4.2 min (ETA 162 min for the remaining 39)
+[2/40] SYN_02_dvt_ruled_out_cellulitis_v2 ...
+Loading weights:   0%|          | 0/199 [00:00<?, ?it/s]Loading weights: 100%|██████████| 199/199 [00:00<00:00, 5431.90it/s]
+
+=== Section A1 ===
+[A1] Agent 1 (extractor, mode=full_text) searching the clinical record...
+[A1] Agent 1 done in 5.3s
+[A1] Agent 2 (evaluator) filling in the schema...
+[A1] Agent 2 done in 16.8s
+[A1] filled in: answer='No autopsy done, unknown if done, or done but results unavailable'
+
+=== Section A2 ===
+[A2] Agent 1 (extractor, mode=full_text) searching the clinical record...
+[A2] Agent 1 done in 5.5s
+[A2] Agent 2 (evaluator) filling in the schema...
+[A2] Agent 2 done in 17.2s
+[A2] filled in: answer='No surgical procedure done; or, done but either did not confirm presence of DVT or findings unknown; or unknown if done'
+
+=== Section A3_1 ===
+[A3_1] Agent 1 (extractor, mode=full_text) searching the clinical record...
+[A3_1] Agent 1 done in 5.5s
+[A3_1] Agent 2 (evaluator) filling in the schema...
+[A3_1] Agent 2 done in 15.8s
+[A3_1] filled in: answer="≥1 imaging study was done but didn't confirm DVT"
+
+=== Section A3_2 ===
+[A3_2] Agent 1 (extractor, mode=full_text) searching the clinical record...
+[A3_2] Agent 1 done in 5.6s
+[A3_2] Agent 2 (evaluator) filling in the schema...
+[A3_2] Agent 2 done in 16.6s
+[A3_2] filled in: studies=[]
+
+=== Section B1_1 ===
+[B1_1] Agent 1 (extractor, mode=full_text) searching the clinical record...
+[B1_1] Agent 1 done in 5.7s
+[B1_1] Agent 2 (evaluator) filling in the schema...
+[B1_1] Agent 2 done in 18.0s
+[B1_1] filled in: answer='There was no report of a recognized DVT syndrome'
+
+=== Section B1_2 ===
+[B1_2] Agent 1 (extractor, mode=full_text) searching the clinical record...
+[B1_2] Agent 1 done in 5.5s
+[B1_2] Agent 2 (evaluator) filling in the schema...
+[B1_2] Agent 2 done in 17.1s
+[B1_2] filled in: types=[]
+
+=== Section B2 ===
+[B2] Agent 1 (extractor, mode=full_text) searching the clinical record...
+[B2] Agent 1 done in 5.5s
+[B2] Agent 2 (evaluator) filling in the schema...
+[B2] Agent 2 done in 18.4s
+[B2] filled in: symptoms=['Redness, warmth, or pain in one or more extremities']
+
+=== Section C ===
+[C] Agent 1 (extractor, mode=full_text) searching the clinical record...
+[C] Agent 1 done in 5.3s
+[C] Agent 2 (evaluator) filling in the schema...
+[C] Agent 2 done in 15.2s
+[C] filled in: answer='D-dimer not tested, or tested but results unknown or not available'
+
+=== Section F ===
+[F] Agent 1 (extractor, mode=full_text) searching the clinical record...
+[F] Agent 1 done in 5.5s
+[F] Agent 2 (evaluator) filling in the schema...
+[F] Agent 2 done in 15.3s
+[F] filled in: answer='No'
+
+=== Section X ===
+[X] Agent 1 (extractor, mode=full_text) searching the clinical record...
+[X] Agent 1 done in 5.7s
+[X] Agent 2 (evaluator) filling in the schema...
+[X] Agent 2 done in 16.7s
+[X] filled in: answer='An alternative diagnosis was found that explained the acute illness'
+[CROSS-SECTION RULE] 'b2' triggered. Forcing 'b1_1' to '≥1 symptom or sign of DVT was reported'.
+[A1] Agent 3 verifier (answer) AGREE, P(YES) 0.9999 (verdict)
+[A1] Agent 3 verifier (reasoning) AGREE, P(YES) 0.9999 (verdict)
+[A2] Agent 3 verifier (answer) AGREE, P(YES) 0.9981 (verdict)
+[A2] Agent 3 verifier (reasoning) AGREE, P(YES) 0.9998 (verdict)
+[A3_1] Agent 3 verifier (answer) AGREE, P(YES) 1.0000 (verdict)
+[A3_1] Agent 3 verifier (reasoning) AGREE, P(YES) 1.0000 (verdict)
+[A3_2] Agent 3 verifier (answer) DISAGREE, P(YES) 0.1187 (verdict)
+[A3_2] Agent 3 verifier (reasoning) AGREE, P(YES) 0.7092 (verdict)
+[B1_2] Agent 3 verifier (answer) AGREE, P(YES) 0.9730 (verdict)
+[B1_2] Agent 3 verifier (reasoning) AGREE, P(YES) 0.9996 (verdict)
+[B2] Agent 3 verifier (answer) AGREE, P(YES) 0.8898 (verdict)
+[B2] Agent 3 verifier (reasoning) AGREE, P(YES) 0.6805 (verdict)
+[C] Agent 3 verifier (answer) AGREE, P(YES) 1.0000 (verdict)
+[C] Agent 3 verifier (reasoning) AGREE, P(YES) 1.0000 (verdict)
+[F] Agent 3 verifier (answer) AGREE, P(YES) 0.8802 (verdict)
+[F] Agent 3 verifier (reasoning) AGREE, P(YES) 0.9733 (verdict)
+[X] Agent 3 verifier (answer) AGREE, P(YES) 0.7657 (verdict)
+[X] Agent 3 verifier (reasoning) AGREE, P(YES) 0.9894 (verdict)
+[B1_1] Agent 3 verifier (answer) AGREE, P(YES) 0.8898 (rule:B2)
+[B1_1] Agent 3 verifier (reasoning) AGREE, P(YES) 0.6805 (rule:B2)
+  -> saved SYN_02_dvt_ruled_out_cellulitis_v2_20261104_193102.json in 4.1 min (ETA 157 min for the remaining 38)
+[3/40] SYN_03_upper_extremity_catheter_v2 ...
+Loading weights:   0%|          | 0/199 [00:00<?, ?it/s]Loading weights: 100%|██████████| 199/199 [00:00<00:00, 6699.79it/s]
+
+=== Section A1 ===
+[A1] Agent 1 (extractor, mode=full_text) searching the clinical record...
+[A1] Agent 1 done in 5.3s
+[A1] Agent 2 (evaluator) filling in the schema...
+[A1] Agent 2 done in 16.7s
+[A1] filled in: answer='No autopsy done, unknown if done, or done but results unavailable'
+
+=== Section A2 ===
+[A2] Agent 1 (extractor, mode=full_text) searching the clinical record...
+[A2] Agent 1 done in 5.6s
+[A2] Agent 2 (evaluator) filling in the schema...
+[A2] Agent 2 done in 20.5s
+[A2] filled in: answer='No surgical procedure done; or, done but either did not confirm presence of DVT or findings unknown; or unknown if done'
+
+=== Section A3_1 ===
+[A3_1] Agent 1 (extractor, mode=full_text) searching the clinical record...
+[A3_1] Agent 1 done in 5.6s
+[A3_1] Agent 2 (evaluator) filling in the schema...
+[A3_1] Agent 2 done in 16.6s
+[A3_1] filled in: answer='≥1 imaging study was done and confirmed DVT'
+
+=== Section A3_2 ===
+[A3_2] Agent 1 (extractor, mode=full_text) searching the clinical record...
+[A3_2] Agent 1 done in 5.6s
+[A3_2] Agent 2 (evaluator) filling in the schema...
+[A3_2] Agent 2 done in 18.1s
+[A3_2] filled in: studies=['CT or MR venography']
+
+=== Section B1_1 ===
+[B1_1] Agent 1 (extractor, mode=full_text) searching the clinical record...
+[B1_1] Agent 1 done in 5.5s
+[B1_1] Agent 2 (evaluator) filling in the schema...
+[B1_1] Agent 2 done in 16.3s
+[B1_1] filled in: answer='≥1 symptom or sign of DVT was reported'
+
+=== Section B1_2 ===
+[B1_2] Agent 1 (extractor, mode=full_text) searching the clinical record...
+[B1_2] Agent 1 done in 5.5s
+[B1_2] Agent 2 (evaluator) filling in the schema...
+[B1_2] Agent 2 done in 16.0s
+[B1_2] filled in: types=['Upper extremity DVT']
+
+=== Section B2 ===
+[B2] Agent 1 (extractor, mode=full_text) searching the clinical record...
+[B2] Agent 1 done in 5.5s
+[B2] Agent 2 (evaluator) filling in the schema...
+[B2] Agent 2 done in 16.7s
+[B2] filled in: symptoms=['Redness, warmth, or pain in one or more extremities']
+
+=== Section C ===
+[C] Agent 1 (extractor, mode=full_text) searching the clinical record...
+[C] Agent 1 done in 5.5s
+[C] Agent 2 (evaluator) filling in the schema...
+[C] Agent 2 done in 15.3s
+[C] filled in: answer="D-dimer exceeded test lab's upper limit of normal."
+
+=== Section F ===
+[F] Agent 1 (extractor, mode=full_text) searching the clinical record...
+[F] Agent 1 done in 5.6s
+[F] Agent 2 (evaluator) filling in the schema...
+[F] Agent 2 done in 15.8s
+[F] filled in: answer='No'
+
+=== Section X ===
+[X] Agent 1 (extractor, mode=full_text) searching the clinical record...
+[X] Agent 1 done in 5.5s
+[X] Agent 2 (evaluator) filling in the schema...
+[X] Agent 2 done in 18.9s
+[X] filled in: answer='No alternative diagnosis was found to explain the acute illness'
+[A1] Agent 3 verifier (answer) AGREE, P(YES) 0.9999 (verdict)
+[A1] Agent 3 verifier (reasoning) AGREE, P(YES) 0.9999 (verdict)
+[A2] Agent 3 verifier (answer) DISAGREE, P(YES) 0.2025 (verdict)
+[A2] Agent 3 verifier (reasoning) AGREE, P(YES) 0.9695 (verdict)
+[A3_1] Agent 3 verifier (answer) AGREE, P(YES) 0.9996 (verdict)
+[A3_1] Agent 3 verifier (reasoning) AGREE, P(YES) 0.9999 (verdict)
+[A3_2] Agent 3 verifier (answer) AGREE, P(YES) 0.9974 (verdict)
+[A3_2] Agent 3 verifier (reasoning) AGREE, P(YES) 0.9985 (verdict)
+[B1_1] Agent 3 verifier (answer) AGREE, P(YES) 0.7221 (verdict)
+[B1_1] Agent 3 verifier (reasoning) AGREE, P(YES) 0.9444 (verdict)
+[B1_2] Agent 3 verifier (answer) AGREE, P(YES) 0.9953 (verdict)
+[B1_2] Agent 3 verifier (reasoning) AGREE, P(YES) 0.9998 (verdict)
+[B2] Agent 3 verifier (answer) AGREE, P(YES) 0.9968 (verdict)
+[B2] Agent 3 verifier (reasoning) AGREE, P(YES) 0.9998 (verdict)
+[C] Agent 3 verifier (answer) AGREE, P(YES) 1.0000 (verdict)
+[C] Agent 3 verifier (reasoning) AGREE, P(YES) 0.9999 (verdict)
+[F] Agent 3 verifier (answer) DISAGREE, P(YES) 0.4493 (verdict)
+[F] Agent 3 verifier (reasoning) AGREE, P(YES) 0.9612 (verdict)
+[X] Agent 3 verifier (answer) DISAGREE, P(YES) 0.1518 (verdict)
+[X] Agent 3 verifier (reasoning) AGREE, P(YES) 0.9601 (verdict)
+  -> saved SYN_03_upper_extremity_catheter_v2_20261104_193513.json in 4.2 min (ETA 154 min for the remaining 37)
+[4/40] SYN_04_multi_imaging_confirmed_v2 ...
+Loading weights:   0%|          | 0/199 [00:00<?, ?it/s]Loading weights: 100%|██████████| 199/199 [00:00<00:00, 4542.85it/s]
+
+=== Section A1 ===
+[A1] Agent 1 (extractor, mode=full_text) searching the clinical record...
+[A1] Agent 1 done in 5.3s
+[A1] Agent 2 (evaluator) filling in the schema...
+[A1] Agent 2 done in 16.6s
+[A1] filled in: answer='No autopsy done, unknown if done, or done but results unavailable'
+
+=== Section A2 ===
+[A2] Agent 1 (extractor, mode=full_text) searching the clinical record...
+[A2] Agent 1 done in 5.5s
+[A2] Agent 2 (evaluator) filling in the schema...
+[A2] Agent 2 done in 16.5s
+[A2] filled in: answer='No surgical procedure done; or, done but either did not confirm presence of DVT or findings unknown; or unknown if done'
+
+=== Section A3_1 ===
+[A3_1] Agent 1 (extractor, mode=full_text) searching the clinical record...
+[A3_1] Agent 1 done in 6.0s
+[A3_1] Agent 2 (evaluator) filling in the schema...
+[A3_1] Agent 2 done in 16.1s
+[A3_1] filled in: answer='≥1 imaging study was done and confirmed DVT'
+
+=== Section A3_2 ===
+[A3_2] Agent 1 (extractor, mode=full_text) searching the clinical record...
+[A3_2] Agent 1 done in 5.7s
+[A3_2] Agent 2 (evaluator) filling in the schema...
+[A3_2] Agent 2 done in 37.1s
+[A3_2] filled in: studies=['Doppler/Duplex Ultrasound']
+
+=== Section B1_1 ===
+[B1_1] Agent 1 (extractor, mode=full_text) searching the clinical record...
+[B1_1] Agent 1 done in 5.5s
+[B1_1] Agent 2 (evaluator) filling in the schema...
+[B1_1] Agent 2 done in 18.9s
+[B1_1] filled in: answer='It is unknown if there was a report of a DVT syndrome'
+
+=== Section B1_2 ===
+[B1_2] Agent 1 (extractor, mode=full_text) searching the clinical record...
+[B1_2] Agent 1 done in 5.5s
+[B1_2] Agent 2 (evaluator) filling in the schema...
+[B1_2] Agent 2 done in 18.6s
+[B1_2] filled in: types=['Lower extremity DVT']
+
+=== Section B2 ===
+[B2] Agent 1 (extractor, mode=full_text) searching the clinical record...
+[B2] Agent 1 done in 5.5s
+[B2] Agent 2 (evaluator) filling in the schema...
+[B2] Agent 2 done in 17.1s
+[B2] filled in: symptoms=['None of the above were present or it is unknown if any of 1-4 were present']
+
+=== Section C ===
+[C] Agent 1 (extractor, mode=full_text) searching the clinical record...
+[C] Agent 1 done in 5.5s
+[C] Agent 2 (evaluator) filling in the schema...
+[C] Agent 2 done in 15.4s
+[C] filled in: answer="D-dimer exceeded test lab's upper limit of normal."
+
+=== Section F ===
+[F] Agent 1 (extractor, mode=full_text) searching the clinical record...
+[F] Agent 1 done in 5.5s
+[F] Agent 2 (evaluator) filling in the schema...
+[F] Agent 2 done in 15.1s
+[F] filled in: answer='No'
+
+=== Section X ===
+[X] Agent 1 (extractor, mode=full_text) searching the clinical record...
+[X] Agent 1 done in 5.6s
+[X] Agent 2 (evaluator) filling in the schema...
+[X] Agent 2 done in 16.4s
+[X] filled in: answer='No alternative diagnosis was found to explain the acute illness'
+[A1] Agent 3 verifier (answer) AGREE, P(YES) 0.9999 (verdict)
+[A1] Agent 3 verifier (reasoning) AGREE, P(YES) 0.9999 (verdict)
+[A2] Agent 3 verifier (answer) DISAGREE, P(YES) 0.0788 (verdict)
+[A2] Agent 3 verifier (reasoning) AGREE, P(YES) 0.6933 (verdict)
+[A3_1] Agent 3 verifier (answer) AGREE, P(YES) 1.0000 (verdict)
+[A3_1] Agent 3 verifier (reasoning) AGREE, P(YES) 1.0000 (verdict)
+[A3_2] Agent 3 verifier (answer) AGREE, P(YES) 0.9925 (verdict)
+[A3_2] Agent 3 verifier (reasoning) AGREE, P(YES) 0.9351 (verdict)
+[B1_1] Agent 3 verifier (answer) DISAGREE, P(YES) 0.0039 (verdict)
+[B1_1] Agent 3 verifier (reasoning) DISAGREE, P(YES) 0.1551 (verdict)
+[B1_2] Agent 3 verifier (answer) AGREE, P(YES) 0.9979 (verdict)
+[B1_2] Agent 3 verifier (reasoning) AGREE, P(YES) 0.9999 (verdict)
+[B2] Agent 3 verifier (answer) AGREE, P(YES) 0.8340 (verdict)
+[B2] Agent 3 verifier (reasoning) AGREE, P(YES) 0.9928 (verdict)
+[C] Agent 3 verifier (answer) AGREE, P(YES) 1.0000 (verdict)
+[C] Agent 3 verifier (reasoning) AGREE, P(YES) 1.0000 (verdict)
+[F] Agent 3 verifier (answer) DISAGREE, P(YES) 0.2347 (verdict)
+[F] Agent 3 verifier (reasoning) AGREE, P(YES) 0.9136 (verdict)
+[X] Agent 3 verifier (answer) DISAGREE, P(YES) 0.1708 (verdict)
+[X] Agent 3 verifier (reasoning) AGREE, P(YES) 0.8330 (verdict)
+  -> saved SYN_04_multi_imaging_confirmed_v2_20261104_193944.json in 4.5 min (ETA 153 min for the remaining 36)
+[5/40] SYN_05_absent_flow_not_pulses_trap_v2 ...
+Loading weights:   0%|          | 0/199 [00:00<?, ?it/s]Loading weights: 100%|██████████| 199/199 [00:00<00:00, 6794.14it/s]
+
+=== Section A1 ===
+[A1] Agent 1 (extractor, mode=full_text) searching the clinical record...
+[A1] Agent 1 done in 5.4s
+[A1] Agent 2 (evaluator) filling in the schema...
+[A1] Agent 2 done in 16.5s
+[A1] filled in: answer='No autopsy done, unknown if done, or done but results unavailable'
+
+=== Section A2 ===
+[A2] Agent 1 (extractor, mode=full_text) searching the clinical record...
+[A2] Agent 1 done in 5.8s
+[A2] Agent 2 (evaluator) filling in the schema...
+[A2] Agent 2 done in 16.8s
+[A2] filled in: answer='No surgical procedure done; or, done but either did not confirm presence of DVT or findings unknown; or unknown if done'
+
+=== Section A3_1 ===
+[A3_1] Agent 1 (extractor, mode=full_text) searching the clinical record...
+[A3_1] Agent 1 done in 5.6s
+[A3_1] Agent 2 (evaluator) filling in the schema...
+[A3_1] Agent 2 done in 16.5s
+[A3_1] filled in: answer='≥1 imaging study was done and confirmed DVT'
+
+=== Section A3_2 ===
+[A3_2] Agent 1 (extractor, mode=full_text) searching the clinical record...
+[A3_2] Agent 1 done in 5.8s
+[A3_2] Agent 2 (evaluator) filling in the schema...
+[A3_2] Agent 2 done in 18.4s
+[A3_2] filled in: studies=['Doppler/Duplex Ultrasound']
+
+=== Section B1_1 ===
+[B1_1] Agent 1 (extractor, mode=full_text) searching the clinical record...
+[B1_1] Agent 1 done in 5.6s
+[B1_1] Agent 2 (evaluator) filling in the schema...
+[B1_1] Agent 2 done in 17.9s
+[B1_1] filled in: answer='It is unknown if there was a report of a DVT syndrome'
+
+=== Section B1_2 ===
+[B1_2] Agent 1 (extractor, mode=full_text) searching the clinical record...
+[B1_2] Agent 1 done in 5.8s
+[B1_2] Agent 2 (evaluator) filling in the schema...
+[B1_2] Agent 2 done in 16.5s
+[B1_2] filled in: types=['Lower extremity DVT']
+
+=== Section B2 ===
+[B2] Agent 1 (extractor, mode=full_text) searching the clinical record...
+[B2] Agent 1 done in 5.4s
+[B2] Agent 2 (evaluator) filling in the schema...
+[B2] Agent 2 done in 17.1s
+[B2] filled in: symptoms=['Calf pain or tenderness', 'Leg swelling or pitting oedema']
+
+=== Section C ===
+[C] Agent 1 (extractor, mode=full_text) searching the clinical record...
+[C] Agent 1 done in 5.4s
+[C] Agent 2 (evaluator) filling in the schema...
+[C] Agent 2 done in 15.2s
+[C] filled in: answer="D-dimer exceeded test lab's upper limit of normal."
+
+=== Section F ===
+[F] Agent 1 (extractor, mode=full_text) searching the clinical record...
+[F] Agent 1 done in 5.8s
+[F] Agent 2 (evaluator) filling in the schema...
+[F] Agent 2 done in 15.3s
+[F] filled in: answer='No'
+
+=== Section X ===
+[X] Agent 1 (extractor, mode=full_text) searching the clinical record...
+[X] Agent 1 done in 5.7s
+[X] Agent 2 (evaluator) filling in the schema...
+[X] Agent 2 done in 17.0s
+[X] filled in: answer='No alternative diagnosis was found to explain the acute illness'
+[CROSS-SECTION RULE] 'b2' triggered. Forcing 'b1_1' to '≥1 symptom or sign of DVT was reported'.
+[A1] Agent 3 verifier (answer) AGREE, P(YES) 0.9999 (verdict)
+[A1] Agent 3 verifier (reasoning) AGREE, P(YES) 0.9999 (verdict)
+[A2] Agent 3 verifier (answer) DISAGREE, P(YES) 0.2384 (verdict)
+[A2] Agent 3 verifier (reasoning) AGREE, P(YES) 0.7891 (verdict)
+[A3_1] Agent 3 verifier (answer) AGREE, P(YES) 1.0000 (verdict)
+[A3_1] Agent 3 verifier (reasoning) AGREE, P(YES) 1.0000 (verdict)
+[A3_2] Agent 3 verifier (answer) AGREE, P(YES) 0.9944 (verdict)
+[A3_2] Agent 3 verifier (reasoning) AGREE, P(YES) 0.9374 (verdict)
+[B1_2] Agent 3 verifier (answer) AGREE, P(YES) 0.9986 (verdict)
+[B1_2] Agent 3 verifier (reasoning) AGREE, P(YES) 0.9998 (verdict)
+[B2] Agent 3 verifier (answer) AGREE, P(YES) 0.9931 (verdict)
+[B2] Agent 3 verifier (reasoning) AGREE, P(YES) 0.9998 (verdict)
+[C] Agent 3 verifier (answer) AGREE, P(YES) 1.0000 (verdict)
+[C] Agent 3 verifier (reasoning) AGREE, P(YES) 1.0000 (verdict)
+[F] Agent 3 verifier (answer) DISAGREE, P(YES) 0.1474 (verdict)
+[F] Agent 3 verifier (reasoning) AGREE, P(YES) 0.9180 (verdict)
+[X] Agent 3 verifier (answer) DISAGREE, P(YES) 0.1137 (verdict)
+[X] Agent 3 verifier (reasoning) AGREE, P(YES) 0.5675 (verdict)
+[B1_1] Agent 3 verifier (answer) AGREE, P(YES) 0.9931 (rule:B2)
+[B1_1] Agent 3 verifier (reasoning) AGREE, P(YES) 0.9998 (rule:B2)
+  -> saved SYN_05_absent_flow_not_pulses_trap_v2_20261104_194351.json in 4.1 min (ETA 148 min for the remaining 35)
+[6/40] SYN_06_no_imaging_clinical_only_v2 ...
+Loading weights:   0%|          | 0/199 [00:00<?, ?it/s]Loading weights: 100%|██████████| 199/199 [00:00<00:00, 5450.92it/s]
+
+=== Section A1 ===
+[A1] Agent 1 (extractor, mode=full_text) searching the clinical record...
+[A1] Agent 1 done in 5.3s
+[A1] Agent 2 (evaluator) filling in the schema...
+[A1] Agent 2 done in 16.7s
+[A1] filled in: answer='No autopsy done, unknown if done, or done but results unavailable'
+
+=== Section A2 ===
+[A2] Agent 1 (extractor, mode=full_text) searching the clinical record...
+[A2] Agent 1 done in 5.3s
+[A2] Agent 2 (evaluator) filling in the schema...
+[A2] Agent 2 done in 16.0s
+[A2] filled in: answer='No surgical procedure done; or, done but either did not confirm presence of DVT or findings unknown; or unknown if done'
+
+=== Section A3_1 ===
+[A3_1] Agent 1 (extractor, mode=full_text) searching the clinical record...
+[A3_1] Agent 1 done in 5.3s
+[A3_1] Agent 2 (evaluator) filling in the schema...
+[A3_1] Agent 2 done in 17.2s
+[A3_1] filled in: answer='No imaging studies done, unknown if done, or done but results unknown'
+
+=== Section A3_2 ===
+[A3_2] Agent 1 (extractor, mode=full_text) searching the clinical record...
+[A3_2] Agent 1 done in 5.4s
+[A3_2] Agent 2 (evaluator) filling in the schema...
+[A3_2] Agent 2 done in 14.4s
+[A3_2] filled in: studies=[]
+
+=== Section B1_1 ===
+[B1_1] Agent 1 (extractor, mode=full_text) searching the clinical record...
+[B1_1] Agent 1 done in 5.5s
+[B1_1] Agent 2 (evaluator) filling in the schema...
+[B1_1] Agent 2 done in 16.0s
+[B1_1] filled in: answer='≥1 symptom or sign of DVT was reported'
+
+=== Section B1_2 ===
+[B1_2] Agent 1 (extractor, mode=full_text) searching the clinical record...
+[B1_2] Agent 1 done in 5.5s
+[B1_2] Agent 2 (evaluator) filling in the schema...
+[B1_2] Agent 2 done in 18.0s
+[B1_2] filled in: types=['Lower extremity DVT']
+
+=== Section B2 ===
+[B2] Agent 1 (extractor, mode=full_text) searching the clinical record...
+[B2] Agent 1 done in 5.4s
+[B2] Agent 2 (evaluator) filling in the schema...
+[B2] Agent 2 done in 43.8s
+[B2] filled in: symptoms=['Calf pain or tenderness', 'Leg swelling or pitting oedema']
+
+=== Section C ===
+[C] Agent 1 (extractor, mode=full_text) searching the clinical record...
+[C] Agent 1 done in 5.4s
+[C] Agent 2 (evaluator) filling in the schema...
+[C] Agent 2 done in 15.0s
+[C] filled in: answer="D-dimer exceeded test lab's upper limit of normal."
+
+=== Section F ===
+[F] Agent 1 (extractor, mode=full_text) searching the clinical record...
+[F] Agent 1 done in 5.5s
+[F] Agent 2 (evaluator) filling in the schema...
+[F] Agent 2 done in 16.2s
+[F] filled in: answer='No'
+
+=== Section X ===
+[X] Agent 1 (extractor, mode=full_text) searching the clinical record...
+[X] Agent 1 done in 5.5s
+[X] Agent 2 (evaluator) filling in the schema...
+[X] Agent 2 done in 42.8s
+[X] filled in: answer='No alternative diagnosis was found to explain the acute illness'
+[A1] Agent 3 verifier (answer) AGREE, P(YES) 0.9999 (verdict)
+[A1] Agent 3 verifier (reasoning) AGREE, P(YES) 0.9999 (verdict)
+[A2] Agent 3 verifier (answer) AGREE, P(YES) 0.9998 (verdict)
+[A2] Agent 3 verifier (reasoning) AGREE, P(YES) 0.9999 (verdict)
+[A3_1] Agent 3 verifier (answer) AGREE, P(YES) 0.9998 (verdict)
+[A3_1] Agent 3 verifier (reasoning) AGREE, P(YES) 0.9999 (verdict)
+[A3_2] Agent 3 verifier (answer) AGREE, P(YES) 0.9977 (verdict)
+[A3_2] Agent 3 verifier (reasoning) AGREE, P(YES) 0.9978 (verdict)
+[B1_1] Agent 3 verifier (answer) AGREE, P(YES) 1.0000 (verdict)
+[B1_1] Agent 3 verifier (reasoning) AGREE, P(YES) 1.0000 (verdict)
+[B1_2] Agent 3 verifier (answer) AGREE, P(YES) 0.9981 (verdict)
+[B1_2] Agent 3 verifier (reasoning) AGREE, P(YES) 0.9999 (verdict)
+[B2] Agent 3 verifier (answer) AGREE, P(YES) 0.9962 (verdict)
+[B2] Agent 3 verifier (reasoning) AGREE, P(YES) 0.9884 (verdict)
+[C] Agent 3 verifier (answer) AGREE, P(YES) 1.0000 (verdict)
+[C] Agent 3 verifier (reasoning) AGREE, P(YES) 1.0000 (verdict)
+[F] Agent 3 verifier (answer) DISAGREE, P(YES) 0.1030 (verdict)
+[F] Agent 3 verifier (reasoning) AGREE, P(YES) 0.9492 (verdict)
+[X] Agent 3 verifier (answer) DISAGREE, P(YES) 0.4787 (verdict)
+[X] Agent 3 verifier (reasoning) AGREE, P(YES) 0.9949 (verdict)
+  -> saved SYN_06_no_imaging_clinical_only_v2_20261104_194849.json in 5.0 min (ETA 148 min for the remaining 34)
+[7/40] SYN_07_thrombectomy_positive_v2 ...
+Loading weights:   0%|          | 0/199 [00:00<?, ?it/s]Loading weights: 100%|██████████| 199/199 [00:00<00:00, 4855.20it/s]
+
+=== Section A1 ===
+[A1] Agent 1 (extractor, mode=full_text) searching the clinical record...
+[A1] Agent 1 done in 5.3s
+[A1] Agent 2 (evaluator) filling in the schema...
+[A1] Agent 2 done in 16.8s
+[A1] filled in: answer='No autopsy done, unknown if done, or done but results unavailable'
+
+=== Section A2 ===
+[A2] Agent 1 (extractor, mode=full_text) searching the clinical record...
+[A2] Agent 1 done in 5.9s
+[A2] Agent 2 (evaluator) filling in the schema...
+[A2] Agent 2 done in 15.6s
+[A2] filled in: answer='Thrombectomy related to DVT performed'
+
+=== Section A3_1 ===
+[A3_1] Agent 1 (extractor, mode=full_text) searching the clinical record...
+[A3_1] Agent 1 done in 5.5s
+[A3_1] Agent 2 (evaluator) filling in the schema...
+[A3_1] Agent 2 done in 16.8s
+[A3_1] filled in: answer='≥1 imaging study was done and confirmed DVT'
+
+=== Section A3_2 ===
+[A3_2] Agent 1 (extractor, mode=full_text) searching the clinical record...
+[A3_2] Agent 1 done in 5.5s
+[A3_2] Agent 2 (evaluator) filling in the schema...
+[A3_2] Agent 2 done in 19.1s
+[A3_2] filled in: studies=['Doppler/Duplex Ultrasound']
+
+=== Section B1_1 ===
+[B1_1] Agent 1 (extractor, mode=full_text) searching the clinical record...
+[B1_1] Agent 1 done in 5.6s
+[B1_1] Agent 2 (evaluator) filling in the schema...
+[B1_1] Agent 2 done in 56.1s
+[B1_1] filled in: answer='≥1 symptom or sign of DVT was reported'
+
+=== Section B1_2 ===
+[B1_2] Agent 1 (extractor, mode=full_text) searching the clinical record...
+[B1_2] Agent 1 done in 5.5s
+[B1_2] Agent 2 (evaluator) filling in the schema...
+[B1_2] Agent 2 done in 16.9s
+[B1_2] filled in: types=['Lower extremity DVT']
+
+=== Section B2 ===
+[B2] Agent 1 (extractor, mode=full_text) searching the clinical record...
+[B2] Agent 1 done in 5.4s
+[B2] Agent 2 (evaluator) filling in the schema...
+[B2] Agent 2 done in 19.2s
+[B2] filled in: symptoms=['Calf pain or tenderness', 'Leg swelling or pitting oedema', 'Redness, warmth, or pain in one or more extremities']
+
+=== Section C ===
+[C] Agent 1 (extractor, mode=full_text) searching the clinical record...
+[C] Agent 1 done in 5.4s
+[C] Agent 2 (evaluator) filling in the schema...
+[C] Agent 2 done in 15.4s
+[C] filled in: answer="D-dimer exceeded test lab's upper limit of normal."
+
+=== Section F ===
+[F] Agent 1 (extractor, mode=full_text) searching the clinical record...
+[F] Agent 1 done in 5.5s
+[F] Agent 2 (evaluator) filling in the schema...
+[F] Agent 2 done in 15.6s
+[F] filled in: answer='No'
+
+=== Section X ===
+[X] Agent 1 (extractor, mode=full_text) searching the clinical record...
+[X] Agent 1 done in 5.5s
+[X] Agent 2 (evaluator) filling in the schema...
+[X] Agent 2 done in 17.2s
+[X] filled in: answer='No alternative diagnosis was found to explain the acute illness'
+[A1] Agent 3 verifier (answer) AGREE, P(YES) 0.9999 (verdict)
+[A1] Agent 3 verifier (reasoning) AGREE, P(YES) 0.9999 (verdict)
+[A2] Agent 3 verifier (answer) AGREE, P(YES) 1.0000 (verdict)
+[A2] Agent 3 verifier (reasoning) AGREE, P(YES) 1.0000 (verdict)
+[A3_1] Agent 3 verifier (answer) AGREE, P(YES) 1.0000 (verdict)
+[A3_1] Agent 3 verifier (reasoning) AGREE, P(YES) 1.0000 (verdict)
+[A3_2] Agent 3 verifier (answer) AGREE, P(YES) 0.9950 (verdict)
+[A3_2] Agent 3 verifier (reasoning) AGREE, P(YES) 0.8874 (verdict)
+[B1_1] Agent 3 verifier (answer) DISAGREE, P(YES) 0.4925 (verdict)
+[B1_1] Agent 3 verifier (reasoning) AGREE, P(YES) 0.8756 (verdict)
+[B1_2] Agent 3 verifier (answer) AGREE, P(YES) 0.9969 (verdict)
+[B1_2] Agent 3 verifier (reasoning) AGREE, P(YES) 0.9998 (verdict)
+[B2] Agent 3 verifier (answer) DISAGREE, P(YES) 0.0226 (verdict)
+[B2] Agent 3 verifier (reasoning) DISAGREE, P(YES) 0.2956 (verdict)
+[C] Agent 3 verifier (answer) AGREE, P(YES) 1.0000 (verdict)
+[C] Agent 3 verifier (reasoning) AGREE, P(YES) 1.0000 (verdict)
+[F] Agent 3 verifier (answer) DISAGREE, P(YES) 0.2284 (verdict)
+[F] Agent 3 verifier (reasoning) AGREE, P(YES) 0.9571 (verdict)
+[X] Agent 3 verifier (answer) DISAGREE, P(YES) 0.0802 (verdict)
+[X] Agent 3 verifier (reasoning) DISAGREE, P(YES) 0.4111 (verdict)
+  -> saved SYN_07_thrombectomy_positive_v2_20261104_195338.json in 4.8 min (ETA 146 min for the remaining 33)
+[8/40] SYN_08_autopsy_positive_v2 ...
+Loading weights:   0%|          | 0/199 [00:00<?, ?it/s]Loading weights: 100%|██████████| 199/199 [00:00<00:00, 6499.20it/s]
+
+=== Section A1 ===
+[A1] Agent 1 (extractor, mode=full_text) searching the clinical record...
+[A1] Agent 1 done in 5.6s
+[A1] Agent 2 (evaluator) filling in the schema...
+[A1] Agent 2 done in 15.2s
+[A1] filled in: answer='Autopsy showed presence of DVT'
+
+=== Section A2 ===
+[A2] Agent 1 (extractor, mode=full_text) searching the clinical record...
+[A2] Agent 1 done in 5.5s
+[A2] Agent 2 (evaluator) filling in the schema...
+[A2] Agent 2 done in 26.2s
+[A2] filled in: answer='No surgical procedure done; or, done but either did not confirm presence of DVT or findings unknown; or unknown if done'
+
+=== Section A3_1 ===
+[A3_1] Agent 1 (extractor, mode=full_text) searching the clinical record...
+[A3_1] Agent 1 done in 5.4s
+[A3_1] Agent 2 (evaluator) filling in the schema...
+[A3_1] Agent 2 done in 15.7s
+[A3_1] filled in: answer='No imaging studies done, unknown if done, or done but results unknown'
+
+=== Section A3_2 ===
+[A3_2] Agent 1 (extractor, mode=full_text) searching the clinical record...
+[A3_2] Agent 1 done in 5.3s
+[A3_2] Agent 2 (evaluator) filling in the schema...
+[A3_2] Agent 2 done in 14.6s
+[A3_2] filled in: studies=[]
+
+=== Section B1_1 ===
+[B1_1] Agent 1 (extractor, mode=full_text) searching the clinical record...
+[B1_1] Agent 1 done in 5.5s
+[B1_1] Agent 2 (evaluator) filling in the schema...
+[B1_1] Agent 2 done in 17.0s
+[B1_1] filled in: answer='≥1 symptom or sign of DVT was reported'
+
+=== Section B1_2 ===
+[B1_2] Agent 1 (extractor, mode=full_text) searching the clinical record...
+[B1_2] Agent 1 done in 5.6s
+[B1_2] Agent 2 (evaluator) filling in the schema...
+[B1_2] Agent 2 done in 18.4s
+[B1_2] filled in: types=['Lower extremity DVT']
+
+=== Section B2 ===
+[B2] Agent 1 (extractor, mode=full_text) searching the clinical record...
+[B2] Agent 1 done in 5.5s
+[B2] Agent 2 (evaluator) filling in the schema...
+[B2] Agent 2 done in 19.3s
+[B2] filled in: symptoms=['None of the above were present or it is unknown if any of 1-4 were present']
+
+=== Section C ===
+[C] Agent 1 (extractor, mode=full_text) searching the clinical record...
+[C] Agent 1 done in 5.3s
+[C] Agent 2 (evaluator) filling in the schema...
+[C] Agent 2 done in 15.6s
+[C] filled in: answer='D-dimer not tested, or tested but results unknown or not available'
+
+=== Section F ===
+[F] Agent 1 (extractor, mode=full_text) searching the clinical record...
+[F] Agent 1 done in 5.5s
+[F] Agent 2 (evaluator) filling in the schema...
+[F] Agent 2 done in 15.5s
+[F] filled in: answer='No'
+
+=== Section X ===
+[X] Agent 1 (extractor, mode=full_text) searching the clinical record...
+[X] Agent 1 done in 5.4s
+[X] Agent 2 (evaluator) filling in the schema...
+[X] Agent 2 done in 15.4s
+[X] filled in: answer='No alternative diagnosis was found to explain the acute illness'
+[A1] Agent 3 verifier (answer) AGREE, P(YES) 1.0000 (verdict)
+[A1] Agent 3 verifier (reasoning) AGREE, P(YES) 1.0000 (verdict)
+[A2] Agent 3 verifier (answer) AGREE, P(YES) 0.8619 (verdict)
+[A2] Agent 3 verifier (reasoning) AGREE, P(YES) 0.9897 (verdict)
+[A3_1] Agent 3 verifier (answer) AGREE, P(YES) 1.0000 (verdict)
+[A3_1] Agent 3 verifier (reasoning) AGREE, P(YES) 0.9999 (verdict)
+[A3_2] Agent 3 verifier (answer) AGREE, P(YES) 0.9977 (verdict)
+[A3_2] Agent 3 verifier (reasoning) AGREE, P(YES) 0.9978 (verdict)
+[B1_1] Agent 3 verifier (answer) AGREE, P(YES) 0.6116 (verdict)
+[B1_1] Agent 3 verifier (reasoning) AGREE, P(YES) 0.9553 (verdict)
+[B1_2] Agent 3 verifier (answer) AGREE, P(YES) 0.9981 (verdict)
+[B1_2] Agent 3 verifier (reasoning) AGREE, P(YES) 0.9999 (verdict)
+[B2] Agent 3 verifier (answer) AGREE, P(YES) 0.9309 (verdict)
+[B2] Agent 3 verifier (reasoning) AGREE, P(YES) 0.9990 (verdict)
+[C] Agent 3 verifier (answer) AGREE, P(YES) 0.9997 (verdict)
+[C] Agent 3 verifier (reasoning) AGREE, P(YES) 0.9999 (verdict)
+[F] Agent 3 verifier (answer) DISAGREE, P(YES) 0.3475 (verdict)
+[F] Agent 3 verifier (reasoning) AGREE, P(YES) 0.7247 (verdict)
+[X] Agent 3 verifier (answer) AGREE, P(YES) 1.0000 (verdict)
+[X] Agent 3 verifier (reasoning) AGREE, P(YES) 1.0000 (verdict)
+  -> saved SYN_08_autopsy_positive_v2_20261104_195751.json in 4.2 min (ETA 140 min for the remaining 32)
+[9/40] SYN_09_risk_factor_not_alt_diagnosis_v2 ...
+Loading weights:   0%|          | 0/199 [00:00<?, ?it/s]Loading weights: 100%|██████████| 199/199 [00:00<00:00, 6427.48it/s]
+
+=== Section A1 ===
+[A1] Agent 1 (extractor, mode=full_text) searching the clinical record...
+[A1] Agent 1 done in 5.3s
+[A1] Agent 2 (evaluator) filling in the schema...
+[A1] Agent 2 done in 16.7s
+[A1] filled in: answer='No autopsy done, unknown if done, or done but results unavailable'
+
+=== Section A2 ===
+[A2] Agent 1 (extractor, mode=full_text) searching the clinical record...
+[A2] Agent 1 done in 5.5s
+[A2] Agent 2 (evaluator) filling in the schema...
+[A2] Agent 2 done in 18.8s
+[A2] filled in: answer='No surgical procedure done; or, done but either did not confirm presence of DVT or findings unknown; or unknown if done'
+
+=== Section A3_1 ===
+[A3_1] Agent 1 (extractor, mode=full_text) searching the clinical record...
+[A3_1] Agent 1 done in 5.6s
+[A3_1] Agent 2 (evaluator) filling in the schema...
+[A3_1] Agent 2 done in 16.8s
+[A3_1] filled in: answer='≥1 imaging study was done and confirmed DVT'
+
+=== Section A3_2 ===
+[A3_2] Agent 1 (extractor, mode=full_text) searching the clinical record...
+[A3_2] Agent 1 done in 5.6s
+[A3_2] Agent 2 (evaluator) filling in the schema...
+[A3_2] Agent 2 done in 25.0s
+[A3_2] filled in: studies=['Doppler/Duplex Ultrasound']
+
+=== Section B1_1 ===
+[B1_1] Agent 1 (extractor, mode=full_text) searching the clinical record...
+[B1_1] Agent 1 done in 5.5s
+[B1_1] Agent 2 (evaluator) filling in the schema...
+[B1_1] Agent 2 done in 34.8s
+[B1_1] filled in: answer='It is unknown if there was a report of a DVT syndrome'
+
+=== Section B1_2 ===
+[B1_2] Agent 1 (extractor, mode=full_text) searching the clinical record...
+[B1_2] Agent 1 done in 5.5s
+[B1_2] Agent 2 (evaluator) filling in the schema...
+[B1_2] Agent 2 done in 16.6s
+[B1_2] filled in: types=['Lower extremity DVT']
+
+=== Section B2 ===
+[B2] Agent 1 (extractor, mode=full_text) searching the clinical record...
+[B2] Agent 1 done in 5.5s
+[B2] Agent 2 (evaluator) filling in the schema...
+[B2] Agent 2 done in 19.5s
+[B2] filled in: symptoms=['Calf pain or tenderness', 'Leg swelling or pitting oedema']
+
+=== Section C ===
+[C] Agent 1 (extractor, mode=full_text) searching the clinical record...
+[C] Agent 1 done in 5.5s
+[C] Agent 2 (evaluator) filling in the schema...
+[C] Agent 2 done in 15.4s
+[C] filled in: answer="D-dimer exceeded test lab's upper limit of normal."
+
+=== Section F ===
+[F] Agent 1 (extractor, mode=full_text) searching the clinical record...
+[F] Agent 1 done in 5.5s
+[F] Agent 2 (evaluator) filling in the schema...
+[F] Agent 2 done in 15.2s
+[F] filled in: answer='No'
+
+=== Section X ===
+[X] Agent 1 (extractor, mode=full_text) searching the clinical record...
+[X] Agent 1 done in 5.4s
+[X] Agent 2 (evaluator) filling in the schema...
+[X] Agent 2 done in 55.7s
+[X] filled in: answer='No alternative diagnosis was found to explain the acute illness'
+[CROSS-SECTION RULE] 'b2' triggered. Forcing 'b1_1' to '≥1 symptom or sign of DVT was reported'.
+[A1] Agent 3 verifier (answer) AGREE, P(YES) 0.9999 (verdict)
+[A1] Agent 3 verifier (reasoning) AGREE, P(YES) 0.9999 (verdict)
+[A2] Agent 3 verifier (answer) DISAGREE, P(YES) 0.3797 (verdict)
+[A2] Agent 3 verifier (reasoning) AGREE, P(YES) 0.7875 (verdict)
+[A3_1] Agent 3 verifier (answer) AGREE, P(YES) 1.0000 (verdict)
+[A3_1] Agent 3 verifier (reasoning) AGREE, P(YES) 1.0000 (verdict)
+[A3_2] Agent 3 verifier (answer) AGREE, P(YES) 0.9967 (verdict)
+[A3_2] Agent 3 verifier (reasoning) AGREE, P(YES) 0.8805 (verdict)
+[B1_2] Agent 3 verifier (answer) AGREE, P(YES) 0.9986 (verdict)
+[B1_2] Agent 3 verifier (reasoning) AGREE, P(YES) 0.9999 (verdict)
+[B2] Agent 3 verifier (answer) AGREE, P(YES) 0.9976 (verdict)
+[B2] Agent 3 verifier (reasoning) AGREE, P(YES) 0.9999 (verdict)
+[C] Agent 3 verifier (answer) AGREE, P(YES) 1.0000 (verdict)
+[C] Agent 3 verifier (reasoning) AGREE, P(YES) 1.0000 (verdict)
+[F] Agent 3 verifier (answer) DISAGREE, P(YES) 0.1232 (verdict)
+[F] Agent 3 verifier (reasoning) AGREE, P(YES) 0.9038 (verdict)
+[X] Agent 3 verifier (answer) AGREE, P(YES) 0.7641 (verdict)
+[X] Agent 3 verifier (reasoning) AGREE, P(YES) 0.9838 (verdict)
+[B1_1] Agent 3 verifier (answer) AGREE, P(YES) 0.9976 (rule:B2)
+[B1_1] Agent 3 verifier (reasoning) AGREE, P(YES) 0.9999 (rule:B2)
+  -> saved SYN_09_risk_factor_not_alt_diagnosis_v2_20261104_200305.json in 5.2 min (ETA 139 min for the remaining 31)
+[10/40] SYN_10_unclear_sparse_record_v2 ...
+Loading weights:   0%|          | 0/199 [00:00<?, ?it/s]Loading weights: 100%|██████████| 199/199 [00:00<00:00, 5242.81it/s]
+
+=== Section A1 ===
+[A1] Agent 1 (extractor, mode=full_text) searching the clinical record...
+[A1] Agent 1 done in 5.2s
+[A1] Agent 2 (evaluator) filling in the schema...
+[A1] Agent 2 done in 16.4s
+[A1] filled in: answer='No autopsy done, unknown if done, or done but results unavailable'
+
+=== Section A2 ===
+[A2] Agent 1 (extractor, mode=full_text) searching the clinical record...
+[A2] Agent 1 done in 5.1s
+[A2] Agent 2 (evaluator) filling in the schema...
+[A2] Agent 2 done in 15.8s
+[A2] filled in: answer='No surgical procedure done; or, done but either did not confirm presence of DVT or findings unknown; or unknown if done'
+
+=== Section A3_1 ===
+[A3_1] Agent 1 (extractor, mode=full_text) searching the clinical record...
+[A3_1] Agent 1 done in 5.3s
+[A3_1] Agent 2 (evaluator) filling in the schema...
+[A3_1] Agent 2 done in 15.3s
+[A3_1] filled in: answer='No imaging studies done, unknown if done, or done but results unknown'
+
+=== Section A3_2 ===
+[A3_2] Agent 1 (extractor, mode=full_text) searching the clinical record...
+[A3_2] Agent 1 done in 5.2s
+[A3_2] Agent 2 (evaluator) filling in the schema...
+[A3_2] Agent 2 done in 14.9s
+[A3_2] filled in: studies=[]
+
+=== Section B1_1 ===
+[B1_1] Agent 1 (extractor, mode=full_text) searching the clinical record...
+[B1_1] Agent 1 done in 5.5s
+[B1_1] Agent 2 (evaluator) filling in the schema...
+[B1_1] Agent 2 done in 15.9s
+[B1_1] filled in: answer='≥1 symptom or sign of DVT was reported'
+
+=== Section B1_2 ===
+[B1_2] Agent 1 (extractor, mode=full_text) searching the clinical record...
+[B1_2] Agent 1 done in 5.5s
+[B1_2] Agent 2 (evaluator) filling in the schema...
+[B1_2] Agent 2 done in 18.4s
+[B1_2] filled in: types=['Lower extremity DVT']
+
+=== Section B2 ===
+[B2] Agent 1 (extractor, mode=full_text) searching the clinical record...
+[B2] Agent 1 done in 5.4s
+[B2] Agent 2 (evaluator) filling in the schema...
+[B2] Agent 2 done in 16.9s
+[B2] filled in: symptoms=['None of the above were present or it is unknown if any of 1-4 were present']
+
+=== Section C ===
+[C] Agent 1 (extractor, mode=full_text) searching the clinical record...
+[C] Agent 1 done in 5.2s
+[C] Agent 2 (evaluator) filling in the schema...
+[C] Agent 2 done in 15.2s
+[C] filled in: answer='D-dimer not tested, or tested but results unknown or not available'
+
+=== Section F ===
+[F] Agent 1 (extractor, mode=full_text) searching the clinical record...
+[F] Agent 1 done in 5.6s
+[F] Agent 2 (evaluator) filling in the schema...
+[F] Agent 2 done in 25.5s
+[F] filled in: answer='No'
+
+=== Section X ===
+[X] Agent 1 (extractor, mode=full_text) searching the clinical record...
+[X] Agent 1 done in 5.3s
+[X] Agent 2 (evaluator) filling in the schema...
+[X] Agent 2 done in 47.0s
+[X] filled in: answer='No alternative diagnosis was found to explain the acute illness'
+[A1] Agent 3 verifier (answer) AGREE, P(YES) 0.9999 (verdict)
+[A1] Agent 3 verifier (reasoning) AGREE, P(YES) 0.9999 (verdict)
+[A2] Agent 3 verifier (answer) AGREE, P(YES) 0.9998 (verdict)
+[A2] Agent 3 verifier (reasoning) AGREE, P(YES) 0.9999 (verdict)
+[A3_1] Agent 3 verifier (answer) AGREE, P(YES) 1.0000 (verdict)
+[A3_1] Agent 3 verifier (reasoning) AGREE, P(YES) 1.0000 (verdict)
+[A3_2] Agent 3 verifier (answer) AGREE, P(YES) 0.9977 (verdict)
+[A3_2] Agent 3 verifier (reasoning) AGREE, P(YES) 0.9978 (verdict)
+[B1_1] Agent 3 verifier (answer) DISAGREE, P(YES) 0.4539 (verdict)
+[B1_1] Agent 3 verifier (reasoning) AGREE, P(YES) 0.9535 (verdict)
+[B1_2] Agent 3 verifier (answer) AGREE, P(YES) 0.9981 (verdict)
+[B1_2] Agent 3 verifier (reasoning) AGREE, P(YES) 0.9999 (verdict)
+[B2] Agent 3 verifier (answer) AGREE, P(YES) 0.6660 (verdict)
+[B2] Agent 3 verifier (reasoning) AGREE, P(YES) 0.9199 (verdict)
+[C] Agent 3 verifier (answer) AGREE, P(YES) 1.0000 (verdict)
+[C] Agent 3 verifier (reasoning) AGREE, P(YES) 1.0000 (verdict)
+[F] Agent 3 verifier (answer) DISAGREE, P(YES) 0.4512 (verdict)
+[F] Agent 3 verifier (reasoning) AGREE, P(YES) 0.9995 (verdict)
+[X] Agent 3 verifier (answer) DISAGREE, P(YES) 0.2511 (verdict)
+[X] Agent 3 verifier (reasoning) AGREE, P(YES) 0.9127 (verdict)
+  -> saved SYN_10_unclear_sparse_record_v2_20261104_200746.json in 4.7 min (ETA 135 min for the remaining 30)
+[11/40] SYN_11_autopsy_negative_v2 ...
+Loading weights:   0%|          | 0/199 [00:00<?, ?it/s]Loading weights: 100%|██████████| 199/199 [00:00<00:00, 4516.25it/s]
+
+=== Section A1 ===
+[A1] Agent 1 (extractor, mode=full_text) searching the clinical record...
+[A1] Agent 1 done in 5.6s
+[A1] Agent 2 (evaluator) filling in the schema...
+[A1] Agent 2 done in 15.5s
+[A1] filled in: answer='Autopsy done but showed no evidence of DVT'
+
+=== Section A2 ===
+[A2] Agent 1 (extractor, mode=full_text) searching the clinical record...
+[A2] Agent 1 done in 5.3s
+[A2] Agent 2 (evaluator) filling in the schema...
+[A2] Agent 2 done in 16.0s
+[A2] filled in: answer='No surgical procedure done; or, done but either did not confirm presence of DVT or findings unknown; or unknown if done'
+
+=== Section A3_1 ===
+[A3_1] Agent 1 (extractor, mode=full_text) searching the clinical record...
+[A3_1] Agent 1 done in 5.3s
+[A3_1] Agent 2 (evaluator) filling in the schema...
+[A3_1] Agent 2 done in 17.3s
+[A3_1] filled in: answer='No imaging studies done, unknown if done, or done but results unknown'
+
+=== Section A3_2 ===
+[A3_2] Agent 1 (extractor, mode=full_text) searching the clinical record...
+[A3_2] Agent 1 done in 5.2s
+[A3_2] Agent 2 (evaluator) filling in the schema...
+[A3_2] Agent 2 done in 14.7s
+[A3_2] filled in: studies=[]
+
+=== Section B1_1 ===
+[B1_1] Agent 1 (extractor, mode=full_text) searching the clinical record...
+[B1_1] Agent 1 done in 5.5s
+[B1_1] Agent 2 (evaluator) filling in the schema...
+[B1_1] Agent 2 done in 15.8s
+[B1_1] filled in: answer='There was no report of a recognized DVT syndrome'
+
+=== Section B1_2 ===
+[B1_2] Agent 1 (extractor, mode=full_text) searching the clinical record...
+[B1_2] Agent 1 done in 5.6s
+[B1_2] Agent 2 (evaluator) filling in the schema...
+[B1_2] Agent 2 done in 20.8s
+[B1_2] filled in: types=[]
+
+=== Section B2 ===
+[B2] Agent 1 (extractor, mode=full_text) searching the clinical record...
+[B2] Agent 1 done in 5.3s
+[B2] Agent 2 (evaluator) filling in the schema...
+[B2] Agent 2 done in 18.1s
+[B2] filled in: symptoms=['None of the above were present or it is unknown if any of 1-4 were present']
+
+=== Section C ===
+[C] Agent 1 (extractor, mode=full_text) searching the clinical record...
+[C] Agent 1 done in 5.2s
+[C] Agent 2 (evaluator) filling in the schema...
+[C] Agent 2 done in 15.6s
+[C] filled in: answer='D-dimer not tested, or tested but results unknown or not available'
+
+=== Section F ===
+[F] Agent 1 (extractor, mode=full_text) searching the clinical record...
+[F] Agent 1 done in 5.3s
+[F] Agent 2 (evaluator) filling in the schema...
+[F] Agent 2 done in 18.3s
+[F] filled in: answer='No'
+
+=== Section X ===
+[X] Agent 1 (extractor, mode=full_text) searching the clinical record...
+[X] Agent 1 done in 5.4s
+[X] Agent 2 (evaluator) filling in the schema...
+[X] Agent 2 done in 25.8s
+[X] filled in: answer='No alternative diagnosis was found to explain the acute illness'
+[A1] Agent 3 verifier (answer) AGREE, P(YES) 1.0000 (verdict)
+[A1] Agent 3 verifier (reasoning) AGREE, P(YES) 1.0000 (verdict)
+[A2] Agent 3 verifier (answer) AGREE, P(YES) 0.9998 (verdict)
+[A2] Agent 3 verifier (reasoning) AGREE, P(YES) 0.9999 (verdict)
+[A3_1] Agent 3 verifier (answer) AGREE, P(YES) 0.9998 (verdict)
+[A3_1] Agent 3 verifier (reasoning) AGREE, P(YES) 0.9999 (verdict)
+[A3_2] Agent 3 verifier (answer) AGREE, P(YES) 0.9977 (verdict)
+[A3_2] Agent 3 verifier (reasoning) AGREE, P(YES) 0.9978 (verdict)
+[B1_1] Agent 3 verifier (answer) AGREE, P(YES) 0.9990 (verdict)
+[B1_1] Agent 3 verifier (reasoning) AGREE, P(YES) 0.9971 (verdict)
+[B1_2] Agent 3 verifier (answer) AGREE, P(YES) 0.9773 (verdict)
+[B1_2] Agent 3 verifier (reasoning) AGREE, P(YES) 0.9981 (verdict)
+[B2] Agent 3 verifier (answer) AGREE, P(YES) 0.9995 (verdict)
+[B2] Agent 3 verifier (reasoning) AGREE, P(YES) 0.9993 (verdict)
+[C] Agent 3 verifier (answer) AGREE, P(YES) 0.9997 (verdict)
+[C] Agent 3 verifier (reasoning) AGREE, P(YES) 0.9999 (verdict)
+[F] Agent 3 verifier (answer) AGREE, P(YES) 0.9911 (verdict)
+[F] Agent 3 verifier (reasoning) AGREE, P(YES) 0.9996 (verdict)
+[X] Agent 3 verifier (answer) DISAGREE, P(YES) 0.3412 (verdict)
+[X] Agent 3 verifier (reasoning) AGREE, P(YES) 0.5226 (verdict)
+  -> saved SYN_11_autopsy_negative_v2_20261104_201203.json in 4.3 min (ETA 130 min for the remaining 29)
+[12/40] SYN_12_other_procedure_positive_v2 ...
+Loading weights:   0%|          | 0/199 [00:00<?, ?it/s]Loading weights: 100%|██████████| 199/199 [00:00<00:00, 6889.36it/s]
+
+=== Section A1 ===
+[A1] Agent 1 (extractor, mode=full_text) searching the clinical record...
+[A1] Agent 1 done in 5.3s
+[A1] Agent 2 (evaluator) filling in the schema...
+[A1] Agent 2 done in 16.6s
+[A1] filled in: answer='No autopsy done, unknown if done, or done but results unavailable'
+
+=== Section A2 ===
+[A2] Agent 1 (extractor, mode=full_text) searching the clinical record...
+[A2] Agent 1 done in 5.4s
+[A2] Agent 2 (evaluator) filling in the schema...
+[A2] Agent 2 done in 19.6s
+[A2] filled in: answer='No surgical procedure done; or, done but either did not confirm presence of DVT or findings unknown; or unknown if done'
+
+=== Section A3_1 ===
+[A3_1] Agent 1 (extractor, mode=full_text) searching the clinical record...
+[A3_1] Agent 1 done in 5.5s
+[A3_1] Agent 2 (evaluator) filling in the schema...
+[A3_1] Agent 2 done in 17.0s
+[A3_1] filled in: answer='≥1 imaging study was done and confirmed DVT'
+
+=== Section A3_2 ===
+[A3_2] Agent 1 (extractor, mode=full_text) searching the clinical record...
+[A3_2] Agent 1 done in 5.5s
+[A3_2] Agent 2 (evaluator) filling in the schema...
+[A3_2] Agent 2 done in 42.6s
+[A3_2] filled in: studies=['Doppler/Duplex Ultrasound']
+
+=== Section B1_1 ===
+[B1_1] Agent 1 (extractor, mode=full_text) searching the clinical record...
+[B1_1] Agent 1 done in 5.5s
+[B1_1] Agent 2 (evaluator) filling in the schema...
+[B1_1] Agent 2 done in 41.1s
+[B1_1] filled in: answer='It is unknown if there was a report of a DVT syndrome'
+
+=== Section B1_2 ===
+[B1_2] Agent 1 (extractor, mode=full_text) searching the clinical record...
+[B1_2] Agent 1 done in 5.5s
+[B1_2] Agent 2 (evaluator) filling in the schema...
+[B1_2] Agent 2 done in 17.7s
+[B1_2] filled in: types=['Lower extremity DVT']
+
+=== Section B2 ===
+[B2] Agent 1 (extractor, mode=full_text) searching the clinical record...
+[B2] Agent 1 done in 5.6s
+[B2] Agent 2 (evaluator) filling in the schema...
+[B2] Agent 2 done in 17.2s
+[B2] filled in: symptoms=['Calf pain or tenderness', 'Leg swelling or pitting oedema']
+
+=== Section C ===
+[C] Agent 1 (extractor, mode=full_text) searching the clinical record...
+[C] Agent 1 done in 5.5s
+[C] Agent 2 (evaluator) filling in the schema...
+[C] Agent 2 done in 15.1s
+[C] filled in: answer="D-dimer exceeded test lab's upper limit of normal."
+
+=== Section F ===
+[F] Agent 1 (extractor, mode=full_text) searching the clinical record...
+[F] Agent 1 done in 5.4s
+[F] Agent 2 (evaluator) filling in the schema...
+[F] Agent 2 done in 16.5s
+[F] filled in: answer='No'
+
+=== Section X ===
+[X] Agent 1 (extractor, mode=full_text) searching the clinical record...
+[X] Agent 1 done in 5.4s
+[X] Agent 2 (evaluator) filling in the schema...
+[X] Agent 2 done in 17.6s
+[X] filled in: answer='No alternative diagnosis was found to explain the acute illness'
+[CROSS-SECTION RULE] 'b2' triggered. Forcing 'b1_1' to '≥1 symptom or sign of DVT was reported'.
+[A1] Agent 3 verifier (answer) AGREE, P(YES) 0.9999 (verdict)
+[A1] Agent 3 verifier (reasoning) AGREE, P(YES) 0.9999 (verdict)
+[A2] Agent 3 verifier (answer) DISAGREE, P(YES) 0.2727 (verdict)
+[A2] Agent 3 verifier (reasoning) AGREE, P(YES) 0.8622 (verdict)
+[A3_1] Agent 3 verifier (answer) AGREE, P(YES) 1.0000 (verdict)
+[A3_1] Agent 3 verifier (reasoning) AGREE, P(YES) 1.0000 (verdict)
+[A3_2] Agent 3 verifier (answer) AGREE, P(YES) 0.9953 (verdict)
+[A3_2] Agent 3 verifier (reasoning) AGREE, P(YES) 0.9630 (verdict)
+[B1_2] Agent 3 verifier (answer) AGREE, P(YES) 0.9960 (verdict)
+[B1_2] Agent 3 verifier (reasoning) AGREE, P(YES) 0.9998 (verdict)
+[B2] Agent 3 verifier (answer) AGREE, P(YES) 0.9960 (verdict)
+[B2] Agent 3 verifier (reasoning) AGREE, P(YES) 0.9995 (verdict)
+[C] Agent 3 verifier (answer) AGREE, P(YES) 1.0000 (verdict)
+[C] Agent 3 verifier (reasoning) AGREE, P(YES) 1.0000 (verdict)
+[F] Agent 3 verifier (answer) DISAGREE, P(YES) 0.1548 (verdict)
+[F] Agent 3 verifier (reasoning) AGREE, P(YES) 0.9400 (verdict)
+[X] Agent 3 verifier (answer) DISAGREE, P(YES) 0.2423 (verdict)
+[X] Agent 3 verifier (reasoning) AGREE, P(YES) 0.7955 (verdict)
+[B1_1] Agent 3 verifier (answer) AGREE, P(YES) 0.9960 (rule:B2)
+[B1_1] Agent 3 verifier (reasoning) AGREE, P(YES) 0.9995 (rule:B2)
+  -> saved SYN_12_other_procedure_positive_v2_20261104_201705.json in 5.0 min (ETA 127 min for the remaining 28)
+[13/40] SYN_13_contrast_venography_only_v2 ...
+Loading weights:   0%|          | 0/199 [00:00<?, ?it/s]Loading weights: 100%|██████████| 199/199 [00:00<00:00, 4949.34it/s]
+
+=== Section A1 ===
+[A1] Agent 1 (extractor, mode=full_text) searching the clinical record...
+[A1] Agent 1 done in 5.3s
+[A1] Agent 2 (evaluator) filling in the schema...
+[A1] Agent 2 done in 16.5s
+[A1] filled in: answer='No autopsy done, unknown if done, or done but results unavailable'
+
+=== Section A2 ===
+[A2] Agent 1 (extractor, mode=full_text) searching the clinical record...
+[A2] Agent 1 done in 5.7s
+[A2] Agent 2 (evaluator) filling in the schema...
+[A2] Agent 2 done in 16.8s
+[A2] filled in: answer='No surgical procedure done; or, done but either did not confirm presence of DVT or findings unknown; or unknown if done'
+
+=== Section A3_1 ===
+[A3_1] Agent 1 (extractor, mode=full_text) searching the clinical record...
+[A3_1] Agent 1 done in 5.4s
+[A3_1] Agent 2 (evaluator) filling in the schema...
+[A3_1] Agent 2 done in 16.8s
+[A3_1] filled in: answer="≥1 imaging study was done but didn't confirm DVT"
+
+=== Section A3_2 ===
+[A3_2] Agent 1 (extractor, mode=full_text) searching the clinical record...
+[A3_2] Agent 1 done in 5.7s
+[A3_2] Agent 2 (evaluator) filling in the schema...
+[A3_2] Agent 2 done in 16.3s
+[A3_2] filled in: studies=['Contrast venography']
+
+=== Section B1_1 ===
+[B1_1] Agent 1 (extractor, mode=full_text) searching the clinical record...
+[B1_1] Agent 1 done in 5.6s
+[B1_1] Agent 2 (evaluator) filling in the schema...
+[B1_1] Agent 2 done in 18.4s
+[B1_1] filled in: answer='It is unknown if there was a report of a DVT syndrome'
+
+=== Section B1_2 ===
+[B1_2] Agent 1 (extractor, mode=full_text) searching the clinical record...
+[B1_2] Agent 1 done in 5.7s
+[B1_2] Agent 2 (evaluator) filling in the schema...
+[B1_2] Agent 2 done in 15.9s
+[B1_2] filled in: types=['Lower extremity DVT']
+
+=== Section B2 ===
+[B2] Agent 1 (extractor, mode=full_text) searching the clinical record...
+[B2] Agent 1 done in 5.4s
+[B2] Agent 2 (evaluator) filling in the schema...
+[B2] Agent 2 done in 19.9s
+[B2] filled in: symptoms=['Calf pain or tenderness', 'Leg swelling or pitting oedema']
+
+=== Section C ===
+[C] Agent 1 (extractor, mode=full_text) searching the clinical record...
+[C] Agent 1 done in 5.5s
+[C] Agent 2 (evaluator) filling in the schema...
+[C] Agent 2 done in 15.2s
+[C] filled in: answer="D-dimer exceeded test lab's upper limit of normal."
+
+=== Section F ===
+[F] Agent 1 (extractor, mode=full_text) searching the clinical record...
+[F] Agent 1 done in 5.8s
+[F] Agent 2 (evaluator) filling in the schema...
+[F] Agent 2 done in 16.4s
+[F] filled in: answer='No'
+
+=== Section X ===
+[X] Agent 1 (extractor, mode=full_text) searching the clinical record...
+[X] Agent 1 done in 5.2s
+[X] Agent 2 (evaluator) filling in the schema...
+[X] Agent 2 done in 19.0s
+[X] filled in: answer='No alternative diagnosis was found to explain the acute illness'
+[CROSS-SECTION RULE] 'b2' triggered. Forcing 'b1_1' to '≥1 symptom or sign of DVT was reported'.
+[CROSS-SECTION RULE] 'a3_1' triggered. Forcing 'a3_2' to '[]'.
+[A1] Agent 3 verifier (answer) AGREE, P(YES) 0.9999 (verdict)
+[A1] Agent 3 verifier (reasoning) AGREE, P(YES) 0.9999 (verdict)
+[A2] Agent 3 verifier (answer) DISAGREE, P(YES) 0.0108 (verdict)
+[A2] Agent 3 verifier (reasoning) DISAGREE, P(YES) 0.1244 (verdict)
+[A3_1] Agent 3 verifier (answer) AGREE, P(YES) 0.8174 (verdict)
+[A3_1] Agent 3 verifier (reasoning) AGREE, P(YES) 0.9614 (verdict)
+[B1_2] Agent 3 verifier (answer) AGREE, P(YES) 0.9991 (verdict)
+[B1_2] Agent 3 verifier (reasoning) AGREE, P(YES) 0.9998 (verdict)
+[B2] Agent 3 verifier (answer) AGREE, P(YES) 0.9981 (verdict)
+[B2] Agent 3 verifier (reasoning) AGREE, P(YES) 0.9999 (verdict)
+[C] Agent 3 verifier (answer) AGREE, P(YES) 1.0000 (verdict)
+[C] Agent 3 verifier (reasoning) AGREE, P(YES) 1.0000 (verdict)
+[F] Agent 3 verifier (answer) DISAGREE, P(YES) 0.1450 (verdict)
+[F] Agent 3 verifier (reasoning) AGREE, P(YES) 0.9725 (verdict)
+[X] Agent 3 verifier (answer) DISAGREE, P(YES) 0.0155 (verdict)
+[X] Agent 3 verifier (reasoning) AGREE, P(YES) 0.8053 (verdict)
+[A3_2] Agent 3 verifier (answer) AGREE, P(YES) 0.8174 (rule:A3_1)
+[A3_2] Agent 3 verifier (reasoning) AGREE, P(YES) 0.9614 (rule:A3_1)
+[B1_1] Agent 3 verifier (answer) AGREE, P(YES) 0.9981 (rule:B2)
+[B1_1] Agent 3 verifier (reasoning) AGREE, P(YES) 0.9999 (rule:B2)
+  -> saved SYN_13_contrast_venography_only_v2_20261104_202114.json in 4.2 min (ETA 121 min for the remaining 27)
+[14/40] SYN_14_other_imaging_incidental_v2 ...
+Loading weights:   0%|          | 0/199 [00:00<?, ?it/s]Loading weights: 100%|██████████| 199/199 [00:00<00:00, 7342.63it/s]
+
+=== Section A1 ===
+[A1] Agent 1 (extractor, mode=full_text) searching the clinical record...
+[A1] Agent 1 done in 5.3s
+[A1] Agent 2 (evaluator) filling in the schema...
+[A1] Agent 2 done in 16.5s
+[A1] filled in: answer='No autopsy done, unknown if done, or done but results unavailable'
+
+=== Section A2 ===
+[A2] Agent 1 (extractor, mode=full_text) searching the clinical record...
+[A2] Agent 1 done in 5.4s
+[A2] Agent 2 (evaluator) filling in the schema...
+[A2] Agent 2 done in 17.2s
+[A2] filled in: answer='No surgical procedure done; or, done but either did not confirm presence of DVT or findings unknown; or unknown if done'
+
+=== Section A3_1 ===
+[A3_1] Agent 1 (extractor, mode=full_text) searching the clinical record...
+[A3_1] Agent 1 done in 5.5s
+[A3_1] Agent 2 (evaluator) filling in the schema...
+[A3_1] Agent 2 done in 17.1s
+[A3_1] filled in: answer='≥1 imaging study was done and confirmed DVT'
+
+=== Section A3_2 ===
+[A3_2] Agent 1 (extractor, mode=full_text) searching the clinical record...
+[A3_2] Agent 1 done in 5.6s
+[A3_2] Agent 2 (evaluator) filling in the schema...
+[A3_2] Agent 2 done in 20.6s
+[A3_2] filled in: studies=['CT or MR venography']
+
+=== Section B1_1 ===
+[B1_1] Agent 1 (extractor, mode=full_text) searching the clinical record...
+[B1_1] Agent 1 done in 5.5s
+[B1_1] Agent 2 (evaluator) filling in the schema...
+[B1_1] Agent 2 done in 16.5s
+[B1_1] filled in: answer='≥1 symptom or sign of DVT was reported'
+
+=== Section B1_2 ===
+[B1_2] Agent 1 (extractor, mode=full_text) searching the clinical record...
+[B1_2] Agent 1 done in 5.5s
+[B1_2] Agent 2 (evaluator) filling in the schema...
+[B1_2] Agent 2 done in 16.2s
+[B1_2] filled in: types=['Lower extremity DVT']
+
+=== Section B2 ===
+[B2] Agent 1 (extractor, mode=full_text) searching the clinical record...
+[B2] Agent 1 done in 5.5s
+[B2] Agent 2 (evaluator) filling in the schema...
+[B2] Agent 2 done in 16.6s
+[B2] filled in: symptoms=['Calf pain or tenderness']
+
+=== Section C ===
+[C] Agent 1 (extractor, mode=full_text) searching the clinical record...
+[C] Agent 1 done in 5.4s
+[C] Agent 2 (evaluator) filling in the schema...
+[C] Agent 2 done in 15.3s
+[C] filled in: answer="D-dimer exceeded test lab's upper limit of normal."
+
+=== Section F ===
+[F] Agent 1 (extractor, mode=full_text) searching the clinical record...
+[F] Agent 1 done in 5.4s
+[F] Agent 2 (evaluator) filling in the schema...
+[F] Agent 2 done in 16.0s
+[F] filled in: answer='No'
+
+=== Section X ===
+[X] Agent 1 (extractor, mode=full_text) searching the clinical record...
+[X] Agent 1 done in 5.4s
+[X] Agent 2 (evaluator) filling in the schema...
+[X] Agent 2 done in 41.4s
+[X] filled in: answer='No alternative diagnosis was found to explain the acute illness'
+[A1] Agent 3 verifier (answer) AGREE, P(YES) 0.9999 (verdict)
+[A1] Agent 3 verifier (reasoning) AGREE, P(YES) 0.9999 (verdict)
+[A2] Agent 3 verifier (answer) AGREE, P(YES) 0.5917 (verdict)
+[A2] Agent 3 verifier (reasoning) AGREE, P(YES) 0.9118 (verdict)
+[A3_1] Agent 3 verifier (answer) AGREE, P(YES) 1.0000 (verdict)
+[A3_1] Agent 3 verifier (reasoning) AGREE, P(YES) 1.0000 (verdict)
+[A3_2] Agent 3 verifier (answer) AGREE, P(YES) 0.6222 (verdict)
+[A3_2] Agent 3 verifier (reasoning) AGREE, P(YES) 0.8287 (verdict)
+[B1_1] Agent 3 verifier (answer) AGREE, P(YES) 0.9992 (verdict)
+[B1_1] Agent 3 verifier (reasoning) AGREE, P(YES) 0.9993 (verdict)
+[B1_2] Agent 3 verifier (answer) AGREE, P(YES) 0.9970 (verdict)
+[B1_2] Agent 3 verifier (reasoning) AGREE, P(YES) 0.9998 (verdict)
+[B2] Agent 3 verifier (answer) AGREE, P(YES) 0.9897 (verdict)
+[B2] Agent 3 verifier (reasoning) AGREE, P(YES) 0.9997 (verdict)
+[C] Agent 3 verifier (answer) AGREE, P(YES) 1.0000 (verdict)
+[C] Agent 3 verifier (reasoning) AGREE, P(YES) 1.0000 (verdict)
+[F] Agent 3 verifier (answer) DISAGREE, P(YES) 0.1002 (verdict)
+[F] Agent 3 verifier (reasoning) AGREE, P(YES) 0.7196 (verdict)
+[X] Agent 3 verifier (answer) DISAGREE, P(YES) 0.0213 (verdict)
+[X] Agent 3 verifier (reasoning) AGREE, P(YES) 0.8750 (verdict)
+  -> saved SYN_14_other_imaging_incidental_v2_20261104_202549.json in 4.6 min (ETA 117 min for the remaining 26)
+[15/40] SYN_15_ddimer_negative_low_probability_v2 ...
+Loading weights:   0%|          | 0/199 [00:00<?, ?it/s]Loading weights: 100%|██████████| 199/199 [00:00<00:00, 6067.74it/s]
+
+=== Section A1 ===
+[A1] Agent 1 (extractor, mode=full_text) searching the clinical record...
+[A1] Agent 1 done in 5.3s
+[A1] Agent 2 (evaluator) filling in the schema...
+[A1] Agent 2 done in 16.6s
+[A1] filled in: answer='No autopsy done, unknown if done, or done but results unavailable'
+
+=== Section A2 ===
+[A2] Agent 1 (extractor, mode=full_text) searching the clinical record...
+[A2] Agent 1 done in 5.3s
+[A2] Agent 2 (evaluator) filling in the schema...
+[A2] Agent 2 done in 16.1s
+[A2] filled in: answer='No surgical procedure done; or, done but either did not confirm presence of DVT or findings unknown; or unknown if done'
+
+=== Section A3_1 ===
+[A3_1] Agent 1 (extractor, mode=full_text) searching the clinical record...
+[A3_1] Agent 1 done in 5.4s
+[A3_1] Agent 2 (evaluator) filling in the schema...
+[A3_1] Agent 2 done in 17.2s
+[A3_1] filled in: answer='No imaging studies done, unknown if done, or done but results unknown'
+
+=== Section A3_2 ===
+[A3_2] Agent 1 (extractor, mode=full_text) searching the clinical record...
+[A3_2] Agent 1 done in 5.3s
+[A3_2] Agent 2 (evaluator) filling in the schema...
+[A3_2] Agent 2 done in 14.6s
+[A3_2] filled in: studies=[]
+
+=== Section B1_1 ===
+[B1_1] Agent 1 (extractor, mode=full_text) searching the clinical record...
+[B1_1] Agent 1 done in 5.4s
+[B1_1] Agent 2 (evaluator) filling in the schema...
+[B1_1] Agent 2 done in 17.0s
+[B1_1] filled in: answer='≥1 symptom or sign of DVT was reported'
+
+=== Section B1_2 ===
+[B1_2] Agent 1 (extractor, mode=full_text) searching the clinical record...
+[B1_2] Agent 1 done in 5.6s
+[B1_2] Agent 2 (evaluator) filling in the schema...
+[B1_2] Agent 2 done in 18.4s
+[B1_2] filled in: types=['Lower extremity DVT']
+
+=== Section B2 ===
+[B2] Agent 1 (extractor, mode=full_text) searching the clinical record...
+[B2] Agent 1 done in 5.4s
+[B2] Agent 2 (evaluator) filling in the schema...
+[B2] Agent 2 done in 16.5s
+[B2] filled in: symptoms=['Calf pain or tenderness']
+
+=== Section C ===
+[C] Agent 1 (extractor, mode=full_text) searching the clinical record...
+[C] Agent 1 done in 5.3s
+[C] Agent 2 (evaluator) filling in the schema...
+[C] Agent 2 done in 16.4s
+[C] filled in: answer="D-dimer tested and was within test lab's range of normal"
+
+=== Section F ===
+[F] Agent 1 (extractor, mode=full_text) searching the clinical record...
+[F] Agent 1 done in 5.3s
+[F] Agent 2 (evaluator) filling in the schema...
+[F] Agent 2 done in 25.7s
+[F] filled in: answer='No'
+
+=== Section X ===
+[X] Agent 1 (extractor, mode=full_text) searching the clinical record...
+[X] Agent 1 done in 5.3s
+[X] Agent 2 (evaluator) filling in the schema...
+[X] Agent 2 done in 41.6s
+[X] filled in: answer='No alternative diagnosis was found to explain the acute illness'
+[A1] Agent 3 verifier (answer) AGREE, P(YES) 0.9999 (verdict)
+[A1] Agent 3 verifier (reasoning) AGREE, P(YES) 0.9999 (verdict)
+[A2] Agent 3 verifier (answer) AGREE, P(YES) 0.9998 (verdict)
+[A2] Agent 3 verifier (reasoning) AGREE, P(YES) 0.9999 (verdict)
+[A3_1] Agent 3 verifier (answer) AGREE, P(YES) 0.9998 (verdict)
+[A3_1] Agent 3 verifier (reasoning) AGREE, P(YES) 0.9999 (verdict)
+[A3_2] Agent 3 verifier (answer) AGREE, P(YES) 0.9977 (verdict)
+[A3_2] Agent 3 verifier (reasoning) AGREE, P(YES) 0.9978 (verdict)
+[B1_1] Agent 3 verifier (answer) AGREE, P(YES) 0.9996 (verdict)
+[B1_1] Agent 3 verifier (reasoning) AGREE, P(YES) 0.9994 (verdict)
+[B1_2] Agent 3 verifier (answer) AGREE, P(YES) 0.9981 (verdict)
+[B1_2] Agent 3 verifier (reasoning) AGREE, P(YES) 0.9999 (verdict)
+[B2] Agent 3 verifier (answer) AGREE, P(YES) 0.9904 (verdict)
+[B2] Agent 3 verifier (reasoning) AGREE, P(YES) 0.9996 (verdict)
+[C] Agent 3 verifier (answer) AGREE, P(YES) 0.6153 (verdict)
+[C] Agent 3 verifier (reasoning) AGREE, P(YES) 0.9649 (verdict)
+[F] Agent 3 verifier (answer) AGREE, P(YES) 0.5772 (verdict)
+[F] Agent 3 verifier (reasoning) AGREE, P(YES) 0.9964 (verdict)
+[X] Agent 3 verifier (answer) DISAGREE, P(YES) 0.0213 (verdict)
+[X] Agent 3 verifier (reasoning) AGREE, P(YES) 0.8750 (verdict)
+  -> saved SYN_15_ddimer_negative_low_probability_v2_20261104_203029.json in 4.7 min (ETA 113 min for the remaining 25)
+[16/40] SYN_16_no_dvt_syndrome_reported_v2 ...
+Loading weights:   0%|          | 0/199 [00:00<?, ?it/s]Loading weights: 100%|██████████| 199/199 [00:00<00:00, 6163.86it/s]
+
+=== Section A1 ===
+[A1] Agent 1 (extractor, mode=full_text) searching the clinical record...
+[A1] Agent 1 done in 5.3s
+[A1] Agent 2 (evaluator) filling in the schema...
+[A1] Agent 2 done in 16.6s
+[A1] filled in: answer='No autopsy done, unknown if done, or done but results unavailable'
+
+=== Section A2 ===
+[A2] Agent 1 (extractor, mode=full_text) searching the clinical record...
+[A2] Agent 1 done in 5.4s
+[A2] Agent 2 (evaluator) filling in the schema...
+[A2] Agent 2 done in 16.0s
+[A2] filled in: answer='No surgical procedure done; or, done but either did not confirm presence of DVT or findings unknown; or unknown if done'
+
+=== Section A3_1 ===
+[A3_1] Agent 1 (extractor, mode=full_text) searching the clinical record...
+[A3_1] Agent 1 done in 5.3s
+[A3_1] Agent 2 (evaluator) filling in the schema...
+[A3_1] Agent 2 done in 15.3s
+[A3_1] filled in: answer='No imaging studies done, unknown if done, or done but results unknown'
+
+=== Section A3_2 ===
+[A3_2] Agent 1 (extractor, mode=full_text) searching the clinical record...
+[A3_2] Agent 1 done in 5.3s
+[A3_2] Agent 2 (evaluator) filling in the schema...
+[A3_2] Agent 2 done in 14.5s
+[A3_2] filled in: studies=[]
+
+=== Section B1_1 ===
+[B1_1] Agent 1 (extractor, mode=full_text) searching the clinical record...
+[B1_1] Agent 1 done in 5.5s
+[B1_1] Agent 2 (evaluator) filling in the schema...
+[B1_1] Agent 2 done in 16.3s
+[B1_1] filled in: answer='There was no report of a recognized DVT syndrome'
+
+=== Section B1_2 ===
+[B1_2] Agent 1 (extractor, mode=full_text) searching the clinical record...
+[B1_2] Agent 1 done in 5.4s
+[B1_2] Agent 2 (evaluator) filling in the schema...
+[B1_2] Agent 2 done in 18.3s
+[B1_2] filled in: types=[]
+
+=== Section B2 ===
+[B2] Agent 1 (extractor, mode=full_text) searching the clinical record...
+[B2] Agent 1 done in 5.6s
+[B2] Agent 2 (evaluator) filling in the schema...
+[B2] Agent 2 done in 30.6s
+[B2] filled in: symptoms=['None of the above were present or it is unknown if any of 1-4 were present']
+
+=== Section C ===
+[C] Agent 1 (extractor, mode=full_text) searching the clinical record...
+[C] Agent 1 done in 5.3s
+[C] Agent 2 (evaluator) filling in the schema...
+[C] Agent 2 done in 15.6s
+[C] filled in: answer='D-dimer not tested, or tested but results unknown or not available'
+
+=== Section F ===
+[F] Agent 1 (extractor, mode=full_text) searching the clinical record...
+[F] Agent 1 done in 5.3s
+[F] Agent 2 (evaluator) filling in the schema...
+[F] Agent 2 done in 18.1s
+[F] filled in: answer='No'
+
+=== Section X ===
+[X] Agent 1 (extractor, mode=full_text) searching the clinical record...
+[X] Agent 1 done in 6.1s
+[X] Agent 2 (evaluator) filling in the schema...
+[X] Agent 2 done in 16.1s
+[X] filled in: answer='An alternative diagnosis was found that explained the acute illness'
+[A1] Agent 3 verifier (answer) AGREE, P(YES) 0.9999 (verdict)
+[A1] Agent 3 verifier (reasoning) AGREE, P(YES) 0.9999 (verdict)
+[A2] Agent 3 verifier (answer) AGREE, P(YES) 0.9998 (verdict)
+[A2] Agent 3 verifier (reasoning) AGREE, P(YES) 0.9999 (verdict)
+[A3_1] Agent 3 verifier (answer) AGREE, P(YES) 1.0000 (verdict)
+[A3_1] Agent 3 verifier (reasoning) AGREE, P(YES) 1.0000 (verdict)
+[A3_2] Agent 3 verifier (answer) AGREE, P(YES) 0.9977 (verdict)
+[A3_2] Agent 3 verifier (reasoning) AGREE, P(YES) 0.9978 (verdict)
+[B1_1] Agent 3 verifier (answer) AGREE, P(YES) 0.9999 (verdict)
+[B1_1] Agent 3 verifier (reasoning) AGREE, P(YES) 0.9999 (verdict)
+[B1_2] Agent 3 verifier (answer) AGREE, P(YES) 0.9942 (verdict)
+[B1_2] Agent 3 verifier (reasoning) AGREE, P(YES) 0.9997 (verdict)
+[B2] Agent 3 verifier (answer) AGREE, P(YES) 0.9974 (verdict)
+[B2] Agent 3 verifier (reasoning) AGREE, P(YES) 0.9994 (verdict)
+[C] Agent 3 verifier (answer) AGREE, P(YES) 0.9997 (verdict)
+[C] Agent 3 verifier (reasoning) AGREE, P(YES) 0.9999 (verdict)
+[F] Agent 3 verifier (answer) AGREE, P(YES) 0.9911 (verdict)
+[F] Agent 3 verifier (reasoning) AGREE, P(YES) 0.9996 (verdict)
+[X] Agent 3 verifier (answer) AGREE, P(YES) 0.9968 (verdict)
+[X] Agent 3 verifier (reasoning) AGREE, P(YES) 0.9992 (verdict)
+  -> saved SYN_16_no_dvt_syndrome_reported_v2_20261104_203450.json in 4.4 min (ETA 108 min for the remaining 24)
+[17/40] SYN_17_diagnosis_no_details_v2 ...
+Loading weights:   0%|          | 0/199 [00:00<?, ?it/s]Loading weights: 100%|██████████| 199/199 [00:00<00:00, 6528.13it/s]
+
+=== Section A1 ===
+[A1] Agent 1 (extractor, mode=full_text) searching the clinical record...
+[A1] Agent 1 done in 5.2s
+[A1] Agent 2 (evaluator) filling in the schema...
+[A1] Agent 2 done in 16.7s
+[A1] filled in: answer='No autopsy done, unknown if done, or done but results unavailable'
+
+=== Section A2 ===
+[A2] Agent 1 (extractor, mode=full_text) searching the clinical record...
+[A2] Agent 1 done in 5.2s
+[A2] Agent 2 (evaluator) filling in the schema...
+[A2] Agent 2 done in 16.5s
+[A2] filled in: answer='No surgical procedure done; or, done but either did not confirm presence of DVT or findings unknown; or unknown if done'
+
+=== Section A3_1 ===
+[A3_1] Agent 1 (extractor, mode=full_text) searching the clinical record...
+[A3_1] Agent 1 done in 5.2s
+[A3_1] Agent 2 (evaluator) filling in the schema...
+[A3_1] Agent 2 done in 17.1s
+[A3_1] filled in: answer='No imaging studies done, unknown if done, or done but results unknown'
+
+=== Section A3_2 ===
+[A3_2] Agent 1 (extractor, mode=full_text) searching the clinical record...
+[A3_2] Agent 1 done in 5.3s
+[A3_2] Agent 2 (evaluator) filling in the schema...
+[A3_2] Agent 2 done in 20.7s
+[A3_2] filled in: studies=[]
+
+=== Section B1_1 ===
+[B1_1] Agent 1 (extractor, mode=full_text) searching the clinical record...
+[B1_1] Agent 1 done in 5.3s
+[B1_1] Agent 2 (evaluator) filling in the schema...
+[B1_1] Agent 2 done in 19.3s
+[B1_1] filled in: answer='≥1 symptom or sign of DVT was reported'
+
+=== Section B1_2 ===
+[B1_2] Agent 1 (extractor, mode=full_text) searching the clinical record...
+[B1_2] Agent 1 done in 5.3s
+[B1_2] Agent 2 (evaluator) filling in the schema...
+[B1_2] Agent 2 done in 16.2s
+[B1_2] filled in: types=['Lower extremity DVT']
+
+=== Section B2 ===
+[B2] Agent 1 (extractor, mode=full_text) searching the clinical record...
+[B2] Agent 1 done in 5.3s
+[B2] Agent 2 (evaluator) filling in the schema...
+[B2] Agent 2 done in 16.9s
+[B2] filled in: symptoms=['None of the above were present or it is unknown if any of 1-4 were present']
+
+=== Section C ===
+[C] Agent 1 (extractor, mode=full_text) searching the clinical record...
+[C] Agent 1 done in 5.2s
+[C] Agent 2 (evaluator) filling in the schema...
+[C] Agent 2 done in 15.5s
+[C] filled in: answer='D-dimer not tested, or tested but results unknown or not available'
+
+=== Section F ===
+[F] Agent 1 (extractor, mode=full_text) searching the clinical record...
+[F] Agent 1 done in 5.3s
+[F] Agent 2 (evaluator) filling in the schema...
+[F] Agent 2 done in 16.7s
+[F] filled in: answer='No'
+
+=== Section X ===
+[X] Agent 1 (extractor, mode=full_text) searching the clinical record...
+[X] Agent 1 done in 5.2s
+[X] Agent 2 (evaluator) filling in the schema...
+[X] Agent 2 done in 40.1s
+[X] filled in: answer='No alternative diagnosis was found to explain the acute illness'
+[A1] Agent 3 verifier (answer) AGREE, P(YES) 0.9999 (verdict)
+[A1] Agent 3 verifier (reasoning) AGREE, P(YES) 0.9999 (verdict)
+[A2] Agent 3 verifier (answer) AGREE, P(YES) 1.0000 (verdict)
+[A2] Agent 3 verifier (reasoning) AGREE, P(YES) 0.9999 (verdict)
+[A3_1] Agent 3 verifier (answer) AGREE, P(YES) 0.6176 (verdict)
+[A3_1] Agent 3 verifier (reasoning) AGREE, P(YES) 0.9826 (verdict)
+[A3_2] Agent 3 verifier (answer) DISAGREE, P(YES) 0.1005 (verdict)
+[A3_2] Agent 3 verifier (reasoning) AGREE, P(YES) 0.9893 (verdict)
+[B1_1] Agent 3 verifier (answer) AGREE, P(YES) 0.8886 (verdict)
+[B1_1] Agent 3 verifier (reasoning) AGREE, P(YES) 0.8899 (verdict)
+[B1_2] Agent 3 verifier (answer) AGREE, P(YES) 0.9994 (verdict)
+[B1_2] Agent 3 verifier (reasoning) AGREE, P(YES) 0.9999 (verdict)
+[B2] Agent 3 verifier (answer) AGREE, P(YES) 0.9665 (verdict)
+[B2] Agent 3 verifier (reasoning) AGREE, P(YES) 0.9964 (verdict)
+[C] Agent 3 verifier (answer) AGREE, P(YES) 0.9997 (verdict)
+[C] Agent 3 verifier (reasoning) AGREE, P(YES) 0.9999 (verdict)
+[F] Agent 3 verifier (answer) DISAGREE, P(YES) 0.0756 (verdict)
+[F] Agent 3 verifier (reasoning) AGREE, P(YES) 0.9920 (verdict)
+[X] Agent 3 verifier (answer) DISAGREE, P(YES) 0.0179 (verdict)
+[X] Agent 3 verifier (reasoning) AGREE, P(YES) 0.6899 (verdict)
+  -> saved SYN_17_diagnosis_no_details_v2_20261104_203925.json in 4.6 min (ETA 104 min for the remaining 23)
+[18/40] SYN_18_absent_pulses_true_positive_v2 ...
+Loading weights:   0%|          | 0/199 [00:00<?, ?it/s]Loading weights: 100%|██████████| 199/199 [00:00<00:00, 7172.83it/s]
+
+=== Section A1 ===
+[A1] Agent 1 (extractor, mode=full_text) searching the clinical record...
+[A1] Agent 1 done in 5.3s
+[A1] Agent 2 (evaluator) filling in the schema...
+[A1] Agent 2 done in 16.5s
+[A1] filled in: answer='No autopsy done, unknown if done, or done but results unavailable'
+
+=== Section A2 ===
+[A2] Agent 1 (extractor, mode=full_text) searching the clinical record...
+[A2] Agent 1 done in 5.6s
+[A2] Agent 2 (evaluator) filling in the schema...
+[A2] Agent 2 done in 18.6s
+[A2] filled in: answer='No surgical procedure done; or, done but either did not confirm presence of DVT or findings unknown; or unknown if done'
+
+=== Section A3_1 ===
+[A3_1] Agent 1 (extractor, mode=full_text) searching the clinical record...
+[A3_1] Agent 1 done in 5.5s
+[A3_1] Agent 2 (evaluator) filling in the schema...
+[A3_1] Agent 2 done in 16.8s
+[A3_1] filled in: answer='≥1 imaging study was done and confirmed DVT'
+
+=== Section A3_2 ===
+[A3_2] Agent 1 (extractor, mode=full_text) searching the clinical record...
+[A3_2] Agent 1 done in 5.6s
+[A3_2] Agent 2 (evaluator) filling in the schema...
+[A3_2] Agent 2 done in 37.2s
+[A3_2] filled in: studies=['Doppler/Duplex Ultrasound']
+
+=== Section B1_1 ===
+[B1_1] Agent 1 (extractor, mode=full_text) searching the clinical record...
+[B1_1] Agent 1 done in 5.6s
+[B1_1] Agent 2 (evaluator) filling in the schema...
+[B1_1] Agent 2 done in 23.9s
+[B1_1] filled in: answer='≥1 symptom or sign of DVT was reported'
+
+=== Section B1_2 ===
+[B1_2] Agent 1 (extractor, mode=full_text) searching the clinical record...
+[B1_2] Agent 1 done in 5.7s
+[B1_2] Agent 2 (evaluator) filling in the schema...
+[B1_2] Agent 2 done in 16.3s
+[B1_2] filled in: types=['Lower extremity DVT']
+
+=== Section B2 ===
+[B2] Agent 1 (extractor, mode=full_text) searching the clinical record...
+[B2] Agent 1 done in 5.6s
+[B2] Agent 2 (evaluator) filling in the schema...
+[B2] Agent 2 done in 18.4s
+[B2] filled in: symptoms=['Calf pain or tenderness', 'Absent pulses in legs or arms']
+
+=== Section C ===
+[C] Agent 1 (extractor, mode=full_text) searching the clinical record...
+[C] Agent 1 done in 5.5s
+[C] Agent 2 (evaluator) filling in the schema...
+[C] Agent 2 done in 15.0s
+[C] filled in: answer="D-dimer exceeded test lab's upper limit of normal."
+
+=== Section F ===
+[F] Agent 1 (extractor, mode=full_text) searching the clinical record...
+[F] Agent 1 done in 5.7s
+[F] Agent 2 (evaluator) filling in the schema...
+[F] Agent 2 done in 15.9s
+[F] filled in: answer='No'
+
+=== Section X ===
+[X] Agent 1 (extractor, mode=full_text) searching the clinical record...
+[X] Agent 1 done in 5.7s
+[X] Agent 2 (evaluator) filling in the schema...
+[X] Agent 2 done in 17.0s
+[X] filled in: answer='No alternative diagnosis was found to explain the acute illness'
+[A1] Agent 3 verifier (answer) AGREE, P(YES) 0.9999 (verdict)
+[A1] Agent 3 verifier (reasoning) AGREE, P(YES) 0.9999 (verdict)
+[A2] Agent 3 verifier (answer) AGREE, P(YES) 0.5510 (verdict)
+[A2] Agent 3 verifier (reasoning) AGREE, P(YES) 0.5080 (verdict)
+[A3_1] Agent 3 verifier (answer) AGREE, P(YES) 0.9999 (verdict)
+[A3_1] Agent 3 verifier (reasoning) AGREE, P(YES) 1.0000 (verdict)
+[A3_2] Agent 3 verifier (answer) AGREE, P(YES) 0.9939 (verdict)
+[A3_2] Agent 3 verifier (reasoning) AGREE, P(YES) 0.8559 (verdict)
+[B1_1] Agent 3 verifier (answer) AGREE, P(YES) 0.9981 (verdict)
+[B1_1] Agent 3 verifier (reasoning) AGREE, P(YES) 0.9898 (verdict)
+[B1_2] Agent 3 verifier (answer) AGREE, P(YES) 0.9965 (verdict)
+[B1_2] Agent 3 verifier (reasoning) AGREE, P(YES) 0.9998 (verdict)
+[B2] Agent 3 verifier (answer) AGREE, P(YES) 0.9979 (verdict)
+[B2] Agent 3 verifier (reasoning) AGREE, P(YES) 0.9999 (verdict)
+[C] Agent 3 verifier (answer) AGREE, P(YES) 1.0000 (verdict)
+[C] Agent 3 verifier (reasoning) AGREE, P(YES) 1.0000 (verdict)
+[F] Agent 3 verifier (answer) DISAGREE, P(YES) 0.4125 (verdict)
+[F] Agent 3 verifier (reasoning) AGREE, P(YES) 0.9819 (verdict)
+[X] Agent 3 verifier (answer) DISAGREE, P(YES) 0.0918 (verdict)
+[X] Agent 3 verifier (reasoning) AGREE, P(YES) 0.6104 (verdict)
+  -> saved SYN_18_absent_pulses_true_positive_v2_20261104_204404.json in 4.6 min (ETA 99 min for the remaining 22)
+[19/40] SYN_19_autopsy_positive_upper_extremity_v2 ...
+Loading weights:   0%|          | 0/199 [00:00<?, ?it/s]Loading weights: 100%|██████████| 199/199 [00:00<00:00, 5860.85it/s]
+
+=== Section A1 ===
+[A1] Agent 1 (extractor, mode=full_text) searching the clinical record...
+[A1] Agent 1 done in 5.7s
+[A1] Agent 2 (evaluator) filling in the schema...
+[A1] Agent 2 done in 16.1s
+[A1] filled in: answer='Autopsy showed presence of DVT'
+
+=== Section A2 ===
+[A2] Agent 1 (extractor, mode=full_text) searching the clinical record...
+[A2] Agent 1 done in 5.6s
+[A2] Agent 2 (evaluator) filling in the schema...
+[A2] Agent 2 done in 23.4s
+[A2] filled in: answer='No surgical procedure done; or, done but either did not confirm presence of DVT or findings unknown; or unknown if done'
+
+=== Section A3_1 ===
+[A3_1] Agent 1 (extractor, mode=full_text) searching the clinical record...
+[A3_1] Agent 1 done in 5.3s
+[A3_1] Agent 2 (evaluator) filling in the schema...
+[A3_1] Agent 2 done in 17.2s
+[A3_1] filled in: answer='No imaging studies done, unknown if done, or done but results unknown'
+
+=== Section A3_2 ===
+[A3_2] Agent 1 (extractor, mode=full_text) searching the clinical record...
+[A3_2] Agent 1 done in 5.4s
+[A3_2] Agent 2 (evaluator) filling in the schema...
+[A3_2] Agent 2 done in 14.7s
+[A3_2] filled in: studies=[]
+
+=== Section B1_1 ===
+[B1_1] Agent 1 (extractor, mode=full_text) searching the clinical record...
+[B1_1] Agent 1 done in 5.5s
+[B1_1] Agent 2 (evaluator) filling in the schema...
+[B1_1] Agent 2 done in 16.9s
+[B1_1] filled in: answer='≥1 symptom or sign of DVT was reported'
+
+=== Section B1_2 ===
+[B1_2] Agent 1 (extractor, mode=full_text) searching the clinical record...
+[B1_2] Agent 1 done in 5.5s
+[B1_2] Agent 2 (evaluator) filling in the schema...
+[B1_2] Agent 2 done in 15.8s
+[B1_2] filled in: types=['Upper extremity DVT']
+
+=== Section B2 ===
+[B2] Agent 1 (extractor, mode=full_text) searching the clinical record...
+[B2] Agent 1 done in 5.6s
+[B2] Agent 2 (evaluator) filling in the schema...
+[B2] Agent 2 done in 17.3s
+[B2] filled in: symptoms=['Redness, warmth, or pain in one or more extremities']
+
+=== Section C ===
+[C] Agent 1 (extractor, mode=full_text) searching the clinical record...
+[C] Agent 1 done in 5.3s
+[C] Agent 2 (evaluator) filling in the schema...
+[C] Agent 2 done in 15.3s
+[C] filled in: answer='D-dimer not tested, or tested but results unknown or not available'
+
+=== Section F ===
+[F] Agent 1 (extractor, mode=full_text) searching the clinical record...
+[F] Agent 1 done in 5.6s
+[F] Agent 2 (evaluator) filling in the schema...
+[F] Agent 2 done in 15.6s
+[F] filled in: answer='No'
+
+=== Section X ===
+[X] Agent 1 (extractor, mode=full_text) searching the clinical record...
+[X] Agent 1 done in 5.4s
+[X] Agent 2 (evaluator) filling in the schema...
+[X] Agent 2 done in 15.2s
+[X] filled in: answer='No alternative diagnosis was found to explain the acute illness'
+[A1] Agent 3 verifier (answer) AGREE, P(YES) 1.0000 (verdict)
+[A1] Agent 3 verifier (reasoning) AGREE, P(YES) 1.0000 (verdict)
+[A2] Agent 3 verifier (answer) AGREE, P(YES) 0.7468 (verdict)
+[A2] Agent 3 verifier (reasoning) AGREE, P(YES) 0.9693 (verdict)
+[A3_1] Agent 3 verifier (answer) AGREE, P(YES) 0.9999 (verdict)
+[A3_1] Agent 3 verifier (reasoning) AGREE, P(YES) 0.9999 (verdict)
+[A3_2] Agent 3 verifier (answer) AGREE, P(YES) 0.9968 (verdict)
+[A3_2] Agent 3 verifier (reasoning) AGREE, P(YES) 0.9979 (verdict)
+[B1_1] Agent 3 verifier (answer) DISAGREE, P(YES) 0.3109 (verdict)
+[B1_1] Agent 3 verifier (reasoning) AGREE, P(YES) 0.9526 (verdict)
+[B1_2] Agent 3 verifier (answer) AGREE, P(YES) 0.9924 (verdict)
+[B1_2] Agent 3 verifier (reasoning) AGREE, P(YES) 0.9998 (verdict)
+[B2] Agent 3 verifier (answer) AGREE, P(YES) 0.9934 (verdict)
+[B2] Agent 3 verifier (reasoning) AGREE, P(YES) 0.9996 (verdict)
+[C] Agent 3 verifier (answer) AGREE, P(YES) 0.9998 (verdict)
+[C] Agent 3 verifier (reasoning) AGREE, P(YES) 0.9999 (verdict)
+[F] Agent 3 verifier (answer) DISAGREE, P(YES) 0.2250 (verdict)
+[F] Agent 3 verifier (reasoning) AGREE, P(YES) 0.9392 (verdict)
+[X] Agent 3 verifier (answer) AGREE, P(YES) 1.0000 (verdict)
+[X] Agent 3 verifier (reasoning) AGREE, P(YES) 0.9999 (verdict)
+  -> saved SYN_19_autopsy_positive_upper_extremity_v2_20261104_204812.json in 4.1 min (ETA 94 min for the remaining 21)
+[20/40] SYN_20_autopsy_negative_trauma_v2 ...
+Loading weights:   0%|          | 0/199 [00:00<?, ?it/s]Loading weights: 100%|██████████| 199/199 [00:00<00:00, 6727.76it/s]
+
+=== Section A1 ===
+[A1] Agent 1 (extractor, mode=full_text) searching the clinical record...
+[A1] Agent 1 done in 5.6s
+[A1] Agent 2 (evaluator) filling in the schema...
+[A1] Agent 2 done in 15.6s
+[A1] filled in: answer='Autopsy done but showed no evidence of DVT'
+
+=== Section A2 ===
+[A2] Agent 1 (extractor, mode=full_text) searching the clinical record...
+[A2] Agent 1 done in 5.9s
+[A2] Agent 2 (evaluator) filling in the schema...
+[A2] Agent 2 done in 18.5s
+[A2] filled in: answer='No surgical procedure done; or, done but either did not confirm presence of DVT or findings unknown; or unknown if done'
+
+=== Section A3_1 ===
+[A3_1] Agent 1 (extractor, mode=full_text) searching the clinical record...
+[A3_1] Agent 1 done in 5.6s
+[A3_1] Agent 2 (evaluator) filling in the schema...
+[A3_1] Agent 2 done in 17.7s
+[A3_1] filled in: answer='No imaging studies done, unknown if done, or done but results unknown'
+
+=== Section A3_2 ===
+[A3_2] Agent 1 (extractor, mode=full_text) searching the clinical record...
+[A3_2] Agent 1 done in 5.2s
+[A3_2] Agent 2 (evaluator) filling in the schema...
+[A3_2] Agent 2 done in 14.8s
+[A3_2] filled in: studies=[]
+
+=== Section B1_1 ===
+[B1_1] Agent 1 (extractor, mode=full_text) searching the clinical record...
+[B1_1] Agent 1 done in 5.6s
+[B1_1] Agent 2 (evaluator) filling in the schema...
+[B1_1] Agent 2 done in 16.4s
+[B1_1] filled in: answer='There was no report of a recognized DVT syndrome'
+
+=== Section B1_2 ===
+[B1_2] Agent 1 (extractor, mode=full_text) searching the clinical record...
+[B1_2] Agent 1 done in 5.6s
+[B1_2] Agent 2 (evaluator) filling in the schema...
+[B1_2] Agent 2 done in 17.1s
+[B1_2] filled in: types=[]
+
+=== Section B2 ===
+[B2] Agent 1 (extractor, mode=full_text) searching the clinical record...
+[B2] Agent 1 done in 5.4s
+[B2] Agent 2 (evaluator) filling in the schema...
+[B2] Agent 2 done in 25.3s
+[B2] filled in: symptoms=['None of the above were present or it is unknown if any of 1-4 were present']
+
+=== Section C ===
+[C] Agent 1 (extractor, mode=full_text) searching the clinical record...
+[C] Agent 1 done in 5.3s
+[C] Agent 2 (evaluator) filling in the schema...
+[C] Agent 2 done in 15.6s
+[C] filled in: answer='D-dimer not tested, or tested but results unknown or not available'
+
+=== Section F ===
+[F] Agent 1 (extractor, mode=full_text) searching the clinical record...
+[F] Agent 1 done in 5.4s
+[F] Agent 2 (evaluator) filling in the schema...
+[F] Agent 2 done in 18.3s
+[F] filled in: answer='No'
+
+=== Section X ===
+[X] Agent 1 (extractor, mode=full_text) searching the clinical record...
+[X] Agent 1 done in 5.5s
+[X] Agent 2 (evaluator) filling in the schema...
+[X] Agent 2 done in 25.8s
+[X] filled in: answer='No alternative diagnosis was found to explain the acute illness'
+[A1] Agent 3 verifier (answer) AGREE, P(YES) 1.0000 (verdict)
+[A1] Agent 3 verifier (reasoning) AGREE, P(YES) 1.0000 (verdict)
+[A2] Agent 3 verifier (answer) AGREE, P(YES) 0.9974 (verdict)
+[A2] Agent 3 verifier (reasoning) AGREE, P(YES) 0.9998 (verdict)
+[A3_1] Agent 3 verifier (answer) DISAGREE, P(YES) 0.0016 (verdict)
+[A3_1] Agent 3 verifier (reasoning) AGREE, P(YES) 0.9437 (verdict)
+[A3_2] Agent 3 verifier (answer) AGREE, P(YES) 0.9977 (verdict)
+[A3_2] Agent 3 verifier (reasoning) AGREE, P(YES) 0.9978 (verdict)
+[B1_1] Agent 3 verifier (answer) AGREE, P(YES) 0.9996 (verdict)
+[B1_1] Agent 3 verifier (reasoning) AGREE, P(YES) 0.9967 (verdict)
+[B1_2] Agent 3 verifier (answer) AGREE, P(YES) 0.9897 (verdict)
+[B1_2] Agent 3 verifier (reasoning) AGREE, P(YES) 0.9998 (verdict)
+[B2] Agent 3 verifier (answer) AGREE, P(YES) 0.9959 (verdict)
+[B2] Agent 3 verifier (reasoning) AGREE, P(YES) 0.9986 (verdict)
+[C] Agent 3 verifier (answer) AGREE, P(YES) 0.9997 (verdict)
+[C] Agent 3 verifier (reasoning) AGREE, P(YES) 0.9999 (verdict)
+[F] Agent 3 verifier (answer) AGREE, P(YES) 0.9911 (verdict)
+[F] Agent 3 verifier (reasoning) AGREE, P(YES) 0.9996 (verdict)
+[X] Agent 3 verifier (answer) DISAGREE, P(YES) 0.3412 (verdict)
+[X] Agent 3 verifier (reasoning) AGREE, P(YES) 0.5226 (verdict)
+  -> saved SYN_20_autopsy_negative_trauma_v2_20261104_205238.json in 4.4 min (ETA 90 min for the remaining 20)
+[21/40] SYN_21_alt_diagnosis_bakers_cyst_v2 ...
+Loading weights:   0%|          | 0/199 [00:00<?, ?it/s]Loading weights: 100%|██████████| 199/199 [00:00<00:00, 6768.13it/s]
+
+=== Section A1 ===
+[A1] Agent 1 (extractor, mode=full_text) searching the clinical record...
+[A1] Agent 1 done in 5.3s
+[A1] Agent 2 (evaluator) filling in the schema...
+[A1] Agent 2 done in 16.6s
+[A1] filled in: answer='No autopsy done, unknown if done, or done but results unavailable'
+
+=== Section A2 ===
+[A2] Agent 1 (extractor, mode=full_text) searching the clinical record...
+[A2] Agent 1 done in 5.3s
+[A2] Agent 2 (evaluator) filling in the schema...
+[A2] Agent 2 done in 15.8s
+[A2] filled in: answer='No surgical procedure done; or, done but either did not confirm presence of DVT or findings unknown; or unknown if done'
+
+=== Section A3_1 ===
+[A3_1] Agent 1 (extractor, mode=full_text) searching the clinical record...
+[A3_1] Agent 1 done in 5.6s
+[A3_1] Agent 2 (evaluator) filling in the schema...
+[A3_1] Agent 2 done in 16.1s
+[A3_1] filled in: answer="≥1 imaging study was done but didn't confirm DVT"
+
+=== Section A3_2 ===
+[A3_2] Agent 1 (extractor, mode=full_text) searching the clinical record...
+[A3_2] Agent 1 done in 5.4s
+[A3_2] Agent 2 (evaluator) filling in the schema...
+[A3_2] Agent 2 done in 16.5s
+[A3_2] filled in: studies=[]
+
+=== Section B1_1 ===
+[B1_1] Agent 1 (extractor, mode=full_text) searching the clinical record...
+[B1_1] Agent 1 done in 5.5s
+[B1_1] Agent 2 (evaluator) filling in the schema...
+[B1_1] Agent 2 done in 20.1s
+[B1_1] filled in: answer='There was no report of a recognized DVT syndrome'
+
+=== Section B1_2 ===
+[B1_2] Agent 1 (extractor, mode=full_text) searching the clinical record...
+[B1_2] Agent 1 done in 5.4s
+[B1_2] Agent 2 (evaluator) filling in the schema...
+[B1_2] Agent 2 done in 18.3s
+[B1_2] filled in: types=[]
+
+=== Section B2 ===
+[B2] Agent 1 (extractor, mode=full_text) searching the clinical record...
+[B2] Agent 1 done in 5.5s
+[B2] Agent 2 (evaluator) filling in the schema...
+[B2] Agent 2 done in 20.9s
+[B2] filled in: symptoms=['Calf pain or tenderness', 'Leg swelling or pitting oedema']
+
+=== Section C ===
+[C] Agent 1 (extractor, mode=full_text) searching the clinical record...
+[C] Agent 1 done in 5.5s
+[C] Agent 2 (evaluator) filling in the schema...
+[C] Agent 2 done in 15.8s
+[C] filled in: answer="D-dimer tested and was within test lab's range of normal"
+
+=== Section F ===
+[F] Agent 1 (extractor, mode=full_text) searching the clinical record...
+[F] Agent 1 done in 5.5s
+[F] Agent 2 (evaluator) filling in the schema...
+[F] Agent 2 done in 14.8s
+[F] filled in: answer='No'
+
+=== Section X ===
+[X] Agent 1 (extractor, mode=full_text) searching the clinical record...
+[X] Agent 1 done in 5.9s
+[X] Agent 2 (evaluator) filling in the schema...
+[X] Agent 2 done in 16.8s
+[X] filled in: answer='An alternative diagnosis was found that explained the acute illness'
+[CROSS-SECTION RULE] 'b2' triggered. Forcing 'b1_1' to '≥1 symptom or sign of DVT was reported'.
+[A1] Agent 3 verifier (answer) AGREE, P(YES) 0.9999 (verdict)
+[A1] Agent 3 verifier (reasoning) AGREE, P(YES) 0.9999 (verdict)
+[A2] Agent 3 verifier (answer) AGREE, P(YES) 0.9998 (verdict)
+[A2] Agent 3 verifier (reasoning) AGREE, P(YES) 0.9999 (verdict)
+[A3_1] Agent 3 verifier (answer) AGREE, P(YES) 1.0000 (verdict)
+[A3_1] Agent 3 verifier (reasoning) AGREE, P(YES) 1.0000 (verdict)
+[A3_2] Agent 3 verifier (answer) DISAGREE, P(YES) 0.1531 (verdict)
+[A3_2] Agent 3 verifier (reasoning) AGREE, P(YES) 0.6056 (verdict)
+[B1_2] Agent 3 verifier (answer) AGREE, P(YES) 0.9845 (verdict)
+[B1_2] Agent 3 verifier (reasoning) AGREE, P(YES) 0.9994 (verdict)
+[B2] Agent 3 verifier (answer) AGREE, P(YES) 0.9985 (verdict)
+[B2] Agent 3 verifier (reasoning) AGREE, P(YES) 0.9999 (verdict)
+[C] Agent 3 verifier (answer) AGREE, P(YES) 1.0000 (verdict)
+[C] Agent 3 verifier (reasoning) AGREE, P(YES) 1.0000 (verdict)
+[F] Agent 3 verifier (answer) AGREE, P(YES) 0.8342 (verdict)
+[F] Agent 3 verifier (reasoning) AGREE, P(YES) 0.9580 (verdict)
+[X] Agent 3 verifier (answer) AGREE, P(YES) 0.9877 (verdict)
+[X] Agent 3 verifier (reasoning) AGREE, P(YES) 0.9999 (verdict)
+[B1_1] Agent 3 verifier (answer) AGREE, P(YES) 0.9985 (rule:B2)
+[B1_1] Agent 3 verifier (reasoning) AGREE, P(YES) 0.9999 (rule:B2)
+  -> saved SYN_21_alt_diagnosis_bakers_cyst_v2_20261104_205649.json in 4.2 min (ETA 85 min for the remaining 19)
+[22/40] SYN_22_upper_extremity_effort_thrombosis_v2 ...
+Loading weights:   0%|          | 0/199 [00:00<?, ?it/s]Loading weights: 100%|██████████| 199/199 [00:00<00:00, 5163.80it/s]
+
+=== Section A1 ===
+[A1] Agent 1 (extractor, mode=full_text) searching the clinical record...
+[A1] Agent 1 done in 5.3s
+[A1] Agent 2 (evaluator) filling in the schema...
+[A1] Agent 2 done in 16.4s
+[A1] filled in: answer='No autopsy done, unknown if done, or done but results unavailable'
+
+=== Section A2 ===
+[A2] Agent 1 (extractor, mode=full_text) searching the clinical record...
+[A2] Agent 1 done in 5.8s
+[A2] Agent 2 (evaluator) filling in the schema...
+[A2] Agent 2 done in 17.0s
+[A2] filled in: answer='No surgical procedure done; or, done but either did not confirm presence of DVT or findings unknown; or unknown if done'
+
+=== Section A3_1 ===
+[A3_1] Agent 1 (extractor, mode=full_text) searching the clinical record...
+[A3_1] Agent 1 done in 5.7s
+[A3_1] Agent 2 (evaluator) filling in the schema...
+[A3_1] Agent 2 done in 16.1s
+[A3_1] filled in: answer='≥1 imaging study was done and confirmed DVT'
+
+=== Section A3_2 ===
+[A3_2] Agent 1 (extractor, mode=full_text) searching the clinical record...
+[A3_2] Agent 1 done in 5.6s
+[A3_2] Agent 2 (evaluator) filling in the schema...
+[A3_2] Agent 2 done in 18.9s
+[A3_2] filled in: studies=['Doppler/Duplex Ultrasound']
+
+=== Section B1_1 ===
+[B1_1] Agent 1 (extractor, mode=full_text) searching the clinical record...
+[B1_1] Agent 1 done in 5.7s
+[B1_1] Agent 2 (evaluator) filling in the schema...
+[B1_1] Agent 2 done in 18.0s
+[B1_1] filled in: answer='≥1 symptom or sign of DVT was reported'
+
+=== Section B1_2 ===
+[B1_2] Agent 1 (extractor, mode=full_text) searching the clinical record...
+[B1_2] Agent 1 done in 5.7s
+[B1_2] Agent 2 (evaluator) filling in the schema...
+[B1_2] Agent 2 done in 16.4s
+[B1_2] filled in: types=['Upper extremity DVT']
+
+=== Section B2 ===
+[B2] Agent 1 (extractor, mode=full_text) searching the clinical record...
+[B2] Agent 1 done in 5.4s
+[B2] Agent 2 (evaluator) filling in the schema...
+[B2] Agent 2 done in 17.1s
+[B2] filled in: symptoms=['Redness, warmth, or pain in one or more extremities']
+
+=== Section C ===
+[C] Agent 1 (extractor, mode=full_text) searching the clinical record...
+[C] Agent 1 done in 5.4s
+[C] Agent 2 (evaluator) filling in the schema...
+[C] Agent 2 done in 15.3s
+[C] filled in: answer="D-dimer exceeded test lab's upper limit of normal."
+
+=== Section F ===
+[F] Agent 1 (extractor, mode=full_text) searching the clinical record...
+[F] Agent 1 done in 5.7s
+[F] Agent 2 (evaluator) filling in the schema...
+[F] Agent 2 done in 15.3s
+[F] filled in: answer='No'
+
+=== Section X ===
+[X] Agent 1 (extractor, mode=full_text) searching the clinical record...
+[X] Agent 1 done in 5.3s
+[X] Agent 2 (evaluator) filling in the schema...
+[X] Agent 2 done in 24.8s
+[X] filled in: answer='No alternative diagnosis was found to explain the acute illness'
+[A1] Agent 3 verifier (answer) AGREE, P(YES) 0.9999 (verdict)
+[A1] Agent 3 verifier (reasoning) AGREE, P(YES) 0.9999 (verdict)
+[A2] Agent 3 verifier (answer) DISAGREE, P(YES) 0.1010 (verdict)
+[A2] Agent 3 verifier (reasoning) AGREE, P(YES) 0.8876 (verdict)
+[A3_1] Agent 3 verifier (answer) AGREE, P(YES) 0.9999 (verdict)
+[A3_1] Agent 3 verifier (reasoning) AGREE, P(YES) 1.0000 (verdict)
+[A3_2] Agent 3 verifier (answer) AGREE, P(YES) 0.9958 (verdict)
+[A3_2] Agent 3 verifier (reasoning) AGREE, P(YES) 0.9836 (verdict)
+[B1_1] Agent 3 verifier (answer) AGREE, P(YES) 0.7453 (verdict)
+[B1_1] Agent 3 verifier (reasoning) AGREE, P(YES) 0.8435 (verdict)
+[B1_2] Agent 3 verifier (answer) AGREE, P(YES) 0.9960 (verdict)
+[B1_2] Agent 3 verifier (reasoning) AGREE, P(YES) 0.9998 (verdict)
+[B2] Agent 3 verifier (answer) AGREE, P(YES) 0.9958 (verdict)
+[B2] Agent 3 verifier (reasoning) AGREE, P(YES) 0.9997 (verdict)
+[C] Agent 3 verifier (answer) AGREE, P(YES) 1.0000 (verdict)
+[C] Agent 3 verifier (reasoning) AGREE, P(YES) 1.0000 (verdict)
+[F] Agent 3 verifier (answer) DISAGREE, P(YES) 0.3513 (verdict)
+[F] Agent 3 verifier (reasoning) AGREE, P(YES) 0.9195 (verdict)
+[X] Agent 3 verifier (answer) AGREE, P(YES) 0.7808 (verdict)
+[X] Agent 3 verifier (reasoning) AGREE, P(YES) 0.9265 (verdict)
+  -> saved SYN_22_upper_extremity_effort_thrombosis_v2_20261104_210106.json in 4.3 min (ETA 80 min for the remaining 18)
+[23/40] SYN_23_other_procedure_ivc_filter_v2 ...
+Loading weights:   0%|          | 0/199 [00:00<?, ?it/s]Loading weights: 100%|██████████| 199/199 [00:00<00:00, 4701.84it/s]
+
+=== Section A1 ===
+[A1] Agent 1 (extractor, mode=full_text) searching the clinical record...
+[A1] Agent 1 done in 5.2s
+[A1] Agent 2 (evaluator) filling in the schema...
+[A1] Agent 2 done in 16.3s
+[A1] filled in: answer='No autopsy done, unknown if done, or done but results unavailable'
+
+=== Section A2 ===
+[A2] Agent 1 (extractor, mode=full_text) searching the clinical record...
+[A2] Agent 1 done in 5.6s
+[A2] Agent 2 (evaluator) filling in the schema...
+[A2] Agent 2 done in 19.9s
+[A2] filled in: answer='No surgical procedure done; or, done but either did not confirm presence of DVT or findings unknown; or unknown if done'
+
+=== Section A3_1 ===
+[A3_1] Agent 1 (extractor, mode=full_text) searching the clinical record...
+[A3_1] Agent 1 done in 5.4s
+[A3_1] Agent 2 (evaluator) filling in the schema...
+[A3_1] Agent 2 done in 16.9s
+[A3_1] filled in: answer='≥1 imaging study was done and confirmed DVT'
+
+=== Section A3_2 ===
+[A3_2] Agent 1 (extractor, mode=full_text) searching the clinical record...
+[A3_2] Agent 1 done in 5.5s
+[A3_2] Agent 2 (evaluator) filling in the schema...
+[A3_2] Agent 2 done in 42.6s
+[A3_2] filled in: studies=['Doppler/Duplex Ultrasound']
+
+=== Section B1_1 ===
+[B1_1] Agent 1 (extractor, mode=full_text) searching the clinical record...
+[B1_1] Agent 1 done in 5.5s
+[B1_1] Agent 2 (evaluator) filling in the schema...
+[B1_1] Agent 2 done in 18.2s
+[B1_1] filled in: answer='≥1 symptom or sign of DVT was reported'
+
+=== Section B1_2 ===
+[B1_2] Agent 1 (extractor, mode=full_text) searching the clinical record...
+[B1_2] Agent 1 done in 5.5s
+[B1_2] Agent 2 (evaluator) filling in the schema...
+[B1_2] Agent 2 done in 16.5s
+[B1_2] filled in: types=['Lower extremity DVT']
+
+=== Section B2 ===
+[B2] Agent 1 (extractor, mode=full_text) searching the clinical record...
+[B2] Agent 1 done in 5.4s
+[B2] Agent 2 (evaluator) filling in the schema...
+[B2] Agent 2 done in 16.7s
+[B2] filled in: symptoms=['Calf pain or tenderness', 'Leg swelling or pitting oedema']
+
+=== Section C ===
+[C] Agent 1 (extractor, mode=full_text) searching the clinical record...
+[C] Agent 1 done in 5.4s
+[C] Agent 2 (evaluator) filling in the schema...
+[C] Agent 2 done in 15.2s
+[C] filled in: answer="D-dimer exceeded test lab's upper limit of normal."
+
+=== Section F ===
+[F] Agent 1 (extractor, mode=full_text) searching the clinical record...
+[F] Agent 1 done in 5.6s
+[F] Agent 2 (evaluator) filling in the schema...
+[F] Agent 2 done in 16.1s
+[F] filled in: answer='No'
+
+=== Section X ===
+[X] Agent 1 (extractor, mode=full_text) searching the clinical record...
+[X] Agent 1 done in 5.3s
+[X] Agent 2 (evaluator) filling in the schema...
+[X] Agent 2 done in 87.1s
+[X] filled in: answer='No alternative diagnosis was found to explain the acute illness'
+[A1] Agent 3 verifier (answer) AGREE, P(YES) 0.9999 (verdict)
+[A1] Agent 3 verifier (reasoning) AGREE, P(YES) 0.9999 (verdict)
+[A2] Agent 3 verifier (answer) DISAGREE, P(YES) 0.2727 (verdict)
+[A2] Agent 3 verifier (reasoning) AGREE, P(YES) 0.8622 (verdict)
+[A3_1] Agent 3 verifier (answer) AGREE, P(YES) 1.0000 (verdict)
+[A3_1] Agent 3 verifier (reasoning) AGREE, P(YES) 1.0000 (verdict)
+[A3_2] Agent 3 verifier (answer) AGREE, P(YES) 0.9953 (verdict)
+[A3_2] Agent 3 verifier (reasoning) AGREE, P(YES) 0.9630 (verdict)
+[B1_1] Agent 3 verifier (answer) DISAGREE, P(YES) 0.4871 (verdict)
+[B1_1] Agent 3 verifier (reasoning) AGREE, P(YES) 0.9191 (verdict)
+[B1_2] Agent 3 verifier (answer) AGREE, P(YES) 0.9983 (verdict)
+[B1_2] Agent 3 verifier (reasoning) AGREE, P(YES) 0.9998 (verdict)
+[B2] Agent 3 verifier (answer) AGREE, P(YES) 0.9969 (verdict)
+[B2] Agent 3 verifier (reasoning) AGREE, P(YES) 0.9997 (verdict)
+[C] Agent 3 verifier (answer) AGREE, P(YES) 1.0000 (verdict)
+[C] Agent 3 verifier (reasoning) AGREE, P(YES) 1.0000 (verdict)
+[F] Agent 3 verifier (answer) DISAGREE, P(YES) 0.1548 (verdict)
+[F] Agent 3 verifier (reasoning) AGREE, P(YES) 0.9400 (verdict)
+[X] Agent 3 verifier (answer) DISAGREE, P(YES) 0.2123 (verdict)
+[X] Agent 3 verifier (reasoning) AGREE, P(YES) 0.5945 (verdict)
+  -> saved SYN_23_other_procedure_ivc_filter_v2_20261104_210656.json in 5.8 min (ETA 77 min for the remaining 17)
+[24/40] SYN_24_imaging_inconclusive_no_alt_diagnosis_v2 ...
+Loading weights:   0%|          | 0/199 [00:00<?, ?it/s]Loading weights: 100%|██████████| 199/199 [00:00<00:00, 7420.51it/s]
+
+=== Section A1 ===
+[A1] Agent 1 (extractor, mode=full_text) searching the clinical record...
+[A1] Agent 1 done in 5.4s
+[A1] Agent 2 (evaluator) filling in the schema...
+[A1] Agent 2 done in 16.5s
+[A1] filled in: answer='No autopsy done, unknown if done, or done but results unavailable'
+
+=== Section A2 ===
+[A2] Agent 1 (extractor, mode=full_text) searching the clinical record...
+[A2] Agent 1 done in 5.5s
+[A2] Agent 2 (evaluator) filling in the schema...
+[A2] Agent 2 done in 16.9s
+[A2] filled in: answer='No surgical procedure done; or, done but either did not confirm presence of DVT or findings unknown; or unknown if done'
+
+=== Section A3_1 ===
+[A3_1] Agent 1 (extractor, mode=full_text) searching the clinical record...
+[A3_1] Agent 1 done in 5.4s
+[A3_1] Agent 2 (evaluator) filling in the schema...
+[A3_1] Agent 2 done in 15.9s
+[A3_1] filled in: answer="≥1 imaging study was done but didn't confirm DVT"
+
+=== Section A3_2 ===
+[A3_2] Agent 1 (extractor, mode=full_text) searching the clinical record...
+[A3_2] Agent 1 done in 5.4s
+[A3_2] Agent 2 (evaluator) filling in the schema...
+[A3_2] Agent 2 done in 16.6s
+[A3_2] filled in: studies=[]
+
+=== Section B1_1 ===
+[B1_1] Agent 1 (extractor, mode=full_text) searching the clinical record...
+[B1_1] Agent 1 done in 5.6s
+[B1_1] Agent 2 (evaluator) filling in the schema...
+[B1_1] Agent 2 done in 16.8s
+[B1_1] filled in: answer='≥1 symptom or sign of DVT was reported'
+
+=== Section B1_2 ===
+[B1_2] Agent 1 (extractor, mode=full_text) searching the clinical record...
+[B1_2] Agent 1 done in 5.4s
+[B1_2] Agent 2 (evaluator) filling in the schema...
+[B1_2] Agent 2 done in 18.4s
+[B1_2] filled in: types=[]
+
+=== Section B2 ===
+[B2] Agent 1 (extractor, mode=full_text) searching the clinical record...
+[B2] Agent 1 done in 5.6s
+[B2] Agent 2 (evaluator) filling in the schema...
+[B2] Agent 2 done in 16.9s
+[B2] filled in: symptoms=['Calf pain or tenderness']
+
+=== Section C ===
+[C] Agent 1 (extractor, mode=full_text) searching the clinical record...
+[C] Agent 1 done in 5.5s
+[C] Agent 2 (evaluator) filling in the schema...
+[C] Agent 2 done in 15.0s
+[C] filled in: answer="D-dimer exceeded test lab's upper limit of normal."
+
+=== Section F ===
+[F] Agent 1 (extractor, mode=full_text) searching the clinical record...
+[F] Agent 1 done in 5.6s
+[F] Agent 2 (evaluator) filling in the schema...
+[F] Agent 2 done in 14.8s
+[F] filled in: answer='No'
+
+=== Section X ===
+[X] Agent 1 (extractor, mode=full_text) searching the clinical record...
+[X] Agent 1 done in 5.6s
+[X] Agent 2 (evaluator) filling in the schema...
+[X] Agent 2 done in 27.1s
+[X] filled in: answer='No alternative diagnosis was found to explain the acute illness'
+[A1] Agent 3 verifier (answer) AGREE, P(YES) 0.9999 (verdict)
+[A1] Agent 3 verifier (reasoning) AGREE, P(YES) 0.9999 (verdict)
+[A2] Agent 3 verifier (answer) AGREE, P(YES) 0.9975 (verdict)
+[A2] Agent 3 verifier (reasoning) AGREE, P(YES) 0.9999 (verdict)
+[A3_1] Agent 3 verifier (answer) AGREE, P(YES) 1.0000 (verdict)
+[A3_1] Agent 3 verifier (reasoning) AGREE, P(YES) 1.0000 (verdict)
+[A3_2] Agent 3 verifier (answer) DISAGREE, P(YES) 0.1371 (verdict)
+[A3_2] Agent 3 verifier (reasoning) AGREE, P(YES) 0.6846 (verdict)
+[B1_1] Agent 3 verifier (answer) AGREE, P(YES) 0.9958 (verdict)
+[B1_1] Agent 3 verifier (reasoning) AGREE, P(YES) 0.9997 (verdict)
+[B1_2] Agent 3 verifier (answer) AGREE, P(YES) 0.9795 (verdict)
+[B1_2] Agent 3 verifier (reasoning) AGREE, P(YES) 0.9995 (verdict)
+[B2] Agent 3 verifier (answer) AGREE, P(YES) 0.9405 (verdict)
+[B2] Agent 3 verifier (reasoning) AGREE, P(YES) 0.9994 (verdict)
+[C] Agent 3 verifier (answer) AGREE, P(YES) 1.0000 (verdict)
+[C] Agent 3 verifier (reasoning) AGREE, P(YES) 1.0000 (verdict)
+[F] Agent 3 verifier (answer) AGREE, P(YES) 0.8387 (verdict)
+[F] Agent 3 verifier (reasoning) AGREE, P(YES) 0.9513 (verdict)
+[X] Agent 3 verifier (answer) DISAGREE, P(YES) 0.2499 (verdict)
+[X] Agent 3 verifier (reasoning) AGREE, P(YES) 0.9455 (verdict)
+  -> saved SYN_24_imaging_inconclusive_no_alt_diagnosis_v2_20261104_211112.json in 4.3 min (ETA 72 min for the remaining 16)
+[25/40] SYN_25_thrombectomy_postpartum_v2 ...
+Loading weights:   0%|          | 0/199 [00:00<?, ?it/s]Loading weights: 100%|██████████| 199/199 [00:00<00:00, 5826.28it/s]
+
+=== Section A1 ===
+[A1] Agent 1 (extractor, mode=full_text) searching the clinical record...
+[A1] Agent 1 done in 5.3s
+[A1] Agent 2 (evaluator) filling in the schema...
+[A1] Agent 2 done in 16.7s
+[A1] filled in: answer='No autopsy done, unknown if done, or done but results unavailable'
+
+=== Section A2 ===
+[A2] Agent 1 (extractor, mode=full_text) searching the clinical record...
+[A2] Agent 1 done in 5.9s
+[A2] Agent 2 (evaluator) filling in the schema...
+[A2] Agent 2 done in 15.0s
+[A2] filled in: answer='Thrombectomy related to DVT performed'
+
+=== Section A3_1 ===
+[A3_1] Agent 1 (extractor, mode=full_text) searching the clinical record...
+[A3_1] Agent 1 done in 5.7s
+[A3_1] Agent 2 (evaluator) filling in the schema...
+[A3_1] Agent 2 done in 16.3s
+[A3_1] filled in: answer='≥1 imaging study was done and confirmed DVT'
+
+=== Section A3_2 ===
+[A3_2] Agent 1 (extractor, mode=full_text) searching the clinical record...
+[A3_2] Agent 1 done in 5.6s
+[A3_2] Agent 2 (evaluator) filling in the schema...
+[A3_2] Agent 2 done in 18.0s
+[A3_2] filled in: studies=['Doppler/Duplex Ultrasound']
+
+=== Section B1_1 ===
+[B1_1] Agent 1 (extractor, mode=full_text) searching the clinical record...
+[B1_1] Agent 1 done in 5.6s
+[B1_1] Agent 2 (evaluator) filling in the schema...
+[B1_1] Agent 2 done in 17.0s
+[B1_1] filled in: answer='≥1 symptom or sign of DVT was reported'
+
+=== Section B1_2 ===
+[B1_2] Agent 1 (extractor, mode=full_text) searching the clinical record...
+[B1_2] Agent 1 done in 5.6s
+[B1_2] Agent 2 (evaluator) filling in the schema...
+[B1_2] Agent 2 done in 16.2s
+[B1_2] filled in: types=['Lower extremity DVT']
+
+=== Section B2 ===
+[B2] Agent 1 (extractor, mode=full_text) searching the clinical record...
+[B2] Agent 1 done in 6.0s
+[B2] Agent 2 (evaluator) filling in the schema...
+[B2] Agent 2 done in 18.6s
+[B2] filled in: symptoms=['Calf pain or tenderness', 'Leg swelling or pitting oedema', 'Redness, warmth, or pain in one or more extremities']
+
+=== Section C ===
+[C] Agent 1 (extractor, mode=full_text) searching the clinical record...
+[C] Agent 1 done in 5.4s
+[C] Agent 2 (evaluator) filling in the schema...
+[C] Agent 2 done in 15.3s
+[C] filled in: answer="D-dimer exceeded test lab's upper limit of normal."
+
+=== Section F ===
+[F] Agent 1 (extractor, mode=full_text) searching the clinical record...
+[F] Agent 1 done in 5.6s
+[F] Agent 2 (evaluator) filling in the schema...
+[F] Agent 2 done in 15.2s
+[F] filled in: answer='No'
+
+=== Section X ===
+[X] Agent 1 (extractor, mode=full_text) searching the clinical record...
+[X] Agent 1 done in 5.5s
+[X] Agent 2 (evaluator) filling in the schema...
+[X] Agent 2 done in 17.1s
+[X] filled in: answer='No alternative diagnosis was found to explain the acute illness'
+[A1] Agent 3 verifier (answer) AGREE, P(YES) 0.9999 (verdict)
+[A1] Agent 3 verifier (reasoning) AGREE, P(YES) 0.9999 (verdict)
+[A2] Agent 3 verifier (answer) AGREE, P(YES) 0.9999 (verdict)
+[A2] Agent 3 verifier (reasoning) AGREE, P(YES) 1.0000 (verdict)
+[A3_1] Agent 3 verifier (answer) AGREE, P(YES) 1.0000 (verdict)
+[A3_1] Agent 3 verifier (reasoning) AGREE, P(YES) 1.0000 (verdict)
+[A3_2] Agent 3 verifier (answer) AGREE, P(YES) 0.9960 (verdict)
+[A3_2] Agent 3 verifier (reasoning) AGREE, P(YES) 0.9714 (verdict)
+[B1_1] Agent 3 verifier (answer) AGREE, P(YES) 0.6682 (verdict)
+[B1_1] Agent 3 verifier (reasoning) AGREE, P(YES) 0.8798 (verdict)
+[B1_2] Agent 3 verifier (answer) AGREE, P(YES) 0.9932 (verdict)
+[B1_2] Agent 3 verifier (reasoning) AGREE, P(YES) 0.9992 (verdict)
+[B2] Agent 3 verifier (answer) AGREE, P(YES) 0.7520 (verdict)
+[B2] Agent 3 verifier (reasoning) AGREE, P(YES) 0.9834 (verdict)
+[C] Agent 3 verifier (answer) AGREE, P(YES) 1.0000 (verdict)
+[C] Agent 3 verifier (reasoning) AGREE, P(YES) 1.0000 (verdict)
+[F] Agent 3 verifier (answer) DISAGREE, P(YES) 0.3082 (verdict)
+[F] Agent 3 verifier (reasoning) AGREE, P(YES) 0.9546 (verdict)
+[X] Agent 3 verifier (answer) DISAGREE, P(YES) 0.1395 (verdict)
+[X] Agent 3 verifier (reasoning) DISAGREE, P(YES) 0.4476 (verdict)
+  -> saved SYN_25_thrombectomy_postpartum_v2_20261104_211521.json in 4.2 min (ETA 68 min for the remaining 15)
+[26/40] SYN_26_ct_venography_pregnancy_pelvic_v2 ...
+Loading weights:   0%|          | 0/199 [00:00<?, ?it/s]Loading weights: 100%|██████████| 199/199 [00:00<00:00, 5730.20it/s]
+
+=== Section A1 ===
+[A1] Agent 1 (extractor, mode=full_text) searching the clinical record...
+[A1] Agent 1 done in 5.3s
+[A1] Agent 2 (evaluator) filling in the schema...
+[A1] Agent 2 done in 16.6s
+[A1] filled in: answer='No autopsy done, unknown if done, or done but results unavailable'
+
+=== Section A2 ===
+[A2] Agent 1 (extractor, mode=full_text) searching the clinical record...
+[A2] Agent 1 done in 5.4s
+[A2] Agent 2 (evaluator) filling in the schema...
+[A2] Agent 2 done in 22.2s
+[A2] filled in: answer='No surgical procedure done; or, done but either did not confirm presence of DVT or findings unknown; or unknown if done'
+
+=== Section A3_1 ===
+[A3_1] Agent 1 (extractor, mode=full_text) searching the clinical record...
+[A3_1] Agent 1 done in 5.6s
+[A3_1] Agent 2 (evaluator) filling in the schema...
+[A3_1] Agent 2 done in 17.1s
+[A3_1] filled in: answer="≥1 imaging study was done but didn't confirm DVT"
+
+=== Section A3_2 ===
+[A3_2] Agent 1 (extractor, mode=full_text) searching the clinical record...
+[A3_2] Agent 1 done in 5.7s
+[A3_2] Agent 2 (evaluator) filling in the schema...
+[A3_2] Agent 2 done in 18.1s
+[A3_2] filled in: studies=[]
+
+=== Section B1_1 ===
+[B1_1] Agent 1 (extractor, mode=full_text) searching the clinical record...
+[B1_1] Agent 1 done in 5.7s
+[B1_1] Agent 2 (evaluator) filling in the schema...
+[B1_1] Agent 2 done in 32.0s
+[B1_1] filled in: answer='It is unknown if there was a report of a DVT syndrome'
+
+=== Section B1_2 ===
+[B1_2] Agent 1 (extractor, mode=full_text) searching the clinical record...
+[B1_2] Agent 1 done in 5.6s
+[B1_2] Agent 2 (evaluator) filling in the schema...
+[B1_2] Agent 2 done in 17.9s
+[B1_2] filled in: types=[]
+
+=== Section B2 ===
+[B2] Agent 1 (extractor, mode=full_text) searching the clinical record...
+[B2] Agent 1 done in 5.5s
+[B2] Agent 2 (evaluator) filling in the schema...
+[B2] Agent 2 done in 17.2s
+[B2] filled in: symptoms=['Calf pain or tenderness', 'Leg swelling or pitting oedema']
+
+=== Section C ===
+[C] Agent 1 (extractor, mode=full_text) searching the clinical record...
+[C] Agent 1 done in 5.5s
+[C] Agent 2 (evaluator) filling in the schema...
+[C] Agent 2 done in 15.4s
+[C] filled in: answer="D-dimer exceeded test lab's upper limit of normal."
+
+=== Section F ===
+[F] Agent 1 (extractor, mode=full_text) searching the clinical record...
+[F] Agent 1 done in 5.7s
+[F] Agent 2 (evaluator) filling in the schema...
+[F] Agent 2 done in 15.6s
+[F] filled in: answer='No'
+
+=== Section X ===
+[X] Agent 1 (extractor, mode=full_text) searching the clinical record...
+[X] Agent 1 done in 5.7s
+[X] Agent 2 (evaluator) filling in the schema...
+[X] Agent 2 done in 21.7s
+[X] filled in: answer='No alternative diagnosis was found to explain the acute illness'
+[CROSS-SECTION RULE] 'b2' triggered. Forcing 'b1_1' to '≥1 symptom or sign of DVT was reported'.
+[A1] Agent 3 verifier (answer) AGREE, P(YES) 0.9999 (verdict)
+[A1] Agent 3 verifier (reasoning) AGREE, P(YES) 0.9999 (verdict)
+[A2] Agent 3 verifier (answer) DISAGREE, P(YES) 0.0167 (verdict)
+[A2] Agent 3 verifier (reasoning) AGREE, P(YES) 0.5566 (verdict)
+[A3_1] Agent 3 verifier (answer) AGREE, P(YES) 0.9720 (verdict)
+[A3_1] Agent 3 verifier (reasoning) AGREE, P(YES) 0.9415 (verdict)
+[A3_2] Agent 3 verifier (answer) DISAGREE, P(YES) 0.1266 (verdict)
+[A3_2] Agent 3 verifier (reasoning) AGREE, P(YES) 0.8385 (verdict)
+[B1_2] Agent 3 verifier (answer) DISAGREE, P(YES) 0.2576 (verdict)
+[B1_2] Agent 3 verifier (reasoning) AGREE, P(YES) 0.9983 (verdict)
+[B2] Agent 3 verifier (answer) AGREE, P(YES) 0.9976 (verdict)
+[B2] Agent 3 verifier (reasoning) AGREE, P(YES) 0.9997 (verdict)
+[C] Agent 3 verifier (answer) AGREE, P(YES) 1.0000 (verdict)
+[C] Agent 3 verifier (reasoning) AGREE, P(YES) 1.0000 (verdict)
+[F] Agent 3 verifier (answer) AGREE, P(YES) 0.7934 (verdict)
+[F] Agent 3 verifier (reasoning) AGREE, P(YES) 0.9607 (verdict)
+[X] Agent 3 verifier (answer) AGREE, P(YES) 0.6835 (verdict)
+[X] Agent 3 verifier (reasoning) AGREE, P(YES) 0.9271 (verdict)
+[B1_1] Agent 3 verifier (answer) AGREE, P(YES) 0.9976 (rule:B2)
+[B1_1] Agent 3 verifier (reasoning) AGREE, P(YES) 0.9997 (rule:B2)
+  -> saved SYN_26_ct_venography_pregnancy_pelvic_v2_20261104_211956.json in 4.6 min (ETA 63 min for the remaining 14)
+[27/40] SYN_27_contrast_venography_absent_pulses_v2 ...
+Loading weights:   0%|          | 0/199 [00:00<?, ?it/s]Loading weights: 100%|██████████| 199/199 [00:00<00:00, 5903.38it/s]
+
+=== Section A1 ===
+[A1] Agent 1 (extractor, mode=full_text) searching the clinical record...
+[A1] Agent 1 done in 5.2s
+[A1] Agent 2 (evaluator) filling in the schema...
+[A1] Agent 2 done in 16.7s
+[A1] filled in: answer='No autopsy done, unknown if done, or done but results unavailable'
+
+=== Section A2 ===
+[A2] Agent 1 (extractor, mode=full_text) searching the clinical record...
+[A2] Agent 1 done in 5.8s
+[A2] Agent 2 (evaluator) filling in the schema...
+[A2] Agent 2 done in 16.7s
+[A2] filled in: answer='No surgical procedure done; or, done but either did not confirm presence of DVT or findings unknown; or unknown if done'
+
+=== Section A3_1 ===
+[A3_1] Agent 1 (extractor, mode=full_text) searching the clinical record...
+[A3_1] Agent 1 done in 6.2s
+[A3_1] Agent 2 (evaluator) filling in the schema...
+[A3_1] Agent 2 done in 16.5s
+[A3_1] filled in: answer='≥1 imaging study was done and confirmed DVT'
+
+=== Section A3_2 ===
+[A3_2] Agent 1 (extractor, mode=full_text) searching the clinical record...
+[A3_2] Agent 1 done in 6.0s
+[A3_2] Agent 2 (evaluator) filling in the schema...
+[A3_2] Agent 2 done in 16.3s
+[A3_2] filled in: studies=['Contrast venography']
+
+=== Section B1_1 ===
+[B1_1] Agent 1 (extractor, mode=full_text) searching the clinical record...
+[B1_1] Agent 1 done in 5.6s
+[B1_1] Agent 2 (evaluator) filling in the schema...
+[B1_1] Agent 2 done in 18.1s
+[B1_1] filled in: answer='It is unknown if there was a report of a DVT syndrome'
+
+=== Section B1_2 ===
+[B1_2] Agent 1 (extractor, mode=full_text) searching the clinical record...
+[B1_2] Agent 1 done in 5.8s
+[B1_2] Agent 2 (evaluator) filling in the schema...
+[B1_2] Agent 2 done in 16.1s
+[B1_2] filled in: types=['Lower extremity DVT']
+
+=== Section B2 ===
+[B2] Agent 1 (extractor, mode=full_text) searching the clinical record...
+[B2] Agent 1 done in 6.0s
+[B2] Agent 2 (evaluator) filling in the schema...
+[B2] Agent 2 done in 17.5s
+[B2] filled in: symptoms=['Calf pain or tenderness', 'Absent pulses in legs or arms']
+
+=== Section C ===
+[C] Agent 1 (extractor, mode=full_text) searching the clinical record...
+[C] Agent 1 done in 5.5s
+[C] Agent 2 (evaluator) filling in the schema...
+[C] Agent 2 done in 15.5s
+[C] filled in: answer="D-dimer exceeded test lab's upper limit of normal."
+
+=== Section F ===
+[F] Agent 1 (extractor, mode=full_text) searching the clinical record...
+[F] Agent 1 done in 5.7s
+[F] Agent 2 (evaluator) filling in the schema...
+[F] Agent 2 done in 15.9s
+[F] filled in: answer='No'
+
+=== Section X ===
+[X] Agent 1 (extractor, mode=full_text) searching the clinical record...
+[X] Agent 1 done in 5.4s
+[X] Agent 2 (evaluator) filling in the schema...
+[X] Agent 2 done in 19.2s
+[X] filled in: answer='No alternative diagnosis was found to explain the acute illness'
+[CROSS-SECTION RULE] 'b2' triggered. Forcing 'b1_1' to '≥1 symptom or sign of DVT was reported'.
+[A1] Agent 3 verifier (answer) AGREE, P(YES) 0.9999 (verdict)
+[A1] Agent 3 verifier (reasoning) AGREE, P(YES) 0.9999 (verdict)
+[A2] Agent 3 verifier (answer) DISAGREE, P(YES) 0.0080 (verdict)
+[A2] Agent 3 verifier (reasoning) DISAGREE, P(YES) 0.0691 (verdict)
+[A3_1] Agent 3 verifier (answer) AGREE, P(YES) 1.0000 (verdict)
+[A3_1] Agent 3 verifier (reasoning) AGREE, P(YES) 1.0000 (verdict)
+[A3_2] Agent 3 verifier (answer) AGREE, P(YES) 0.9958 (verdict)
+[A3_2] Agent 3 verifier (reasoning) AGREE, P(YES) 0.9988 (verdict)
+[B1_2] Agent 3 verifier (answer) AGREE, P(YES) 0.9991 (verdict)
+[B1_2] Agent 3 verifier (reasoning) AGREE, P(YES) 0.9999 (verdict)
+[B2] Agent 3 verifier (answer) AGREE, P(YES) 0.9467 (verdict)
+[B2] Agent 3 verifier (reasoning) AGREE, P(YES) 0.9940 (verdict)
+[C] Agent 3 verifier (answer) AGREE, P(YES) 1.0000 (verdict)
+[C] Agent 3 verifier (reasoning) AGREE, P(YES) 1.0000 (verdict)
+[F] Agent 3 verifier (answer) DISAGREE, P(YES) 0.1570 (verdict)
+[F] Agent 3 verifier (reasoning) AGREE, P(YES) 0.7983 (verdict)
+[X] Agent 3 verifier (answer) DISAGREE, P(YES) 0.0155 (verdict)
+[X] Agent 3 verifier (reasoning) AGREE, P(YES) 0.8053 (verdict)
+[B1_1] Agent 3 verifier (answer) AGREE, P(YES) 0.9467 (rule:B2)
+[B1_1] Agent 3 verifier (reasoning) AGREE, P(YES) 0.9940 (rule:B2)
+  -> saved SYN_27_contrast_venography_absent_pulses_v2_20261104_212407.json in 4.2 min (ETA 58 min for the remaining 13)
+[28/40] SYN_28_other_modality_plethysmography_v2 ...
+Loading weights:   0%|          | 0/199 [00:00<?, ?it/s]Loading weights: 100%|██████████| 199/199 [00:00<00:00, 6901.09it/s]
+
+=== Section A1 ===
+[A1] Agent 1 (extractor, mode=full_text) searching the clinical record...
+[A1] Agent 1 done in 5.3s
+[A1] Agent 2 (evaluator) filling in the schema...
+[A1] Agent 2 done in 16.5s
+[A1] filled in: answer='No autopsy done, unknown if done, or done but results unavailable'
+
+=== Section A2 ===
+[A2] Agent 1 (extractor, mode=full_text) searching the clinical record...
+[A2] Agent 1 done in 5.6s
+[A2] Agent 2 (evaluator) filling in the schema...
+[A2] Agent 2 done in 17.9s
+[A2] filled in: answer='No surgical procedure done; or, done but either did not confirm presence of DVT or findings unknown; or unknown if done'
+
+=== Section A3_1 ===
+[A3_1] Agent 1 (extractor, mode=full_text) searching the clinical record...
+[A3_1] Agent 1 done in 5.6s
+[A3_1] Agent 2 (evaluator) filling in the schema...
+[A3_1] Agent 2 done in 18.1s
+[A3_1] filled in: answer='≥1 imaging study was done and confirmed DVT'
+
+=== Section A3_2 ===
+[A3_2] Agent 1 (extractor, mode=full_text) searching the clinical record...
+[A3_2] Agent 1 done in 5.6s
+[A3_2] Agent 2 (evaluator) filling in the schema...
+[A3_2] Agent 2 done in 17.3s
+[A3_2] filled in: studies=['Other']
+
+=== Section B1_1 ===
+[B1_1] Agent 1 (extractor, mode=full_text) searching the clinical record...
+[B1_1] Agent 1 done in 5.6s
+[B1_1] Agent 2 (evaluator) filling in the schema...
+[B1_1] Agent 2 done in 16.2s
+[B1_1] filled in: answer='≥1 symptom or sign of DVT was reported'
+
+=== Section B1_2 ===
+[B1_2] Agent 1 (extractor, mode=full_text) searching the clinical record...
+[B1_2] Agent 1 done in 5.6s
+[B1_2] Agent 2 (evaluator) filling in the schema...
+[B1_2] Agent 2 done in 16.6s
+[B1_2] filled in: types=['Lower extremity DVT']
+
+=== Section B2 ===
+[B2] Agent 1 (extractor, mode=full_text) searching the clinical record...
+[B2] Agent 1 done in 5.4s
+[B2] Agent 2 (evaluator) filling in the schema...
+[B2] Agent 2 done in 58.1s
+[B2] filled in: symptoms=['Calf pain or tenderness', 'Leg swelling or pitting oedema']
+
+=== Section C ===
+[C] Agent 1 (extractor, mode=full_text) searching the clinical record...
+[C] Agent 1 done in 5.6s
+[C] Agent 2 (evaluator) filling in the schema...
+[C] Agent 2 done in 15.1s
+[C] filled in: answer="D-dimer exceeded test lab's upper limit of normal."
+
+=== Section F ===
+[F] Agent 1 (extractor, mode=full_text) searching the clinical record...
+[F] Agent 1 done in 5.7s
+[F] Agent 2 (evaluator) filling in the schema...
+[F] Agent 2 done in 16.1s
+[F] filled in: answer='No'
+
+=== Section X ===
+[X] Agent 1 (extractor, mode=full_text) searching the clinical record...
+[X] Agent 1 done in 5.6s
+[X] Agent 2 (evaluator) filling in the schema...
+[X] Agent 2 done in 16.3s
+[X] filled in: answer='No alternative diagnosis was found to explain the acute illness'
+[A1] Agent 3 verifier (answer) AGREE, P(YES) 0.9999 (verdict)
+[A1] Agent 3 verifier (reasoning) AGREE, P(YES) 0.9999 (verdict)
+[A2] Agent 3 verifier (answer) DISAGREE, P(YES) 0.3070 (verdict)
+[A2] Agent 3 verifier (reasoning) AGREE, P(YES) 0.9490 (verdict)
+[A3_1] Agent 3 verifier (answer) AGREE, P(YES) 0.9987 (verdict)
+[A3_1] Agent 3 verifier (reasoning) AGREE, P(YES) 0.8621 (verdict)
+[A3_2] Agent 3 verifier (answer) DISAGREE, P(YES) 0.2057 (verdict)
+[A3_2] Agent 3 verifier (reasoning) AGREE, P(YES) 0.9959 (verdict)
+[B1_1] Agent 3 verifier (answer) AGREE, P(YES) 0.6786 (verdict)
+[B1_1] Agent 3 verifier (reasoning) AGREE, P(YES) 0.9337 (verdict)
+[B1_2] Agent 3 verifier (answer) AGREE, P(YES) 0.9981 (verdict)
+[B1_2] Agent 3 verifier (reasoning) AGREE, P(YES) 0.9998 (verdict)
+[B2] Agent 3 verifier (answer) AGREE, P(YES) 0.9981 (verdict)
+[B2] Agent 3 verifier (reasoning) AGREE, P(YES) 0.9999 (verdict)
+[C] Agent 3 verifier (answer) AGREE, P(YES) 1.0000 (verdict)
+[C] Agent 3 verifier (reasoning) AGREE, P(YES) 1.0000 (verdict)
+[F] Agent 3 verifier (answer) DISAGREE, P(YES) 0.2219 (verdict)
+[F] Agent 3 verifier (reasoning) AGREE, P(YES) 0.7859 (verdict)
+[X] Agent 3 verifier (answer) DISAGREE, P(YES) 0.1843 (verdict)
+[X] Agent 3 verifier (reasoning) AGREE, P(YES) 0.7656 (verdict)
+  -> saved SYN_28_other_modality_plethysmography_v2_20261104_212856.json in 4.8 min (ETA 54 min for the remaining 12)
+[29/40] SYN_29_diagnosis_no_details_second_v2 ...
+Loading weights:   0%|          | 0/199 [00:00<?, ?it/s]Loading weights: 100%|██████████| 199/199 [00:00<00:00, 7145.44it/s]
+
+=== Section A1 ===
+[A1] Agent 1 (extractor, mode=full_text) searching the clinical record...
+[A1] Agent 1 done in 5.2s
+[A1] Agent 2 (evaluator) filling in the schema...
+[A1] Agent 2 done in 16.7s
+[A1] filled in: answer='No autopsy done, unknown if done, or done but results unavailable'
+
+=== Section A2 ===
+[A2] Agent 1 (extractor, mode=full_text) searching the clinical record...
+[A2] Agent 1 done in 5.2s
+[A2] Agent 2 (evaluator) filling in the schema...
+[A2] Agent 2 done in 16.5s
+[A2] filled in: answer='No surgical procedure done; or, done but either did not confirm presence of DVT or findings unknown; or unknown if done'
+
+=== Section A3_1 ===
+[A3_1] Agent 1 (extractor, mode=full_text) searching the clinical record...
+[A3_1] Agent 1 done in 5.2s
+[A3_1] Agent 2 (evaluator) filling in the schema...
+[A3_1] Agent 2 done in 17.0s
+[A3_1] filled in: answer='No imaging studies done, unknown if done, or done but results unknown'
+
+=== Section A3_2 ===
+[A3_2] Agent 1 (extractor, mode=full_text) searching the clinical record...
+[A3_2] Agent 1 done in 5.5s
+[A3_2] Agent 2 (evaluator) filling in the schema...
+[A3_2] Agent 2 done in 19.2s
+[A3_2] filled in: studies=['Doppler/Duplex Ultrasound']
+
+=== Section B1_1 ===
+[B1_1] Agent 1 (extractor, mode=full_text) searching the clinical record...
+[B1_1] Agent 1 done in 5.3s
+[B1_1] Agent 2 (evaluator) filling in the schema...
+[B1_1] Agent 2 done in 19.2s
+[B1_1] filled in: answer='≥1 symptom or sign of DVT was reported'
+
+=== Section B1_2 ===
+[B1_2] Agent 1 (extractor, mode=full_text) searching the clinical record...
+[B1_2] Agent 1 done in 5.3s
+[B1_2] Agent 2 (evaluator) filling in the schema...
+[B1_2] Agent 2 done in 16.2s
+[B1_2] filled in: types=['Lower extremity DVT']
+
+=== Section B2 ===
+[B2] Agent 1 (extractor, mode=full_text) searching the clinical record...
+[B2] Agent 1 done in 5.2s
+[B2] Agent 2 (evaluator) filling in the schema...
+[B2] Agent 2 done in 17.0s
+[B2] filled in: symptoms=['None of the above were present or it is unknown if any of 1-4 were present']
+
+=== Section C ===
+[C] Agent 1 (extractor, mode=full_text) searching the clinical record...
+[C] Agent 1 done in 5.3s
+[C] Agent 2 (evaluator) filling in the schema...
+[C] Agent 2 done in 16.3s
+[C] filled in: answer='D-dimer not tested, or tested but results unknown or not available'
+
+=== Section F ===
+[F] Agent 1 (extractor, mode=full_text) searching the clinical record...
+[F] Agent 1 done in 5.3s
+[F] Agent 2 (evaluator) filling in the schema...
+[F] Agent 2 done in 16.8s
+[F] filled in: answer='No'
+
+=== Section X ===
+[X] Agent 1 (extractor, mode=full_text) searching the clinical record...
+[X] Agent 1 done in 5.2s
+[X] Agent 2 (evaluator) filling in the schema...
+[X] Agent 2 done in 40.1s
+[X] filled in: answer='No alternative diagnosis was found to explain the acute illness'
+[CROSS-SECTION RULE] 'a3_1' triggered. Forcing 'a3_2' to '[]'.
+[A1] Agent 3 verifier (answer) AGREE, P(YES) 0.9999 (verdict)
+[A1] Agent 3 verifier (reasoning) AGREE, P(YES) 0.9999 (verdict)
+[A2] Agent 3 verifier (answer) AGREE, P(YES) 1.0000 (verdict)
+[A2] Agent 3 verifier (reasoning) AGREE, P(YES) 0.9999 (verdict)
+[A3_1] Agent 3 verifier (answer) AGREE, P(YES) 0.9998 (verdict)
+[A3_1] Agent 3 verifier (reasoning) AGREE, P(YES) 0.9999 (verdict)
+[B1_1] Agent 3 verifier (answer) AGREE, P(YES) 0.9264 (verdict)
+[B1_1] Agent 3 verifier (reasoning) AGREE, P(YES) 0.9190 (verdict)
+[B1_2] Agent 3 verifier (answer) AGREE, P(YES) 0.9993 (verdict)
+[B1_2] Agent 3 verifier (reasoning) AGREE, P(YES) 0.9999 (verdict)
+[B2] Agent 3 verifier (answer) AGREE, P(YES) 0.9702 (verdict)
+[B2] Agent 3 verifier (reasoning) AGREE, P(YES) 0.9950 (verdict)
+[C] Agent 3 verifier (answer) AGREE, P(YES) 0.9991 (verdict)
+[C] Agent 3 verifier (reasoning) AGREE, P(YES) 0.9997 (verdict)
+[F] Agent 3 verifier (answer) DISAGREE, P(YES) 0.0731 (verdict)
+[F] Agent 3 verifier (reasoning) AGREE, P(YES) 0.9925 (verdict)
+[X] Agent 3 verifier (answer) DISAGREE, P(YES) 0.0179 (verdict)
+[X] Agent 3 verifier (reasoning) AGREE, P(YES) 0.6899 (verdict)
+[A3_2] Agent 3 verifier (answer) AGREE, P(YES) 0.9998 (rule:A3_1)
+[A3_2] Agent 3 verifier (reasoning) AGREE, P(YES) 0.9999 (rule:A3_1)
+  -> saved SYN_29_diagnosis_no_details_second_v2_20261104_213329.json in 4.5 min (ETA 50 min for the remaining 11)
+[30/40] SYN_30_confirmed_dvt_normal_ddimer_v2 ...
+Loading weights:   0%|          | 0/199 [00:00<?, ?it/s]Loading weights: 100%|██████████| 199/199 [00:00<00:00, 5962.50it/s]
+
+=== Section A1 ===
+[A1] Agent 1 (extractor, mode=full_text) searching the clinical record...
+[A1] Agent 1 done in 5.3s
+[A1] Agent 2 (evaluator) filling in the schema...
+[A1] Agent 2 done in 16.4s
+[A1] filled in: answer='No autopsy done, unknown if done, or done but results unavailable'
+
+=== Section A2 ===
+[A2] Agent 1 (extractor, mode=full_text) searching the clinical record...
+[A2] Agent 1 done in 5.6s
+[A2] Agent 2 (evaluator) filling in the schema...
+[A2] Agent 2 done in 16.7s
+[A2] filled in: answer='No surgical procedure done; or, done but either did not confirm presence of DVT or findings unknown; or unknown if done'
+
+=== Section A3_1 ===
+[A3_1] Agent 1 (extractor, mode=full_text) searching the clinical record...
+[A3_1] Agent 1 done in 5.6s
+[A3_1] Agent 2 (evaluator) filling in the schema...
+[A3_1] Agent 2 done in 16.5s
+[A3_1] filled in: answer='≥1 imaging study was done and confirmed DVT'
+
+=== Section A3_2 ===
+[A3_2] Agent 1 (extractor, mode=full_text) searching the clinical record...
+[A3_2] Agent 1 done in 5.7s
+[A3_2] Agent 2 (evaluator) filling in the schema...
+[A3_2] Agent 2 done in 18.1s
+[A3_2] filled in: studies=['Doppler/Duplex Ultrasound']
+
+=== Section B1_1 ===
+[B1_1] Agent 1 (extractor, mode=full_text) searching the clinical record...
+[B1_1] Agent 1 done in 5.6s
+[B1_1] Agent 2 (evaluator) filling in the schema...
+[B1_1] Agent 2 done in 17.5s
+[B1_1] filled in: answer='It is unknown if there was a report of a DVT syndrome'
+
+=== Section B1_2 ===
+[B1_2] Agent 1 (extractor, mode=full_text) searching the clinical record...
+[B1_2] Agent 1 done in 5.7s
+[B1_2] Agent 2 (evaluator) filling in the schema...
+[B1_2] Agent 2 done in 16.5s
+[B1_2] filled in: types=['Lower extremity DVT']
+
+=== Section B2 ===
+[B2] Agent 1 (extractor, mode=full_text) searching the clinical record...
+[B2] Agent 1 done in 5.4s
+[B2] Agent 2 (evaluator) filling in the schema...
+[B2] Agent 2 done in 20.0s
+[B2] filled in: symptoms=['Calf pain or tenderness', 'Leg swelling or pitting oedema']
+
+=== Section C ===
+[C] Agent 1 (extractor, mode=full_text) searching the clinical record...
+[C] Agent 1 done in 5.3s
+[C] Agent 2 (evaluator) filling in the schema...
+[C] Agent 2 done in 16.2s
+[C] filled in: answer="D-dimer tested and was within test lab's range of normal"
+
+=== Section F ===
+[F] Agent 1 (extractor, mode=full_text) searching the clinical record...
+[F] Agent 1 done in 5.6s
+[F] Agent 2 (evaluator) filling in the schema...
+[F] Agent 2 done in 15.5s
+[F] filled in: answer='No'
+
+=== Section X ===
+[X] Agent 1 (extractor, mode=full_text) searching the clinical record...
+[X] Agent 1 done in 5.8s
+[X] Agent 2 (evaluator) filling in the schema...
+[X] Agent 2 done in 16.7s
+[X] filled in: answer='No alternative diagnosis was found to explain the acute illness'
+[CROSS-SECTION RULE] 'b2' triggered. Forcing 'b1_1' to '≥1 symptom or sign of DVT was reported'.
+[A1] Agent 3 verifier (answer) AGREE, P(YES) 0.9999 (verdict)
+[A1] Agent 3 verifier (reasoning) AGREE, P(YES) 0.9999 (verdict)
+[A2] Agent 3 verifier (answer) DISAGREE, P(YES) 0.2384 (verdict)
+[A2] Agent 3 verifier (reasoning) AGREE, P(YES) 0.7891 (verdict)
+[A3_1] Agent 3 verifier (answer) AGREE, P(YES) 1.0000 (verdict)
+[A3_1] Agent 3 verifier (reasoning) AGREE, P(YES) 1.0000 (verdict)
+[A3_2] Agent 3 verifier (answer) AGREE, P(YES) 0.9944 (verdict)
+[A3_2] Agent 3 verifier (reasoning) AGREE, P(YES) 0.9374 (verdict)
+[B1_2] Agent 3 verifier (answer) AGREE, P(YES) 0.9986 (verdict)
+[B1_2] Agent 3 verifier (reasoning) AGREE, P(YES) 0.9998 (verdict)
+[B2] Agent 3 verifier (answer) AGREE, P(YES) 0.9981 (verdict)
+[B2] Agent 3 verifier (reasoning) AGREE, P(YES) 0.9999 (verdict)
+[C] Agent 3 verifier (answer) AGREE, P(YES) 0.6351 (verdict)
+[C] Agent 3 verifier (reasoning) AGREE, P(YES) 0.9561 (verdict)
+[F] Agent 3 verifier (answer) DISAGREE, P(YES) 0.1474 (verdict)
+[F] Agent 3 verifier (reasoning) AGREE, P(YES) 0.9180 (verdict)
+[X] Agent 3 verifier (answer) DISAGREE, P(YES) 0.1137 (verdict)
+[X] Agent 3 verifier (reasoning) AGREE, P(YES) 0.5675 (verdict)
+[B1_1] Agent 3 verifier (answer) AGREE, P(YES) 0.9981 (rule:B2)
+[B1_1] Agent 3 verifier (reasoning) AGREE, P(YES) 0.9999 (rule:B2)
+  -> saved SYN_30_confirmed_dvt_normal_ddimer_v2_20261104_213739.json in 4.2 min (ETA 45 min for the remaining 10)
+[31/40] SYN_31_diagnosis_no_details_upper_v2 ...
+Loading weights:   0%|          | 0/199 [00:00<?, ?it/s]Loading weights: 100%|██████████| 199/199 [00:00<00:00, 4732.42it/s]
+
+=== Section A1 ===
+[A1] Agent 1 (extractor, mode=full_text) searching the clinical record...
+[A1] Agent 1 done in 5.2s
+[A1] Agent 2 (evaluator) filling in the schema...
+[A1] Agent 2 done in 16.4s
+[A1] filled in: answer='No autopsy done, unknown if done, or done but results unavailable'
+
+=== Section A2 ===
+[A2] Agent 1 (extractor, mode=full_text) searching the clinical record...
+[A2] Agent 1 done in 5.2s
+[A2] Agent 2 (evaluator) filling in the schema...
+[A2] Agent 2 done in 16.1s
+[A2] filled in: answer='No surgical procedure done; or, done but either did not confirm presence of DVT or findings unknown; or unknown if done'
+
+=== Section A3_1 ===
+[A3_1] Agent 1 (extractor, mode=full_text) searching the clinical record...
+[A3_1] Agent 1 done in 5.1s
+[A3_1] Agent 2 (evaluator) filling in the schema...
+[A3_1] Agent 2 done in 17.3s
+[A3_1] filled in: answer='No imaging studies done, unknown if done, or done but results unknown'
+
+=== Section A3_2 ===
+[A3_2] Agent 1 (extractor, mode=full_text) searching the clinical record...
+[A3_2] Agent 1 done in 5.3s
+[A3_2] Agent 2 (evaluator) filling in the schema...
+[A3_2] Agent 2 done in 14.6s
+[A3_2] filled in: studies=[]
+
+=== Section B1_1 ===
+[B1_1] Agent 1 (extractor, mode=full_text) searching the clinical record...
+[B1_1] Agent 1 done in 5.3s
+[B1_1] Agent 2 (evaluator) filling in the schema...
+[B1_1] Agent 2 done in 19.2s
+[B1_1] filled in: answer='≥1 symptom or sign of DVT was reported'
+
+=== Section B1_2 ===
+[B1_2] Agent 1 (extractor, mode=full_text) searching the clinical record...
+[B1_2] Agent 1 done in 5.3s
+[B1_2] Agent 2 (evaluator) filling in the schema...
+[B1_2] Agent 2 done in 15.9s
+[B1_2] filled in: types=['Upper extremity DVT']
+
+=== Section B2 ===
+[B2] Agent 1 (extractor, mode=full_text) searching the clinical record...
+[B2] Agent 1 done in 5.3s
+[B2] Agent 2 (evaluator) filling in the schema...
+[B2] Agent 2 done in 18.1s
+[B2] filled in: symptoms=['None of the above were present or it is unknown if any of 1-4 were present']
+
+=== Section C ===
+[C] Agent 1 (extractor, mode=full_text) searching the clinical record...
+[C] Agent 1 done in 5.1s
+[C] Agent 2 (evaluator) filling in the schema...
+[C] Agent 2 done in 15.4s
+[C] filled in: answer='D-dimer not tested, or tested but results unknown or not available'
+
+=== Section F ===
+[F] Agent 1 (extractor, mode=full_text) searching the clinical record...
+[F] Agent 1 done in 5.4s
+[F] Agent 2 (evaluator) filling in the schema...
+[F] Agent 2 done in 16.0s
+[F] filled in: answer='No'
+
+=== Section X ===
+[X] Agent 1 (extractor, mode=full_text) searching the clinical record...
+[X] Agent 1 done in 5.3s
+[X] Agent 2 (evaluator) filling in the schema...
+[X] Agent 2 done in 19.0s
+[X] filled in: answer='No alternative diagnosis was found to explain the acute illness'
+[A1] Agent 3 verifier (answer) AGREE, P(YES) 0.9999 (verdict)
+[A1] Agent 3 verifier (reasoning) AGREE, P(YES) 0.9999 (verdict)
+[A2] Agent 3 verifier (answer) AGREE, P(YES) 0.9998 (verdict)
+[A2] Agent 3 verifier (reasoning) AGREE, P(YES) 0.9999 (verdict)
+[A3_1] Agent 3 verifier (answer) AGREE, P(YES) 0.9998 (verdict)
+[A3_1] Agent 3 verifier (reasoning) AGREE, P(YES) 0.9999 (verdict)
+[A3_2] Agent 3 verifier (answer) AGREE, P(YES) 0.9977 (verdict)
+[A3_2] Agent 3 verifier (reasoning) AGREE, P(YES) 0.9978 (verdict)
+[B1_1] Agent 3 verifier (answer) AGREE, P(YES) 0.9034 (verdict)
+[B1_1] Agent 3 verifier (reasoning) AGREE, P(YES) 0.8838 (verdict)
+[B1_2] Agent 3 verifier (answer) AGREE, P(YES) 0.9974 (verdict)
+[B1_2] Agent 3 verifier (reasoning) AGREE, P(YES) 0.9998 (verdict)
+[B2] Agent 3 verifier (answer) AGREE, P(YES) 0.9995 (verdict)
+[B2] Agent 3 verifier (reasoning) AGREE, P(YES) 0.9993 (verdict)
+[C] Agent 3 verifier (answer) AGREE, P(YES) 0.9997 (verdict)
+[C] Agent 3 verifier (reasoning) AGREE, P(YES) 0.9999 (verdict)
+[F] Agent 3 verifier (answer) DISAGREE, P(YES) 0.1139 (verdict)
+[F] Agent 3 verifier (reasoning) AGREE, P(YES) 0.8227 (verdict)
+[X] Agent 3 verifier (answer) DISAGREE, P(YES) 0.0155 (verdict)
+[X] Agent 3 verifier (reasoning) AGREE, P(YES) 0.8053 (verdict)
+  -> saved SYN_31_diagnosis_no_details_upper_v2_20261104_214145.json in 4.1 min (ETA 40 min for the remaining 9)
+[32/40] SYN_32_discharge_letter_dvt_v2 ...
+Loading weights:   0%|          | 0/199 [00:00<?, ?it/s]Loading weights: 100%|██████████| 199/199 [00:00<00:00, 5795.81it/s]
+
+=== Section A1 ===
+[A1] Agent 1 (extractor, mode=full_text) searching the clinical record...
+[A1] Agent 1 done in 5.3s
+[A1] Agent 2 (evaluator) filling in the schema...
+[A1] Agent 2 done in 16.7s
+[A1] filled in: answer='No autopsy done, unknown if done, or done but results unavailable'
+
+=== Section A2 ===
+[A2] Agent 1 (extractor, mode=full_text) searching the clinical record...
+[A2] Agent 1 done in 5.2s
+[A2] Agent 2 (evaluator) filling in the schema...
+[A2] Agent 2 done in 15.9s
+[A2] filled in: answer='No surgical procedure done; or, done but either did not confirm presence of DVT or findings unknown; or unknown if done'
+
+=== Section A3_1 ===
+[A3_1] Agent 1 (extractor, mode=full_text) searching the clinical record...
+[A3_1] Agent 1 done in 5.3s
+[A3_1] Agent 2 (evaluator) filling in the schema...
+[A3_1] Agent 2 done in 17.3s
+[A3_1] filled in: answer='No imaging studies done, unknown if done, or done but results unknown'
+
+=== Section A3_2 ===
+[A3_2] Agent 1 (extractor, mode=full_text) searching the clinical record...
+[A3_2] Agent 1 done in 5.3s
+[A3_2] Agent 2 (evaluator) filling in the schema...
+[A3_2] Agent 2 done in 14.8s
+[A3_2] filled in: studies=[]
+
+=== Section B1_1 ===
+[B1_1] Agent 1 (extractor, mode=full_text) searching the clinical record...
+[B1_1] Agent 1 done in 5.3s
+[B1_1] Agent 2 (evaluator) filling in the schema...
+[B1_1] Agent 2 done in 19.5s
+[B1_1] filled in: answer='≥1 symptom or sign of DVT was reported'
+
+=== Section B1_2 ===
+[B1_2] Agent 1 (extractor, mode=full_text) searching the clinical record...
+[B1_2] Agent 1 done in 5.4s
+[B1_2] Agent 2 (evaluator) filling in the schema...
+[B1_2] Agent 2 done in 15.5s
+[B1_2] filled in: types=['Lower extremity DVT']
+
+=== Section B2 ===
+[B2] Agent 1 (extractor, mode=full_text) searching the clinical record...
+[B2] Agent 1 done in 5.3s
+[B2] Agent 2 (evaluator) filling in the schema...
+[B2] Agent 2 done in 18.1s
+[B2] filled in: symptoms=['None of the above were present or it is unknown if any of 1-4 were present']
+
+=== Section C ===
+[C] Agent 1 (extractor, mode=full_text) searching the clinical record...
+[C] Agent 1 done in 5.2s
+[C] Agent 2 (evaluator) filling in the schema...
+[C] Agent 2 done in 15.5s
+[C] filled in: answer='D-dimer not tested, or tested but results unknown or not available'
+
+=== Section F ===
+[F] Agent 1 (extractor, mode=full_text) searching the clinical record...
+[F] Agent 1 done in 5.3s
+[F] Agent 2 (evaluator) filling in the schema...
+[F] Agent 2 done in 16.9s
+[F] filled in: answer='No'
+
+=== Section X ===
+[X] Agent 1 (extractor, mode=full_text) searching the clinical record...
+[X] Agent 1 done in 5.3s
+[X] Agent 2 (evaluator) filling in the schema...
+[X] Agent 2 done in 19.2s
+[X] filled in: answer='No alternative diagnosis was found to explain the acute illness'
+[A1] Agent 3 verifier (answer) AGREE, P(YES) 0.9999 (verdict)
+[A1] Agent 3 verifier (reasoning) AGREE, P(YES) 0.9999 (verdict)
+[A2] Agent 3 verifier (answer) AGREE, P(YES) 0.9998 (verdict)
+[A2] Agent 3 verifier (reasoning) AGREE, P(YES) 0.9999 (verdict)
+[A3_1] Agent 3 verifier (answer) AGREE, P(YES) 0.9998 (verdict)
+[A3_1] Agent 3 verifier (reasoning) AGREE, P(YES) 0.9999 (verdict)
+[A3_2] Agent 3 verifier (answer) AGREE, P(YES) 0.9977 (verdict)
+[A3_2] Agent 3 verifier (reasoning) AGREE, P(YES) 0.9978 (verdict)
+[B1_1] Agent 3 verifier (answer) AGREE, P(YES) 0.9510 (verdict)
+[B1_1] Agent 3 verifier (reasoning) AGREE, P(YES) 0.9130 (verdict)
+[B1_2] Agent 3 verifier (answer) AGREE, P(YES) 0.9989 (verdict)
+[B1_2] Agent 3 verifier (reasoning) AGREE, P(YES) 0.9999 (verdict)
+[B2] Agent 3 verifier (answer) AGREE, P(YES) 0.9995 (verdict)
+[B2] Agent 3 verifier (reasoning) AGREE, P(YES) 0.9993 (verdict)
+[C] Agent 3 verifier (answer) AGREE, P(YES) 0.9997 (verdict)
+[C] Agent 3 verifier (reasoning) AGREE, P(YES) 0.9999 (verdict)
+[F] Agent 3 verifier (answer) DISAGREE, P(YES) 0.0731 (verdict)
+[F] Agent 3 verifier (reasoning) AGREE, P(YES) 0.9925 (verdict)
+[X] Agent 3 verifier (answer) DISAGREE, P(YES) 0.0155 (verdict)
+[X] Agent 3 verifier (reasoning) AGREE, P(YES) 0.8053 (verdict)
+  -> saved SYN_32_discharge_letter_dvt_v2_20261104_214553.json in 4.1 min (ETA 36 min for the remaining 8)
+[33/40] SYN_33_transfer_note_dvt_upper_v2 ...
+Loading weights:   0%|          | 0/199 [00:00<?, ?it/s]Loading weights: 100%|██████████| 199/199 [00:00<00:00, 5406.71it/s]
+
+=== Section A1 ===
+[A1] Agent 1 (extractor, mode=full_text) searching the clinical record...
+[A1] Agent 1 done in 5.2s
+[A1] Agent 2 (evaluator) filling in the schema...
+[A1] Agent 2 done in 16.7s
+[A1] filled in: answer='No autopsy done, unknown if done, or done but results unavailable'
+
+=== Section A2 ===
+[A2] Agent 1 (extractor, mode=full_text) searching the clinical record...
+[A2] Agent 1 done in 5.1s
+[A2] Agent 2 (evaluator) filling in the schema...
+[A2] Agent 2 done in 16.0s
+[A2] filled in: answer='No surgical procedure done; or, done but either did not confirm presence of DVT or findings unknown; or unknown if done'
+
+=== Section A3_1 ===
+[A3_1] Agent 1 (extractor, mode=full_text) searching the clinical record...
+[A3_1] Agent 1 done in 5.2s
+[A3_1] Agent 2 (evaluator) filling in the schema...
+[A3_1] Agent 2 done in 17.4s
+[A3_1] filled in: answer='No imaging studies done, unknown if done, or done but results unknown'
+
+=== Section A3_2 ===
+[A3_2] Agent 1 (extractor, mode=full_text) searching the clinical record...
+[A3_2] Agent 1 done in 5.5s
+[A3_2] Agent 2 (evaluator) filling in the schema...
+[A3_2] Agent 2 done in 18.9s
+[A3_2] filled in: studies=['Doppler/Duplex Ultrasound']
+
+=== Section B1_1 ===
+[B1_1] Agent 1 (extractor, mode=full_text) searching the clinical record...
+[B1_1] Agent 1 done in 5.3s
+[B1_1] Agent 2 (evaluator) filling in the schema...
+[B1_1] Agent 2 done in 19.1s
+[B1_1] filled in: answer='≥1 symptom or sign of DVT was reported'
+
+=== Section B1_2 ===
+[B1_2] Agent 1 (extractor, mode=full_text) searching the clinical record...
+[B1_2] Agent 1 done in 5.5s
+[B1_2] Agent 2 (evaluator) filling in the schema...
+[B1_2] Agent 2 done in 16.0s
+[B1_2] filled in: types=['Upper extremity DVT']
+
+=== Section B2 ===
+[B2] Agent 1 (extractor, mode=full_text) searching the clinical record...
+[B2] Agent 1 done in 5.1s
+[B2] Agent 2 (evaluator) filling in the schema...
+[B2] Agent 2 done in 18.1s
+[B2] filled in: symptoms=['None of the above were present or it is unknown if any of 1-4 were present']
+
+=== Section C ===
+[C] Agent 1 (extractor, mode=full_text) searching the clinical record...
+[C] Agent 1 done in 5.1s
+[C] Agent 2 (evaluator) filling in the schema...
+[C] Agent 2 done in 15.6s
+[C] filled in: answer='D-dimer not tested, or tested but results unknown or not available'
+
+=== Section F ===
+[F] Agent 1 (extractor, mode=full_text) searching the clinical record...
+[F] Agent 1 done in 5.3s
+[F] Agent 2 (evaluator) filling in the schema...
+[F] Agent 2 done in 15.8s
+[F] filled in: answer='No'
+
+=== Section X ===
+[X] Agent 1 (extractor, mode=full_text) searching the clinical record...
+[X] Agent 1 done in 5.2s
+[X] Agent 2 (evaluator) filling in the schema...
+[X] Agent 2 done in 40.0s
+[X] filled in: answer='No alternative diagnosis was found to explain the acute illness'
+[CROSS-SECTION RULE] 'a3_1' triggered. Forcing 'a3_2' to '[]'.
+[A1] Agent 3 verifier (answer) AGREE, P(YES) 0.9999 (verdict)
+[A1] Agent 3 verifier (reasoning) AGREE, P(YES) 0.9999 (verdict)
+[A2] Agent 3 verifier (answer) AGREE, P(YES) 0.9998 (verdict)
+[A2] Agent 3 verifier (reasoning) AGREE, P(YES) 0.9999 (verdict)
+[A3_1] Agent 3 verifier (answer) AGREE, P(YES) 0.9998 (verdict)
+[A3_1] Agent 3 verifier (reasoning) AGREE, P(YES) 0.9999 (verdict)
+[B1_1] Agent 3 verifier (answer) AGREE, P(YES) 0.8926 (verdict)
+[B1_1] Agent 3 verifier (reasoning) AGREE, P(YES) 0.9177 (verdict)
+[B1_2] Agent 3 verifier (answer) AGREE, P(YES) 0.9975 (verdict)
+[B1_2] Agent 3 verifier (reasoning) AGREE, P(YES) 0.9998 (verdict)
+[B2] Agent 3 verifier (answer) AGREE, P(YES) 0.9995 (verdict)
+[B2] Agent 3 verifier (reasoning) AGREE, P(YES) 0.9993 (verdict)
+[C] Agent 3 verifier (answer) AGREE, P(YES) 0.9997 (verdict)
+[C] Agent 3 verifier (reasoning) AGREE, P(YES) 0.9999 (verdict)
+[F] Agent 3 verifier (answer) DISAGREE, P(YES) 0.1144 (verdict)
+[F] Agent 3 verifier (reasoning) AGREE, P(YES) 0.8166 (verdict)
+[X] Agent 3 verifier (answer) DISAGREE, P(YES) 0.0179 (verdict)
+[X] Agent 3 verifier (reasoning) AGREE, P(YES) 0.6899 (verdict)
+[A3_2] Agent 3 verifier (answer) AGREE, P(YES) 0.9998 (rule:A3_1)
+[A3_2] Agent 3 verifier (reasoning) AGREE, P(YES) 0.9999 (rule:A3_1)
+  -> saved SYN_33_transfer_note_dvt_upper_v2_20261104_215024.json in 4.5 min (ETA 31 min for the remaining 7)
+[34/40] SYN_34_dvt_reported_other_facility_v2 ...
+Loading weights:   0%|          | 0/199 [00:00<?, ?it/s]Loading weights: 100%|██████████| 199/199 [00:00<00:00, 6826.53it/s]
+
+=== Section A1 ===
+[A1] Agent 1 (extractor, mode=full_text) searching the clinical record...
+[A1] Agent 1 done in 5.2s
+[A1] Agent 2 (evaluator) filling in the schema...
+[A1] Agent 2 done in 16.7s
+[A1] filled in: answer='No autopsy done, unknown if done, or done but results unavailable'
+
+=== Section A2 ===
+[A2] Agent 1 (extractor, mode=full_text) searching the clinical record...
+[A2] Agent 1 done in 5.2s
+[A2] Agent 2 (evaluator) filling in the schema...
+[A2] Agent 2 done in 16.5s
+[A2] filled in: answer='No surgical procedure done; or, done but either did not confirm presence of DVT or findings unknown; or unknown if done'
+
+=== Section A3_1 ===
+[A3_1] Agent 1 (extractor, mode=full_text) searching the clinical record...
+[A3_1] Agent 1 done in 5.2s
+[A3_1] Agent 2 (evaluator) filling in the schema...
+[A3_1] Agent 2 done in 21.8s
+[A3_1] filled in: answer='No imaging studies done, unknown if done, or done but results unknown'
+
+=== Section A3_2 ===
+[A3_2] Agent 1 (extractor, mode=full_text) searching the clinical record...
+[A3_2] Agent 1 done in 5.3s
+[A3_2] Agent 2 (evaluator) filling in the schema...
+[A3_2] Agent 2 done in 20.3s
+[A3_2] filled in: studies=[]
+
+=== Section B1_1 ===
+[B1_1] Agent 1 (extractor, mode=full_text) searching the clinical record...
+[B1_1] Agent 1 done in 5.3s
+[B1_1] Agent 2 (evaluator) filling in the schema...
+[B1_1] Agent 2 done in 87.5s
+[B1_1] filled in: answer='≥1 symptom or sign of DVT was reported'
+
+=== Section B1_2 ===
+[B1_2] Agent 1 (extractor, mode=full_text) searching the clinical record...
+[B1_2] Agent 1 done in 5.3s
+[B1_2] Agent 2 (evaluator) filling in the schema...
+[B1_2] Agent 2 done in 16.0s
+[B1_2] filled in: types=['Lower extremity DVT']
+
+=== Section B2 ===
+[B2] Agent 1 (extractor, mode=full_text) searching the clinical record...
+[B2] Agent 1 done in 5.2s
+[B2] Agent 2 (evaluator) filling in the schema...
+[B2] Agent 2 done in 17.2s
+[B2] filled in: symptoms=['None of the above were present or it is unknown if any of 1-4 were present']
+
+=== Section C ===
+[C] Agent 1 (extractor, mode=full_text) searching the clinical record...
+[C] Agent 1 done in 5.2s
+[C] Agent 2 (evaluator) filling in the schema...
+[C] Agent 2 done in 15.5s
+[C] filled in: answer='D-dimer not tested, or tested but results unknown or not available'
+
+=== Section F ===
+[F] Agent 1 (extractor, mode=full_text) searching the clinical record...
+[F] Agent 1 done in 5.3s
+[F] Agent 2 (evaluator) filling in the schema...
+[F] Agent 2 done in 16.7s
+[F] filled in: answer='No'
+
+=== Section X ===
+[X] Agent 1 (extractor, mode=full_text) searching the clinical record...
+[X] Agent 1 done in 5.2s
+[X] Agent 2 (evaluator) filling in the schema...
+[X] Agent 2 done in 19.3s
+[X] filled in: answer='No alternative diagnosis was found to explain the acute illness'
+[A1] Agent 3 verifier (answer) AGREE, P(YES) 0.9999 (verdict)
+[A1] Agent 3 verifier (reasoning) AGREE, P(YES) 0.9999 (verdict)
+[A2] Agent 3 verifier (answer) AGREE, P(YES) 1.0000 (verdict)
+[A2] Agent 3 verifier (reasoning) AGREE, P(YES) 0.9999 (verdict)
+[A3_1] Agent 3 verifier (answer) AGREE, P(YES) 0.7188 (verdict)
+[A3_1] Agent 3 verifier (reasoning) AGREE, P(YES) 0.9851 (verdict)
+[A3_2] Agent 3 verifier (answer) DISAGREE, P(YES) 0.1005 (verdict)
+[A3_2] Agent 3 verifier (reasoning) AGREE, P(YES) 0.9893 (verdict)
+[B1_1] Agent 3 verifier (answer) AGREE, P(YES) 0.9653 (verdict)
+[B1_1] Agent 3 verifier (reasoning) AGREE, P(YES) 0.9945 (verdict)
+[B1_2] Agent 3 verifier (answer) AGREE, P(YES) 0.9992 (verdict)
+[B1_2] Agent 3 verifier (reasoning) AGREE, P(YES) 0.9998 (verdict)
+[B2] Agent 3 verifier (answer) AGREE, P(YES) 0.9702 (verdict)
+[B2] Agent 3 verifier (reasoning) AGREE, P(YES) 0.9950 (verdict)
+[C] Agent 3 verifier (answer) AGREE, P(YES) 0.9997 (verdict)
+[C] Agent 3 verifier (reasoning) AGREE, P(YES) 0.9999 (verdict)
+[F] Agent 3 verifier (answer) DISAGREE, P(YES) 0.0756 (verdict)
+[F] Agent 3 verifier (reasoning) AGREE, P(YES) 0.9920 (verdict)
+[X] Agent 3 verifier (answer) DISAGREE, P(YES) 0.0155 (verdict)
+[X] Agent 3 verifier (reasoning) AGREE, P(YES) 0.8053 (verdict)
+  -> saved SYN_34_dvt_reported_other_facility_v2_20261104_215551.json in 5.4 min (ETA 27 min for the remaining 6)
+[35/40] SYN_35_specialist_note_dvt_lower_v2 ...
+Loading weights:   0%|          | 0/199 [00:00<?, ?it/s]Loading weights: 100%|██████████| 199/199 [00:00<00:00, 6348.53it/s]
+
+=== Section A1 ===
+[A1] Agent 1 (extractor, mode=full_text) searching the clinical record...
+[A1] Agent 1 done in 5.2s
+[A1] Agent 2 (evaluator) filling in the schema...
+[A1] Agent 2 done in 16.7s
+[A1] filled in: answer='No autopsy done, unknown if done, or done but results unavailable'
+
+=== Section A2 ===
+[A2] Agent 1 (extractor, mode=full_text) searching the clinical record...
+[A2] Agent 1 done in 5.2s
+[A2] Agent 2 (evaluator) filling in the schema...
+[A2] Agent 2 done in 16.2s
+[A2] filled in: answer='No surgical procedure done; or, done but either did not confirm presence of DVT or findings unknown; or unknown if done'
+
+=== Section A3_1 ===
+[A3_1] Agent 1 (extractor, mode=full_text) searching the clinical record...
+[A3_1] Agent 1 done in 5.2s
+[A3_1] Agent 2 (evaluator) filling in the schema...
+[A3_1] Agent 2 done in 17.3s
+[A3_1] filled in: answer='No imaging studies done, unknown if done, or done but results unknown'
+
+=== Section A3_2 ===
+[A3_2] Agent 1 (extractor, mode=full_text) searching the clinical record...
+[A3_2] Agent 1 done in 5.3s
+[A3_2] Agent 2 (evaluator) filling in the schema...
+[A3_2] Agent 2 done in 14.8s
+[A3_2] filled in: studies=[]
+
+=== Section B1_1 ===
+[B1_1] Agent 1 (extractor, mode=full_text) searching the clinical record...
+[B1_1] Agent 1 done in 5.3s
+[B1_1] Agent 2 (evaluator) filling in the schema...
+[B1_1] Agent 2 done in 19.4s
+[B1_1] filled in: answer='≥1 symptom or sign of DVT was reported'
+
+=== Section B1_2 ===
+[B1_2] Agent 1 (extractor, mode=full_text) searching the clinical record...
+[B1_2] Agent 1 done in 5.3s
+[B1_2] Agent 2 (evaluator) filling in the schema...
+[B1_2] Agent 2 done in 16.2s
+[B1_2] filled in: types=['Lower extremity DVT']
+
+=== Section B2 ===
+[B2] Agent 1 (extractor, mode=full_text) searching the clinical record...
+[B2] Agent 1 done in 5.3s
+[B2] Agent 2 (evaluator) filling in the schema...
+[B2] Agent 2 done in 17.0s
+[B2] filled in: symptoms=['None of the above were present or it is unknown if any of 1-4 were present']
+
+=== Section C ===
+[C] Agent 1 (extractor, mode=full_text) searching the clinical record...
+[C] Agent 1 done in 5.2s
+[C] Agent 2 (evaluator) filling in the schema...
+[C] Agent 2 done in 15.6s
+[C] filled in: answer='D-dimer not tested, or tested but results unknown or not available'
+
+=== Section F ===
+[F] Agent 1 (extractor, mode=full_text) searching the clinical record...
+[F] Agent 1 done in 5.3s
+[F] Agent 2 (evaluator) filling in the schema...
+[F] Agent 2 done in 16.5s
+[F] filled in: answer='No'
+
+=== Section X ===
+[X] Agent 1 (extractor, mode=full_text) searching the clinical record...
+[X] Agent 1 done in 5.2s
+[X] Agent 2 (evaluator) filling in the schema...
+[X] Agent 2 done in 19.3s
+[X] filled in: answer='No alternative diagnosis was found to explain the acute illness'
+[A1] Agent 3 verifier (answer) AGREE, P(YES) 0.9999 (verdict)
+[A1] Agent 3 verifier (reasoning) AGREE, P(YES) 0.9999 (verdict)
+[A2] Agent 3 verifier (answer) AGREE, P(YES) 0.9998 (verdict)
+[A2] Agent 3 verifier (reasoning) AGREE, P(YES) 0.9999 (verdict)
+[A3_1] Agent 3 verifier (answer) AGREE, P(YES) 0.9998 (verdict)
+[A3_1] Agent 3 verifier (reasoning) AGREE, P(YES) 0.9999 (verdict)
+[A3_2] Agent 3 verifier (answer) AGREE, P(YES) 0.9977 (verdict)
+[A3_2] Agent 3 verifier (reasoning) AGREE, P(YES) 0.9978 (verdict)
+[B1_1] Agent 3 verifier (answer) AGREE, P(YES) 0.9510 (verdict)
+[B1_1] Agent 3 verifier (reasoning) AGREE, P(YES) 0.9130 (verdict)
+[B1_2] Agent 3 verifier (answer) AGREE, P(YES) 0.9993 (verdict)
+[B1_2] Agent 3 verifier (reasoning) AGREE, P(YES) 0.9999 (verdict)
+[B2] Agent 3 verifier (answer) AGREE, P(YES) 0.9702 (verdict)
+[B2] Agent 3 verifier (reasoning) AGREE, P(YES) 0.9950 (verdict)
+[C] Agent 3 verifier (answer) AGREE, P(YES) 0.9997 (verdict)
+[C] Agent 3 verifier (reasoning) AGREE, P(YES) 0.9999 (verdict)
+[F] Agent 3 verifier (answer) DISAGREE, P(YES) 0.0731 (verdict)
+[F] Agent 3 verifier (reasoning) AGREE, P(YES) 0.9925 (verdict)
+[X] Agent 3 verifier (answer) DISAGREE, P(YES) 0.0155 (verdict)
+[X] Agent 3 verifier (reasoning) AGREE, P(YES) 0.8053 (verdict)
+  -> saved SYN_35_specialist_note_dvt_lower_v2_20261104_215957.json in 4.1 min (ETA 22 min for the remaining 5)
+[36/40] SYN_36_calf_muscle_tear_v2 ...
+Loading weights:   0%|          | 0/199 [00:00<?, ?it/s]Loading weights: 100%|██████████| 199/199 [00:00<00:00, 7372.34it/s]
+
+=== Section A1 ===
+[A1] Agent 1 (extractor, mode=full_text) searching the clinical record...
+[A1] Agent 1 done in 5.4s
+[A1] Agent 2 (evaluator) filling in the schema...
+[A1] Agent 2 done in 16.7s
+[A1] filled in: answer='No autopsy done, unknown if done, or done but results unavailable'
+
+=== Section A2 ===
+[A2] Agent 1 (extractor, mode=full_text) searching the clinical record...
+[A2] Agent 1 done in 5.2s
+[A2] Agent 2 (evaluator) filling in the schema...
+[A2] Agent 2 done in 15.8s
+[A2] filled in: answer='No surgical procedure done; or, done but either did not confirm presence of DVT or findings unknown; or unknown if done'
+
+=== Section A3_1 ===
+[A3_1] Agent 1 (extractor, mode=full_text) searching the clinical record...
+[A3_1] Agent 1 done in 5.6s
+[A3_1] Agent 2 (evaluator) filling in the schema...
+[A3_1] Agent 2 done in 15.9s
+[A3_1] filled in: answer="≥1 imaging study was done but didn't confirm DVT"
+
+=== Section A3_2 ===
+[A3_2] Agent 1 (extractor, mode=full_text) searching the clinical record...
+[A3_2] Agent 1 done in 5.5s
+[A3_2] Agent 2 (evaluator) filling in the schema...
+[A3_2] Agent 2 done in 16.0s
+[A3_2] filled in: studies=[]
+
+=== Section B1_1 ===
+[B1_1] Agent 1 (extractor, mode=full_text) searching the clinical record...
+[B1_1] Agent 1 done in 5.6s
+[B1_1] Agent 2 (evaluator) filling in the schema...
+[B1_1] Agent 2 done in 62.1s
+[B1_1] filled in: answer='There was no report of a recognized DVT syndrome'
+
+=== Section B1_2 ===
+[B1_2] Agent 1 (extractor, mode=full_text) searching the clinical record...
+[B1_2] Agent 1 done in 5.6s
+[B1_2] Agent 2 (evaluator) filling in the schema...
+[B1_2] Agent 2 done in 18.0s
+[B1_2] filled in: types=[]
+
+=== Section B2 ===
+[B2] Agent 1 (extractor, mode=full_text) searching the clinical record...
+[B2] Agent 1 done in 5.6s
+[B2] Agent 2 (evaluator) filling in the schema...
+[B2] Agent 2 done in 20.5s
+[B2] filled in: symptoms=['Calf pain or tenderness', 'Leg swelling or pitting oedema']
+
+=== Section C ===
+[C] Agent 1 (extractor, mode=full_text) searching the clinical record...
+[C] Agent 1 done in 5.4s
+[C] Agent 2 (evaluator) filling in the schema...
+[C] Agent 2 done in 15.7s
+[C] filled in: answer='D-dimer not tested, or tested but results unknown or not available'
+
+=== Section F ===
+[F] Agent 1 (extractor, mode=full_text) searching the clinical record...
+[F] Agent 1 done in 5.3s
+[F] Agent 2 (evaluator) filling in the schema...
+[F] Agent 2 done in 18.4s
+[F] filled in: answer='No'
+
+=== Section X ===
+[X] Agent 1 (extractor, mode=full_text) searching the clinical record...
+[X] Agent 1 done in 5.6s
+[X] Agent 2 (evaluator) filling in the schema...
+[X] Agent 2 done in 16.8s
+[X] filled in: answer='No alternative diagnosis was found to explain the acute illness'
+[CROSS-SECTION RULE] 'b2' triggered. Forcing 'b1_1' to '≥1 symptom or sign of DVT was reported'.
+[A1] Agent 3 verifier (answer) AGREE, P(YES) 0.9999 (verdict)
+[A1] Agent 3 verifier (reasoning) AGREE, P(YES) 0.9999 (verdict)
+[A2] Agent 3 verifier (answer) AGREE, P(YES) 0.9998 (verdict)
+[A2] Agent 3 verifier (reasoning) AGREE, P(YES) 0.9999 (verdict)
+[A3_1] Agent 3 verifier (answer) AGREE, P(YES) 1.0000 (verdict)
+[A3_1] Agent 3 verifier (reasoning) AGREE, P(YES) 1.0000 (verdict)
+[A3_2] Agent 3 verifier (answer) DISAGREE, P(YES) 0.1903 (verdict)
+[A3_2] Agent 3 verifier (reasoning) DISAGREE, P(YES) 0.2297 (verdict)
+[B1_2] Agent 3 verifier (answer) AGREE, P(YES) 0.9630 (verdict)
+[B1_2] Agent 3 verifier (reasoning) AGREE, P(YES) 0.9997 (verdict)
+[B2] Agent 3 verifier (answer) AGREE, P(YES) 0.9972 (verdict)
+[B2] Agent 3 verifier (reasoning) AGREE, P(YES) 0.9999 (verdict)
+[C] Agent 3 verifier (answer) AGREE, P(YES) 0.9997 (verdict)
+[C] Agent 3 verifier (reasoning) AGREE, P(YES) 0.9999 (verdict)
+[F] Agent 3 verifier (answer) AGREE, P(YES) 0.9911 (verdict)
+[F] Agent 3 verifier (reasoning) AGREE, P(YES) 0.9996 (verdict)
+[X] Agent 3 verifier (answer) DISAGREE, P(YES) 0.4687 (verdict)
+[X] Agent 3 verifier (reasoning) AGREE, P(YES) 0.9909 (verdict)
+[B1_1] Agent 3 verifier (answer) AGREE, P(YES) 0.9972 (rule:B2)
+[B1_1] Agent 3 verifier (reasoning) AGREE, P(YES) 0.9999 (rule:B2)
+  -> saved SYN_36_calf_muscle_tear_v2_20261104_220452.json in 4.9 min (ETA 18 min for the remaining 4)
+[37/40] SYN_37_lymphatic_obstruction_v2 ...
+Loading weights:   0%|          | 0/199 [00:00<?, ?it/s]Loading weights: 100%|██████████| 199/199 [00:00<00:00, 5008.26it/s]
+
+=== Section A1 ===
+[A1] Agent 1 (extractor, mode=full_text) searching the clinical record...
+[A1] Agent 1 done in 5.3s
+[A1] Agent 2 (evaluator) filling in the schema...
+[A1] Agent 2 done in 16.4s
+[A1] filled in: answer='No autopsy done, unknown if done, or done but results unavailable'
+
+=== Section A2 ===
+[A2] Agent 1 (extractor, mode=full_text) searching the clinical record...
+[A2] Agent 1 done in 5.6s
+[A2] Agent 2 (evaluator) filling in the schema...
+[A2] Agent 2 done in 17.7s
+[A2] filled in: answer='No surgical procedure done; or, done but either did not confirm presence of DVT or findings unknown; or unknown if done'
+
+=== Section A3_1 ===
+[A3_1] Agent 1 (extractor, mode=full_text) searching the clinical record...
+[A3_1] Agent 1 done in 5.6s
+[A3_1] Agent 2 (evaluator) filling in the schema...
+[A3_1] Agent 2 done in 15.7s
+[A3_1] filled in: answer="≥1 imaging study was done but didn't confirm DVT"
+
+=== Section A3_2 ===
+[A3_2] Agent 1 (extractor, mode=full_text) searching the clinical record...
+[A3_2] Agent 1 done in 5.7s
+[A3_2] Agent 2 (evaluator) filling in the schema...
+[A3_2] Agent 2 done in 16.4s
+[A3_2] filled in: studies=[]
+
+=== Section B1_1 ===
+[B1_1] Agent 1 (extractor, mode=full_text) searching the clinical record...
+[B1_1] Agent 1 done in 6.0s
+[B1_1] Agent 2 (evaluator) filling in the schema...
+[B1_1] Agent 2 done in 17.4s
+[B1_1] filled in: answer='There was no report of a recognized DVT syndrome'
+
+=== Section B1_2 ===
+[B1_2] Agent 1 (extractor, mode=full_text) searching the clinical record...
+[B1_2] Agent 1 done in 5.8s
+[B1_2] Agent 2 (evaluator) filling in the schema...
+[B1_2] Agent 2 done in 18.0s
+[B1_2] filled in: types=[]
+
+=== Section B2 ===
+[B2] Agent 1 (extractor, mode=full_text) searching the clinical record...
+[B2] Agent 1 done in 5.3s
+[B2] Agent 2 (evaluator) filling in the schema...
+[B2] Agent 2 done in 17.8s
+[B2] filled in: symptoms=['None of the above were present or it is unknown if any of 1-4 were present']
+
+=== Section C ===
+[C] Agent 1 (extractor, mode=full_text) searching the clinical record...
+[C] Agent 1 done in 5.3s
+[C] Agent 2 (evaluator) filling in the schema...
+[C] Agent 2 done in 15.5s
+[C] filled in: answer="D-dimer tested and was within test lab's range of normal"
+
+=== Section F ===
+[F] Agent 1 (extractor, mode=full_text) searching the clinical record...
+[F] Agent 1 done in 5.5s
+[F] Agent 2 (evaluator) filling in the schema...
+[F] Agent 2 done in 17.0s
+[F] filled in: answer='No'
+
+=== Section X ===
+[X] Agent 1 (extractor, mode=full_text) searching the clinical record...
+[X] Agent 1 done in 5.4s
+[X] Agent 2 (evaluator) filling in the schema...
+[X] Agent 2 done in 41.4s
+[X] filled in: answer='No alternative diagnosis was found to explain the acute illness'
+[A1] Agent 3 verifier (answer) AGREE, P(YES) 0.9999 (verdict)
+[A1] Agent 3 verifier (reasoning) AGREE, P(YES) 0.9999 (verdict)
+[A2] Agent 3 verifier (answer) AGREE, P(YES) 0.9988 (verdict)
+[A2] Agent 3 verifier (reasoning) AGREE, P(YES) 0.9999 (verdict)
+[A3_1] Agent 3 verifier (answer) AGREE, P(YES) 1.0000 (verdict)
+[A3_1] Agent 3 verifier (reasoning) AGREE, P(YES) 1.0000 (verdict)
+[A3_2] Agent 3 verifier (answer) DISAGREE, P(YES) 0.0139 (verdict)
+[A3_2] Agent 3 verifier (reasoning) AGREE, P(YES) 0.5372 (verdict)
+[B1_1] Agent 3 verifier (answer) AGREE, P(YES) 0.9999 (verdict)
+[B1_1] Agent 3 verifier (reasoning) AGREE, P(YES) 0.9995 (verdict)
+[B1_2] Agent 3 verifier (answer) AGREE, P(YES) 0.9759 (verdict)
+[B1_2] Agent 3 verifier (reasoning) AGREE, P(YES) 0.9994 (verdict)
+[B2] Agent 3 verifier (answer) AGREE, P(YES) 0.9995 (verdict)
+[B2] Agent 3 verifier (reasoning) AGREE, P(YES) 0.9993 (verdict)
+[C] Agent 3 verifier (answer) AGREE, P(YES) 1.0000 (verdict)
+[C] Agent 3 verifier (reasoning) AGREE, P(YES) 1.0000 (verdict)
+[F] Agent 3 verifier (answer) AGREE, P(YES) 0.8507 (verdict)
+[F] Agent 3 verifier (reasoning) AGREE, P(YES) 0.9826 (verdict)
+[X] Agent 3 verifier (answer) DISAGREE, P(YES) 0.0213 (verdict)
+[X] Agent 3 verifier (reasoning) AGREE, P(YES) 0.8750 (verdict)
+  -> saved SYN_37_lymphatic_obstruction_v2_20261104_220927.json in 4.6 min (ETA 14 min for the remaining 3)
+[38/40] SYN_38_compartment_syndrome_v2 ...
+Loading weights:   0%|          | 0/199 [00:00<?, ?it/s]Loading weights: 100%|██████████| 199/199 [00:00<00:00, 6327.02it/s]
+
+=== Section A1 ===
+[A1] Agent 1 (extractor, mode=full_text) searching the clinical record...
+[A1] Agent 1 done in 5.3s
+[A1] Agent 2 (evaluator) filling in the schema...
+[A1] Agent 2 done in 16.8s
+[A1] filled in: answer='No autopsy done, unknown if done, or done but results unavailable'
+
+=== Section A2 ===
+[A2] Agent 1 (extractor, mode=full_text) searching the clinical record...
+[A2] Agent 1 done in 5.2s
+[A2] Agent 2 (evaluator) filling in the schema...
+[A2] Agent 2 done in 16.1s
+[A2] filled in: answer='No surgical procedure done; or, done but either did not confirm presence of DVT or findings unknown; or unknown if done'
+
+=== Section A3_1 ===
+[A3_1] Agent 1 (extractor, mode=full_text) searching the clinical record...
+[A3_1] Agent 1 done in 5.6s
+[A3_1] Agent 2 (evaluator) filling in the schema...
+[A3_1] Agent 2 done in 15.9s
+[A3_1] filled in: answer="≥1 imaging study was done but didn't confirm DVT"
+
+=== Section A3_2 ===
+[A3_2] Agent 1 (extractor, mode=full_text) searching the clinical record...
+[A3_2] Agent 1 done in 5.5s
+[A3_2] Agent 2 (evaluator) filling in the schema...
+[A3_2] Agent 2 done in 18.5s
+[A3_2] filled in: studies=[]
+
+=== Section B1_1 ===
+[B1_1] Agent 1 (extractor, mode=full_text) searching the clinical record...
+[B1_1] Agent 1 done in 5.6s
+[B1_1] Agent 2 (evaluator) filling in the schema...
+[B1_1] Agent 2 done in 26.9s
+[B1_1] filled in: answer='There was no report of a recognized DVT syndrome'
+
+=== Section B1_2 ===
+[B1_2] Agent 1 (extractor, mode=full_text) searching the clinical record...
+[B1_2] Agent 1 done in 5.5s
+[B1_2] Agent 2 (evaluator) filling in the schema...
+[B1_2] Agent 2 done in 16.3s
+[B1_2] filled in: types=[]
+
+=== Section B2 ===
+[B2] Agent 1 (extractor, mode=full_text) searching the clinical record...
+[B2] Agent 1 done in 5.6s
+[B2] Agent 2 (evaluator) filling in the schema...
+[B2] Agent 2 done in 17.5s
+[B2] filled in: symptoms=['Calf pain or tenderness', 'Leg swelling or pitting oedema']
+
+=== Section C ===
+[C] Agent 1 (extractor, mode=full_text) searching the clinical record...
+[C] Agent 1 done in 5.3s
+[C] Agent 2 (evaluator) filling in the schema...
+[C] Agent 2 done in 15.5s
+[C] filled in: answer='D-dimer not tested, or tested but results unknown or not available'
+
+=== Section F ===
+[F] Agent 1 (extractor, mode=full_text) searching the clinical record...
+[F] Agent 1 done in 5.5s
+[F] Agent 2 (evaluator) filling in the schema...
+[F] Agent 2 done in 16.7s
+[F] filled in: answer='No'
+
+=== Section X ===
+[X] Agent 1 (extractor, mode=full_text) searching the clinical record...
+[X] Agent 1 done in 5.4s
+[X] Agent 2 (evaluator) filling in the schema...
+[X] Agent 2 done in 44.6s
+[X] filled in: answer='No alternative diagnosis was found to explain the acute illness'
+[CROSS-SECTION RULE] 'b2' triggered. Forcing 'b1_1' to '≥1 symptom or sign of DVT was reported'.
+[A1] Agent 3 verifier (answer) AGREE, P(YES) 0.9999 (verdict)
+[A1] Agent 3 verifier (reasoning) AGREE, P(YES) 0.9999 (verdict)
+[A2] Agent 3 verifier (answer) AGREE, P(YES) 0.9998 (verdict)
+[A2] Agent 3 verifier (reasoning) AGREE, P(YES) 0.9999 (verdict)
+[A3_1] Agent 3 verifier (answer) AGREE, P(YES) 1.0000 (verdict)
+[A3_1] Agent 3 verifier (reasoning) AGREE, P(YES) 1.0000 (verdict)
+[A3_2] Agent 3 verifier (answer) DISAGREE, P(YES) 0.0218 (verdict)
+[A3_2] Agent 3 verifier (reasoning) AGREE, P(YES) 0.9203 (verdict)
+[B1_2] Agent 3 verifier (answer) AGREE, P(YES) 0.9741 (verdict)
+[B1_2] Agent 3 verifier (reasoning) AGREE, P(YES) 0.9997 (verdict)
+[B2] Agent 3 verifier (answer) AGREE, P(YES) 0.8181 (verdict)
+[B2] Agent 3 verifier (reasoning) AGREE, P(YES) 0.9978 (verdict)
+[C] Agent 3 verifier (answer) AGREE, P(YES) 0.9997 (verdict)
+[C] Agent 3 verifier (reasoning) AGREE, P(YES) 0.9999 (verdict)
+[F] Agent 3 verifier (answer) AGREE, P(YES) 0.8338 (verdict)
+[F] Agent 3 verifier (reasoning) AGREE, P(YES) 0.9787 (verdict)
+[X] Agent 3 verifier (answer) DISAGREE, P(YES) 0.1014 (verdict)
+[X] Agent 3 verifier (reasoning) AGREE, P(YES) 0.8628 (verdict)
+[B1_1] Agent 3 verifier (answer) AGREE, P(YES) 0.8181 (rule:B2)
+[B1_1] Agent 3 verifier (reasoning) AGREE, P(YES) 0.9978 (rule:B2)
+  -> saved SYN_38_compartment_syndrome_v2_20261104_221412.json in 4.8 min (ETA 9 min for the remaining 2)
+[39/40] SYN_39_external_vein_compression_v2 ...
+Loading weights:   0%|          | 0/199 [00:00<?, ?it/s]Loading weights: 100%|██████████| 199/199 [00:00<00:00, 6876.76it/s]
+
+=== Section A1 ===
+[A1] Agent 1 (extractor, mode=full_text) searching the clinical record...
+[A1] Agent 1 done in 5.2s
+[A1] Agent 2 (evaluator) filling in the schema...
+[A1] Agent 2 done in 16.8s
+[A1] filled in: answer='No autopsy done, unknown if done, or done but results unavailable'
+
+=== Section A2 ===
+[A2] Agent 1 (extractor, mode=full_text) searching the clinical record...
+[A2] Agent 1 done in 5.2s
+[A2] Agent 2 (evaluator) filling in the schema...
+[A2] Agent 2 done in 15.7s
+[A2] filled in: answer='No surgical procedure done; or, done but either did not confirm presence of DVT or findings unknown; or unknown if done'
+
+=== Section A3_1 ===
+[A3_1] Agent 1 (extractor, mode=full_text) searching the clinical record...
+[A3_1] Agent 1 done in 5.4s
+[A3_1] Agent 2 (evaluator) filling in the schema...
+[A3_1] Agent 2 done in 16.1s
+[A3_1] filled in: answer="≥1 imaging study was done but didn't confirm DVT"
+
+=== Section A3_2 ===
+[A3_2] Agent 1 (extractor, mode=full_text) searching the clinical record...
+[A3_2] Agent 1 done in 5.5s
+[A3_2] Agent 2 (evaluator) filling in the schema...
+[A3_2] Agent 2 done in 15.5s
+[A3_2] filled in: studies=[]
+
+=== Section B1_1 ===
+[B1_1] Agent 1 (extractor, mode=full_text) searching the clinical record...
+[B1_1] Agent 1 done in 5.8s
+[B1_1] Agent 2 (evaluator) filling in the schema...
+[B1_1] Agent 2 done in 26.1s
+[B1_1] filled in: answer='There was no report of a recognized DVT syndrome'
+
+=== Section B1_2 ===
+[B1_2] Agent 1 (extractor, mode=full_text) searching the clinical record...
+[B1_2] Agent 1 done in 5.4s
+[B1_2] Agent 2 (evaluator) filling in the schema...
+[B1_2] Agent 2 done in 17.3s
+[B1_2] filled in: types=[]
+
+=== Section B2 ===
+[B2] Agent 1 (extractor, mode=full_text) searching the clinical record...
+[B2] Agent 1 done in 5.5s
+[B2] Agent 2 (evaluator) filling in the schema...
+[B2] Agent 2 done in 17.7s
+[B2] filled in: symptoms=['Leg swelling or pitting oedema']
+
+=== Section C ===
+[C] Agent 1 (extractor, mode=full_text) searching the clinical record...
+[C] Agent 1 done in 5.5s
+[C] Agent 2 (evaluator) filling in the schema...
+[C] Agent 2 done in 15.1s
+[C] filled in: answer="D-dimer tested and was within test lab's range of normal"
+
+=== Section F ===
+[F] Agent 1 (extractor, mode=full_text) searching the clinical record...
+[F] Agent 1 done in 5.5s
+[F] Agent 2 (evaluator) filling in the schema...
+[F] Agent 2 done in 15.9s
+[F] filled in: answer='No'
+
+=== Section X ===
+[X] Agent 1 (extractor, mode=full_text) searching the clinical record...
+[X] Agent 1 done in 5.5s
+[X] Agent 2 (evaluator) filling in the schema...
+[X] Agent 2 done in 16.6s
+[X] filled in: answer='An alternative diagnosis was found that explained the acute illness'
+[CROSS-SECTION RULE] 'b2' triggered. Forcing 'b1_1' to '≥1 symptom or sign of DVT was reported'.
+[A1] Agent 3 verifier (answer) AGREE, P(YES) 0.9999 (verdict)
+[A1] Agent 3 verifier (reasoning) AGREE, P(YES) 0.9999 (verdict)
+[A2] Agent 3 verifier (answer) AGREE, P(YES) 0.9998 (verdict)
+[A2] Agent 3 verifier (reasoning) AGREE, P(YES) 0.9999 (verdict)
+[A3_1] Agent 3 verifier (answer) AGREE, P(YES) 0.9999 (verdict)
+[A3_1] Agent 3 verifier (reasoning) AGREE, P(YES) 1.0000 (verdict)
+[A3_2] Agent 3 verifier (answer) DISAGREE, P(YES) 0.0230 (verdict)
+[A3_2] Agent 3 verifier (reasoning) DISAGREE, P(YES) 0.1130 (verdict)
+[B1_2] Agent 3 verifier (answer) AGREE, P(YES) 0.9582 (verdict)
+[B1_2] Agent 3 verifier (reasoning) AGREE, P(YES) 0.9994 (verdict)
+[B2] Agent 3 verifier (answer) AGREE, P(YES) 0.8002 (verdict)
+[B2] Agent 3 verifier (reasoning) AGREE, P(YES) 0.9995 (verdict)
+[C] Agent 3 verifier (answer) AGREE, P(YES) 1.0000 (verdict)
+[C] Agent 3 verifier (reasoning) AGREE, P(YES) 1.0000 (verdict)
+[F] Agent 3 verifier (answer) AGREE, P(YES) 0.8468 (verdict)
+[F] Agent 3 verifier (reasoning) AGREE, P(YES) 0.9725 (verdict)
+[X] Agent 3 verifier (answer) AGREE, P(YES) 0.9837 (verdict)
+[X] Agent 3 verifier (reasoning) AGREE, P(YES) 0.9996 (verdict)
+[B1_1] Agent 3 verifier (answer) AGREE, P(YES) 0.8002 (rule:B2)
+[B1_1] Agent 3 verifier (reasoning) AGREE, P(YES) 0.9995 (rule:B2)
+  -> saved SYN_39_external_vein_compression_v2_20261104_221825.json in 4.2 min (ETA 5 min for the remaining 1)
+[40/40] SYN_40_imaging_report_pending_v2 ...
+Loading weights:   0%|          | 0/199 [00:00<?, ?it/s]Loading weights: 100%|██████████| 199/199 [00:00<00:00, 7944.59it/s]
+
+=== Section A1 ===
+[A1] Agent 1 (extractor, mode=full_text) searching the clinical record...
+[A1] Agent 1 done in 5.3s
+[A1] Agent 2 (evaluator) filling in the schema...
+[A1] Agent 2 done in 16.6s
+[A1] filled in: answer='No autopsy done, unknown if done, or done but results unavailable'
+
+=== Section A2 ===
+[A2] Agent 1 (extractor, mode=full_text) searching the clinical record...
+[A2] Agent 1 done in 5.3s
+[A2] Agent 2 (evaluator) filling in the schema...
+[A2] Agent 2 done in 15.9s
+[A2] filled in: answer='No surgical procedure done; or, done but either did not confirm presence of DVT or findings unknown; or unknown if done'
+
+=== Section A3_1 ===
+[A3_1] Agent 1 (extractor, mode=full_text) searching the clinical record...
+[A3_1] Agent 1 done in 5.4s
+[A3_1] Agent 2 (evaluator) filling in the schema...
+[A3_1] Agent 2 done in 16.7s
+[A3_1] filled in: answer='No imaging studies done, unknown if done, or done but results unknown'
+
+=== Section A3_2 ===
+[A3_2] Agent 1 (extractor, mode=full_text) searching the clinical record...
+[A3_2] Agent 1 done in 5.4s
+[A3_2] Agent 2 (evaluator) filling in the schema...
+[A3_2] Agent 2 done in 18.9s
+[A3_2] filled in: studies=[]
+
+=== Section B1_1 ===
+[B1_1] Agent 1 (extractor, mode=full_text) searching the clinical record...
+[B1_1] Agent 1 done in 5.4s
+[B1_1] Agent 2 (evaluator) filling in the schema...
+[B1_1] Agent 2 done in 19.0s
+[B1_1] filled in: answer='It is unknown if there was a report of a DVT syndrome'
+
+=== Section B1_2 ===
+[B1_2] Agent 1 (extractor, mode=full_text) searching the clinical record...
+[B1_2] Agent 1 done in 5.5s
+[B1_2] Agent 2 (evaluator) filling in the schema...
+[B1_2] Agent 2 done in 15.7s
+[B1_2] filled in: types=['Lower extremity DVT']
+
+=== Section B2 ===
+[B2] Agent 1 (extractor, mode=full_text) searching the clinical record...
+[B2] Agent 1 done in 5.4s
+[B2] Agent 2 (evaluator) filling in the schema...
+[B2] Agent 2 done in 20.0s
+[B2] filled in: symptoms=['Calf pain or tenderness', 'Leg swelling or pitting oedema']
+
+=== Section C ===
+[C] Agent 1 (extractor, mode=full_text) searching the clinical record...
+[C] Agent 1 done in 5.5s
+[C] Agent 2 (evaluator) filling in the schema...
+[C] Agent 2 done in 15.3s
+[C] filled in: answer="D-dimer exceeded test lab's upper limit of normal."
+
+=== Section F ===
+[F] Agent 1 (extractor, mode=full_text) searching the clinical record...
+[F] Agent 1 done in 5.5s
+[F] Agent 2 (evaluator) filling in the schema...
+[F] Agent 2 done in 15.8s
+[F] filled in: answer='No'
+
+=== Section X ===
+[X] Agent 1 (extractor, mode=full_text) searching the clinical record...
+[X] Agent 1 done in 5.3s
+[X] Agent 2 (evaluator) filling in the schema...
+[X] Agent 2 done in 19.3s
+[X] filled in: answer='No alternative diagnosis was found to explain the acute illness'
+[CROSS-SECTION RULE] 'b2' triggered. Forcing 'b1_1' to '≥1 symptom or sign of DVT was reported'.
+[A1] Agent 3 verifier (answer) AGREE, P(YES) 0.9999 (verdict)
+[A1] Agent 3 verifier (reasoning) AGREE, P(YES) 0.9999 (verdict)
+[A2] Agent 3 verifier (answer) AGREE, P(YES) 0.9998 (verdict)
+[A2] Agent 3 verifier (reasoning) AGREE, P(YES) 0.9999 (verdict)
+[A3_1] Agent 3 verifier (answer) AGREE, P(YES) 0.5908 (verdict)
+[A3_1] Agent 3 verifier (reasoning) AGREE, P(YES) 0.9985 (verdict)
+[A3_2] Agent 3 verifier (answer) DISAGREE, P(YES) 0.0519 (verdict)
+[A3_2] Agent 3 verifier (reasoning) AGREE, P(YES) 0.6781 (verdict)
+[B1_2] Agent 3 verifier (answer) AGREE, P(YES) 0.7957 (verdict)
+[B1_2] Agent 3 verifier (reasoning) AGREE, P(YES) 0.9923 (verdict)
+[B2] Agent 3 verifier (answer) AGREE, P(YES) 0.9981 (verdict)
+[B2] Agent 3 verifier (reasoning) AGREE, P(YES) 0.9999 (verdict)
+[C] Agent 3 verifier (answer) AGREE, P(YES) 1.0000 (verdict)
+[C] Agent 3 verifier (reasoning) AGREE, P(YES) 1.0000 (verdict)
+[F] Agent 3 verifier (answer) DISAGREE, P(YES) 0.2410 (verdict)
+[F] Agent 3 verifier (reasoning) AGREE, P(YES) 0.8263 (verdict)
+[X] Agent 3 verifier (answer) DISAGREE, P(YES) 0.0155 (verdict)
+[X] Agent 3 verifier (reasoning) AGREE, P(YES) 0.8053 (verdict)
+[B1_1] Agent 3 verifier (answer) AGREE, P(YES) 0.9981 (rule:B2)
+[B1_1] Agent 3 verifier (reasoning) AGREE, P(YES) 0.9999 (rule:B2)
+  -> saved SYN_40_imaging_report_pending_v2_20261104_222236.json in 4.2 min (ETA 0 min for the remaining 0)
+
+Done: 40 succeeded, 0 failed in 180 min total.
+Per record: mean 4.5 min, min 4.1, max 5.8.
+
+Now run: python evaluate_predictions.py output_neg_full_text_8b
