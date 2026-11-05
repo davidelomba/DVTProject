@@ -34,6 +34,8 @@ dice **cosa fa** il codice, quello dice **cosa è stato misurato**.
 | `myo/` | il braccio di trasferimento sul questionario della miocardite |
 | `run_myo_t05.sh` | le tre run della miocardite a temperatura 0,5 su mari, con controlli e valutazione |
 | `run_myo_baselines.sh` | le baseline della TVP sulla miocardite, tre run ciascuna, con controlli e valutazione |
+| `run_dvt_baselines_neg.sh` | le quattro baseline con estrattore sulla TVP, con la regola sulle negazioni |
+| `run_myo_baselines_neg.sh` | le stesse quattro baseline sulla miocardite, tre run ciascuna, con la regola sulle negazioni |
 | `replay_verifier.py` | il verificatore riapplicato a una run già su disco, con un modello a scelta |
 
 ---
@@ -1293,3 +1295,19 @@ che le cartelle `output_neg_<braccio>` siano vuote, che l'impronta degli hint si
 nel prompt dell'estrattore. Alla fine lancia `evaluate_predictions.py`,
 `evaluate_verifier.py` e `compare_runs.py` contro `output_a32_ref`. Variabili
 d'ambiente: `ARMS`, `EVAL_ONLY=1`, `PYTHON`.
+
+## 23. `run_myo_baselines_neg.sh`
+
+Script bash per mari che esegue sulla miocardite le quattro baseline con un
+estrattore, `full_text_8b`, `rag_8b`, `full_text_27b` e `rag_27b`, con
+`EXTRACTOR_NEGATION_RULE` attivo, tre run ciascuna, con tutte le altre impostazioni
+della serie v4 (temperatura 0,5 senza seed, 2048/8192, hint `7d4be67fec0f`, query
+`45a59c4e6d03`, contesto del paper, verificatore `answer` e `reasoning`). Ha la
+stessa struttura di `run_myo_baselines.sh`: `config.py` non viene modificato, e ogni
+run imposta la regola in memoria e poi chiama `run_myo.main` con `--guideline`,
+`--mode` e `--extractor-model`. Il preflight controlla anche che `agents.NEGATION_RULE`
+compaia nel prompt dell'estrattore dopo `run_myo.apply_domain`; dopo ogni run la
+lettura degli audit log riporta anche `extractor_negation_rule`. Uscite in
+`myo/output_neg_<braccio>_r1` … `_r3`; valutazione con `evaluate_myo.py`,
+`evaluate_verifier.py` e `agreement_runs.py`. Variabili d'ambiente: `ARMS`,
+`EVAL_ONLY=1`, `FORCE=1`, `PYTHON`.

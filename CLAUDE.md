@@ -150,6 +150,7 @@ bash run_myo_t05.sh                               # the three runs at 0.5, check
 python myo/run_myo.py --guideline --mode rag --extractor-model llama3:8b-instruct-q4_0 --output-dir ./myo/output_x   # a baseline mode
 bash run_myo_baselines.sh                         # the DVT baselines on myocarditis, three runs each, on mari
 bash run_dvt_baselines_neg.sh                     # the four DVT baselines with an extractor, EXTRACTOR_NEGATION_RULE on, on mari
+bash run_myo_baselines_neg.sh                     # the same four baselines on myocarditis, three runs each, EXTRACTOR_NEGATION_RULE on, on mari
 ```
 
 `evaluate_verifier` and `agreement_runs` take `--ground-truth ./myo/data/records`
@@ -1225,6 +1226,24 @@ not say which governs, which is what the clinician question below is asking.
   of fragments verbatim. X hits the 1024 cap on 52 calls, 26 sections retried, and stays
   40 of 40. Verifier `answer` balance -26, Prec_ER 20.5% against a 4.0% error rate;
   `reasoning` -4, no error rejected.
+- **The extractor negation rule is inert on the total where it can be isolated.**
+  `run_dvt_baselines_neg.sh`, `output_neg_<arm>`, `EXTRACTOR_NEGATION_RULE` True, hints
+  `a78dc29e962f`, queries `f7ed731f7e7d`, 1024/4096, 800/150/5, Ollama 0.40.7. `full_text`
+  8B 355/400 (338 before), `rag` 8B 359/399 (343), `full_text` 27B 381/400 (381), `rag` 27B
+  384/400 (384); macro kappa 0.668, 0.688, 0.841, 0.881. Only `rag` 27B against
+  `output_rag_27b` isolates the rule; the other three earlier arms carry hints
+  `ab63b8e5f5af`, older queries and Ollama 0.32.1, so their gain is not the rule's alone.
+  There 8 sections change, 4 each way: F +2 (SYN_17, 31, 32 now receive the sentence that no
+  supporting detail is reported; SYN_10 receives that no diagnosis note exists and is read
+  as a diagnosis without details), B1_1 -2 (SYN_31 and SYN_34 now receive the bare
+  diagnosis sentence and Agent 2 infers a symptom), B1_2 one each way. Empty evidence falls
+  in every arm, 143 to 92, 142 to 88, 140 to 115, 147 to 114, and is right on all but 1 or 2
+  sections; B1_1 keeps one, in `rag` 8B. In the 8B arms B1_1 on SYN_11, 16 and 20 turns from
+  `unknown` to `There was no report` on evidence that now states the absence. All four stay
+  below `raw_record` (395) and the double agent (398). One failed section, X on SYN_26 in
+  `rag` 8B. Verifier as without the rule: negative filter balance in every row (`answer`
+  -54, -51, -26, -32), `answer` Prec_ER 1.8 to 4.3 times the error rate. 258 to 266
+  seconds a record with the 8B, 210 to 212 with the 27B.
 - **On myocarditis the baselines with the 27B extractor match the reference, and
   the 8B collapses as on the DVT.** `run_myo_baselines.sh`, three runs each, every
   setting of the v4 series, mari, Ollama 0.40.7, checked on all 255 audit logs;
@@ -1252,6 +1271,22 @@ not say which governs, which is what the clinician question below is asking.
   14; why an extract makes the F errors visible is not verified. `reasoning`
   stays at -2 and -1. 85 to 129 seconds a record with the 27B, 142 to 160 with
   the 8B, 141 for v4.
+- **The v4 series repeated two weeks later lands inside its own spread.**
+  `myo/output_t05_np2048_v4b_r1` to `r3`, `run_myo_t05.sh` with `RUN_TAG=t05_np2048_v4b`
+  on 2026-11-04, `_run_config` identical field by field to v4. 58, 59, 61 of 85, 178 of 255
+  against 183; A1 34, B 30, C 51, E 51, F 12 against 35, 35, 51, 51, 11. The six runs span 58
+  to 63; the 27B-extractor baselines (184, 186) stay just above both series and `raw_record`
+  (178) equals v4b. 63 of 85 case-section pairs get the same answer distribution; the 22 that
+  move are none/unknown in A1 and B and the 2/3/4 options in F, no new error type. Agreement
+  is lower: Fleiss 0.842 overall against 0.918, section mean 0.777 against 0.875, B 0.528, F
+  0.564, 67 unanimous pairs against 76, agreement-share AUROC 0.729 against 0.603, so a
+  three-run agreement figure varies between identical series. Ambiguity tracks correctness
+  in both series (high: 3 of 18 right) but not agreement (B: 4 of 8 unanimous with no
+  ambiguity, 8 of 9 with low). In-run verifier: `answer` balance -9 and Prec_ER 41.8% against
+  a 30.2% error rate, `reasoning` +4 with 8 errors rejected, against -21 and -5 in v4; the
+  extra rejections are F answers v4 did not produce (option 3 alone, option 9), while the 2 +
+  3 errors stay approved. Over the six runs `answer` is -30 and `reasoning` -1. 128 to 146.5
+  seconds a record, 1.2 seconds a verifier request.
 - Read the metrics in this order: majority baseline and gain, then kappa, then
   accuracy with its interval. Accuracy alone ranked F above A3_2 under the 8B
   model, where F gained nothing over a constant answer and A3_2 gained 13
@@ -1562,12 +1597,12 @@ not say which governs, which is what the clinician question below is asking.
   in the prompt.
 - Test whether the TRANSCRIPTION RULE in `AGENTIC_EXTRACTOR_SYSTEM_PROMPT` does
   anything: it governs a string the code discards.
-- **The extractor prompt never says a negation is evidence**, while the
-  evaluator prompt does. On SYN_32 the same extractor hands B1.1 the sentence
-  stating the record contains no symptoms and hands F the bare diagnosis,
-  because the two section queries aim at different halves. F needs to know
-  whether details accompany the diagnosis and its query asks for the diagnosis.
-  This penalises the baselines, not the reference mode, where F is 40 of 40.
+- **The extractor prompt says a negation is evidence only with
+  `EXTRACTOR_NEGATION_RULE`**, False by default. Measured on the four DVT
+  baselines (bullet under What the measurements say): on `rag` 27B it fixes F on
+  SYN_17, 31 and 32, SYN_32 being the case that motivated it, and costs B1_1 on
+  SYN_31 and 34 and F on SYN_10, total unchanged. Whether to keep it on for the
+  baselines is open; the myocarditis baselines have not been run with it.
 - **The audit log cannot be retained on real records.** It holds the evidence
   verbatim and the reasoning that quotes it, so on clinical documentation it is a
   copy of patient data in a JSON file. Everything the project measures rests on
