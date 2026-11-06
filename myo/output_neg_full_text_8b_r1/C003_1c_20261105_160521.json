@@ -1,0 +1,80 @@
+{
+  "record_id": "C003_1c",
+  "a1": {
+    "symptoms": [
+      "unknown if any of 1-5 present or absent"
+    ]
+  },
+  "b": {
+    "features": [
+      "*Confirmed physical exam conforming Pericarditis, without details"
+    ]
+  },
+  "c": {
+    "markers": [
+      "ESR elevated"
+    ]
+  },
+  "e": {
+    "findings": [
+      "ECG not done, or done but no results available or unknown if done"
+    ]
+  },
+  "f": {
+    "findings": [
+      "ECHO not done, or done but no results or unknown if done"
+    ]
+  },
+  "_verifier": {
+    "A1": {
+      "answer": {
+        "agree": true,
+        "p_agree": 0.9349
+      },
+      "reasoning": {
+        "agree": true,
+        "p_agree": 0.9975
+      }
+    },
+    "B": {
+      "answer": {
+        "agree": true,
+        "p_agree": 0.9691
+      },
+      "reasoning": {
+        "agree": true,
+        "p_agree": 0.9939
+      }
+    },
+    "C": {
+      "answer": {
+        "agree": true,
+        "p_agree": 0.9993
+      },
+      "reasoning": {
+        "agree": true,
+        "p_agree": 0.9997
+      }
+    },
+    "E": {
+      "answer": {
+        "agree": true,
+        "p_agree": 0.9922
+      },
+      "reasoning": {
+        "agree": true,
+        "p_agree": 0.9989
+      }
+    },
+    "F": {
+      "answer": {
+        "agree": true,
+        "p_agree": 0.9969
+      },
+      "reasoning": {
+        "agree": true,
+        "p_agree": 0.9992
+      }
+    }
+  }
+}

@@ -1,0 +1,85 @@
+{
+  "record_id": "C005_1b",
+  "a1": {
+    "symptoms": [
+      "unknown if any of 1-5 present or absent"
+    ]
+  },
+  "b": {
+    "features": [
+      "none of the above"
+    ]
+  },
+  "c": {
+    "markers": [
+      "ESR elevated",
+      "CRP elevated",
+      "High sensitivity (hs) CRP elevated",
+      "D-Dimer elevated"
+    ]
+  },
+  "e": {
+    "findings": [
+      "ECG not done, or done but no results available or unknown if done"
+    ]
+  },
+  "f": {
+    "findings": [
+      "New focal or diffuse left or right ventricular function abnormalities (e.g. decreased ejection fraction)",
+      "Segmental wall motion abnormalities",
+      "Wall thickness change"
+    ]
+  },
+  "_verifier": {
+    "A1": {
+      "answer": {
+        "agree": true,
+        "p_agree": 0.9298
+      },
+      "reasoning": {
+        "agree": true,
+        "p_agree": 0.9958
+      }
+    },
+    "B": {
+      "answer": {
+        "agree": true,
+        "p_agree": 0.9735
+      },
+      "reasoning": {
+        "agree": true,
+        "p_agree": 0.88
+      }
+    },
+    "C": {
+      "answer": {
+        "agree": true,
+        "p_agree": 0.9995
+      },
+      "reasoning": {
+        "agree": true,
+        "p_agree": 0.9999
+      }
+    },
+    "E": {
+      "answer": {
+        "agree": true,
+        "p_agree": 0.9922
+      },
+      "reasoning": {
+        "agree": true,
+        "p_agree": 0.9994
+      }
+    },
+    "F": {
+      "answer": {
+        "agree": true,
+        "p_agree": 0.879
+      },
+      "reasoning": {
+        "agree": true,
+        "p_agree": 0.9714
+      }
+    }
+  }
+}

@@ -1,0 +1,83 @@
+{
+  "record_id": "C003_1c",
+  "a1": {
+    "symptoms": [
+      "unknown if any of 1-5 present or absent"
+    ]
+  },
+  "b": {
+    "features": [
+      "pericardial friction rub"
+    ]
+  },
+  "c": {
+    "markers": [
+      "ESR elevated",
+      "CRP elevated",
+      "High sensitivity (hs) CRP elevated",
+      "D-Dimer elevated"
+    ]
+  },
+  "e": {
+    "findings": [
+      "Paroxysmal or sustained atrial or ventricular arrhythmias (premature atrial or ventricular beats, and/or supraventricular or ventricular tachycardia, interventricular conduction delay, abnormal Q waves, low voltages): :e.g (Sinus tachycardia, SVT, atrial fibrillation, PVCs, VT, VF)"
+    ]
+  },
+  "f": {
+    "findings": [
+      "ECHO not done, or done but no results or unknown if done"
+    ]
+  },
+  "_verifier": {
+    "A1": {
+      "answer": {
+        "agree": true,
+        "p_agree": 0.9349
+      },
+      "reasoning": {
+        "agree": true,
+        "p_agree": 0.999
+      }
+    },
+    "B": {
+      "answer": {
+        "agree": true,
+        "p_agree": 0.9897
+      },
+      "reasoning": {
+        "agree": true,
+        "p_agree": 0.999
+      }
+    },
+    "C": {
+      "answer": {
+        "agree": true,
+        "p_agree": 0.9997
+      },
+      "reasoning": {
+        "agree": true,
+        "p_agree": 0.9999
+      }
+    },
+    "E": {
+      "answer": {
+        "agree": true,
+        "p_agree": 0.9491
+      },
+      "reasoning": {
+        "agree": true,
+        "p_agree": 0.9864
+      }
+    },
+    "F": {
+      "answer": {
+        "agree": true,
+        "p_agree": 0.9974
+      },
+      "reasoning": {
+        "agree": true,
+        "p_agree": 0.9994
+      }
+    }
+  }
+}

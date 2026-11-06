@@ -1,0 +1,80 @@
+{
+  "record_id": "C0001_0_0",
+  "a1": {
+    "symptoms": [
+      "unknown if any of 1-5 present or absent"
+    ]
+  },
+  "b": {
+    "features": [
+      "unknown if any of 1-3 present or absent"
+    ]
+  },
+  "c": {
+    "markers": [
+      "None tested, or tested but no results or unknown if tested"
+    ]
+  },
+  "e": {
+    "findings": [
+      "ECG not done, or done but no results available or unknown if done"
+    ]
+  },
+  "f": {
+    "findings": [
+      "ECHO not done, or done but no results or unknown if done"
+    ]
+  },
+  "_verifier": {
+    "A1": {
+      "answer": {
+        "agree": true,
+        "p_agree": 0.933
+      },
+      "reasoning": {
+        "agree": true,
+        "p_agree": 0.9997
+      }
+    },
+    "B": {
+      "answer": {
+        "agree": false,
+        "p_agree": 0.3075
+      },
+      "reasoning": {
+        "agree": true,
+        "p_agree": 0.9799
+      }
+    },
+    "C": {
+      "answer": {
+        "agree": false,
+        "p_agree": 0.1773
+      },
+      "reasoning": {
+        "agree": false,
+        "p_agree": 0.3986
+      }
+    },
+    "E": {
+      "answer": {
+        "agree": true,
+        "p_agree": 0.9922
+      },
+      "reasoning": {
+        "agree": true,
+        "p_agree": 0.9993
+      }
+    },
+    "F": {
+      "answer": {
+        "agree": true,
+        "p_agree": 0.9969
+      },
+      "reasoning": {
+        "agree": true,
+        "p_agree": 0.9993
+      }
+    }
+  }
+}

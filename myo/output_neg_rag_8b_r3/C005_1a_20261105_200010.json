@@ -1,0 +1,82 @@
+{
+  "record_id": "C005_1a",
+  "a1": {
+    "symptoms": [
+      "unknown if any of 1-5 present or absent"
+    ]
+  },
+  "b": {
+    "features": [
+      "pericardial friction rub",
+      "pulsus paradoxus",
+      "distant heart sounds (infant and children)"
+    ]
+  },
+  "c": {
+    "markers": [
+      "ESR elevated"
+    ]
+  },
+  "e": {
+    "findings": [
+      "ECG not done, or done but no results available or unknown if done"
+    ]
+  },
+  "f": {
+    "findings": [
+      "New focal or diffuse left or right ventricular function abnormalities (e.g. decreased ejection fraction)"
+    ]
+  },
+  "_verifier": {
+    "A1": {
+      "answer": {
+        "agree": true,
+        "p_agree": 0.8539
+      },
+      "reasoning": {
+        "agree": true,
+        "p_agree": 0.9983
+      }
+    },
+    "B": {
+      "answer": {
+        "agree": false,
+        "p_agree": 0.0905
+      },
+      "reasoning": {
+        "agree": true,
+        "p_agree": 0.9397
+      }
+    },
+    "C": {
+      "answer": {
+        "agree": true,
+        "p_agree": 0.9993
+      },
+      "reasoning": {
+        "agree": true,
+        "p_agree": 0.9997
+      }
+    },
+    "E": {
+      "answer": {
+        "agree": true,
+        "p_agree": 0.9943
+      },
+      "reasoning": {
+        "agree": true,
+        "p_agree": 0.9985
+      }
+    },
+    "F": {
+      "answer": {
+        "agree": false,
+        "p_agree": 0.4285
+      },
+      "reasoning": {
+        "agree": true,
+        "p_agree": 0.6475
+      }
+    }
+  }
+}

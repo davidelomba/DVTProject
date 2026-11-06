@@ -1,0 +1,451 @@
+{
+  "overall": {
+    "records": 85,
+    "fleiss_kappa": 0.6998102400112449,
+    "gwet_ac1": 0.7258276141649428,
+    "unanimous": 0.6235294117647059,
+    "accuracy_per_run": [
+      0.4117647058823529,
+      0.38823529411764707,
+      0.4470588235294118
+    ],
+    "accuracy_majority": 0.4117647058823529,
+    "no_majority": 3,
+    "accuracy_when_unanimous": 0.4716981132075472,
+    "accuracy_when_split": 0.3229166666666667,
+    "auroc_agreement_share": 0.5757566164366215,
+    "auroc_verifier": {
+      "answer": 0.4737558566544257,
+      "reasoning": 0.3843231606939344
+    }
+  },
+  "per_section": {
+    "A1": {
+      "records": 17,
+      "fleiss_kappa": 0.3051771117166211,
+      "gwet_ac1": 0.7890382626680454,
+      "unanimous": 0.7058823529411765,
+      "accuracy_per_run": [
+        0.4117647058823529,
+        0.35294117647058826,
+        0.47058823529411764
+      ],
+      "accuracy_majority": 0.4117647058823529,
+      "no_majority": 0,
+      "accuracy_when_unanimous": 0.4166666666666667,
+      "accuracy_when_split": 0.4,
+      "auroc_agreement_share": 0.5071428571428571,
+      "auroc_verifier": {
+        "answer": 0.6515873015873016,
+        "reasoning": 0.5047619047619047
+      }
+    },
+    "B": {
+      "records": 17,
+      "fleiss_kappa": 0.15497076023391843,
+      "gwet_ac1": 0.6162018592297478,
+      "unanimous": 0.5294117647058824,
+      "accuracy_per_run": [
+        0.7058823529411765,
+        0.5882352941176471,
+        0.6470588235294118
+      ],
+      "accuracy_majority": 0.6470588235294118,
+      "no_majority": 1,
+      "accuracy_when_unanimous": 0.8888888888888888,
+      "accuracy_when_split": 0.375,
+      "auroc_agreement_share": 0.7954545454545454,
+      "auroc_verifier": {
+        "answer": 0.8678451178451179,
+        "reasoning": 0.7558922558922558
+      }
+    },
+    "C": {
+      "records": 17,
+      "fleiss_kappa": 0.30136986301369867,
+      "gwet_ac1": 0.5438282647584974,
+      "unanimous": 0.47058823529411764,
+      "accuracy_per_run": [
+        0.35294117647058826,
+        0.29411764705882354,
+        0.4117647058823529
+      ],
+      "accuracy_majority": 0.35294117647058826,
+      "no_majority": 2,
+      "accuracy_when_unanimous": 0.5,
+      "accuracy_when_split": 0.2222222222222222,
+      "auroc_agreement_share": 0.6717171717171717,
+      "auroc_verifier": {
+        "answer": 0.29797979797979796,
+        "reasoning": 0.31734006734006737
+      }
+    },
+    "E": {
+      "records": 17,
+      "fleiss_kappa": 0.4967105263157893,
+      "gwet_ac1": 0.7212691665401548,
+      "unanimous": 0.6470588235294118,
+      "accuracy_per_run": [
+        0.47058823529411764,
+        0.5882352941176471,
+        0.5294117647058824
+      ],
+      "accuracy_majority": 0.5294117647058824,
+      "no_majority": 0,
+      "accuracy_when_unanimous": 0.5454545454545454,
+      "accuracy_when_split": 0.5,
+      "auroc_agreement_share": 0.5208333333333334,
+      "auroc_verifier": {
+        "answer": 0.20679012345679013,
+        "reasoning": 0.13194444444444445
+      }
+    },
+    "F": {
+      "records": 17,
+      "fleiss_kappa": 0.1464435146443512,
+      "gwet_ac1": 0.8355833165424139,
+      "unanimous": 0.7647058823529411,
+      "accuracy_per_run": [
+        0.11764705882352941,
+        0.11764705882352941,
+        0.17647058823529413
+      ],
+      "accuracy_majority": 0.11764705882352941,
+      "no_majority": 0,
+      "accuracy_when_unanimous": 0.15384615384615385,
+      "accuracy_when_split": 0.08333333333333333,
+      "auroc_agreement_share": 0.5405844155844156,
+      "auroc_verifier": {
+        "answer": 0.43506493506493504,
+        "reasoning": 0.4383116883116883
+      }
+    }
+  },
+  "split_records": [
+    {
+      "record_id": "C0001_0_0",
+      "section": "A1",
+      "answers": [
+        "['palpitation']",
+        "['palpitation']",
+        "['unknown if any of 1-5 present or absent']"
+      ],
+      "truth": "['acute chest pain or pressure', 'palpitation']"
+    },
+    {
+      "record_id": "C0001_0_0",
+      "section": "C",
+      "answers": [
+        "['None of the above (choose this option if whichever ones were tested, were within normal range)']",
+        "['None tested, or tested but no results or unknown if tested']",
+        "['None of the above (choose this option if whichever ones were tested, were within normal range)']"
+      ],
+      "truth": "['None of the above (choose this option if whichever ones were tested, were within normal range)']"
+    },
+    {
+      "record_id": "C0001_0_0",
+      "section": "E",
+      "answers": [
+        "['ECG not done, or done but no results available or unknown if done']",
+        "['Paroxysmal or sustained atrial or ventricular arrhythmias (premature atrial or ventricular beats, and/or supraventricular or ventricular tachycardia, interventricular conduction delay, abnormal Q waves, low voltages): :e.g (Sinus tachycardia, SVT, atrial fibrillation, PVCs, VT, VF)']",
+        "['ECG not done, or done but no results available or unknown if done']"
+      ],
+      "truth": "['Paroxysmal or sustained atrial or ventricular arrhythmias (premature atrial or ventricular beats, and/or supraventricular or ventricular tachycardia, interventricular conduction delay, abnormal Q waves, low voltages): :e.g (Sinus tachycardia, SVT, atrial fibrillation, PVCs, VT, VF)']"
+    },
+    {
+      "record_id": "C0001_1a",
+      "section": "C",
+      "answers": [
+        "['CRP elevated']",
+        "['None tested, or tested but no results or unknown if tested']",
+        "['None tested, or tested but no results or unknown if tested']"
+      ],
+      "truth": "['None of the above (choose this option if whichever ones were tested, were within normal range)']"
+    },
+    {
+      "record_id": "C0001_1b",
+      "section": "C",
+      "answers": [
+        "['None tested, or tested but no results or unknown if tested']",
+        "['ESR elevated']",
+        "['None tested, or tested but no results or unknown if tested']"
+      ],
+      "truth": "['None of the above (choose this option if whichever ones were tested, were within normal range)']"
+    },
+    {
+      "record_id": "C0001_1b",
+      "section": "F",
+      "answers": [
+        "['Segmental wall motion abnormalities']",
+        "['ECHO not done, or done but no results or unknown if done']",
+        "['ECHO not done, or done but no results or unknown if done']"
+      ],
+      "truth": "['Global systolic or diastolic function depression/abnormality - (*Decreased longitudinal and circumferential strain and strain rates on tissue Doppler)']"
+    },
+    {
+      "record_id": "C0001_1c",
+      "section": "A1",
+      "answers": [
+        "['unknown if any of 1-5 present or absent']",
+        "['none of the above']",
+        "['unknown if any of 1-5 present or absent']"
+      ],
+      "truth": "['unknown if any of 1-5 present or absent']"
+    },
+    {
+      "record_id": "C0001_1d",
+      "section": "B",
+      "answers": [
+        "['unknown if any of 1-3 present or absent']",
+        "['unknown if any of 1-3 present or absent']",
+        "['pericardial friction rub']"
+      ],
+      "truth": "['unknown if any of 1-3 present or absent']"
+    },
+    {
+      "record_id": "C0001_1d",
+      "section": "C",
+      "answers": [
+        "['CRP elevated', 'D-Dimer elevated', 'ESR elevated', 'High sensitivity (hs) CRP elevated']",
+        "['None tested, or tested but no results or unknown if tested']",
+        "['None tested, or tested but no results or unknown if tested']"
+      ],
+      "truth": "['None of the above (choose this option if whichever ones were tested, were within normal range)']"
+    },
+    {
+      "record_id": "C0001_1d",
+      "section": "E",
+      "answers": [
+        "['Paroxysmal or sustained atrial or ventricular arrhythmias (premature atrial or ventricular beats, and/or supraventricular or ventricular tachycardia, interventricular conduction delay, abnormal Q waves, low voltages): :e.g (Sinus tachycardia, SVT, atrial fibrillation, PVCs, VT, VF)']",
+        "['Paroxysmal or sustained atrial or ventricular arrhythmias (premature atrial or ventricular beats, and/or supraventricular or ventricular tachycardia, interventricular conduction delay, abnormal Q waves, low voltages): :e.g (Sinus tachycardia, SVT, atrial fibrillation, PVCs, VT, VF)']",
+        "['ECG not done, or done but no results available or unknown if done']"
+      ],
+      "truth": "['Paroxysmal or sustained atrial or ventricular arrhythmias (premature atrial or ventricular beats, and/or supraventricular or ventricular tachycardia, interventricular conduction delay, abnormal Q waves, low voltages): :e.g (Sinus tachycardia, SVT, atrial fibrillation, PVCs, VT, VF)']"
+    },
+    {
+      "record_id": "C0001_1d",
+      "section": "F",
+      "answers": [
+        "['ECHO not done, or done but no results or unknown if done']",
+        "['No abnormalities seen on ECHO']",
+        "['ECHO not done, or done but no results or unknown if done']"
+      ],
+      "truth": "['Global systolic or diastolic function depression/abnormality - (*Decreased longitudinal and circumferential strain and strain rates on tissue Doppler)']"
+    },
+    {
+      "record_id": "C002_1a",
+      "section": "B",
+      "answers": [
+        "['none of the above']",
+        "['unknown if any of 1-3 present or absent']",
+        "['unknown if any of 1-3 present or absent']"
+      ],
+      "truth": "['none of the above']"
+    },
+    {
+      "record_id": "C002_1a",
+      "section": "C",
+      "answers": [
+        "['ESR elevated']",
+        "['ESR elevated']",
+        "['None tested, or tested but no results or unknown if tested']"
+      ],
+      "truth": "['None tested, or tested but no results or unknown if tested']"
+    },
+    {
+      "record_id": "C002_1a",
+      "section": "E",
+      "answers": [
+        "['ECG not done, or done but no results available or unknown if done']",
+        "['ECG not done, or done but no results available or unknown if done']",
+        "['ST, segment or T, wave abnormalities (elevation or inversion)']"
+      ],
+      "truth": "['ST, segment or T, wave abnormalities (elevation or inversion)']"
+    },
+    {
+      "record_id": "C002_1b",
+      "section": "B",
+      "answers": [
+        "['unknown if any of 1-3 present or absent']",
+        "['unknown if any of 1-3 present or absent']",
+        "['none of the above']"
+      ],
+      "truth": "['none of the above']"
+    },
+    {
+      "record_id": "C002_1b",
+      "section": "E",
+      "answers": [
+        "['ECG not done, or done but no results available or unknown if done']",
+        "['ST, segment or T, wave abnormalities (elevation or inversion)']",
+        "['ECG not done, or done but no results available or unknown if done']"
+      ],
+      "truth": "['ST, segment or T, wave abnormalities (elevation or inversion)']"
+    },
+    {
+      "record_id": "C002_1b",
+      "section": "F",
+      "answers": [
+        "['ECHO not done, or done but no results or unknown if done']",
+        "['ECHO not done, or done but no results or unknown if done']",
+        "['New focal or diffuse left or right ventricular function abnormalities (e.g. decreased ejection fraction)', 'Segmental wall motion abnormalities']"
+      ],
+      "truth": "['New focal or diffuse left or right ventricular function abnormalities (e.g. decreased ejection fraction)', 'Segmental wall motion abnormalities']"
+    },
+    {
+      "record_id": "C002_1c",
+      "section": "A1",
+      "answers": [
+        "['acute chest pain or pressure', 'dyspnea at rest, with exercise or lying down']",
+        "['unknown if any of 1-5 present or absent']",
+        "['unknown if any of 1-5 present or absent']"
+      ],
+      "truth": "['acute chest pain or pressure', 'dyspnea at rest, with exercise or lying down']"
+    },
+    {
+      "record_id": "C002_1c",
+      "section": "B",
+      "answers": [
+        "['*Confirmed physical exam conforming Pericarditis, without details']",
+        "['unknown if any of 1-3 present or absent']",
+        "['none of the above']"
+      ],
+      "truth": "['none of the above']"
+    },
+    {
+      "record_id": "C002_1c",
+      "section": "E",
+      "answers": [
+        "['ST, segment or T, wave abnormalities (elevation or inversion)']",
+        "['ECG not done, or done but no results available or unknown if done']",
+        "['ST, segment or T, wave abnormalities (elevation or inversion)']"
+      ],
+      "truth": "['ST, segment or T, wave abnormalities (elevation or inversion)']"
+    },
+    {
+      "record_id": "C003_1a",
+      "section": "B",
+      "answers": [
+        "['unknown if any of 1-3 present or absent']",
+        "['pericardial friction rub']",
+        "['pericardial friction rub']"
+      ],
+      "truth": "['none of the above']"
+    },
+    {
+      "record_id": "C003_1a",
+      "section": "C",
+      "answers": [
+        "['None tested, or tested but no results or unknown if tested']",
+        "['None tested, or tested but no results or unknown if tested']",
+        "['CRP elevated']"
+      ],
+      "truth": "['None tested, or tested but no results or unknown if tested']"
+    },
+    {
+      "record_id": "C003_1b",
+      "section": "F",
+      "answers": [
+        "['Evidence of abnormal fluid collection or pericardial inflammation', 'Global systolic or diastolic function depression/abnormality - (*Decreased longitudinal and circumferential strain and strain rates on tissue Doppler)', 'New focal or diffuse left or right ventricular function abnormalities (e.g. decreased ejection fraction)']",
+        "['ECHO not done, or done but no results or unknown if done']",
+        "['Evidence of abnormal fluid collection or pericardial inflammation', 'Global systolic or diastolic function depression/abnormality - (*Decreased longitudinal and circumferential strain and strain rates on tissue Doppler)', 'New focal or diffuse left or right ventricular function abnormalities (e.g. decreased ejection fraction)']"
+      ],
+      "truth": "['Evidence of abnormal fluid collection or pericardial inflammation', 'Global systolic or diastolic function depression/abnormality - (*Decreased longitudinal and circumferential strain and strain rates on tissue Doppler)', 'Segmental wall motion abnormalities']"
+    },
+    {
+      "record_id": "C003_1c",
+      "section": "B",
+      "answers": [
+        "['*Confirmed physical exam conforming Pericarditis, without details']",
+        "['pericardial friction rub']",
+        "['pericardial friction rub']"
+      ],
+      "truth": "['none of the above']"
+    },
+    {
+      "record_id": "C003_1c",
+      "section": "C",
+      "answers": [
+        "['ESR elevated']",
+        "['ESR elevated']",
+        "['CRP elevated', 'D-Dimer elevated', 'ESR elevated', 'High sensitivity (hs) CRP elevated']"
+      ],
+      "truth": "['None tested, or tested but no results or unknown if tested']"
+    },
+    {
+      "record_id": "C003_1c",
+      "section": "E",
+      "answers": [
+        "['ECG not done, or done but no results available or unknown if done']",
+        "['Paroxysmal or sustained atrial or ventricular arrhythmias (premature atrial or ventricular beats, and/or supraventricular or ventricular tachycardia, interventricular conduction delay, abnormal Q waves, low voltages): :e.g (Sinus tachycardia, SVT, atrial fibrillation, PVCs, VT, VF)']",
+        "['Paroxysmal or sustained atrial or ventricular arrhythmias (premature atrial or ventricular beats, and/or supraventricular or ventricular tachycardia, interventricular conduction delay, abnormal Q waves, low voltages): :e.g (Sinus tachycardia, SVT, atrial fibrillation, PVCs, VT, VF)']"
+      ],
+      "truth": "['Paroxysmal or sustained atrial or ventricular arrhythmias (premature atrial or ventricular beats, and/or supraventricular or ventricular tachycardia, interventricular conduction delay, abnormal Q waves, low voltages): :e.g (Sinus tachycardia, SVT, atrial fibrillation, PVCs, VT, VF)']"
+    },
+    {
+      "record_id": "C004_1a",
+      "section": "A1",
+      "answers": [
+        "['unknown if any of 1-5 present or absent']",
+        "['unknown if any of 1-5 present or absent']",
+        "['acute chest pain or pressure', 'diaphoresis', 'dyspnea at rest, with exercise or lying down']"
+      ],
+      "truth": "['acute chest pain or pressure', 'diaphoresis', 'dyspnea at rest, with exercise or lying down']"
+    },
+    {
+      "record_id": "C004_1b",
+      "section": "A1",
+      "answers": [
+        "['none of the above']",
+        "['acute chest pain or pressure', 'diaphoresis', 'dyspnea at rest, with exercise or lying down']",
+        "['acute chest pain or pressure', 'diaphoresis', 'dyspnea at rest, with exercise or lying down']"
+      ],
+      "truth": "['acute chest pain or pressure', 'diaphoresis', 'dyspnea at rest, with exercise or lying down']"
+    },
+    {
+      "record_id": "C004_1b",
+      "section": "B",
+      "answers": [
+        "['unknown if any of 1-3 present or absent']",
+        "['unknown if any of 1-3 present or absent']",
+        "['none of the above']"
+      ],
+      "truth": "['unknown if any of 1-3 present or absent']"
+    },
+    {
+      "record_id": "C005_1a",
+      "section": "C",
+      "answers": [
+        "['CRP elevated']",
+        "['CRP elevated', 'D-Dimer elevated', 'ESR elevated', 'High sensitivity (hs) CRP elevated']",
+        "['None tested, or tested but no results or unknown if tested']"
+      ],
+      "truth": "['None tested, or tested but no results or unknown if tested']"
+    },
+    {
+      "record_id": "C005_1b",
+      "section": "B",
+      "answers": [
+        "['unknown if any of 1-3 present or absent']",
+        "['none of the above']",
+        "['unknown if any of 1-3 present or absent']"
+      ],
+      "truth": "['unknown if any of 1-3 present or absent']"
+    },
+    {
+      "record_id": "C005_1b",
+      "section": "C",
+      "answers": [
+        "['ESR elevated']",
+        "['CRP elevated', 'D-Dimer elevated', 'ESR elevated', 'High sensitivity (hs) CRP elevated']",
+        "['CRP elevated']"
+      ],
+      "truth": "['None tested, or tested but no results or unknown if tested']"
+    }
+  ],
+  "runs": [
+    "./myo/output_neg_full_text_8b_r1",
+    "./myo/output_neg_full_text_8b_r2",
+    "./myo/output_neg_full_text_8b_r3"
+  ]
+}

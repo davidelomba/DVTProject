@@ -1,0 +1,80 @@
+{
+  "record_id": "C003_1a",
+  "a1": {
+    "symptoms": [
+      "unknown if any of 1-5 present or absent"
+    ]
+  },
+  "b": {
+    "features": [
+      "pericardial friction rub"
+    ]
+  },
+  "c": {
+    "markers": [
+      "CRP elevated"
+    ]
+  },
+  "e": {
+    "findings": [
+      "No abnormalities seen on ECG"
+    ]
+  },
+  "f": {
+    "findings": [
+      "ECHO not done, or done but no results or unknown if done"
+    ]
+  },
+  "_verifier": {
+    "A1": {
+      "answer": {
+        "agree": true,
+        "p_agree": 0.8478
+      },
+      "reasoning": {
+        "agree": true,
+        "p_agree": 0.9972
+      }
+    },
+    "B": {
+      "answer": {
+        "agree": true,
+        "p_agree": 0.9885
+      },
+      "reasoning": {
+        "agree": true,
+        "p_agree": 0.9985
+      }
+    },
+    "C": {
+      "answer": {
+        "agree": true,
+        "p_agree": 0.9988
+      },
+      "reasoning": {
+        "agree": true,
+        "p_agree": 0.9993
+      }
+    },
+    "E": {
+      "answer": {
+        "agree": true,
+        "p_agree": 0.9945
+      },
+      "reasoning": {
+        "agree": true,
+        "p_agree": 0.5391
+      }
+    },
+    "F": {
+      "answer": {
+        "agree": true,
+        "p_agree": 0.9969
+      },
+      "reasoning": {
+        "agree": true,
+        "p_agree": 0.9988
+      }
+    }
+  }
+}

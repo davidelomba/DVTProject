@@ -1,0 +1,83 @@
+{
+  "record_id": "C005_1b",
+  "a1": {
+    "symptoms": [
+      "unknown if any of 1-5 present or absent"
+    ]
+  },
+  "b": {
+    "features": [
+      "none of the above"
+    ]
+  },
+  "c": {
+    "markers": [
+      "ESR elevated",
+      "CRP elevated",
+      "High sensitivity (hs) CRP elevated",
+      "D-Dimer elevated"
+    ]
+  },
+  "e": {
+    "findings": [
+      "ECG not done, or done but no results available or unknown if done"
+    ]
+  },
+  "f": {
+    "findings": [
+      "ECHO not done, or done but no results or unknown if done"
+    ]
+  },
+  "_verifier": {
+    "A1": {
+      "answer": {
+        "agree": true,
+        "p_agree": 0.8943
+      },
+      "reasoning": {
+        "agree": true,
+        "p_agree": 0.9994
+      }
+    },
+    "B": {
+      "answer": {
+        "agree": true,
+        "p_agree": 0.9585
+      },
+      "reasoning": {
+        "agree": true,
+        "p_agree": 0.9923
+      }
+    },
+    "C": {
+      "answer": {
+        "agree": true,
+        "p_agree": 0.9987
+      },
+      "reasoning": {
+        "agree": true,
+        "p_agree": 0.9999
+      }
+    },
+    "E": {
+      "answer": {
+        "agree": false,
+        "p_agree": 0.1873
+      },
+      "reasoning": {
+        "agree": true,
+        "p_agree": 0.875
+      }
+    },
+    "F": {
+      "answer": {
+        "agree": true,
+        "p_agree": 0.9997
+      },
+      "reasoning": {
+        "agree": true,
+        "p_agree": 0.9999
+      }
+    }
+  }
+}
